@@ -30,8 +30,8 @@ import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
+//import javax.servlet.jsp.JspWriter;
+//import javax.servlet.jsp.PageContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1547,6 +1547,7 @@ public class StringKit {
      * @param pageContext
      *            the PageContext of the jsp page object
      */
+    /*
     public static void writeHtmlBase(PageContext pageContext){
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest ();
         StringBuffer buf = new StringBuffer ("<base href=\"");
@@ -1563,7 +1564,7 @@ public class StringKit {
         } catch (java.io.IOException e) {
 
         }
-    }
+    }*/
 
     /**
      * Get the base path of this request.

@@ -3,5 +3,6 @@
 /out/
 /.idea/
 *.iml
-/web/WEB-INF/lib/
+
+# /web/WEB-INF/lib/
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="DepartObjectiveMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.DepartObjective" id="departObjectiveMap" />
+
+
+	<select id="getDepartObjective" parameterType="com.pm.domain.business.DepartObjective" resultMap="departObjectiveMap">
+		select do.* 
+		from tb_depart_objective do		
+		where do.id = #{id}
+	</select>
+	
+	<select id="getDepartObjectiveBySearch" parameterType="com.pm.domain.business.DepartObjective" resultMap="departObjectiveMap">
+		select do.* 
+		from tb_depart_objective do		
+		where 1=1 
+		<if test="depart_id != null and depart_id != ''">
+			AND depart_id = #{depart_id}
+		</if>
+		<if test="years != null and years != ''">
+			AND years = #{years}
+		</if>		
+	</select>
+
+	<insert id="addDepartObjective" parameterType="com.pm.domain.business.DepartObjective" >
+		insert into  tb_depart_objective(
+			id,depart_id,years,profit_objective
+		)values  (
+			#{id},#{depart_id},#{years},#{profit_objective}		
+		)
+	</insert>
+
+	<update id="updateDepartObjective" parameterType="com.pm.domain.business.DepartObjective" >
+		update  tb_depart_objective set 
+		depart_id=#{depart_id},
+		years=#{years},
+		profit_objective=#{profit_objective}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deleteDepartObjective" parameterType="com.pm.domain.business.DepartObjective" >
+		delete from  tb_depart_objective
+		where id=#{id}
+	</delete>
+
+
+</mapper>

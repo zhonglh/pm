@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ThMonthlyStatementDetailMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.ThMonthlyStatementDetail" id="thMonthlyStatementDetailMap" />
+
+
+	<select id="getThMonthlyStatementDetail" parameterType="com.pm.domain.business.ThMonthlyStatementDetail" resultMap="thMonthlyStatementDetailMap">
+		select msd.* 
+		from th_monthly_statement_detail msd 
+		where msd.id = #{id} 
+	</select>
+
+	<insert id="addThMonthlyStatementDetail" parameterType="com.pm.domain.business.ThMonthlyStatementDetail" >
+		insert into  th_monthly_statement_detail(
+			id,monthly_statement_his_id,monthly_statement_detail_id,
+			monthly_statement_id,project_id,staff_id,technical_cost,should_work_days,
+			work_days,daily_overtime,weekend_overtime,overtime_cost,business_trip_days,
+			business_trip_cost,other_cost,man_month,total_cost,client_dept,
+			description,build_datetime,build_userid,build_username,staff_name,
+			staff_no,statement_month
+
+		)values  (
+			#{id},#{monthly_statement_his_id},#{monthly_statement_detail_id},
+			#{monthly_statement_id},#{project_id},#{staff_id},#{technical_cost},#{should_work_days},
+			#{work_days},#{daily_overtime},#{weekend_overtime},#{overtime_cost},#{business_trip_days},
+			#{business_trip_cost},#{other_cost},#{man_month},#{total_cost},#{client_dept},
+			#{description},#{build_datetime},#{build_userid},#{build_username},#{staff_name},
+			#{staff_no},#{statement_month}
+		)
+	</insert>
+
+
+	<select id="queryThMonthlyStatementDetailByPager_mysql" parameterType="map"  resultMap="thMonthlyStatementDetailMap" >
+		<include refid="thMonthlyStatementDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryThMonthlyStatementDetailByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="thMonthlyStatementDetailPagerSql"/> )c
+	</select>
+
+	<sql id="thMonthlyStatementDetailPagerSql">
+		select msd.* 
+		from th_monthly_statement_detail msd  
+		INNER JOIN tb_staff_costs costs  
+		on msd.staff_id = costs.staff_id 
+		WHERE  monthly_statement_his_id  = #{ThMonthlyStatementDetail.monthly_statement_his_id} 
+		order by  costs.build_datetime, costs.import_order
+	</sql>
+
+</mapper>

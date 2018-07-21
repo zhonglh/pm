@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="StaffAssessmentMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.StaffAssessment" id="staffAssessmentMap" />
+
+
+	<select id="getStaffAssessment" parameterType="com.pm.domain.business.StaffAssessment" resultMap="staffAssessmentMap">
+		select sa.* ,staff.staff_name
+		from tb_staff_assessment sa
+		join tb_staff_costs staff on sa.staff_id = staff.staff_id
+		where sa.id = #{id}
+	</select>
+
+	<insert id="addStaffAssessment" parameterType="com.pm.domain.business.StaffAssessment" >
+		insert into  tb_staff_assessment(
+			id,staff_id,assessment_time,attendance_rate,score,
+			description,build_datetime,build_userid,build_username
+		)values  (
+			#{id},#{staff_id},#{assessment_time},#{attendance_rate},#{score},
+			#{description},#{build_datetime},#{build_userid},#{build_username}
+		)
+	</insert>
+
+	<update id="updateStaffAssessment" parameterType="com.pm.domain.business.StaffAssessment" >
+		update  tb_staff_assessment set 
+		staff_id=#{staff_id},
+		assessment_time=#{assessment_time},
+		attendance_rate=#{attendance_rate},
+		score=#{score},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deleteStaffAssessment" parameterType="com.pm.domain.business.StaffAssessment" >
+		delete from  tb_staff_assessment
+		where id=#{id}
+	</delete>
+
+
+	<select id="queryStaffAssessmentByPager_mysql" parameterType="map"  resultMap="staffAssessmentMap" >
+		<include refid="staffAssessmentPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryStaffAssessmentByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="staffAssessmentPagerSql"/> )c
+	</select>
+
+	<sql id="staffAssessmentPagerSql">
+		select sa.* ,staff.staff_name
+		from tb_staff_assessment sa  
+		join tb_staff_costs staff on sa.staff_id = staff.staff_id
+		WHERE sa.staff_id = #{StaffAssessment.staff_id} 
+		order by sa.assessment_time desc,sa.build_datetime desc
+	</sql>
+
+</mapper>

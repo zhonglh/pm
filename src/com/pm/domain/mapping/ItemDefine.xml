@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ItemDefineMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.system.ItemDefine" id="itemDefineMap" />
+
+
+	<select id="getItemDefine" parameterType="com.pm.domain.system.ItemDefine" resultMap="itemDefineMap">
+		select tsid.* ,		
+		case when tsid.item_direction='0' 	then '支出' else '收入' end as item_direction_name 		,		
+		case when tsid.enable_state='0' 	then '停用' else '启用' end as enable_state_name 		
+		from ts_item_define tsid
+		where tsid.id = #{id}
+	</select>
+
+	<insert id="addItemDefine" parameterType="com.pm.domain.system.ItemDefine" >
+		insert into  ts_item_define(
+			id,item_name,item_order,item_direction,computational_formula,computational_formula_text,
+			enable_state,description
+		)values  (
+			#{id},#{item_name},#{item_order},#{item_direction},#{computational_formula},#{computational_formula_text},
+			#{enable_state},#{description}
+		)
+	</insert>
+
+	<update id="updateItemDefine" parameterType="com.pm.domain.system.ItemDefine" >
+		update  ts_item_define set 
+		item_name=#{item_name},
+		item_order=#{item_order},
+		item_direction=#{item_direction},
+		computational_formula=#{computational_formula},
+		computational_formula_text=#{computational_formula_text},
+		enable_state=#{enable_state},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deleteItemDefine" parameterType="com.pm.domain.system.ItemDefine" >
+		delete from  ts_item_define
+		where id=#{id}
+	</delete>
+
+
+	<select id="queryItemDefineByPager_mysql" parameterType="map"  resultMap="itemDefineMap" >
+		<include refid="itemDefinePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryItemDefineByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="itemDefinePagerSql"/> )c
+	</select>
+
+	<sql id="itemDefinePagerSql">
+		select tsid.* ,		
+		case when tsid.item_direction='0' 	then '支出' else '收入' end as item_direction_name 		,		
+		case when tsid.enable_state='0' 	then '停用' else '启用' end as enable_state_name 		
+		from ts_item_define tsid
+		WHERE 1=1 
+		<if test="ItemDefine.enable_state != null and ItemDefine.enable_state != ''">
+			and tsid.enable_state =  #{ItemDefine.enable_state} 
+		</if>
+	</sql>
+
+</mapper>

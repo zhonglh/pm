@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OtherStaffMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+
+
+	<resultMap type="com.pm.domain.business.OtherStaff" id="otherStaffMap" />
+	
+	
+	
+	<select id="isExist" parameterType="com.pm.domain.business.OtherStaff" resultMap="otherStaffMap">	
+		select * from vb_all_staff 
+		where staff_no = #{staff_no} 
+		and 1=1 
+		<if test="staff_id != null and staff_id != ''">
+		<![CDATA[
+			and staff_id <> #{staff_id}
+		]]>
+		</if>	
+	</select>
+	
+	<select id="getOtherStaff" parameterType="map" resultMap="otherStaffMap">		
+		select staff.*, dept.dept_name 
+		from tb_other_staff staff left join ts_dept dept on staff.dept_id = dept.dept_id
+		where staff.staff_id = #{staff_id}	
+		and staff.delete_flag = '0' 
+		order by staff.build_datetime
+	</select>
+		
+	
+	<insert id="addOtherStaff" parameterType="com.pm.domain.business.OtherStaff">
+		insert into tb_other_staff(
+			staff_id,staff_no,staff_name, dept_id,position_type, position_type1, 
+			position_type2, position_type3,
+			build_datetime,build_userid,build_username,delete_flag
+		)
+		values(
+			#{staff_id},#{staff_no}, #{staff_name},#{dept_id}, #{position_type}, #{position_type1},
+			#{position_type2}, #{position_type3}, 
+			#{build_datetime},#{build_userid},#{build_username},#{delete_flag}
+		)
+	</insert>	
+	
+	
+	<update id="updateOtherStaff" parameterType="com.pm.domain.business.OtherStaff">
+		update tb_other_staff set  
+		staff_no = #{staff_no},
+		staff_name = #{staff_name},
+		dept_id = #{dept_id},
+		position_type = #{position_type},
+		position_type1 = #{position_type1},
+		position_type2 = #{position_type2},
+		position_type3 =  #{position_type3}
+		where staff_id = #{staff_id}  
+	</update>
+		
+		
+		
+	<update id="deleteOtherStaff" parameterType="com.pm.domain.business.OtherStaff">		
+		update tb_other_staff set 
+		delete_flag = '1',
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where staff_id = #{staff_id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+
+	<select id="queryOtherStaffByProjectSales" parameterType="map" resultMap="otherStaffMap">	
+		 SELECT * FROM (
+			<include refid="otherStaffPagerSql"/>
+		) c
+		where c.staff_id in (select sales_userid from vb_project )
+		order by build_datetime asc 
+	</select>
+		
+	<select id="queryOtherStaffByPager_mysql" parameterType="map"   resultMap="otherStaffMap">
+		<include refid="otherStaffPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryOtherStaffByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="otherStaffPagerSql"/>
+		) c
+		
+	</select>	
+
+	<sql id="otherStaffPagerSql">
+		select staff.*, dept.dept_name 
+		from tb_other_staff staff left join ts_dept dept on staff.dept_id = dept.dept_id
+		where staff.delete_flag = '0' 
+		
+		<if test="OtherStaff.position_type != null and OtherStaff.position_type != ''">
+			and staff.position_type = #{OtherStaff.position_type}
+		</if>	
+		
+		<if test="OtherStaff.dept_id != null and OtherStaff.dept_id != ''">
+			and staff.dept_id = #{OtherStaff.dept_id}
+		</if>
+				
+		<if test="OtherStaff.staff_name != null and OtherStaff.staff_name != ''">
+			and staff.staff_name like concat('%',TRIM(#{OtherStaff.staff_name}),'%') 
+		</if>
+		
+		
+		
+		<if test="OtherStaff.position_type != null and OtherStaff.position_type != ''">
+			AND (
+				staff.position_type = #{OtherStaff.position_type} or
+				staff.position_type1 = #{OtherStaff.position_type} or
+				staff.position_type2 = #{OtherStaff.position_type} or
+				staff.position_type3 = #{OtherStaff.position_type}
+			)
+		</if>
+		
+		
+		<include refid="permission"/>
+		
+		order by staff.build_datetime asc 
+	
+	</sql>		
+	
+	
+	<sql id="permission">		
+		
+		<if test="UserPermit.range != null and UserPermit.range != ''">
+			
+			<if test="UserPermit.range == 1">
+				
+			</if>
+			<if test="UserPermit.range == 2">
+					<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+							and staff.dept_id =  #{UserPermit.user_deptid} 
+					</if>
+					<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">						
+							and staff.staff_id =  #{UserPermit.staff_id} 
+					</if>
+			</if>
+			<if test="UserPermit.range == 3">
+				and staff.staff_id =   #{UserPermit.staff_id} 
+			</if>
+			
+		</if>
+		
+		<if test="UserPermit.range == null or UserPermit.range == ''">
+			and 1 != 1
+		</if>
+		
+	
+	</sql>
+	
+
+</mapper>

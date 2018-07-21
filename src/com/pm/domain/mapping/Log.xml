@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LogMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.system.Log" id="logMap">
+		<result column="log_id" property="log_id"/>
+		<result column="operation_type" property="operation_type"/>
+		<result column="operation_username" property="operation_username"/>
+		<result column="operation_userid" property="operation_userid"/>
+		<result column="operation_deptid" property="operation_deptid"/>
+		<result column="operation_time" property="operation_time"/>
+		<result column="project_id" property="project_id"/>
+		<result column="entity_type" property="entity_type"/>
+		<result column="entity_id" property="entity_id"/>
+		<result column="entity_name" property="entity_name"/>
+	</resultMap>
+	
+	
+	<resultMap type="com.pm.domain.system.LogDetail" id="logDetailMap">
+		<result column="log_detail_id" property="log_detail_id"/>
+		<result column="log_id" property="log_id"/>
+		<result column="data_item_code" property="data_item_code"/>
+		<result column="data_item_i18n" property="data_item_i18n"/>
+		<result column="operation_before" property="operation_before"/>
+		<result column="operation_after" property="operation_after"/>
+	</resultMap>
+
+
+	<select id="getDetails" parameterType="com.pm.domain.system.Log" resultMap="logDetailMap">
+	   select * from ts_log_detail where log_id  = #{log_id} order by order_no 
+	</select>
+	
+	
+		
+	<insert id="insertLog" parameterType="com.pm.domain.system.Log">		 
+	  insert into ts_logs
+		  (log_id, operation_type, operation_userid, operation_username,
+		  operation_deptid,operation_time,project_id,entity_type,entity_id,entity_name)
+			values
+		  (#{log_id}, #{operation_type},#{operation_userid}, #{operation_username},
+		   #{operation_deptid},#{operation_time},#{project_id},#{entity_type},#{entity_id},#{entity_name})
+	</insert>
+		
+	<insert id="insertLogDetail" parameterType="com.pm.domain.system.LogDetail">		 
+	  insert into ts_log_detail
+		  (log_detail_id, log_id, data_item_code, data_item_i18n,
+		  operation_before,operation_after,operation_time,order_no)
+			values
+		  (#{log_detail_id}, #{log_id},#{data_item_code}, #{data_item_i18n},
+		   #{operation_before},#{operation_after},#{operation_time},#{order_no})
+	</insert>
+	
+		
+	<delete id="deleteLogDetail" parameterType="com.pm.domain.system.Log">		
+		<![CDATA[
+		delete from  ts_log_detail
+		where log_id in (select log_id from ts_logs where operation_time <= #{operation_time}) 
+		]]>
+	</delete>
+	
+	<delete id="deleteLog" parameterType="com.pm.domain.system.Log">
+		<![CDATA[
+		delete from ts_logs where operation_time <= #{operation_time}
+		]]>
+	</delete>
+	
+	
+		
+	<select id="queryLogByPager_mysql" parameterType="map"   resultMap="logMap">
+		<include refid="logPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryLogByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="logPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="logPagerSql">
+		
+		SELECT logs.* FROM ts_logs logs 
+		left join tb_project project
+		on logs.project_id = project.project_id 
+		WHERE 1 = 1    
+		
+		
+		
+		<if test="UserPermit.range == null or UserPermit.range == ''">
+			AND 1 != 1
+		</if>
+		
+		<if test="Log.project_id != null and Log.project_id != ''">
+			AND logs.project_id =  #{Log.project_id} 
+		</if>
+		
+
+		<if test="Log.project_name != null and Log.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{Log.project_name}),'%')  
+		</if>		
+		
+		<if test="Log.operation_userid != null and Log.operation_userid != ''">
+			AND logs.operation_userid =  #{Log.operation_userid} 
+		</if>
+		
+		
+		<if test="Log.operation_username != null and Log.operation_username != ''">
+			AND logs.operation_username like concat('%',TRIM(#{Log.operation_username}),'%')  
+		</if>
+		
+		
+		<if test="Log.entity_type != null and Log.entity_type != ''">
+			AND logs.entity_type =  #{Log.entity_type} 
+		</if>
+		
+		<if test="Log.operation_time1 != null">	
+		<![CDATA[
+			AND logs.operation_time >=  #{Log.operation_time1} 
+		]]>
+		</if>
+		
+		
+		<if test="Log.operation_time2 != null ">	
+		<![CDATA[
+			AND logs.operation_time  <=  #{Log.operation_time2} 
+		]]>
+		</if>
+
+		<include refid="permission"/>			
+		
+		order by logs.operation_time desc
+	</sql>	
+	
+	 
+	<sql id="permission">		
+		
+		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
+			and 1 = #{UserPermit.range}
+		</if>
+		
+		<if test="UserPermit == null or UserPermit.range == null or UserPermit.range == ''">
+			and 1 != 1
+		</if>
+		
+	
+	</sql>	 
+
+</mapper>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ItemsMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.Client" id="clientMap">
+		<result column="client_id" property="client_id"/>
+		<result column="client_name" property="client_name"/>
+		<result column="build_datetime" property="build_datetime"/>
+		<result column="build_userid" property="build_userid"/>
+		<result column="build_username" property="build_username"/>
+		<result column="delete_flag" property="delete_flag"/>
+		<result column="delete_datetime" property="delete_datetime"/>
+		<result column="delete_userid" property="delete_userid"/>
+		<result column="delete_username" property="delete_username"/>
+	</resultMap>
+	
+
+	<resultMap type="com.pm.domain.business.ReimburseItem" id="reimburseItemMap">
+		<result column="reimburse_item_id" property="reimburse_item_id"/>
+		<result column="item_name" property="item_name"/>
+		<result column="build_datetime" property="build_datetime"/>
+		<result column="build_userid" property="build_userid"/>
+		<result column="build_username" property="build_username"/>
+		<result column="delete_flag" property="delete_flag"/>
+		<result column="delete_datetime" property="delete_datetime"/>
+		<result column="delete_userid" property="delete_userid"/>
+		<result column="delete_username" property="delete_username"/>
+	</resultMap>	
+	
+	<resultMap type="com.pm.domain.business.ReceivableAccountsItem" id="receivableAccountsItemMap" />
+	
+
+
+	
+	<insert id="addClient" parameterType="com.pm.domain.business.Client">		 
+	  	  insert into tb_client
+		  (client_id, client_no,client_name, build_datetime,build_userid,build_username,delete_flag)
+			values
+		  (#{client_id}, #{client_no}, #{client_name}, #{build_datetime},#{build_userid},#{build_username},#{delete_flag})
+	</insert>
+	
+	
+	<update id="updateClient" parameterType="com.pm.domain.business.Client">
+		update tb_client set  
+		client_no = #{client_no},
+		client_name = #{client_name}
+		where client_id = #{client_id} 
+	</update>
+		
+		
+		
+	<update id="deleteClient" parameterType="com.pm.domain.system.Dept">		
+		update tb_client set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where client_id = #{client_id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+	<select id="queryClient" parameterType="com.pm.domain.business.Client" resultMap="clientMap">
+		select * from tb_client 
+		where 1=1 		
+		<if test="client_id != null and client_id != ''">
+			and client_id = #{client_id}  
+		</if>
+	
+		<if test="client_no != null and client_no != ''">
+			and client_no like concat('%',TRIM(#{client_no}),'%')  
+		</if>		
+		
+		<if test="client_name != null and client_name != ''">
+			and client_name like concat('%',TRIM(#{client_name}),'%')  
+		</if>		
+		<if test="delete_flag != null and delete_flag != ''">
+			and delete_flag = #{delete_flag}  
+		</if>
+		order by build_datetime  
+	</select>
+	
+	<select id="isExistClient" parameterType="com.pm.domain.business.Client" resultMap="clientMap">
+		select * from tb_client 
+		where 1=1 
+		<if test="client_name != null and client_name != ''">
+			and client_name = #{client_name} 		
+		</if>
+		<if test="client_no != null and client_no != ''">
+			and client_no = #{client_no} 		
+		</if>
+		<if test="client_id != null and client_id != ''">
+		<![CDATA[
+			and client_id <> #{client_id}
+		]]>
+		</if>
+	</select>
+
+
+	
+	<insert id="addReimburseItem" parameterType="com.pm.domain.business.ReimburseItem">		 
+	  	  insert into tb_reimburse_item
+		  (reimburse_item_id, item_name, build_datetime,build_userid,build_username,delete_flag)
+			values
+		  (#{reimburse_item_id}, #{item_name}, #{build_datetime},#{build_userid},#{build_username},#{delete_flag})
+	</insert>
+	
+	
+	<update id="updateReimburseItem" parameterType="com.pm.domain.business.ReimburseItem">
+		update tb_reimburse_item set  
+		item_name = #{item_name}
+		where reimburse_item_id = #{reimburse_item_id} 
+	</update>
+		
+		
+		
+	<update id="deleteReimburseItem" parameterType="com.pm.domain.business.ReimburseItem">		
+		update tb_reimburse_item set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where reimburse_item_id = #{reimburse_item_id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+	<select id="queryReimburseItem" parameterType="com.pm.domain.business.ReimburseItem" resultMap="reimburseItemMap">
+		select * from tb_reimburse_item order by build_datetime  
+	</select>	
+	
+	<select id="isExistReimburseItem" parameterType="com.pm.domain.business.ReimburseItem" resultMap="reimburseItemMap">
+		select * from tb_reimburse_item 
+		where item_name = #{item_name} 
+		<if test="reimburse_item_id != null and reimburse_item_id != ''">
+		<![CDATA[
+			and reimburse_item_id <> #{reimburse_item_id}
+		]]>
+		</if>	
+	</select>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	<insert id="addReceivableAccountsItem" parameterType="com.pm.domain.business.ReceivableAccountsItem">		 
+	  	  insert into tb_receivable_accounts_item
+		  (receivable_accounts_item_id, item_name, build_datetime,build_userid,build_username,delete_flag)
+			values
+		  (#{receivable_accounts_item_id}, #{item_name}, #{build_datetime},#{build_userid},#{build_username},#{delete_flag})
+	</insert>
+	
+	
+	<update id="updateReceivableAccountsItem" parameterType="com.pm.domain.business.ReceivableAccountsItem">
+		update tb_receivable_accounts_item set  
+		item_name = #{item_name}
+		where receivable_accounts_item_id = #{receivable_accounts_item_id} 
+	</update>
+		
+		
+		
+	<update id="deleteReceivableAccountsItem" parameterType="com.pm.domain.business.ReceivableAccountsItem">		
+		update tb_receivable_accounts_item set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where receivable_accounts_item_id = #{receivable_accounts_item_id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+	<select id="queryReceivableAccountsItem" parameterType="com.pm.domain.business.ReceivableAccountsItem" resultMap="receivableAccountsItemMap">
+		select * from tb_receivable_accounts_item order by build_datetime  
+	</select>	
+	
+	<select id="isExistReceivableAccountsItem" parameterType="com.pm.domain.business.ReceivableAccountsItem" resultMap="receivableAccountsItemMap">
+		select * from tb_receivable_accounts_item 
+		where item_name = #{item_name} 
+		<if test="receivable_accounts_item_id != null and receivable_accounts_item_id != ''">
+		<![CDATA[
+			and receivable_accounts_item_id <> #{receivable_accounts_item_id}
+		]]>
+		</if>	
+	</select>	
+	
+	
+	
+	
+	
+	
+
+	 
+
+</mapper>

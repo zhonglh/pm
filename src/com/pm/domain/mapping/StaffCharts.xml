@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="StaffChartsMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.vo.reports.StaffCharts" id="staffChartsMap" />
+	
+	
+	
+	<!-- 调用存储过程 -->
+	<select id="getChilds" parameterType="Map" statementType="CALLABLE" resultMap="staffChartsMap">
+			{call pro_child_staff(
+				#{staff_id,jdbcType=VARCHAR,mode=IN},
+				#{coreLevel,jdbcType=INTEGER,mode=IN},
+				#{affect_ratio,jdbcType=DOUBLE,mode=IN},
+				#{affect_decline_factor,jdbcType=DOUBLE,mode=IN}
+			)}	
+	</select>	
+	
+	<select id="getParents" parameterType="Map" statementType="CALLABLE" resultMap="staffChartsMap">
+			{call pro_parent_staff(
+				#{staff_id,jdbcType=VARCHAR,mode=IN},
+				#{coreLevel,jdbcType=INTEGER,mode=IN},
+				#{affect_ratio,jdbcType=DOUBLE,mode=IN},
+				#{affect_decline_factor,jdbcType=DOUBLE,mode=IN}
+			)}	
+	</select>	
+	
+	
+
+
+</mapper>

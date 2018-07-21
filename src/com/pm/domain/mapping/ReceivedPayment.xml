@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReceivedPaymentMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+
+
+	<resultMap type="com.pm.domain.business.ReceivedPayment" id="receivedPaymentMap" />
+	
+	
+	
+	<select id="getReceivedPayment" parameterType="com.pm.domain.business.ReceivedPayment" resultMap="receivedPaymentMap">				
+		select receivedPayment.* ,project.project_name,project.project_no, invoice.invoice_no,
+		dd_rai.dic_data_name as  receivable_accounts_item_name , invoice.contract_id,contract.contract_no 
+		from tb_received_payment receivedPayment 
+		INNER JOIN vb_project project 
+		on receivedPayment.project_id = project.project_id 
+		INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id 
+		left join tb_invoice invoice
+		on receivedPayment.invoice_id = invoice.invoice_id
+		left join tb_contract contract
+		on invoice.contract_id = contract.id
+		where receivedPayment.receive_payment_id = #{receive_payment_id}
+	</select>
+	
+	
+	
+		
+		
+	<insert id="addReceivedPayment" parameterType="com.pm.domain.business.ReceivedPayment">
+	 	 insert into tb_received_payment
+		 (
+		 	receive_payment_id, project_id, invoice_id, payment_unit,receive_payment_month,receive_payment_amount,
+		  	receive_payment_datetime,description,receivable_accounts_item_id,
+		  	build_datetime,build_username,build_userid
+		)values  (
+			#{receive_payment_id}, #{project_id},#{invoice_id}, #{payment_unit}, #{receive_payment_month}, #{receive_payment_amount}, 
+		  	#{receive_payment_datetime},#{description}, #{receivable_accounts_item_id}, 
+		  	#{build_datetime}, #{build_username}, #{build_userid}
+		 )
+	</insert>
+	
+	
+	<update id="updateReceivedPayment" parameterType="com.pm.domain.business.ReceivedPayment">
+		update tb_received_payment set 
+		project_id =  #{project_id},
+		invoice_id =  #{invoice_id},
+		payment_unit =  #{payment_unit},
+		receive_payment_month =  #{receive_payment_month},
+		receive_payment_datetime =  #{receive_payment_datetime},
+		receive_payment_amount =  #{receive_payment_amount},
+		receive_payment_datetime =  #{receive_payment_datetime},
+		receivable_accounts_item_id =  #{receivable_accounts_item_id} ,
+		description =  #{description}  
+		where receive_payment_id = #{receive_payment_id} 
+		and verify_userid is null
+	
+	</update>
+	
+
+		
+	<update id="verifyReceivedPayment" parameterType="com.pm.domain.business.ReceivedPayment">
+		update tb_received_payment set 
+		verify_userid = #{verify_userid},
+		verify_username = #{verify_username},
+		verify_datetime = #{verify_datetime}
+		where receive_payment_id = #{receive_payment_id}
+		and verify_userid is null
+	</update>	
+		
+	
+	<update id="unVerifyReceivedPayment" parameterType="com.pm.domain.business.ReceivedPayment">
+		update tb_received_payment set 
+		verify_userid = null,
+		verify_username = null,
+		verify_datetime = null
+		where receive_payment_id = #{receive_payment_id}	
+		and verify_userid is not null	
+	</update>	
+		
+		
+	<delete id="deleteReceivedPayment" parameterType="com.pm.domain.business.ReceivedPayment">		
+		delete from  tb_received_payment
+		where receive_payment_id = #{receive_payment_id} 
+		and verify_userid is null
+	</delete>
+	
+	
+	
+		
+	<update id="deleteInvoice" parameterType="com.pm.domain.business.Invoice">
+		update tb_received_payment set 
+		invoice_id = null
+		where invoice_id = #{invoice_id}
+		
+	</update>
+	
+	
+	
+	
+		
+	<select id="queryReceivedPaymentByPager_mysql" parameterType="map"   resultMap="receivedPaymentMap">
+		<include refid="receivedPaymentPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryReceivedPaymentByCount_mysql" parameterType="map"  resultType="map" >
+		SELECT COUNT(*) as COUNT1,sum(receive_payment_amount) as SUM1 FROM (
+			<include refid="receivedPaymentPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="receivedPaymentPagerSql">
+		
+		select receivedPayment.* ,project.project_name,project.project_no	, invoice.is_received_payment,
+		invoice.invoice_no, invoice.invoiceno_amount as invoice_amount,
+		dd_rai.dic_data_name as  receivable_accounts_item_name ,invoice.contract_id,contract.contract_no ,aa.need_approve 		
+		from tb_received_payment receivedPayment 
+		INNER JOIN vb_project project 
+		on receivedPayment.project_id = project.project_id 		
+		INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id 
+		left join tb_invoice invoice
+		on receivedPayment.invoice_id = invoice.invoice_id
+		left join tb_contract contract
+		on invoice.contract_id = contract.id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'RECEIVED_PAYMENT' group by data_id) aa
+		on receivedPayment.receive_payment_id = aa.data_id	
+		WHERE 1=1 
+		
+		
+		<if test="ReceivedPayment.invoice_no != null and ReceivedPayment.invoice_no != ''">
+			AND invoice.invoice_no like concat('%',TRIM(#{ReceivedPayment.invoice_no}),'%') 
+		</if>
+		
+		
+		
+		<if test="ReceivedPayment.dept_id != null and ReceivedPayment.dept_id != ''">
+			AND project.deptid = #{ReceivedPayment.dept_id}
+		</if>
+		
+		<if test="ReceivedPayment.project_id != null and ReceivedPayment.project_id != ''">
+			AND project.project_id = #{ReceivedPayment.project_id}
+		</if>
+		
+		<if test="ReceivedPayment.project_name != null and ReceivedPayment.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{ReceivedPayment.project_name}),'%')  
+		</if>
+		
+		<if test="ReceivedPayment.project_no != null and ReceivedPayment.project_no != ''">
+			AND project.project_no like concat('%',TRIM(#{ReceivedPayment.project_no}),'%')  
+		</if>
+		
+
+		<if test="ReceivedPayment.receive_payment_month != null and ReceivedPayment.receive_payment_month != ''">
+			AND receivedPayment.receive_payment_month = #{ReceivedPayment.receive_payment_month}
+		</if>		
+		
+		
+		<if test="ReceivedPayment.receive_payment_month1 != null and ReceivedPayment.receive_payment_month1 != ''">
+			<![CDATA[
+			AND receivedPayment.receive_payment_month >= #{ReceivedPayment.receive_payment_month1}
+			]]>
+		</if>		
+		
+		<if test="ReceivedPayment.receive_payment_month2 != null and ReceivedPayment.receive_payment_month2 != ''">
+			<![CDATA[
+			AND receivedPayment.receive_payment_month <= #{ReceivedPayment.receive_payment_month2}
+			]]>
+		</if>		
+		
+		<if test="ReceivedPayment.date1 != null ">	
+			<![CDATA[
+				and receivedPayment.receive_payment_datetime >= #{ReceivedPayment.date1}
+			]]>
+		</if>
+		
+		<if test="ReceivedPayment.date2 != null ">	
+			<![CDATA[
+				and receivedPayment.receive_payment_datetime <= #{ReceivedPayment.date2}
+			]]>
+		</if>
+		
+		
+		
+		<if test="ReceivedPayment.verify_flag != null and ReceivedPayment.verify_flag != ''">
+			<if test="ReceivedPayment.verify_flag == 1">
+					and receivedPayment.verify_userid is not null 
+			</if>
+			<if test="ReceivedPayment.verify_flag == 2">			
+					and receivedPayment.verify_userid is null
+			</if>			
+			<if test="ReceivedPayment.verify_flag == 3">			
+					and aa.need_approve='1'
+			</if>
+		</if>				
+		
+		<include refid="ProjectAuthMapping.permission"/>
+		
+		
+		order by receivedPayment.receive_payment_month desc, project.build_datetime desc, receivedPayment.build_datetime desc
+	
+	</sql>	
+	
+	 
+
+</mapper>

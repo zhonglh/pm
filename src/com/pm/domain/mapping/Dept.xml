@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DeptMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.system.Dept" id="deptMap">
+		<result column="dept_id" property="dept_id"/>
+		<result column="dept_no" property="dept_no"/>
+		<result column="dept_name" property="dept_name"/>
+		<result column="lead_id" property="lead_id"/>
+		<result column="lead_name" property="lead_name"/>	
+		<result column="statisticsed" property="statisticsed"/>			
+		<result column="description" property="description"/>
+		<result column="build_time" property="build_time"/>
+		<result column="build_userid" property="build_userid"/>
+		<result column="build_username" property="build_username"/>
+		<result column="delete_flag" property="delete_flag"/>
+		<result column="delete_datetime" property="delete_datetime"/>
+		<result column="delete_userid" property="delete_userid"/>
+		<result column="delete_username" property="delete_username"/>
+	</resultMap>
+	
+	
+
+
+	
+	<select id="isExist" parameterType="com.pm.domain.system.Dept" resultMap="deptMap">
+		SELECT * FROM ts_dept  where delete_flag='0'  
+		<if test="dept_name != null and dept_name != ''">
+			and dept_name = #{dept_name} 
+		</if>
+		<if test="dept_no != null and dept_no != ''">
+			and dept_no = #{dept_no} 
+		</if>
+		<if test="dept_id != null and dept_id != ''">
+		<![CDATA[
+			and dept_id <> #{dept_id}
+		]]>
+		</if>
+		
+	</select>	
+	
+	<select id="getDept" parameterType="com.pm.domain.system.Dept" resultMap="deptMap">
+		SELECT dept.* , otherstaff.staff_name as lead_name 
+		FROM ts_dept  dept left join  tb_other_staff otherstaff on dept.lead_id = otherstaff.staff_id
+		where dept.dept_id = #{dept_id}
+		
+	</select>	
+	
+	
+	<select id="getAllDept" parameterType="map"  resultMap="deptMap">
+		SELECT dept.* 
+		FROM ts_dept  dept  
+		where delete_flag='0'  
+			
+		<if test="Dept.dept_name != null and Dept.dept_name != ''">
+			AND dept.dept_name like concat('%',TRIM(#{Dept.dept_name}),'%')  
+		</if>
+		
+			
+		<if test="Dept.dept_id != null and Dept.dept_id != ''">
+			AND dept.dept_id = #{Dept.dept_id} 
+		</if>
+		
+					
+		<if test="Dept.statisticsed != null and Dept.statisticsed != ''">
+			AND dept.statisticsed = #{Dept.statisticsed} 
+		</if>
+		
+		
+		<include refid="permission"/>	
+		
+		
+		order by dept.dept_no
+	</select>	
+		
+	<insert id="addDept" parameterType="com.pm.domain.system.Dept">
+		 
+	  insert into ts_dept
+		  (dept_id, dept_no, dept_name, lead_id,statisticsed,description,build_time,build_userid,build_username,delete_flag)
+			values
+		  (#{dept_id}, #{dept_no},#{dept_name}, #{lead_id},  #{statisticsed}, #{description}, #{build_time},#{build_userid},#{build_username},#{delete_flag})
+	</insert>
+	
+	
+	<update id="updateDept" parameterType="com.pm.domain.system.Dept">
+		update ts_dept set  
+		dept_no = #{dept_no},
+		dept_name = #{dept_name},
+		lead_id = #{lead_id},
+		statisticsed = #{statisticsed},
+		description =#{description} 
+		where dept_id = #{dept_id} 
+	</update>
+		
+		
+		
+	<update id="deleteDept" parameterType="com.pm.domain.system.Dept">		
+		update ts_dept set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where dept_id = #{dept_id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+	
+		
+	<select id="queryDeptByPager_mysql" parameterType="map"   resultMap="deptMap">
+		<include refid="deptPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryDeptByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="deptPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="deptPagerSql">
+		SELECT dept.* , otherstaff.staff_name as lead_name , 
+		do.years as curr_years,do.profit_objective as curr_profit_objective 
+		FROM ts_dept dept 
+		left join  tb_other_staff otherstaff on dept.lead_id = otherstaff.staff_id
+		left join  (		
+			<if test="Dept.curr_years != 0">
+				select * from tb_depart_objective where years=${Dept.curr_years} 
+			</if>
+			<if test="Dept.curr_years == 0">
+				select depart_id,sum(profit_objective) as profit_objective, max(years) years
+				from tb_depart_objective where 1=1 
+				<if test="Dept.year1 != 0">
+					<![CDATA[	
+					and years >= ${Dept.year1} 
+					]]>
+				</if>
+				<if test="Dept.year2 != 0">
+					<![CDATA[	
+					and years <= ${Dept.year2} 
+					]]>
+				</if>
+				
+				group by depart_id
+			</if>
+		) do on dept.dept_id = do.depart_id 
+		WHERE dept.delete_flag = '0'		
+		<if test="Dept.dept_name != null and Dept.dept_name != ''">
+			AND dept.dept_name like concat('%',TRIM(#{Dept.dept_name}),'%')  
+		</if>
+		
+			
+		<if test="Dept.dept_id != null and Dept.dept_id != ''">
+			AND dept.dept_id = #{Dept.dept_id} 
+		</if>
+		
+					
+		<if test="Dept.statisticsed != null and Dept.statisticsed != ''">
+			AND dept.statisticsed = #{Dept.statisticsed} 
+		</if>
+		
+		<include refid="permission"/>
+	
+		order by dept.dept_no
+		
+	</sql>	
+	
+	<sql id="permission">
+		
+		
+		<if test="UserPermit.range != null and UserPermit.range != ''">
+			
+			<if test="UserPermit.range == 1">
+				
+			</if>
+			<if test="UserPermit.range == 2 or UserPermit.range == 3">
+					<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+							and dept.dept_id =  #{UserPermit.user_deptid} 
+					</if>
+					<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">						
+							and 1 != 1
+					</if>
+			</if>
+			
+		</if>
+		
+		<if test="UserPermit.range == null or UserPermit.range == ''">
+			and 1 != 1
+		</if>
+		
+	
+	</sql>
+	 
+
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="StaffSalaryDetailMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.StaffSalaryDetail" id="staffsalaryDetailMap" />
+	
+	<select id="queryStaffSalaryDetail" parameterType="com.pm.domain.business.StaffSalaryDetail" resultMap="staffsalaryDetailMap">
+			
+		select * from tb_staff_salary_detil where 1 = 1  
+			
+		<if test="staff_id != null and staff_id != ''">
+			AND staff_id = #{staff_id} 
+		</if>		
+		
+		<if test="item_id != null and item_id != ''">
+			AND item_id = #{item_id}
+		</if>
+	
+	</select>
+	
+	
+	
+	<select id="queryVirtualStaffSalaryDetail" parameterType="com.pm.domain.business.StaffSalaryDetail" resultMap="staffsalaryDetailMap">
+
+			select sc.staff_id  , a.id as item_id ,  a.item_name,		
+			(	
+				
+				select case   when tid.id = '${item_id}' then ${computational_formula} end as bal							
+				from vb_staff_salary_source vsss 
+				join ts_item_define tid
+				where a.id = tid.id and vsss.staff_id = sc.staff_id 
+			) as bal   ,   a.item_direction 
+			from ts_item_define a join tb_staff_ex b 
+			join tb_staff_costs sc on b.id = sc.staff_id 
+			where a.enable_state = '1'
+			and sc.delete_flag = '0' and b.salary_model = '1' 
+			AND a.id =  #{item_id}
+	</select>
+	
+	
+	<insert id="addStaffSalaryDetail" parameterType="map">	
+			
+		insert into tb_staff_salary_detil 
+		select sc.staff_id  , a.id as item_id ,  a.item_name,		
+		(	
+			
+			select ROUND(  case  ${case_statement} end ,2 ) as bal			
+			<!-- 
+				select case   
+			 	when tid.id = '0fcb5c5f-ee4b-48da-8a56-7193f8c2cbfc' then platform_ratio * qustomerquotes
+				when tid.id = 'a88e91f7-1788-407e-9deb-2c9927cf5c2f' then 1500
+				when tid.id = 'd80b7959-7e45-4471-829e-44be542afde3' then qustomerquotes * other_ratio
+				end as bal
+			 -->						
+			from vb_staff_salary_source vsss 
+			join ts_item_define tid
+			where a.id = tid.id and vsss.staff_id = sc.staff_id
+		) as bal   ,   a.item_direction
+		from ts_item_define a join tb_staff_ex b
+		join tb_staff_costs sc on b.id = sc.staff_id
+		where a.enable_state = '1' and (a.computational_formula is not null and a.computational_formula != '' )
+		and sc.delete_flag = '0' and b.salary_model = '1' 
+		
+		<if test="staff_id != null and staff_id != ''">
+			AND sc.staff_id = #{staff_id}
+		</if>		
+		
+		<if test="item_id != null and item_id != ''">
+			AND a.id = #{item_id}
+		</if>		
+	</insert>
+	
+	<delete id="deleteStaffSalaryDetail">		
+		delete from tb_staff_salary_detil  where 1=1 
+		
+		<if test="staff_id != null and staff_id != ''">
+			AND staff_id = #{staff_id} 
+		</if>		
+		
+		<if test="item_id != null and item_id != ''">
+			AND item_id = #{item_id}
+		</if>
+	</delete>
+
+	
+
+</mapper>

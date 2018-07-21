@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StaffCostExMapping">
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+
+
+	<!-- 加正式工资 -->
+	<update id="checkAddSalary1" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
+		update tb_staff_costs set 
+		performance_allowances = performance_allowances + (#{new_salary} - #{old_salary}),
+		totalcost = totalcost + (#{new_salary} - #{old_salary}),
+		official_salary = #{new_salary}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+		<![CDATA[	
+		and (confirmation_date is null or confirmation_date <= #{change_time}  )
+		]]>
+	</update>	
+	
+	<!-- 加试用工资 -->
+	<update id="checkAddSalary2" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
+		update tb_staff_costs set 
+		tryout_performance_allowances = tryout_performance_allowances + (#{new_salary} - #{old_salary}),
+		tryout_salary = #{new_salary}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+		<![CDATA[	
+		and (confirmation_date is not null and confirmation_date > #{change_time}  )
+		]]>
+	</update>
+	
+	
+	<!-- 取消加正式工资 -->
+	<update id="unCheckAddSalary1" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
+		update tb_staff_costs set 
+		performance_allowances = performance_allowances - (#{new_salary} - #{old_salary}),
+		totalcost = totalcost - (#{new_salary} - #{old_salary}),
+		official_salary = #{old_salary}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+		<![CDATA[	
+		and (confirmation_date is null or confirmation_date <= #{change_time}  )
+		]]>	
+	</update>
+
+	<!-- 取消加试用工资 -->
+	<update id="unCheckAddSalary2" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
+		update tb_staff_costs set 
+		tryout_performance_allowances = tryout_performance_allowances - (#{new_salary} - #{old_salary}),
+		tryout_salary = #{new_salary}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+		<![CDATA[	
+		and (confirmation_date is not null and confirmation_date > #{change_time}  )
+		]]>
+	</update>
+
+	
+	
+	
+	
+
+	<!-- 减正式工资 -->
+	<update id="checkDecrSalary1" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
+		update tb_staff_costs set 
+		performance_allowances = performance_allowances + (#{new_salary} - #{old_salary}),
+		totalcost = totalcost + (#{new_salary} - #{old_salary}),
+		official_salary = #{new_salary}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+		<![CDATA[	
+		and (confirmation_date is null or confirmation_date <= #{change_time}  )
+		]]>
+	</update>	
+	
+	<!-- 减试用工资 -->
+	<update id="checkDecrSalary2" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
+		update tb_staff_costs set 
+		tryout_performance_allowances = tryout_performance_allowances + (#{new_salary} - #{old_salary}),
+		tryout_salary = #{new_salary}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+		<![CDATA[	
+		and (confirmation_date is not null and confirmation_date > #{change_time}  )
+		]]>
+	</update>
+	
+	
+	<!-- 取消减正式工资 -->
+	<update id="unCheckDecrSalary1" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
+		update tb_staff_costs set 
+		performance_allowances = performance_allowances - (#{new_salary} - #{old_salary}),
+		totalcost = totalcost - (#{new_salary} - #{old_salary}),
+		official_salary = #{old_salary}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+		<![CDATA[	
+		and (confirmation_date is null or confirmation_date <= #{change_time}  )
+		]]>	
+	</update>
+
+	<!-- 取消减试用工资 -->
+	<update id="unCheckDecrSalary2" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
+		update tb_staff_costs set 
+		tryout_performance_allowances = tryout_performance_allowances - (#{new_salary} - #{old_salary}),
+		tryout_salary = #{new_salary}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+		<![CDATA[	
+		and (confirmation_date is not null and confirmation_date > #{change_time}  )
+		]]>
+	</update>
+	
+	
+	
+
+
+
+
+	<update id="checkInsurance" parameterType="com.pm.domain.business.PersonnelMonthlyInsurance">
+		update tb_staff_costs set insurance_grade_id = #{insurance_grade_id} ,
+		securty_unit = #{securty_unit} , 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+	</update>	
+	<update id="unCheckInsurance" parameterType="com.pm.domain.business.PersonnelMonthlyInsurance">
+		update tb_staff_costs set insurance_grade_id = #{old_insurance_grade_id} ,
+		securty_unit = #{old_securty_unit} , 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   	
+	</update>
+	
+	
+	
+	
+
+	<update id="checkReserveFund" parameterType="com.pm.domain.business.PersonnelMonthlyReserveFund">
+		update tb_staff_costs set insurance_grade_id = #{insurance_grade_id} ,
+		securty_unit = #{securty_unit} , 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   
+	</update>	
+	<update id="unCheckReserveFund" parameterType="com.pm.domain.business.PersonnelMonthlyReserveFund">
+		update tb_staff_costs set insurance_grade_id = #{old_insurance_grade_id} ,
+		securty_unit = #{old_securty_unit} , 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}   	
+	</update>
+	
+
+
+	<update id="checkBonus" parameterType="com.pm.domain.business.PersonnelMonthlyBonus">
+		update tb_staff_costs set 		
+		project_allowance = project_allowance + #{amount}  , 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}  
+	</update>	
+	<update id="unCheckBonus" parameterType="com.pm.domain.business.PersonnelMonthlyBonus">
+		update tb_staff_costs set 		
+		project_allowance = project_allowance - #{amount}  , 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}  
+	</update>
+</mapper>

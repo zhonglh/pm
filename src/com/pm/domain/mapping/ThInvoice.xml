@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ThInvoiceMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.ThInvoice" id="thInvoiceMap" />
+
+
+	<select id="getThInvoice" parameterType="com.pm.domain.business.ThInvoice" resultMap="thInvoiceMap">
+		select invoice.* 
+		from th_invoice invoice
+		where invoice.id = #{id}
+	</select>
+
+	<insert id="addThInvoice" parameterType="com.pm.domain.business.ThInvoice" >
+		insert into  th_invoice(
+			id,his_date,his_user_id,his_user_name,his_operation_type,
+			invoice_id,project_id,invoice_no,invoice_title,
+			invoice_type,invoice_content,invoice_date,is_exemption_tax,invoiceno_amount,
+			tax_rate,is_received_payment,receive_payment_amount,received_payment_datetime,invoice_staff_id,
+			invoice_receive,monthly_statement_id,contract_id,description,build_datetime,
+			build_username,build_userid,verify_username,verify_userid,verify_datetime,
+			project_name,project_no,invoice_content_name,invoice_staff_name,invoice_receive_name,
+			contract_no,monthly_statement_name
+		)values  (
+			#{id},#{his_date},#{his_user_id},#{his_user_name}, #{his_operation_type},
+			#{invoice_id},#{project_id},#{invoice_no},#{invoice_title},
+			#{invoice_type},#{invoice_content},#{invoice_date},#{is_exemption_tax},#{invoiceno_amount},
+			#{tax_rate},#{is_received_payment},#{receive_payment_amount},#{received_payment_datetime},#{invoice_staff_id},
+			#{invoice_receive},#{monthly_statement_id},#{contract_id},#{description},#{build_datetime},
+			#{build_username},#{build_userid},#{verify_username},#{verify_userid},#{verify_datetime},
+			#{project_name},#{project_no},#{invoice_content_name},#{invoice_staff_name},#{invoice_receive_name},
+			#{contract_no},#{monthly_statement_name}
+		)
+	</insert>
+
+
+	<select id="queryThInvoiceByPager_mysql" parameterType="map"  resultMap="thInvoiceMap" >
+		<include refid="thInvoicePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryThInvoiceByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="thInvoicePagerSql"/> )c
+	</select>
+
+	<sql id="thInvoicePagerSql">
+		select invoice.*  
+		from th_invoice invoice  
+		WHERE invoice_id = #{ThInvoice.invoice_id}		
+		order by his_date desc
+	</sql>
+
+</mapper>

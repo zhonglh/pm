@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ThMonthlyStatementMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.ThMonthlyStatement" id="thMonthlyStatementMap" />
+
+
+	<select id="getThMonthlyStatement" parameterType="com.pm.domain.business.ThMonthlyStatement" resultMap="thMonthlyStatementMap">
+		select ms.* ,project.project_name,project.project_no
+		from th_monthly_statement ms
+		INNER JOIN vb_project project 
+		on ms.project_id = project.project_id 
+		where ms.id = #{id}
+	</select>
+
+	<insert id="addThMonthlyStatement" parameterType="com.pm.domain.business.ThMonthlyStatement" >
+		insert into  th_monthly_statement(		
+			id,his_date,his_user_id,his_user_name,his_operation_type,
+			monthly_statement_id,project_id,statement_month,statement_type,
+			amount,description,build_datetime,build_username,build_userid,
+			verify_username,verify_userid,verify_datetime,project_no,project_name,
+			project_type,invoice_amount,receive_amount,not_open_invoice_amount,not_receive_amount,
+			invoice_not_receive_amount
+		)values  (		
+			#{id},#{his_date},#{his_user_id},#{his_user_name}, #{his_operation_type},
+			#{monthly_statement_id},#{project_id},#{statement_month},#{statement_type},
+			#{amount},#{description},#{build_datetime},#{build_username},#{build_userid},
+			#{verify_username},#{verify_userid},#{verify_datetime},#{project_no},#{project_name},
+			#{project_type},#{invoice_amount},#{receive_amount},#{not_open_invoice_amount},#{not_receive_amount},
+			#{invoice_not_receive_amount}
+		)
+	</insert>
+
+	<select id="queryThMonthlyStatementTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="thMonthlyStatementPagerSql"/>
+		) c
+	</select>
+
+	<select id="queryThMonthlyStatementByPager_mysql" parameterType="map"  resultMap="thMonthlyStatementMap" >
+		<include refid="thMonthlyStatementPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryThMonthlyStatementByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="thMonthlyStatementPagerSql"/> )c
+	</select>
+
+	<sql id="thMonthlyStatementPagerSql">
+		select ms.* 
+		from th_monthly_statement ms  
+		WHERE monthly_statement_id = #{ThMonthlyStatement.monthly_statement_id}		
+		order by his_date desc 
+	</sql>
+
+</mapper>

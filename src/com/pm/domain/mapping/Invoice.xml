@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InvoiceMapping">	
+	
+	<resultMap type="java.util.Map" id="map" />
+
+	<resultMap type="com.pm.domain.business.Invoice" id="invoiceMap" />	
+	
+	<select id="getInvoice" parameterType="com.pm.domain.business.Invoice" resultMap="invoiceMap">				
+		select invoice.* ,project.project_name,project.project_no	,otherstaff.staff_name as invoice_staff_name ,
+		case when receivestaff.staff_name is null then invoice.invoice_receive else receivestaff.staff_name end  as invoice_receive_name 	,
+		
+		content_dic.dic_data_name as invoice_content_name,
+		contract.contract_no 
+		from tb_invoice invoice 
+		INNER JOIN vb_project project 
+		on invoice.project_id = project.project_id 
+		left join tb_other_staff otherstaff
+		on invoice.invoice_staff_id = otherstaff.staff_id 		
+		left join tb_other_staff receivestaff 
+		on invoice.invoice_receive = receivestaff.staff_id 				
+		left join ts_dic_data content_dic on invoice.invoice_content = content_dic.id
+		left join tb_contract contract 
+		on invoice.contract_id = contract.id 		
+		where invoice.invoice_id = #{invoice_id}
+	</select>	
+	
+	
+	<select id="getInvoiceByMonthly" parameterType="com.pm.domain.business.Invoice" resultMap="invoiceMap">				
+		select invoice.* ,project.project_name,project.project_no	,otherstaff.staff_name as invoice_staff_name ,
+		case when receivestaff.staff_name is null then invoice.invoice_receive else receivestaff.staff_name end  as invoice_receive_name 	,
+		
+		content_dic.dic_data_name as invoice_content_name,
+		contract.contract_no 
+		from tb_invoice invoice 
+		INNER JOIN vb_project project 
+		on invoice.project_id = project.project_id 
+		left join tb_other_staff otherstaff
+		on invoice.invoice_staff_id = otherstaff.staff_id 		
+		left join tb_other_staff receivestaff 
+		on invoice.invoice_receive = receivestaff.staff_id 		
+		left join ts_dic_data content_dic on invoice.invoice_content = content_dic.id
+		left join tb_contract contract 
+		on invoice.contract_id = contract.id 	
+		where invoice.monthly_statement_id = #{monthly_statement_id}
+	</select>
+		
+	<insert id="addInvoice" parameterType="com.pm.domain.business.Invoice">
+	 	 insert into tb_invoice
+		 (
+		 	invoice_id, project_id, invoice_no, invoice_title,invoice_type,invoice_content,invoice_date,
+		  	is_exemption_tax,invoiceno_amount,tax_rate,is_received_payment,invoice_staff_id,invoice_receive,monthly_statement_id,description,
+		  	contract_id,build_datetime,build_username,build_userid
+		)values  (
+			#{invoice_id}, #{project_id},#{invoice_no}, #{invoice_title}, #{invoice_type}, #{invoice_content}, #{invoice_date},
+		  	#{is_exemption_tax}, #{invoiceno_amount},#{tax_rate},'0', #{invoice_staff_id}, #{invoice_receive}, #{monthly_statement_id},  #{description}, 
+		  	#{contract_id},#{build_datetime}, #{build_username}, #{build_userid}
+		 )
+	</insert>
+	
+	
+	<update id="updateInvoice" parameterType="com.pm.domain.business.Invoice">
+		update tb_invoice set 
+		project_id =  #{project_id},
+		invoice_no =  #{invoice_no},
+		invoice_title =  #{invoice_title},
+		invoice_type =  #{invoice_type},
+		invoice_content =  #{invoice_content},
+		invoice_date= #{invoice_date},
+		is_exemption_tax =  #{is_exemption_tax},
+		invoiceno_amount =  #{invoiceno_amount},
+		tax_rate =  #{tax_rate},
+		invoice_staff_id =  #{invoice_staff_id},
+		invoice_receive =  #{invoice_receive},
+		monthly_statement_id =  #{monthly_statement_id},
+		contract_id=#{contract_id},
+		description =  #{description}
+		where invoice_id = #{invoice_id}
+		and verify_userid is null
+	
+	</update>
+	
+	
+	
+	<update id="deleteMonthlyStatement" parameterType="com.pm.domain.business.Invoice">
+		update tb_invoice set 
+		monthly_statement_id =  null
+		where monthly_statement_id = #{monthly_statement_id}
+	</update>
+	
+	<update id="updateInvoiceReceivedPayment" parameterType="com.pm.domain.business.ReceivedPayment">
+	<![CDATA[	
+		update tb_invoice set 
+		is_received_payment = '2',
+		receive_payment_amount = (select sum(receive_payment_amount) from tb_received_payment where verify_userid is not null and invoice_id = #{invoice_id}),
+		received_payment_datetime =  #{receive_payment_datetime}
+		where invoice_id = #{invoice_id}
+	]]> 
+	</update>
+	
+	
+	<update id="updateInvoiceIsReceivedPayment" parameterType="com.pm.domain.business.ReceivedPayment">
+	<![CDATA[	
+		update tb_invoice set 
+		is_received_payment = (
+				case when receive_payment_amount is null then 0 	when receive_payment_amount = 0 then 0	
+				when receive_payment_amount >= invoiceno_amount then 1 else 2 END 
+		) 
+		where invoice_id = #{invoice_id}
+	]]> 
+	</update>
+
+		
+	<update id="verifyInvoice" parameterType="com.pm.domain.business.Invoice">
+		update tb_invoice set 
+		verify_userid = #{verify_userid},
+		verify_username = #{verify_username},
+		verify_datetime = #{verify_datetime}
+		where invoice_id = #{invoice_id}
+		and verify_userid is null
+	</update>	
+	
+		
+	<update id="unVerifyInvoice" parameterType="com.pm.domain.business.Invoice">
+		update tb_invoice set 
+		verify_userid = null,
+		verify_username = null,
+		verify_datetime = null
+		where invoice_id = #{invoice_id}
+		and verify_userid is not null
+	</update>	
+		
+		
+	<delete id="deleteInvoice" parameterType="com.pm.domain.business.Invoice">		
+		delete from  tb_invoice
+		where invoice_id = #{invoice_id} 
+		and verify_userid is null
+	</delete>
+	
+	
+	
+	
+		
+		
+	<select id="queryInvoiceByPager_mysql" parameterType="map"   resultMap="invoiceMap">
+		<include refid="invoicePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryInvoiceByCount_mysql" parameterType="map"  resultType="map" >
+		 SELECT COUNT(*) as COUNT1,sum(invoiceno_amount) as SUM1 FROM (
+			<include refid="invoicePagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="invoicePagerSql">
+		select invoice.* ,project.project_name,project.project_no	,otherstaff.staff_name as invoice_staff_name ,
+		case when receivestaff.staff_name is null then invoice.invoice_receive else receivestaff.staff_name end  as invoice_receive_name 	,
+		
+		content_dic.dic_data_name as invoice_content_name,
+		contract.contract_no,aa.need_approve ,
+		CONCAT('(',ms.statement_month,')') as monthly_statement_name,statement_type	
+		from tb_invoice invoice 
+		INNER JOIN vb_project project 
+		on invoice.project_id = project.project_id 
+		left join tb_other_staff otherstaff
+		on invoice.invoice_staff_id = otherstaff.staff_id 		
+		left join tb_other_staff receivestaff 
+		on invoice.invoice_receive = receivestaff.staff_id 		
+		left join ts_dic_data content_dic on invoice.invoice_content = content_dic.id
+		left join tb_contract contract 
+		on invoice.contract_id = contract.id 
+		left join tb_monthly_statement ms 
+		on invoice.monthly_statement_id = ms.monthly_statement_id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'INVOICE' group by data_id) aa
+		on invoice.invoice_id = aa.data_id
+		WHERE 1=1 
+		
+		
+		
+		<if test="Invoice.statement_month1 != 0 ">
+			<![CDATA[
+			AND ms.statement_month >= #{Invoice.statement_month1}
+			]]>
+		</if>
+
+		<if test="Invoice.statement_month2 != 0 ">
+			<![CDATA[
+			AND ms.statement_month <= #{Invoice.statement_month2}
+			]]>
+		</if>
+				
+		
+		<if test="Invoice.date1 != null ">	
+			<![CDATA[
+				and invoice.invoice_date >= #{Invoice.date1}
+			]]>
+		</if>
+		
+		<if test="Invoice.date2 != null ">	
+			<![CDATA[
+				and invoice.invoice_date <= #{Invoice.date2}
+			]]>
+		</if>
+		
+		<if test="Invoice.project_id != null and Invoice.project_id != ''">
+			AND project.project_id = #{Invoice.project_id}
+		</if>
+		<if test="Invoice.dept_id != null and Invoice.dept_id != ''">
+			AND project.deptid = #{Invoice.dept_id}
+		</if>
+		
+
+		<if test="Invoice.is_received_payment != null and Invoice.is_received_payment != ''">			
+			<if test="Invoice.is_received_payment ==0">
+				AND invoice.is_received_payment in ('0','2')
+			</if>
+			<if test="Invoice.is_received_payment ==1">
+				AND invoice.is_received_payment = #{Invoice.is_received_payment}
+			</if>
+		</if>		
+		
+		<if test="Invoice.project_name != null and Invoice.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{Invoice.project_name}),'%')  
+		</if>
+		
+		<if test="Invoice.project_no != null and Invoice.project_no != ''">
+			AND project.project_no like concat('%',TRIM(#{Invoice.project_no}),'%')  
+		</if>
+		
+		
+		<if test="Invoice.invoice_no != null and Invoice.invoice_no != ''">
+			AND invoice.invoice_no like concat('%',TRIM(#{Invoice.invoice_no}),'%')  
+		</if>
+		
+		
+		<if test="Invoice.verify_flag != null and Invoice.verify_flag != ''">
+			<if test="Invoice.verify_flag == 1">
+					and invoice.verify_userid is not null 
+			</if>
+			<if test="Invoice.verify_flag == 2">			
+					and invoice.verify_userid is null
+			</if>
+			<if test="Invoice.verify_flag == 3">			
+					and aa.need_approve='1'
+			</if>
+		</if>				
+		
+		<include refid="ProjectAuthMapping.permission"/>
+		
+		
+		order by invoice.build_datetime desc
+	
+	</sql>	
+	
+	 
+
+</mapper>

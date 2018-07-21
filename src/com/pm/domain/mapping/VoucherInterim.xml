@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="VoucherInterimMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.VoucherInterim" id="voucherInterimMap" />
+
+
+	<select id="getVoucherInterim" parameterType="com.pm.domain.business.VoucherInterim" resultMap="voucherInterimMap">
+		select vi.* 
+		from tb_voucher_interim vi
+		where vi.id = #{id}
+	</select>
+
+	<insert id="addVoucherInterim" parameterType="com.pm.domain.business.VoucherInterim" >
+		insert into  tb_voucher_interim(
+			id,data_type,data_id,data_hisid,voucher_date,total_money,
+			exported,exported_userid,exported_username,exported_time,voucher_id,
+			years,months,build_time,voucher_type,voucher_no,
+			build_username,attached_number,description1,description2,course_code,
+			summary,settlement_code,bill_number,bill_date,currency_name,
+			exchange_rate,price,debit_number,loan_number,original_currency_debit,
+			original_currency_loan,debit_amount,loan_amount,depart_code,staff_code,
+			client_code,vendor_code,project_class_code,project_code,salesman,
+			custom_item1,custom_item2,custom_item3,custom_item4,custom_item5,
+			custom_item6,custom_item7,custom_item8,custom_item9,custom_item10,
+			custom_item11,custom_item12,custom_item13,custom_item14,custom_item15,
+			custom_item16,cash_flow_item,cash_flow_debit_amount,cash_flow_loan_amount
+
+		)values  (
+			#{id},#{data_type},#{data_id},#{data_hisid},#{voucher_date},#{total_money},
+			#{exported},#{exported_userid},#{exported_username},#{exported_time},#{voucher_id},
+			#{years},#{months},#{build_time},#{voucher_type},#{voucher_no},
+			#{build_username},#{attached_number},#{description1},#{description2},#{course_code},
+			#{summary},#{settlement_code},#{bill_number},#{bill_date},#{currency_name},
+			#{exchange_rate},#{price},#{debit_number},#{loan_number},#{original_currency_debit},
+			#{original_currency_loan},#{debit_amount},#{loan_amount},#{depart_code},#{staff_code},
+			#{client_code},#{vendor_code},#{project_class_code},#{project_code},#{salesman},
+			#{custom_item1},#{custom_item2},#{custom_item3},#{custom_item4},#{custom_item5},
+			#{custom_item6},#{custom_item7},#{custom_item8},#{custom_item9},#{custom_item10},
+			#{custom_item11},#{custom_item12},#{custom_item13},#{custom_item14},#{custom_item15},
+			#{custom_item16},#{cash_flow_item},#{cash_flow_debit_amount},#{cash_flow_loan_amount}
+
+		)
+	</insert>
+
+	<update id="updateVoucherInterim" parameterType="com.pm.domain.business.VoucherInterim" >
+		update  tb_voucher_interim set 
+		total_money=#{total_money},
+		debit_amount=#{debit_amount},
+		loan_amount=#{loan_amount},
+		cash_flow_debit_amount=#{cash_flow_debit_amount},
+		cash_flow_loan_amount=#{cash_flow_loan_amount},
+		course_code=#{course_code} 
+		where id=#{id} 
+		and exported = '0' 
+	</update>
+	
+	<update id="updateVoucherInterimByExport" parameterType="com.pm.domain.business.VoucherInterim" >
+		update  tb_voucher_interim set 
+		exported = '1' ,
+		exported_userid = #{exported_userid},
+		exported_username = #{exported_username},
+		exported_time = #{exported_time} 
+		where data_id=#{data_id} 
+		
+		<if test="data_type != null and data_type != ''">
+			and data_type = #{data_type} 
+		</if>
+		and exported = '0'
+	</update>
+
+
+	<delete id="deleteVoucherInterim" parameterType="com.pm.domain.business.VoucherInterim" >
+		delete from  tb_voucher_interim
+		where data_id=#{data_id}
+		and data_type = #{data_type} 
+		and exported = '0'
+	</delete>
+
+
+	<select id="queryVoucherInterimByPager_mysql" parameterType="map"  resultMap="voucherInterimMap" >
+		<include refid="voucherInterimPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryVoucherInterimByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="voucherInterimPagerSql"/> )c
+	</select>
+
+	<sql id="voucherInterimPagerSql">
+		select vi.* 
+		from tb_voucher_interim vi  
+		WHERE 1=1 
+		
+		<if test="VoucherInterim.data_type != null and VoucherInterim.data_type != ''">
+			and vi.data_type = #{VoucherInterim.data_type} 
+		</if>
+		
+		
+		<if test="VoucherInterim.client_name != null and VoucherInterim.client_name != ''">
+			and vi.summary like concat('%',TRIM(#{VoucherInterim.client_name}),'%')    
+		</if>
+		
+		<if test="VoucherInterim.months1 != null and VoucherInterim.months1 != ''">
+			<![CDATA[		
+			and vi.months >= #{VoucherInterim.months1} 
+			]]>
+		</if>
+		
+		
+		<if test="VoucherInterim.months2 != null and VoucherInterim.months2 != ''">
+			<![CDATA[		
+			and vi.months <= #{VoucherInterim.months2} 
+			]]>
+		</if>
+		
+		
+		<if test="VoucherInterim.exported != null and VoucherInterim.exported != ''">
+			and vi.exported = #{VoucherInterim.exported} 
+		</if>
+		
+		<if test="VoucherInterim.data_id != null and VoucherInterim.data_id != ''">
+			and vi.data_id = #{VoucherInterim.data_id} 
+		</if>
+		
+				
+		order by vi.exported, vi.data_type , vi.voucher_date desc ,  vi.data_id, vi.course_code 
+	</sql>
+
+</mapper>

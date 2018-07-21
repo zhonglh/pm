@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="StaffRewardPenaltyMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.StaffRewardPenalty" id="staffRewardPenaltyMap" />
+
+
+	<select id="getStaffRewardPenalty" parameterType="com.pm.domain.business.StaffRewardPenalty" resultMap="staffRewardPenaltyMap">
+		select srp.* ,staff.staff_name
+		from tb_staff_reward_penalty srp  
+		join tb_staff_costs staff on srp.staff_id = staff.staff_id
+		where srp.id = #{id}
+	</select>
+
+	<insert id="addStaffRewardPenalty" parameterType="com.pm.domain.business.StaffRewardPenalty" >
+		insert into  tb_staff_reward_penalty(
+			id,staff_id,rp_time,amount,description,
+			build_datetime,build_userid,build_username
+		)values  (
+			#{id},#{staff_id},#{rp_time},#{amount},#{description},
+			#{build_datetime},#{build_userid},#{build_username}
+		)
+	</insert>
+
+	<update id="updateStaffRewardPenalty" parameterType="com.pm.domain.business.StaffRewardPenalty" >
+		update  tb_staff_reward_penalty set 
+		staff_id=#{staff_id},
+		rp_time=#{rp_time},
+		amount=#{amount},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deleteStaffRewardPenalty" parameterType="com.pm.domain.business.StaffRewardPenalty" >
+		delete from  tb_staff_reward_penalty
+		where id=#{id}
+	</delete>
+
+
+	<select id="queryStaffRewardPenaltyByPager_mysql" parameterType="map"  resultMap="staffRewardPenaltyMap" >
+		<include refid="staffRewardPenaltyPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryStaffRewardPenaltyByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="staffRewardPenaltyPagerSql"/> )c
+	</select>
+
+	<sql id="staffRewardPenaltyPagerSql">
+		select srp.*,staff.staff_name
+		from tb_staff_reward_penalty srp  
+		join tb_staff_costs staff on srp.staff_id = staff.staff_id
+		WHERE srp.staff_id = #{StaffRewardPenalty.staff_id}
+		order by srp.rp_time desc,srp.build_datetime desc
+	</sql>
+
+</mapper>

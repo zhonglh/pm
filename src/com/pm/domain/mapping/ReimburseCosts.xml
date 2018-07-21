@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReimburseCostsMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+
+
+	<resultMap type="com.pm.domain.business.ReimburseCosts" id="reimburseCostsMap" />
+	
+	
+	
+	<select id="getReimburseCosts" parameterType="com.pm.domain.business.ReimburseCosts" resultMap="reimburseCostsMap">			
+		select rc.* ,project.project_name,project.project_no,
+		staff.staff_no, dept.dept_name , dept.dept_id , 
+		dd_rai.dic_data_name as pay_item_name ,			
+		case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end as staff_name
+		from tb_reimburse_costs rc
+		INNER JOIN vb_project project 
+		on rc.project_id = project.project_id 
+		left JOIN tb_staff_costs staff 
+		on rc.staff_id = staff.staff_id 
+		left join ts_dept dept 
+		on project.deptid = dept.dept_id 			
+		left join ts_dic_data dd_rai on rc.pay_item_id  = dd_rai.id 
+		
+		where rc.reimburse_id = #{reimburse_id}
+	</select>
+	
+	
+	
+		
+		
+	<insert id="addReimburseCosts" parameterType="com.pm.domain.business.ReimburseCosts">
+	 	 insert into tb_reimburse_costs
+		 (
+		 	reimburse_id, staff_id, project_id, pay_item_id,use_month,pay_date,import_order,
+		  	amount,description,build_datetime,build_username,build_userid,delete_flag
+		)values  (
+			#{reimburse_id}, #{staff_id}, #{project_id}, #{pay_item_id}, #{use_month}, #{pay_date}, #{import_order}, 
+		  	#{amount},#{description}, #{build_datetime}, #{build_username}, #{build_userid}, #{delete_flag}
+		 )
+	</insert>
+	
+	
+	<update id="updateReimburseCosts" parameterType="com.pm.domain.business.ReimburseCosts">
+		update tb_reimburse_costs set 
+		project_id =  #{project_id},
+		staff_id =  #{staff_id},		
+		pay_item_id =  #{pay_item_id},
+		use_month =  #{use_month},
+		pay_date =  #{pay_date},
+		amount =  #{amount},
+		description =  #{description}
+		where reimburse_id = #{reimburse_id}
+		and verify_userid is null
+		and delete_flag = '0'
+	
+	</update>
+	
+		
+	<update id="verifyReimburseCosts" parameterType="com.pm.domain.business.ReimburseCosts">
+		update tb_reimburse_costs set 
+		verify_userid = #{verify_userid},
+		verify_username = #{verify_username},
+		verify_datetime = #{verify_datetime}
+		where reimburse_id = #{reimburse_id}
+		and verify_userid is null
+		and delete_flag = '0' 
+	</update>
+	
+	
+	<update id="unVerifyReimburseCosts" parameterType="com.pm.domain.business.ReimburseCosts">
+		update tb_reimburse_costs set 
+		verify_userid = null,
+		verify_username = null,
+		verify_datetime = null 
+		where reimburse_id = #{reimburse_id}
+		and verify_userid is not null
+		and delete_flag = '0' 
+	</update>
+	
+		
+	<delete id="deleteReimburseCosts" parameterType="com.pm.domain.business.ReimburseCosts">		
+		delete from  tb_reimburse_costs
+		where reimburse_id = #{reimburse_id} 
+		and verify_userid is null
+		and delete_flag = '0'		
+	</delete>
+	
+	
+	
+		
+		
+	<select id="queryReimburseCostsByPager_mysql" parameterType="map"   resultMap="reimburseCostsMap">
+		<include refid="reimburseCostsPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryReimburseCostsByCount_mysql" parameterType="map"  resultType="map" >
+		SELECT COUNT(*) as COUNT1,sum(amount) as SUM1 FROM (
+			<include refid="reimburseCostsPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="reimburseCostsPagerSql">
+		select rc.* ,project.project_name,project.project_no,
+		staff.staff_no, dept.dept_name ,  dept.dept_id ,  
+		dd_rai.dic_data_name  as pay_item_name ,		
+		case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end as staff_name,
+		aa.need_approve 
+		from tb_reimburse_costs rc
+		INNER JOIN vb_project project 
+		on rc.project_id = project.project_id 
+		left JOIN tb_staff_costs staff 
+		on rc.staff_id = staff.staff_id 
+		left join ts_dept dept 
+		on project.deptid = dept.dept_id 		
+		left join ts_dic_data dd_rai on rc.pay_item_id  = dd_rai.id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'REIMBURSE_COSTS' group by data_id) aa
+		on rc.reimburse_id = aa.data_id		
+		WHERE rc.delete_flag = '0' 
+		
+		<if test="ReimburseCosts.project_id != null and ReimburseCosts.project_id != ''">
+			AND project.project_id = #{ReimburseCosts.project_id}
+		</if>
+		
+		<if test="ReimburseCosts.project_name != null and ReimburseCosts.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{ReimburseCosts.project_name}),'%')  
+		</if>
+		
+		<if test="ReimburseCosts.project_no != null and ReimburseCosts.project_no != ''">
+			AND project.project_no like concat('%',TRIM(#{ReimburseCosts.project_no}),'%')  
+		</if>
+		
+
+		<if test="ReimburseCosts.pay_item_id != null and ReimburseCosts.pay_item_id != ''">
+			AND rc.pay_item_id = #{ReimburseCosts.pay_item_id}
+		</if>		
+		
+		
+		
+		<if test="ReimburseCosts.dept_id != null and ReimburseCosts.dept_id != ''">
+			AND dept.dept_id = #{ReimburseCosts.dept_id}
+		</if>	
+		
+		
+		<if test="ReimburseCosts.staff_name != null and ReimburseCosts.staff_name != ''">
+			AND (
+				staff.staff_name like concat('%',TRIM(#{ReimburseCosts.staff_name}),'%')  or 
+				rc.staff_id like concat('%',TRIM(#{ReimburseCosts.staff_name}),'%') 
+			)
+		</if>
+		
+		
+		
+		<if test="ReimburseCosts.use_month1 != 0 ">
+			<![CDATA[	
+			AND rc.use_month >= #{ReimburseCosts.use_month1}
+			]]>
+		</if>
+		<if test="ReimburseCosts.use_month2 != 0 ">
+			<![CDATA[	
+			AND rc.use_month <= #{ReimburseCosts.use_month2}
+			]]>
+		</if>
+		
+				
+		<if test="ReimburseCosts.pay_date1 != null ">
+			<![CDATA[	
+			AND rc.pay_date >= #{ReimburseCosts.pay_date1}
+			]]>
+		</if>
+		<if test="ReimburseCosts.pay_date2 != null ">
+			<![CDATA[	
+			AND rc.pay_date <= #{ReimburseCosts.pay_date2}
+			]]>
+		</if>
+				
+
+		<if test="ReimburseCosts.verify_flag != null and ReimburseCosts.verify_flag != ''">
+			<if test="ReimburseCosts.verify_flag == 1">
+					and rc.verify_userid is not null 
+			</if>
+			<if test="ReimburseCosts.verify_flag == 2">			
+					and rc.verify_userid is null
+			</if>
+		</if>						
+		
+		<include refid="ProjectAuthMapping.permission"/>		
+		
+		order by rc.use_month  desc, project.build_datetime desc, rc.build_datetime desc, rc.import_order
+	
+	</sql>	
+	
+	 
+
+</mapper>

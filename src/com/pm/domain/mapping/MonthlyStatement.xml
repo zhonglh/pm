@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MonthlyStatementMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.MonthlyStatement" id="monthlyStatementMap" />
+
+	<resultMap type="com.pm.domain.business.MonthlyStatementDetail" id="monthlyStatementDetailMap" />
+	
+	
+	
+	
+	
+	<select id="computeMonthlyStatementDetail" parameterType="com.pm.domain.business.MonthlyStatement"   resultMap="monthlyStatementDetailMap">
+		select staffcosts.staff_name  ,staffcosts.staff_id, wa.technical_cost ,wa.client_dept,
+		wa.should_work_days,wa.work_days,wa.weekend_overtime_days as weekend_overtime ,		
+		0 as overtime_cost,		wa.business_trip_days, 0 as business_trip_cost,
+		ROUND((wa.work_days)*wa.technical_cost/wa.should_work_days,2) as total_cost,
+		ROUND(wa.work_days/wa.should_work_days,2) man_month,
+		client_dept 
+		from  tb_work_attendance wa
+		inner join tb_staff_costs staffcosts
+		on wa.staff_id = staffcosts.staff_id		
+		where wa.project_id = #{project_id}
+		and wa.attendance_month = #{statement_month}
+		and wa.delete_flag = '0' 
+		order by staffcosts.build_datetime, staffcosts.import_order
+	</select>	
+	
+	<select id="getMonthlyStatementDetail" parameterType="com.pm.domain.business.MonthlyStatement"   resultMap="monthlyStatementDetailMap">
+		select msd.*,staffcosts.staff_name  
+		from  tb_monthly_statement_detail msd
+		inner join tb_staff_costs staffcosts
+		on msd.staff_id = staffcosts.staff_id		
+		where msd.monthly_statement_id = #{monthly_statement_id}
+		
+		order by staffcosts.build_datetime, staffcosts.import_order
+	</select>	
+	
+	
+	<insert id="addMonthlyStatementDetail" parameterType="com.pm.domain.business.MonthlyStatementDetail">
+		insert into tb_monthly_statement_detail(
+			monthly_statement_detail_id,monthly_statement_id, project_id, staff_id, technical_cost,should_work_days,
+			work_days,daily_overtime, weekend_overtime, overtime_cost, business_trip_days,business_trip_cost,
+			other_cost,man_month,total_cost,client_dept,description,
+			build_datetime,build_userid,build_username
+		)
+		values(
+			#{monthly_statement_detail_id}, #{monthly_statement_id}, #{project_id},#{staff_id}, #{technical_cost}, #{should_work_days}, 
+			#{work_days}, #{daily_overtime}, #{weekend_overtime},#{overtime_cost},#{business_trip_days},#{business_trip_cost},
+			#{other_cost}, #{man_month}, #{total_cost}, #{client_dept},#{description}, 
+			#{build_datetime},#{build_userid},#{build_username}
+		)
+	</insert>
+	
+	
+	
+	<update id="updateMonthlyStatementDetail" parameterType="com.pm.domain.business.MonthlyStatementDetail">		
+		update tb_monthly_statement_detail set  
+		project_id = #{project_id} ,
+		staff_id = #{staff_id} ,
+		technical_cost = #{technical_cost} ,
+		should_work_days = #{should_work_days} ,
+		work_days = #{work_days} ,
+		daily_overtime = #{daily_overtime} ,
+		weekend_overtime = #{weekend_overtime} ,
+		overtime_cost = #{overtime_cost} ,
+		business_trip_days = #{business_trip_days} ,
+		business_trip_cost = #{business_trip_cost} ,
+		other_cost = #{other_cost} ,
+		man_month = #{man_month} ,
+		total_cost = #{total_cost} ,
+		client_dept = #{client_dept} ,
+		description = #{description} 
+		where monthly_statement_detail_id = #{monthly_statement_detail_id} 
+	</update>
+	
+	
+	<delete id="deleteMonthlyStatementDetail" parameterType="com.pm.domain.business.MonthlyStatement">
+		delete from tb_monthly_statement_detail where monthly_statement_id = #{monthly_statement_id} 
+	</delete>
+	
+	
+	
+	<select id="queryMonthlyStatementDetailByPager_mysql" parameterType="map"   resultMap="monthlyStatementDetailMap">
+		<include refid="queryMonthlyStatementDetail"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryMonthlyStatementDetailByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryMonthlyStatementDetail"/>
+		) c		
+	</select>
+	
+	
+	<!-- 用于导出 -->
+	<sql id="queryMonthlyStatementDetail">
+		select b.*, p.project_name, p.project_no,c.staff_name ,a.statement_month ,join_project_datetime,
+		case when leave_project_datetime>='2099-12-31' then null else  leave_project_datetime end as leave_project_datetime 
+		from tb_monthly_statement a 
+		inner join tb_monthly_statement_detail b 
+		on a.monthly_statement_id = b.monthly_statement_id
+		inner join tb_staff_costs c
+		on b.staff_id = c.staff_id	
+		inner join vb_project p 
+		on a.project_id = p.project_id
+		inner join (
+			select min(join_project_datetime)as join_project_datetime , max(leave_project_datetime) as leave_project_datetime,project_id,staff_id
+			from (
+			select project_id,staff_id,join_project_datetime,
+			case when leave_project_datetime is null then STR_TO_DATE('2099-12-31','%Y-%m-%d') ELSE 
+			leave_project_datetime end as leave_project_datetime
+			from tb_project_staff
+			)aa group by project_id,staff_id
+		)projecttime 
+		on p.project_id = projecttime.project_id 
+		and b.staff_id = projecttime.staff_id
+		where a.monthly_statement_id in(
+				select monthly_statement_id from (<include refid="monthlyStatementPagerSql"/>) axx
+		) 
+		and a.statement_type ='2'  
+		order by a.statement_month desc, p.build_datetime desc,a.build_datetime desc ,c.build_datetime, c.import_order
+	</sql>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="isExist" parameterType="com.pm.domain.business.MonthlyStatement" resultMap="monthlyStatementMap">
+		SELECT * FROM tb_monthly_statement  where 1 = 1		
+		and project_id = #{project_id} 		
+		and statement_month = #{statement_month} 
+		and statement_type = #{statement_type} 		
+		<if test="monthly_statement_id != null and monthly_statement_id != ''">
+		<![CDATA[
+			and monthly_statement_id <> #{monthly_statement_id}
+		]]>
+		</if>		
+	</select>	
+	
+	
+	
+	<select id="getMonthlyStatement" parameterType="map" resultMap="monthlyStatementMap">		
+		SELECT ms.*, project.project_name, project.project_no , project.project_type 
+		FROM tb_monthly_statement ms 
+		inner join vb_project project 
+		on ms.project_id = project.project_id
+		where ms.monthly_statement_id = #{monthly_statement_id}
+	</select>
+		
+	<insert id="addMonthlyStatement" parameterType="com.pm.domain.business.MonthlyStatement">
+	 	 insert into tb_monthly_statement(
+	  		monthly_statement_id, project_id, statement_month, statement_type,amount,
+		  	description,build_datetime,build_userid,build_username
+		  )values(
+		  	#{monthly_statement_id}, #{project_id},#{statement_month}, #{statement_type}, #{amount}, 
+		 	 #{description}, #{build_datetime},#{build_userid},#{build_username}
+		  )
+	</insert>
+	
+	
+	<update id="updateMonthlyStatement" parameterType="com.pm.domain.business.MonthlyStatement">
+		update tb_monthly_statement set  
+		project_id = #{project_id},
+		statement_month = #{statement_month},
+		statement_type = #{statement_type},
+		amount = #{amount},
+		description =#{description} 
+		where monthly_statement_id = #{monthly_statement_id} 
+		and verify_userid is null
+	</update>
+		
+
+	
+	<update id="verifyMonthlyStatement" parameterType="com.pm.domain.business.MonthlyStatement">
+		update tb_monthly_statement set  
+		verify_username = #{verify_username},
+		verify_userid = #{verify_userid},
+		verify_datetime = #{verify_datetime}
+		where monthly_statement_id = #{monthly_statement_id} 
+		and verify_userid is null
+	</update>		
+			
+	
+	<update id="unVerifyMonthlyStatement" parameterType="com.pm.domain.business.MonthlyStatement">
+		update tb_monthly_statement set  
+		verify_username = null,
+		verify_userid = null,
+		verify_datetime = null
+		where monthly_statement_id = #{monthly_statement_id} 
+		and verify_userid is not null
+	</update>		
+		
+		
+		
+	<delete id="deleteMonthlyStatement" parameterType="com.pm.domain.business.MonthlyStatement">		
+		delete from  tb_monthly_statement 
+		where monthly_statement_id = #{monthly_statement_id} 
+		and verify_userid is null
+	</delete>	
+		
+		
+	<select id="queryMonthlyStatementSum" parameterType="map"  resultMap="monthlyStatementMap">
+		SELECT sum(amount) as amount,sum(invoice_amount) as invoice_amount,sum(receive_amount) as receive_amount,
+			sum(not_open_invoice_amount) as not_open_invoice_amount,sum(not_receive_amount) as not_receive_amount,
+			sum(invoice_not_receive_amount) as invoice_not_receive_amount FROM (
+			<include refid="monthlyStatementPagerSql"/>
+		) c		
+	</select>
+
+			
+		
+	<select id="queryMonthlyStatementByPager_mysql" parameterType="map"   resultMap="monthlyStatementMap">
+		<include refid="monthlyStatementPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryMonthlyStatementByCount_mysql" parameterType="map"  resultType="map" >
+		SELECT COUNT(*) as COUNT1,sum(amount) as SUM1 FROM (
+			<include refid="monthlyStatementPagerSql"/>
+		) c		
+	</select>
+   
+
+	<sql id="monthlyStatementPagerSql">
+		SELECT ms.*, project.project_name, project.project_no , project.project_type ,aa.need_approve,
+		invoice.amount as invoice_amount,invoice.receive_payment_amount as receive_amount,
+		(ms.amount - case when invoice.amount is NULL   	then 0 else invoice.amount end  ) as not_open_invoice_amount,
+		(ms.amount - case when invoice.receive_payment_amount is NULL   	then 0 else invoice.receive_payment_amount end  ) as not_receive_amount,
+		(case when invoice.amount is NULL   	then 0 else invoice.amount end - case when invoice.receive_payment_amount is NULL   	then 0 else invoice.receive_payment_amount end  ) invoice_not_receive_amount 
+		FROM tb_monthly_statement ms 
+		inner join vb_project project 
+		on ms.project_id = project.project_id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'MONTHLY_STATEMENT' group by data_id) aa
+		on ms.monthly_statement_id = aa.data_id
+		left join(
+			select sum(invoice.invoiceno_amount) amount,sum(invoice.receive_payment_amount) receive_payment_amount,invoice.monthly_statement_id 
+			from tb_invoice invoice 
+			where invoice.monthly_statement_id is not null 
+			group by invoice.monthly_statement_id
+		)invoice
+		on ms.monthly_statement_id = invoice.monthly_statement_id
+		
+		where 1=1 
+		
+		
+		<if test="MonthlyStatement.dept_id != null and MonthlyStatement.dept_id != ''">
+			AND project.deptid = #{MonthlyStatement.dept_id}
+		</if>
+				
+		<if test="MonthlyStatement.project_id != null and MonthlyStatement.project_id != ''">
+			AND project.project_id = #{MonthlyStatement.project_id}
+		</if>
+		
+		<if test="MonthlyStatement.project_name != null and MonthlyStatement.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{MonthlyStatement.project_name}),'%')  
+		</if>
+		<if test="MonthlyStatement.project_no != null and MonthlyStatement.project_no != ''">
+			AND project.project_no like concat('%',TRIM(#{MonthlyStatement.project_no}),'%')  
+		</if>
+		
+		<if test="MonthlyStatement.sales_userid != null and MonthlyStatement.sales_userid != ''">
+			AND project.sales_userid = #{MonthlyStatement.sales_userid}
+		</if>
+		
+		
+		<if test="MonthlyStatement.statement_type != null and MonthlyStatement.statement_type != ''">
+			AND ms.statement_type = #{MonthlyStatement.statement_type}
+		</if>
+		
+
+		<if test="MonthlyStatement.statement_month != 0 ">
+			AND ms.statement_month = #{MonthlyStatement.statement_month}
+		</if>
+		
+		
+
+		<if test="MonthlyStatement.statement_month1 != 0 ">
+			<![CDATA[
+			AND ms.statement_month >= #{MonthlyStatement.statement_month1}
+			]]>
+		</if>
+
+		<if test="MonthlyStatement.statement_month2 != 0 ">
+			<![CDATA[
+			AND ms.statement_month <= #{MonthlyStatement.statement_month2}
+			]]>
+		</if>
+				
+
+		<if test="MonthlyStatement.verify_flag != null and MonthlyStatement.verify_flag != ''">
+			<if test="MonthlyStatement.verify_flag == 1">
+					and ms.verify_userid is not null 
+			</if>
+			<if test="MonthlyStatement.verify_flag == 2">			
+					and ms.verify_userid is null
+			</if>			
+			<if test="MonthlyStatement.verify_flag == 3">			
+					and aa.need_approve='1'
+			</if>
+		</if>		
+		
+		<include refid="ProjectAuthMapping.permission"/>
+		
+		order by ms.statement_month desc,project.build_datetime desc, ms.build_datetime desc 
+	</sql>	
+	
+	
+	 
+
+</mapper>

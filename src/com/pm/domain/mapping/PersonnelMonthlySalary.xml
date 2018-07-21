@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="PersonnelMonthlySalaryMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PersonnelMonthlySalary" id="personnelMonthlySalaryMap" />
+	
+			
+
+
+	<select id="getPersonnelMonthlySalary" parameterType="com.pm.domain.business.PersonnelMonthlySalary" resultMap="personnelMonthlySalaryMap">
+		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,
+		pms.join_datetime,pms.change_time,pms.old_salary,pms.new_salary,pms.curr_salary,pms.description
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_salary pms  
+		on pmb.id = pms.id
+		inner join tb_staff_costs sc 
+		on pmb.staff_id = sc.staff_id
+		left JOIN tb_project project  
+		on pmb.project_id = project.project_id 
+		where pms.id = #{id}
+	</select>
+
+	<insert id="addPersonnelMonthlySalary" parameterType="com.pm.domain.business.PersonnelMonthlySalary" >
+		insert into  personnel_monthly_salary(
+			id,join_datetime,change_time,old_salary,
+			new_salary,curr_salary,description
+		)values  (
+			#{id},#{join_datetime},#{change_time},#{old_salary},
+			#{new_salary},#{curr_salary},#{description}
+		)
+	</insert>
+
+	<update id="updatePersonnelMonthlySalary" parameterType="com.pm.domain.business.PersonnelMonthlySalary" >
+		update  personnel_monthly_salary set 
+		join_datetime=#{join_datetime},
+		change_time=#{change_time},
+		old_salary=#{old_salary},
+		new_salary=#{new_salary},
+		curr_salary=#{curr_salary},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deletePersonnelMonthlySalary" parameterType="com.pm.domain.business.PersonnelMonthlySalary" >
+		delete from  personnel_monthly_salary
+		where id=#{id}
+	</delete>
+
+	<select id="queryPersonnelMonthlySalaryTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="personnelMonthlySalaryPagerSql"/>
+		) c
+	</select>
+
+	<select id="queryPersonnelMonthlySalaryByPager_mysql" parameterType="map"  resultMap="personnelMonthlySalaryMap" >
+		<include refid="personnelMonthlySalaryPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPersonnelMonthlySalaryByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="personnelMonthlySalaryPagerSql"/> )c
+	</select>
+
+	<sql id="personnelMonthlySalaryPagerSql">		
+		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,aa.need_approve,
+		pms.join_datetime,pms.change_time,pms.old_salary,pms.new_salary,pms.curr_salary,pms.description
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_salary pms  
+		on pmb.id = pms.id
+		inner join tb_staff_costs sc 
+		on pmb.staff_id = sc.staff_id
+		left JOIN tb_project project  
+		on pmb.project_id = project.project_id 
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'PERSONNELMONTHLYBASE' group by data_id) aa
+		on pmb.id = aa.data_id	
+		WHERE 1=1 
+		
+		<if test="PersonnelMonthlySalary.the_month != 0 ">
+			<![CDATA[
+			AND pmb.the_month = #{PersonnelMonthlySalary.the_month} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlySalary.staff_id != null and PersonnelMonthlySalary.staff_id != ''">
+			<![CDATA[
+			AND pmb.staff_id = #{PersonnelMonthlySalary.staff_id} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlySalary.monthly_type != null and PersonnelMonthlySalary.monthly_type != ''">
+			<![CDATA[
+			AND pmb.monthly_type = #{PersonnelMonthlySalary.monthly_type} 
+			]]>
+		</if>
+		
+		
+		<if test="PersonnelMonthlySalary.verify_flag != null and PersonnelMonthlySalary.verify_flag != ''">
+			<if test="PersonnelMonthlySalary.verify_flag == 1">
+					and pmb.verify_userid is not null 
+			</if>
+			<if test="PersonnelMonthlySalary.verify_flag == 0">			
+					and pmb.verify_userid is null 
+			</if>
+		</if>		
+		
+		
+		<include refid="ProjectAuthMapping.permission" /> 
+		order by pmb.monthly_type, pmb.the_month,pmb.build_datetime , pmb.import_order 
+	</sql>
+
+</mapper>

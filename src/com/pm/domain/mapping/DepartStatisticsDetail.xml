@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DepartStatisticsDetailMapping">
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.StatisticsDetail" id="statisticsDetailMap" />
+	
+	<resultMap type="com.pm.vo.DepartStatisticsItem" id="departStatisticsItemMap" />
+	
+	
+	
+	
+		
+	
+	<select id="queryXStaisticsByPager_mysql" parameterType="map"   resultMap="departStatisticsItemMap">
+		<include refid="queryXStaisticsSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryXStaisticsByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryXStaisticsSql"/>
+		) c		
+	</select>
+
+	
+	<sql id="queryXStaisticsSql">	
+		select sum(amount) as  val,${Statistics.groupSelect} from (
+			SELECT business.*,dept.dept_id
+			FROM (				
+				<if test="Statistics.x == 10">
+					<include refid="StatisticsDetailMapping.all_data_10"/>
+				</if>
+				<if test="Statistics.x == 20">
+					<include refid="StatisticsDetailMapping.all_data_20"/>
+				</if>
+				<if test="Statistics.x == 30">
+					<include refid="StatisticsDetailMapping.all_data_30"/>
+				</if>
+				<if test="Statistics.x == 40">
+					<include refid="StatisticsDetailMapping.all_data_40"/>
+				</if>
+				<if test="Statistics.x == 41">
+					<include refid="StatisticsDetailMapping.all_data_41"/>
+				</if>
+				<if test="Statistics.x == 50">
+					<include refid="StatisticsDetailMapping.all_data_50"/>
+				</if>
+				<if test="Statistics.x == 51">
+					<include refid="all_data_51"/>
+				</if>			
+			) business
+			inner join vb_project project 
+			on business.project_id = project.project_id				
+			inner join ts_dept dept 
+			on project.deptid = dept.dept_id 	
+			where  dept.statisticsed = '1' 
+			<if test="Statistics.x == 30">
+				and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id)
+				and not EXISTS (select 1 from vb_staffcost_reimburse vsr where business.obj_id = vsr.reimburse_id)
+			</if>
+			
+			
+					
+			<if test="Statistics.project_id != null and Statistics.project_id != ''">
+				AND project.project_id = #{Statistics.project_id}
+			</if>		
+			
+			<if test="Statistics.deptId != null and Statistics.deptId != ''">
+				AND project.deptid = #{Statistics.deptId}
+			</if>
+			
+			<if test="Statistics.type_id != null and Statistics.type_id != ''">
+				AND business.type_id = #{Statistics.type_id} 
+			</if>
+			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND use_month >= #{Statistics.month1} 
+			]]> 
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND use_month <= #{Statistics.month2} 
+			]]>
+			</if>	
+			
+			<include refid="ProjectAuthMapping.permission"/>	
+		) a group by ${Statistics.groupBy}	
+	</sql>
+	 
+	
+	
+	<select id="queryXDetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="queryXDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryXDetailByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryXDetailPagerSql"/>
+		) c		
+	</select>
+
+	<sql id="queryXDetailPagerSql">
+		SELECT business.*
+		FROM (
+				<if test="Statistics.x == 10">
+					<include refid="StatisticsDetailMapping.all_data_10"/>
+				</if>
+				<if test="Statistics.x == 20">
+					<include refid="StatisticsDetailMapping.all_data_20"/>
+				</if>
+				<if test="Statistics.x == 30">
+					<include refid="StatisticsDetailMapping.all_data_30"/>
+				</if>
+				<if test="Statistics.x == 40">
+					<include refid="StatisticsDetailMapping.all_data_40"/>
+				</if>
+				<if test="Statistics.x == 41">
+					<include refid="StatisticsDetailMapping.all_data_41"/>
+				</if>
+				<if test="Statistics.x == 50">
+					<include refid="StatisticsDetailMapping.all_data_50"/>
+				</if>
+				<if test="Statistics.x == 51">
+					<include refid="all_data_51"/>
+				</if>
+		
+		
+		) business
+		inner join vb_project project 
+		on business.project_id = project.project_id 
+		inner join ts_dept dept 
+		on project.deptid = dept.dept_id 	
+		where  dept.statisticsed = '1' 	
+		<if test="Statistics.x == 30">
+			and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id) 
+			and not EXISTS (select 1 from vb_staffcost_reimburse vsr where business.obj_id = vsr.reimburse_id)
+		</if>
+				
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id}
+		</if>		
+		
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND project.deptid = #{Statistics.deptId}
+		</if>
+		
+		<if test="Statistics.type_id != null and Statistics.type_id != ''">
+			AND business.type_id = #{Statistics.type_id} 
+		</if>
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[	
+			AND use_month >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND use_month <= #{Statistics.month2} 
+		]]>
+		</if>	
+		
+		<include refid="ProjectAuthMapping.permission"/>	
+		
+		order by business_sort desc, use_month desc ,project.build_datetime desc,build_datetime desc 
+	</sql>	
+	
+	
+	
+	
+	
+	
+	
+	<select id="queryDepartCostStaisticsByPager_mysql" parameterType="map"   resultMap="departStatisticsItemMap">
+		<include refid="queryDepartCostStaisticsPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryDepartCostStaisticsByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryDepartCostStaisticsPagerSql"/>
+		) c		
+	</select>
+
+	<sql id="queryDepartCostStaisticsPagerSql">
+		select sum(amount) as  val,${Statistics.groupSelect} from (
+		SELECT business.* 
+		FROM (
+				<if test="Statistics.x == 100">
+					<include refid="all_data_100"/>
+				</if>
+				<if test="Statistics.x == 101">
+					<include refid="all_data_101"/>
+				</if>
+		) business
+		left join vb_project project 
+		on business.project_id = project.project_id			
+		inner join ts_dept dept 
+		on business.dept_id = dept.dept_id 	
+		where dept.statisticsed = '1' 	
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id} 
+		</if>		
+		
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND dept.dept_id = #{Statistics.deptId} 
+		</if>
+		
+		<if test="Statistics.type_id != null and Statistics.type_id != ''">
+			AND business.type_id = #{Statistics.type_id} 
+		</if>
+		
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[	
+			AND use_month >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND use_month <= #{Statistics.month2} 
+		]]>
+		</if>	
+		<include refid="departPermission"/>	
+		) a group by ${Statistics.groupBy}
+	</sql>
+	
+	
+	
+	
+	<select id="queryDepartCostDetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="queryDepartCostDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryDepartCostDetailByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryDepartCostDetailPagerSql"/>
+		) c		
+	</select>
+
+	<sql id="queryDepartCostDetailPagerSql">
+		SELECT business.*
+		FROM (
+				<if test="Statistics.x == 100">
+					<include refid="all_data_100"/>
+				</if>
+				<if test="Statistics.x == 101">
+					<include refid="all_data_101"/>
+				</if>
+		) business
+		left join vb_project project 
+		on business.project_id = project.project_id				
+		left join ts_dept dept 
+		on business.dept_id = dept.dept_id 	
+		INNER join ts_dic_data dc_dic on business.type_id = dc_dic.id	
+		where dept.statisticsed = '1' 	  
+				
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id} 
+		</if>		
+		
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND dept.dept_id = #{Statistics.deptId} 
+		</if>
+		
+		<if test="Statistics.type_id != null and Statistics.type_id != ''">
+			AND (dc_dic.id = #{Statistics.type_id}    or  dc_dic.dic_type_id = #{Statistics.type_id}   )
+		</if>
+		
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[	
+			AND use_month >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND use_month <= #{Statistics.month2} 
+		]]>
+		</if>	
+		
+		<include refid="departPermission"/>			
+		
+		order by  use_month desc ,build_datetime desc 
+	</sql>
+	
+	
+	
+	<sql id="all_data_51">
+		SELECT business.*
+		FROM (
+		select * from (
+		<include refid="StatisticsDetailMapping.all_data_30"/>	
+		) aa where 1=1
+		and not EXISTS (select 1 from vb_begin_data2 vba where aa.obj_id = vba.reimburse_id )
+		and EXISTS (select 1 from vb_staffcost_reimburse vsr where aa.obj_id = vsr.reimburse_id )
+		
+		union all
+		<include refid="StatisticsDetailMapping.all_data_51"/>	
+		) business		
+		
+	</sql>	
+	
+	
+	<sql id="all_data_100">	
+			select dc.id as obj_id, dc.project_id ,project.project_name,project.project_no,dc.dept_id,
+			'成本' as amount_type, '销售费用' as business_type,  '100' as business_sort,
+			 dc.amount,dc.use_month, dc.pay_date,
+			dc_dic.dic_data_name  as  otherdesc,dc.description,
+			if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	, 
+			staff.staff_id,dc.pay_item_id  as type_id,dc.build_datetime
+			from tb_depart_costs dc 
+			left JOIN tb_project project 
+			on dc.project_id = project.project_id 
+			left JOIN tb_other_staff staff 
+			on dc.staff_id = staff.staff_id 
+			INNER join ts_dic_data dc_dic on dc.pay_item_id = dc_dic.id	
+			where dc.delete_flag = '0' and dc.verify_userid is not null
+			and dc_dic.dic_type_id = 'SALES_COSTS'
+	</sql>
+	
+	<sql id="all_data_101">	
+			select dc.id as obj_id, dc.project_id ,project.project_name,project.project_no,dc.dept_id,
+			'成本' as amount_type, '部门管理费用' as business_type,  '101' as business_sort,
+			 dc.amount,dc.use_month, dc.pay_date,
+			dc_dic.dic_data_name  as  otherdesc,dc.description,
+			if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	,  
+			staff.staff_id,dc.pay_item_id  as type_id,dc.build_datetime
+			from tb_depart_costs dc 
+			left JOIN tb_project project 
+			on dc.project_id = project.project_id 
+			left JOIN tb_other_staff staff 
+			on dc.staff_id = staff.staff_id 
+			INNER join ts_dic_data dc_dic on dc.pay_item_id = dc_dic.id	
+			where dc.delete_flag = '0' and dc.verify_userid is not null
+			and dc_dic.dic_type_id = 'DEPART_MANAG_COSTS'
+	</sql>
+	
+
+
+	<sql id="departPermission">		
+		
+		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
+			
+			<if test="UserPermit.range == 1">
+				
+			</if>
+			<if test="UserPermit.range == 2">
+				and dept.dept_id = #{UserPermit.user_deptid}
+			</if>
+			<if test="UserPermit.range == 3">
+				and 1 = 2 
+			</if>
+		</if>
+		<if test="UserPermit == null or UserPermit.range == null or UserPermit.range == ''">
+			and 1 = 2 
+		</if>
+	</sql>
+	 
+
+</mapper>

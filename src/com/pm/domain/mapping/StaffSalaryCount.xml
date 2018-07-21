@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="StaffSalaryCount">
+
+	
+	<resultMap type="com.pm.vo.reports.StaffCountVO" id="staffCountMap" />
+	<resultMap type="java.util.Map" id="map" />
+	
+	
+	
+	<!-- 人员收支统计 -->
+	<select id="queryStaffCountByPager_mysql" parameterType="map"  resultMap="staffCountMap" >
+		<include refid="staffCountPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryStaffCountByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="staffCountPagerSql"/> )c
+	</select>
+
+
+	<sql id="staffCountPagerSql">
+		
+		<![CDATA[
+		select staffchilds.allChilds,staffchilds.coreChilds,
+		staff_incomepay.income_ ,staff_incomepay.pay_ ,staff_incomepay.tax ,staff_incomepay.actual_salary ,
+		sc.staff_no,sc.staff_name ,sc.staff_id,
+		dept.dept_name,project.project_name
+		from tb_staff_ex se join tb_staff_costs sc 
+		on se.id = sc.staff_id and sc.delete_flag = '0' and sc.outsource_staff = '0'		
+		join (
+			select tsc.staff_id,  sum(if(level_val>0,1,0)) as allChilds,
+			sum(if(level_val>0 and level_val<=ms.affect_level_number,1,0)) as coreChilds
+			from tb_staff_childs tsc join ts_market_sets ms 
+			group by tsc.staff_id 	
+		) staffchilds on sc.staff_id = staffchilds.staff_id		
+		join (			
+			select AAAA.staff_id,  AAAA.bal income_ , BBBB.bal as pay_ , CCCC.tax  , 
+			(AAAA.bal - BBBB.bal - CCCC.tax) as actual_salary
+			from (
+				select staff_id, sum(bal) as bal from vb_market_1_9 group by staff_id
+			) AAAA 
+			join (
+				select staff_id, sum(bal) as bal from vb_market_2_9 group by staff_id
+			) BBBB  
+			on AAAA.staff_id =  BBBB.staff_id 
+			join (
+					select staff_id, abs(ROUND((bal	-base_salary)*rate - factor ,2)) as tax
+					from (
+						select staff_id,ROUND(sum(bal),18) as bal from vb_market_4_0 group by staff_id
+					) AAA join tb_salary_level sl on aaa.bal> sl.min_val and aaa.bal <= sl.max_val			
+			) CCCC on AAAA.staff_id =  CCCC.staff_id 
+				
+		) staff_incomepay on sc.staff_id = staff_incomepay.staff_id		
+		left join tb_project_staff projectstaff
+		on sc.staff_id = projectstaff.staff_id and projectstaff.delete_flag ='0' 
+		left join vb_project project 
+		on projectstaff.project_id = project.project_id  
+		left join ts_dept dept on project.deptid = dept.dept_id		
+		where  se.salary_model = '1' 
+		
+		]]>
+		
+		<if test="StaffCountVO.staff_no != null and StaffCountVO.staff_no != ''">
+			AND sc.staff_no like concat('%',TRIM(#{StaffCountVO.staff_no}),'%')   
+		</if>
+		
+		<if test="StaffCountVO.staff_name != null and StaffCountVO.staff_name != ''">
+			AND sc.staff_name like concat('%',TRIM(#{StaffCountVO.staff_name}),'%')   
+		</if>
+		
+		order by sc.build_datetime ,sc.import_order
+		
+	</sql>
+	
+	
+
+	<!-- 计算营销模式每人工资单中收入  支出  税  和实收 -->
+	<select id="getStaffSalaryCatalog"  resultMap="staffCountMap">		
+		
+		<![CDATA[
+		select AAAA.staff_id, sc.staff_name, AAAA.bal income_ , BBBB.bal as pay_ , CCCC.tax  , 
+		(AAAA.bal - BBBB.bal - CCCC.tax) as actual_salary
+		from (
+			select staff_id, sum(bal) as bal from vb_market_1_9 group by staff_id
+		) AAAA 
+		join (
+			select staff_id, sum(bal) as bal from vb_market_2_9 group by staff_id
+		) BBBB  
+		on AAAA.staff_id =  BBBB.staff_id 
+		join (
+				select staff_id, abs(ROUND((bal	-base_salary)*rate - factor ,2)) as tax
+				from (
+					select staff_id,ROUND(sum(bal),18) as bal from vb_market_4_0 group by staff_id
+				) AAA join tb_salary_level sl on aaa.bal> sl.min_val and aaa.bal <= sl.max_val			
+		) CCCC on AAAA.staff_id =  CCCC.staff_id 
+		join tb_staff_costs sc on AAAA.staff_id = sc.staff_id	
+		
+		]]>
+	</select>
+	
+	
+	
+	<!-- 计算营销模式每人工资单中收入  支出  税  和实收 -->
+	<select id="getStaffChilds"  resultMap="staffCountMap">			
+		
+		<![CDATA[	
+		select tsc.staff_id, sc.staff_name , sum(if(level_val>0,1,0)) as allChilds,
+		sum(if(level_val>0 and level_val<=ms.affect_level_number,1,0)) as coreChilds
+		from tb_staff_childs tsc join ts_market_sets ms 
+		join tb_staff_costs sc on tsc.staff_id = sc.staff_id
+		group by tsc.staff_id ,sc.staff_name 	
+		
+		]]> 
+	 </select>
+
+</mapper>

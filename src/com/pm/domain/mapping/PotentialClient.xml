@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="PotentialClientMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PotentialClient" id="potentialClientMap" />
+	
+	
+	
+	<select id="isExist" parameterType="com.pm.domain.business.PotentialClient" resultMap="potentialClientMap">
+		select potclient.id from tb_potential_client potclient where 1=1
+					
+		<if test="client_no != null and client_no != ''">
+			AND potclient.client_no = #{client_no}
+		</if>		
+		<if test="client_name != null and client_name != ''">
+			AND potclient.client_name = #{client_name}
+		</if>
+		
+		<if test="id != null and id != ''">
+			AND potclient.id != #{id}
+		</if>
+			
+	</select>
+
+
+	<select id="getPotentialClient" parameterType="com.pm.domain.business.PotentialClient" resultMap="potentialClientMap">
+		select potclient.* , os.staff_name as sales_username,
+		dd_status.dic_data_name as status_name,
+		dd_cw.dic_data_name as client_worth_name,
+		dd_pc.dic_data_name as project_cycle_name 
+		from tb_potential_client potclient
+    	left join tb_other_staff os on potclient.sales_userid = os.staff_id
+		left join ts_dic_data dd_status on potclient.status = dd_status.id
+		left join ts_dic_data dd_cw on potclient.client_worth = dd_cw.id 
+		left join ts_dic_data dd_pc on potclient.project_cycle = dd_pc.id 
+		where potclient.id = #{id}
+	</select>
+
+	<insert id="addPotentialClient" parameterType="com.pm.domain.business.PotentialClient" >
+		insert into  tb_potential_client(
+			id,client_no,client_name,addr,consult_time,trade,linkman,
+			mobile_phone,tel,email,qq,technology_direction,
+			service_type,project_cycle,project_requirement,client_worth,info_source,
+			status,description,build_datetime,build_userid,
+			build_username
+		)values  (
+			#{id},#{client_no},#{client_name},#{addr},#{consult_time},#{trade},#{linkman},
+			#{mobile_phone},#{tel},#{email},#{qq},#{technology_direction},
+			#{service_type},#{project_cycle},#{project_requirement},#{client_worth},#{info_source},
+			#{status},#{description},#{build_datetime},#{build_userid},#{build_username}		
+		)
+	</insert>
+
+	<update id="updatePotentialClient" parameterType="com.pm.domain.business.PotentialClient" >
+		update  tb_potential_client set 
+		client_no=#{client_no},
+		client_name=#{client_name},
+		addr=#{addr},
+		consult_time=#{consult_time},		
+		trade=#{trade},
+		linkman=#{linkman},
+		mobile_phone=#{mobile_phone},
+		tel=#{tel},
+		email=#{email},
+		qq=#{qq},
+		technology_direction=#{technology_direction},
+		service_type=#{service_type},
+		project_cycle=#{project_cycle},
+		project_requirement=#{project_requirement},
+		client_worth=#{client_worth},
+		info_source=#{info_source},
+		status=#{status},
+		description=#{description}
+		where id=#{id} 
+	</update>
+	
+	
+	<update id="doDallotSales" parameterType="com.pm.domain.business.PotentialClient" >
+		update  tb_potential_client set 
+		sales_userid = #{sales_userid}
+		where id=#{id} 
+	</update>
+	
+
+
+	<delete id="deletePotentialClient" parameterType="com.pm.domain.business.PotentialClient" >
+		delete from  tb_potential_client
+		where id=#{id}
+	</delete>
+
+
+
+	<select id="queryPotentialClientByPager_mysql" parameterType="map"  resultMap="potentialClientMap" >
+		<include refid="potentialClientPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPotentialClientByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="potentialClientPagerSql"/> )c
+	</select>
+
+	<sql id="potentialClientPagerSql">
+		select potclient.* , os.staff_name as sales_username,
+		dd_status.dic_data_name as status_name,
+		dd_cw.dic_data_name as client_worth_name,
+		dd_pc.dic_data_name as project_cycle_name 
+		from tb_potential_client potclient
+    	left join tb_other_staff os on potclient.sales_userid = os.staff_id
+		left join ts_dic_data dd_status on potclient.status = dd_status.id
+		left join ts_dic_data dd_cw on potclient.client_worth = dd_cw.id 
+		left join ts_dic_data dd_pc on potclient.project_cycle = dd_pc.id 
+		WHERE 1=1 
+		
+		<if test="PotentialClient.sales_userid != null and PotentialClient.sales_userid != ''">
+			AND potclient.sales_userid = #{PotentialClient.sales_userid}
+		</if>
+		
+		<if test="PotentialClient.status != null and PotentialClient.status != ''">
+			AND potclient.status = #{PotentialClient.status}
+		</if>
+		
+		<if test="PotentialClient.addr != null and PotentialClient.addr != ''">
+			AND potclient.addr like concat('%',TRIM(#{PotentialClient.addr}),'%')  
+		</if>
+		
+		<if test="PotentialClient.client_name != null and PotentialClient.client_name != ''">
+			AND potclient.client_name like concat('%',TRIM(#{PotentialClient.client_name}),'%')  
+		</if>
+		
+		<if test="PotentialClient.date1 != null and PotentialClient.date1 != ''">
+			<![CDATA[	
+			AND potclient.consult_time >= #{PotentialClient.date1}
+			]]>
+		</if>
+		
+		<if test="PotentialClient.date2 != null and PotentialClient.date2 != ''">
+			<![CDATA[	
+			AND potclient.consult_time <= #{PotentialClient.date2}
+			]]>
+		</if>
+		
+		order by potclient.build_datetime desc
+		
+	</sql>
+
+</mapper>

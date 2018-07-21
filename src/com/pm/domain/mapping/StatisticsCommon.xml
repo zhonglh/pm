@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StatisticsCommonMapping">
+
+	
+	
+	
+	
+	<sql id="projectSQL">		
+			
+		select project.project_id, 
+		project.project_name,
+		project.project_no,
+		project.build_datetime,
+		project.sales_userid,
+		sales_user.staff_name as sales_username,
+		project.manage_userid,
+		manage.staff_name as manage_username,
+		project.info_sources_userid,
+		infosource.staff_name as info_sources_username,
+		project.project_client_id,
+		client.client_name as project_client_name,
+		project.sales_amount_deptid,
+		sales_dept.dept_name as sales_amount_deptname,
+		project.exec_amount_deptid,
+		exec_dept.dept_name as exec_amount_deptname, 
+		project.deptid,
+		dept.dept_name as deptname 
+		from vb_project project		
+		left join tb_other_staff  sales_user 
+		on project.sales_userid = sales_user.staff_id 
+		left join tb_other_staff  manage 
+		on project.manage_userid = manage.staff_id 
+		left join tb_other_staff  infosource 
+		on project.info_sources_userid = infosource.staff_id 
+		left join ts_dept  sales_dept 
+		on project.sales_amount_deptid = sales_dept.dept_id 
+		left join ts_dept  exec_dept 
+		on project.exec_amount_deptid = exec_dept.dept_id 		
+		left join ts_dept  dept 
+		on project.deptid = dept.dept_id 		
+		left join tb_client client
+		on project.project_client_id = client.client_id 
+		where 1=1 
+		
+		<include refid="StatisticsCommonMapping.conditions"/>
+		
+		
+		<include refid="ProjectAuthMapping.permission"/>
+		
+	
+	</sql>		
+	
+	
+	<sql id="conditions">		
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id}
+		</if>
+		
+		<if test="Statistics.project_name != null and Statistics.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{Statistics.project_name}),'%')  
+		</if>
+		<if test="Statistics.project_no != null and Statistics.project_no != ''">
+			AND project.project_no like concat('%',TRIM(#{Statistics.project_no}),'%')  
+		</if>
+		
+
+		<if test="Statistics.project_client_id != null and Statistics.project_client_id != ''">
+			AND project.project_client_id = #{Statistics.project_client_id}
+		</if>
+		
+		
+		
+		<if test="Statistics.sales_amount_deptid != null and Statistics.sales_amount_deptid != ''">
+			AND project.sales_amount_deptid  = #{Statistics.sales_amount_deptid}
+		</if>	
+		
+
+		
+		<if test="Statistics.sales_amount_deptname != null and Statistics.sales_amount_deptname != ''">
+			AND sales_dept.dept_name like concat('%',TRIM(#{Statistics.sales_amount_deptname}),'%')  
+		</if>			
+		
+		<if test="Statistics.exec_amount_deptid != null and Statistics.exec_amount_deptid != ''">
+			AND project.exec_amount_deptid  = #{Statistics.exec_amount_deptid}
+		</if>	
+		
+
+		
+		<if test="Statistics.exec_amount_deptname != null and Statistics.exec_amount_deptname != ''">
+			AND exec_dept.dept_name like concat('%',TRIM(#{Statistics.exec_amount_deptname}),'%')  
+		</if>			
+		
+
+		<if test="Statistics.deptid != null and Statistics.deptid!=''">
+			AND project.deptid  = #{Statistics.deptid}
+		</if>		
+		<if test="Statistics.deptname != null and Statistics.deptname!=''">
+			AND dept.dept_name  like concat('%',TRIM(#{Statistics.deptname}),'%')  
+		</if>				
+		
+
+		<if test="Statistics.sales_username != null and Statistics.sales_username != ''">
+			AND sales_user.staff_name like concat('%',TRIM(#{Statistics.sales_username}),'%')  
+		</if>		
+		
+
+		<if test="Statistics.manage_username != null and Statistics.manage_username != ''">
+			AND manage.staff_name like concat('%',TRIM(#{Statistics.manage_username}),'%')  
+		</if>				
+		
+	</sql>			
+	
+	
+	 
+
+</mapper>

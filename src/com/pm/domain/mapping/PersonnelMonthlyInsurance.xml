@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="PersonnelMonthlyInsuranceMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PersonnelMonthlyInsurance" id="personnelMonthlyInsuranceMap" />
+
+
+	<select id="getPersonnelMonthlyInsurance" parameterType="com.pm.domain.business.PersonnelMonthlyInsurance" resultMap="personnelMonthlyInsuranceMap">
+		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,
+		pmi.old_insurance_grade_id,pmi.old_securty_unit,pmi.insurance_grade_id,pmi.securty_unit,pmi.social_security, pmi.insured_city,
+		ig.base_cardinal,ig.insurance_radix,
+		ig.endowment_insurance_bypersonal,
+		ig.medical_insurance_bypersonal,
+		ig.losejob_insurance_bypersonal,
+		ig.reservefund_bypersonal ,
+		ig.endowment_insurance_bycompany ,
+		ig.medical_insurance_bycompany,
+		ig.losejob_insurance_bycompany ,
+		ig.maternity_insurance_bycompany ,
+		ig.jobharm_insurance_bycompany,
+		ig.reservefund_bypcompany  
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_insurance pmi
+		on pmb.id = pmi.id
+		inner join tb_staff_costs sc 
+		on pmb.staff_id = sc.staff_id 
+		inner join tb_insurance_grade ig
+		on pmi.insurance_grade_id = ig.insurance_grade_id
+		left JOIN tb_project project  
+		on pmb.project_id = project.project_id 
+		where pmi.id = #{id}
+	</select>
+
+	<insert id="addPersonnelMonthlyInsurance" parameterType="com.pm.domain.business.PersonnelMonthlyInsurance" >
+		insert into  personnel_monthly_insurance(
+			id,old_insurance_grade_id,old_securty_unit,
+			insurance_grade_id,securty_unit,social_security,
+			insured_city,description
+		)values  (
+			#{id},#{old_insurance_grade_id},#{old_securty_unit},
+			#{insurance_grade_id},#{securty_unit},#{social_security},
+			#{insured_city},#{description}
+		)
+	</insert>
+
+	<update id="updatePersonnelMonthlyInsurance" parameterType="com.pm.domain.business.PersonnelMonthlyInsurance" >
+		update  personnel_monthly_insurance set 
+		old_insurance_grade_id =#{old_insurance_grade_id},
+		old_securty_unit = #{old_securty_unit},
+		insurance_grade_id=#{insurance_grade_id},
+		securty_unit=#{securty_unit},
+		social_security=#{social_security},
+		insured_city=#{insured_city},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deletePersonnelMonthlyInsurance" parameterType="com.pm.domain.business.PersonnelMonthlyInsurance" >
+		delete from  personnel_monthly_insurance
+		where id=#{id}
+	</delete>
+
+	<select id="queryPersonnelMonthlyInsuranceTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="personnelMonthlyInsurancePagerSql"/>
+		) c
+	</select>
+
+	<select id="queryPersonnelMonthlyInsuranceByPager_mysql" parameterType="map"  resultMap="personnelMonthlyInsuranceMap" >
+		<include refid="personnelMonthlyInsurancePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPersonnelMonthlyInsuranceByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="personnelMonthlyInsurancePagerSql"/> )c
+	</select>
+
+	<sql id="personnelMonthlyInsurancePagerSql">	
+		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,aa.need_approve,
+		pmi.old_insurance_grade_id,pmi.old_securty_unit,pmi.insurance_grade_id,pmi.securty_unit,pmi.social_security, pmi.insured_city,
+		ig.base_cardinal,ig.insurance_radix,
+		ig.endowment_insurance_bypersonal,
+		ig.medical_insurance_bypersonal,
+		ig.losejob_insurance_bypersonal,
+		ig.reservefund_bypersonal ,
+		ig.endowment_insurance_bycompany ,
+		ig.medical_insurance_bycompany,
+		ig.losejob_insurance_bycompany ,
+		ig.maternity_insurance_bycompany ,
+		ig.jobharm_insurance_bycompany,
+		ig.reservefund_bypcompany 
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_insurance pmi
+		on pmb.id = pmi.id
+		inner join tb_staff_costs sc 
+		on pmb.staff_id = sc.staff_id
+		inner join tb_insurance_grade ig
+		on pmi.insurance_grade_id = ig.insurance_grade_id
+		left JOIN tb_project project  
+		on pmb.project_id = project.project_id 
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'PERSONNELMONTHLYBASE' group by data_id) aa
+		on pmb.id = aa.data_id	
+		WHERE 1=1 
+		
+		<if test="PersonnelMonthlyInsurance.the_month != 0 ">
+			<![CDATA[
+			AND pmb.the_month = #{PersonnelMonthlyInsurance.the_month} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlyInsurance.staff_id != null and PersonnelMonthlyInsurance.staff_id != ''">
+			<![CDATA[
+			AND pmb.staff_id = #{PersonnelMonthlyInsurance.staff_id} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlyInsurance.monthly_type != null and PersonnelMonthlyInsurance.monthly_type != ''">
+			<![CDATA[
+			AND pmb.monthly_type = #{PersonnelMonthlyInsurance.monthly_type} 
+			]]>
+		</if>
+		
+		
+		<if test="PersonnelMonthlyInsurance.verify_flag != null and PersonnelMonthlyInsurance.verify_flag != ''">
+			<if test="PersonnelMonthlyInsurance.verify_flag == 1">
+					and pmb.verify_userid is not null 
+			</if>
+			<if test="PersonnelMonthlyInsurance.verify_flag == 0">			
+					and pmb.verify_userid is null 
+			</if>
+		</if>		
+		
+		<include refid="ProjectAuthMapping.permission" /> 
+		order by pmb.monthly_type, pmb.the_month,pmb.build_datetime , pmb.import_order 
+	</sql>
+
+</mapper>

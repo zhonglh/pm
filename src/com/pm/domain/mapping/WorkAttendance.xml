@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WorkAttendanceMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.WorkAttendance" id="workAttendanceMap" />
+	
+	
+	
+	<select id="getCheckedProjectMonth"  resultMap="workAttendanceMap">	
+		SELECT project_id, attendance_month
+		FROM tb_work_attendance 
+		where  verify_userid is not null
+		and delete_flag = '0' 
+		group by project_id, attendance_month
+	</select>
+	
+	
+	<select id="getWorkAttendanceByProjectMonth" parameterType="com.pm.domain.business.WorkAttendance" resultMap="workAttendanceMap">
+
+		<![CDATA[	
+			select staff_id,staff_name,staff_no,project_id,attendance_month	,
+			max(technical_cost) as technical_cost,max(client_dept) as client_dept from (
+				select staff.staff_id,staff.staff_name ,staff.staff_no ,
+				'${project_id}' as project_id, ${attendance_month} as attendance_month,  ps.technical_cost  , ps.client_dept,
+				staff.build_datetime, staff.import_order
+				from tb_staff_costs staff,
+				tb_project_staff ps 
+				where staff.staff_id = ps.staff_id
+				and (
+					(ps.delete_flag = '0' and ps.join_project_datetime <= #{attendance_day2} ) or (
+						(ps.join_project_datetime >= #{attendance_day1} and ps.join_project_datetime < #{attendance_day2})
+						or 
+						(ps.leave_project_datetime >= #{attendance_day1} and ps.leave_project_datetime < #{attendance_day2})
+						or
+						(ps.join_project_datetime <= #{attendance_day1} and ps.leave_project_datetime >= #{attendance_day2})
+					)
+				)			
+				and ps.project_id = #{project_id}
+			)aa group by staff_id,staff_name,project_id,attendance_month			
+			order by build_datetime, import_order
+		]]>		
+	</select>	
+	
+	<select id="getWorkAttendance" parameterType="com.pm.domain.business.WorkAttendance" resultMap="workAttendanceMap">
+		SELECT wa.* ,project.project_name, project.project_no, sc.staff_name ,sc.staff_no
+		FROM tb_work_attendance  wa 
+		inner join vb_project project 
+		on wa.project_id = project.project_id
+		inner join tb_staff_costs sc 
+		on wa.staff_id = sc.staff_id		
+		where wa.attendance_id = #{attendance_id}
+	</select>	
+		
+	<insert id="addWorkAttendance" parameterType="com.pm.domain.business.WorkAttendance">		 
+		insert into tb_work_attendance(
+		  	attendance_id, staff_id, project_id, attendance_month,should_work_days,
+			work_days,legal_holidays,swopped_holidays,business_trip_days,personal_leave_days,annual_leave_days,
+		  	sick_leave_days, neglect_work_days, late_days, weekend_overtime_days,technical_cost,client_dept,every_overtime,remark,
+		  	build_username,build_userid,build_datetime,delete_flag
+		)values(
+			#{attendance_id}, #{staff_id},#{project_id}, #{attendance_month}, #{should_work_days},
+			#{work_days}, #{legal_holidays},#{swopped_holidays}, #{business_trip_days}, #{personal_leave_days},#{annual_leave_days},
+			#{sick_leave_days}, #{neglect_work_days},#{late_days}, #{weekend_overtime_days}, #{technical_cost}, #{client_dept}, #{every_overtime}, #{remark},
+			#{build_username},#{build_userid},#{build_datetime},#{delete_flag} 
+		)
+	</insert>
+	
+	
+	<update id="updateWorkAttendance" parameterType="com.pm.domain.business.WorkAttendance">
+		update tb_work_attendance set  
+		should_work_days = #{should_work_days},
+		work_days =#{work_days} ,
+		legal_holidays =#{legal_holidays} ,
+		swopped_holidays =#{swopped_holidays} ,
+		business_trip_days =#{business_trip_days} ,
+		personal_leave_days =#{personal_leave_days} ,
+		annual_leave_days =#{annual_leave_days} ,
+		sick_leave_days =#{sick_leave_days} ,
+		neglect_work_days =#{neglect_work_days} ,
+		late_days =#{late_days} ,
+		weekend_overtime_days =#{weekend_overtime_days} ,
+		technical_cost =#{technical_cost} ,		
+		client_dept  =#{client_dept} ,	
+		every_overtime =#{every_overtime} ,
+		remark =#{remark} 
+		where attendance_id = #{attendance_id} 
+	</update>
+		
+		
+		
+	<update id="verifyWorkAttendance" parameterType="com.pm.domain.business.WorkAttendance">
+		update tb_work_attendance set 
+		verify_userid = #{verify_userid},
+		verify_username = #{verify_username},
+		verify_datetime = #{verify_datetime}
+		where attendance_id = #{attendance_id} 
+		and delete_flag = '0' 
+	</update>
+		
+		
+	<delete id="deleteWorkAttendance" parameterType="com.pm.domain.business.WorkAttendance">
+		delete from tb_work_attendance 
+		where  ( 1!=1 
+		<if test="attendance_id != null and attendance_id != ''">
+			or attendance_id = #{attendance_id} 
+		</if>
+
+		<if test="project_id != null and project_id != ''">
+			or (project_id = #{project_id} and attendance_month = #{attendance_month} ) 
+		</if>	
+		)	
+	</delete>
+	
+	
+	
+		
+	<select id="queryWorkAttendanceByPager_mysql" parameterType="map"   resultMap="workAttendanceMap">
+		<include refid="workAttendancePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryWorkAttendanceByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="workAttendancePagerSql"/>
+		) c
+		
+	</select>	
+	
+	
+	<select id="queryWorkAttendanceGroupByPager_mysql" parameterType="map"   resultMap="workAttendanceMap">		 
+	 	select project_id, attendance_month ,count(*) as project_attendance_number,min(project_no) as project_no,min(project_name) as project_name,
+		count(verify_userid = '') as verify_number, min(build_datetime) as build_datetime,min(build_username) as build_username
+	 	from(
+			<include refid="workAttendancePagerSql"/>
+		) att group by project_id, attendance_month		order by attendance_month desc ,project_id
+		LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryWorkAttendanceGroupByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+		 	select project_id, attendance_month from(
+			<include refid="workAttendancePagerSql"/>
+			) att group by project_id, attendance_month
+		) c
+		
+	</select>	
+	
+	
+   
+   
+
+	<sql id="workAttendancePagerSql">
+		SELECT wa.* ,project.project_name, project.project_no, sc.staff_name ,sc.staff_no
+		FROM tb_work_attendance  wa 
+		inner join vb_project project 
+		on wa.project_id = project.project_id 
+		inner join tb_staff_costs sc 
+		on wa.staff_id = sc.staff_id		
+		WHERE wa.delete_flag = '0'	
+		
+		
+		<if test="WorkAttendance.dept_id != null and WorkAttendance.dept_id != ''">
+			AND project.deptid =  #{WorkAttendance.dept_id}  
+		</if>	
+
+		<if test="WorkAttendance.project_id != null and WorkAttendance.project_id != ''">
+			AND wa.project_id =  #{WorkAttendance.project_id}  
+		</if>
+		
+		
+		<if test="WorkAttendance.project_name != null and WorkAttendance.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{WorkAttendance.project_name}),'%')  
+		</if>
+		
+		
+		<if test="WorkAttendance.attendance_month != null and WorkAttendance.attendance_month != 0 ">
+			AND wa.attendance_month =  #{WorkAttendance.attendance_month}  
+		</if>
+		
+		
+		
+		<if test="WorkAttendance.attendance_month1 != null and WorkAttendance.attendance_month1 != 0 ">
+			<![CDATA[	
+			AND wa.attendance_month >=  #{WorkAttendance.attendance_month1}  
+			]]>
+		</if>
+		
+		<if test="WorkAttendance.attendance_month2 != null and WorkAttendance.attendance_month2 != 0 ">
+			<![CDATA[	
+			AND wa.attendance_month <=  #{WorkAttendance.attendance_month2}  
+			]]>
+		</if>
+		
+		<if test="WorkAttendance.staff_id != null and WorkAttendance.staff_id != ''">
+			AND wa.staff_id =  #{WorkAttendance.staff_id}  
+		</if>		
+		
+		<if test="WorkAttendance.staff_name != null and WorkAttendance.staff_name != ''">
+			AND sc.staff_name like concat('%',TRIM(#{WorkAttendance.staff_name}),'%')  
+		</if>
+		
+		
+		
+		<if test="WorkAttendance.verify_flag != null and WorkAttendance.verify_flag != ''">
+			<if test="WorkAttendance.verify_flag == 1">
+					and wa.verify_userid is not null 
+			</if>
+			<if test="WorkAttendance.verify_flag == 2">			
+					and wa.verify_userid is null
+			</if>
+		</if>
+		
+		
+		<include refid="ProjectAuthMapping.permission"/>
+	
+		order by wa.attendance_month desc, project.build_datetime desc, sc.build_datetime desc, sc.import_order 
+		
+	</sql>	
+	
+
+</mapper>

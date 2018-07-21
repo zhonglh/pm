@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SalaryMailMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.SalaryMail" id="salaryMailMap" />
+	<resultMap type="com.pm.domain.business.SalaryMailDetail" id="salaryMailMapDetail" />	
+	<resultMap type="com.pm.domain.business.MailSender" id="mailSenderMap" />
+	
+	
+	
+	
+	<select id="getMailSender" parameterType="com.pm.domain.business.MailSender" resultMap="mailSenderMap">
+		SELECT * from tb_mail_sender	
+		where sender_id = #{sender_id}
+	</select>	
+	
+		
+	<insert id="addMailSender" parameterType="com.pm.domain.business.MailSender">		 
+		insert into tb_mail_sender(
+		  	sender_id,mail_server_host,mail_server_port,from_username,from_password,
+		  	status,build_username,build_datetime,build_userid
+		)values(
+			#{sender_id},#{mail_server_host},#{mail_server_port},#{from_username},#{from_password},
+			#{status},#{build_username},#{build_datetime},#{build_userid}
+		)
+	</insert>
+	
+	
+	<update id="updateMailSender" parameterType="com.pm.domain.business.MailSender">			
+		
+		update tb_mail_sender set  
+		mail_server_host =#{mail_server_host} ,
+		mail_server_port =#{mail_server_port},	
+		from_username =#{from_username},	
+		from_password =#{from_password},	
+		status =#{status}
+		where sender_id = #{sender_id} 		
+	</update>
+	
+	
+	<update id="updateStatus" parameterType="com.pm.domain.business.MailSender">	
+		update tb_mail_sender set  
+		status =#{status}
+		where sender_id = #{sender_id} 
+	</update>
+	
+	
+	
+	<delete id="deleteMailSender" parameterType="com.pm.domain.business.MailSender">	
+		delete from tb_mail_sender where sender_id = #{sender_id} 	
+	</delete>
+	
+	
+	<select id="queryMailSenderByPager_mysql" parameterType="map"   resultMap="mailSenderMap">	 	
+			<include refid="queryMailSenderPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryMailSenderByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryMailSenderPagerSql"/>
+		) c
+		
+	</select>	
+	
+	
+	<sql id="queryMailSenderPagerSql">
+		SELECT * from tb_mail_sender where 1=1 
+		<if test="MailSender.status != null and MailSender.status != ''">					
+			AND status =  #{MailSender.status}  
+		</if>
+		order by build_datetime
+	</sql>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="getSalaryMail" parameterType="com.pm.domain.business.SalaryMail" resultMap="salaryMailMap">
+		SELECT salary.* ,project.project_name, project.project_no, sc.staff_name ,
+		mail.send_status 
+		FROM tb_salary  salary 
+		inner join vb_project project 
+		on salary.project_id = project.project_id
+		inner join tb_staff_costs sc 
+		on salary.staff_id = sc.staff_id	
+		left join tb_salary_mail_main mail
+		on 	salary.salary_id = mail.salary_id		
+		where salary.salary_id = #{salary_id}
+	</select>	
+		
+	<insert id="addSalaryMail" parameterType="com.pm.domain.business.SalaryMail">		 
+		insert into tb_salary_mail_main(
+		  	salary_id,send_status
+		)values(
+			#{salary_id},#{send_status}
+		)
+	</insert>
+	
+	
+	<update id="updateSalaryMail" parameterType="com.pm.domain.business.SalaryMail">			
+		
+		update tb_salary_mail_main set  
+		max_detail_id =#{max_detail_id} ,
+		send_status =#{send_status}		
+		where salary_id = #{salary_id} 
+		
+	</update>
+	
+	
+
+	<delete id="cancelSend" parameterType="com.pm.domain.business.MailSender">	
+		delete from tb_salary_mail_main 
+		where send_status = '2'
+	</delete>
+			
+		
+	<insert id="addSalaryMailDetail" parameterType="com.pm.domain.business.SalaryMailDetail">		 
+		insert into tb_salary_mail_detail(
+		  	detail_id, salary_id, send_date,send_status,send_remark,send_userid,
+		  	mail_server_host,mail_server_port,from_username,from_password,to_Address
+		)values(
+			#{detail_id}, #{salary_id},#{send_date},#{send_status}, #{send_remark},#{send_userid},
+			#{mail_server_host},#{mail_server_port},#{from_username},#{from_password},#{to_Address}
+		)
+	</insert>
+		
+	
+	
+	<select id="querySalaryMailDetail" parameterType="com.pm.domain.business.SalaryMail" resultMap="salaryMailMapDetail">
+		SELECT detail.*, user.user_name as send_username
+		FROM tb_salary_mail_detail	detail
+		inner join ts_user user
+		on detail.send_userid = user.user_id
+		where salary_id = #{salary_id}
+		order by send_date desc 
+	</select>	
+	
+	
+	
+	
+	
+	<select id="querySalaryMailByPager_mysql" parameterType="map"   resultMap="salaryMailMap">		 
+	 	
+			<include refid="salaryMailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="querySalaryMailByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="salaryMailPagerSql"/>
+		) c
+		
+	</select>	
+	   
+
+	<sql id="salaryMailPagerSql">
+		
+		
+		SELECT salary.* ,project.project_name, project.project_no, sc.staff_name , sc.email 
+		
+		<if test="SalaryMail.send_status != null and SalaryMail.send_status != '' and SalaryMail.send_status != 0 ">
+			,mail.send_status, mail.detail_status
+		</if>
+		
+		FROM tb_salary  salary 
+		inner join vb_project project 
+		on salary.project_id = project.project_id
+		inner join tb_staff_costs sc 
+		on salary.staff_id = sc.staff_id	
+		
+		<if test="SalaryMail.send_status != null and SalaryMail.send_status != '' and SalaryMail.send_status != 0 ">
+		join vb_mail_detail mail
+		on 	salary.salary_id = mail.salary_id
+		</if>
+		
+		WHERE salary.delete_flag = '0'	
+		and sc.can_send_info='1' 
+		and salary.verify_userid is not null
+		
+		
+		<if test="SalaryMail.send_status != null and SalaryMail.send_status != '' and SalaryMail.send_status == 0 ">
+			and not EXISTS (select 1 from tb_salary_mail_main a where a.salary_id = salary.salary_id)
+		</if>
+		
+		
+		
+		
+		
+		<if test="SalaryMail.send_status != null and SalaryMail.send_status != ''">			
+			<if test="SalaryMail.send_status == 1">
+			AND mail.send_status = '1'
+			</if>			
+
+			<if test="SalaryMail.send_status == 2">
+			AND mail.send_status = '2'
+			</if>			
+		</if>		
+		
+		<if test="SalaryMail.detail_status != null and SalaryMail.detail_status != ''">					
+			AND mail.detail_status =  #{SalaryMail.detail_status}  
+		</if>
+
+
+
+
+		<if test="SalaryMail.dept_id != null and SalaryMail.dept_id != ''">
+			AND project.deptid =  #{SalaryMail.dept_id}  
+		</if>
+
+
+		<if test="SalaryMail.project_id != null and SalaryMail.project_id != ''">
+			AND salary.project_id =  #{SalaryMail.project_id}  
+		</if>
+		
+		
+		<if test="SalaryMail.project_name != null and SalaryMail.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{SalaryMail.project_name}),'%')  
+		</if>
+		
+		
+		<if test="SalaryMail.staff_name != null and SalaryMail.staff_name != ''">
+			AND sc.staff_name like concat('%',TRIM(#{SalaryMail.staff_name}),'%')  
+		</if>
+		
+		
+		
+		<if test="SalaryMail.email != null and SalaryMail.email != ''">
+			AND sc.email like concat('%',TRIM(#{SalaryMail.email}),'%')  
+		</if>
+		
+		<if test="SalaryMail.salary_month != null and SalaryMail.salary_month != 0 ">
+			AND salary.salary_month =  #{SalaryMail.salary_month}  
+		</if>
+		
+		
+		
+		<if test="SalaryMail.salary_month1 != null and SalaryMail.salary_month1 != 0 ">
+			<![CDATA[
+			AND salary.salary_month >=  #{SalaryMail.salary_month1}  
+			]]>
+		</if>
+		<if test="SalaryMail.salary_month2 != null and SalaryMail.salary_month2 != 0 ">
+			<![CDATA[
+			AND salary.salary_month <=  #{SalaryMail.salary_month2}  
+			]]>
+		</if>
+		
+		<if test="SalaryMail.staff_id != null and SalaryMail.staff_id != ''">
+			AND salary.staff_id =  #{SalaryMail.staff_id}  
+		</if>
+		
+		
+		<if test="SalaryMail.verify_flag != null and SalaryMail.verify_flag != ''">
+			<if test="SalaryMail.verify_flag == 1">
+					and salary.verify_userid is not null 
+			</if>
+			<if test="SalaryMail.verify_flag == 2">			
+					and salary.verify_userid is null
+			</if>
+		</if>
+		
+		
+		<include refid="ProjectAuthMapping.permission"/>
+	
+		order by salary.salary_month desc, salary.project_id, sc.build_datetime, sc.import_order
+		
+	</sql>	
+	
+
+	 
+
+</mapper>

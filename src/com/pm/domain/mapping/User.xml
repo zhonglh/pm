@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.system.User" id="userMap">
+		<result column="user_id" property="user_id"/>
+		<result column="staff_id" property="staff_id"/>
+		<result column="staff_type" property="staff_type"/>
+		<result column="user_name" property="user_name"/>
+		<result column="user_deptid" property="user_deptid"/>
+		<result column="user_deptname" property="user_deptname"/>
+		<result column="user_loginname" property="user_loginname"/>
+		<result column="user_password" property="user_password"/>
+		<result column="description" property="description"/>
+		<result column="build_time" property="build_time"/>
+		<result column="build_userid" property="build_userid"/>
+		<result column="build_username" property="build_username"/>
+		<result column="delete_flag" property="delete_flag"/>
+		<result column="delete_datetime" property="delete_datetime"/>
+		<result column="delete_userid" property="delete_userid"/>
+		<result column="delete_username" property="delete_username"/>
+	</resultMap>
+	
+	
+	
+	<select id="isExist" parameterType="com.pm.domain.system.User" resultMap="userMap">
+		SELECT * FROM ts_user  where delete_flag='0'  
+		<if test="user_loginname != null and user_loginname != ''">
+			and user_loginname = #{user_loginname} 
+		</if>
+		<if test="user_id != null and user_id != ''">
+		<![CDATA[
+			and user_id <> #{user_id}
+		]]>
+		</if>		
+	</select>
+	
+
+
+	<select id="getUserByLoginName" parameterType="com.pm.domain.system.User" resultMap="userMap">
+	   select * from ts_user where user_loginname = #{user_loginname}
+	</select>
+	
+	
+	<select id="getUserById" parameterType="com.pm.domain.system.User" resultMap="userMap">
+		SELECT user1.*, dept.dept_name as user_deptname  
+		FROM ts_user user1 left join ts_dept dept 
+		on user1.user_deptid = dept.dept_id  
+		where user1.user_id = #{user_id}
+	</select>	
+		
+	<insert id="insertUser" parameterType="com.pm.domain.system.User">
+		 
+	  insert into ts_user
+		  (user_id,staff_id,staff_type, user_name, user_deptid, user_loginname,user_password,description,build_time,build_userid,build_username,delete_flag)
+			values
+		  (#{user_id}, #{staff_id}, #{staff_type}, #{user_name},#{user_deptid}, #{user_loginname}, #{user_password},#{description},#{build_time},#{build_userid},#{build_username},#{delete_flag})
+	</insert>
+	
+	
+	<update id="updateUser" parameterType="com.pm.domain.system.User">
+		update ts_user set  
+		staff_id = #{staff_id},
+		staff_type = #{staff_type},
+		user_name = #{user_name},
+		user_deptid = #{user_deptid},
+		user_loginname=#{user_loginname},
+		description =#{description} 
+		where user_id = #{user_id} 
+	</update>
+	
+	
+		
+	<update id="updateUserByStaff" parameterType="com.pm.domain.system.User">
+		update ts_user set  		
+		user_name = #{user_name},
+		user_deptid = #{user_deptid}
+		where staff_id = #{staff_id} 
+		and staff_type = #{staff_type} 
+		and delete_flag = '0' 
+		and user_id != '1'  
+	</update>
+		
+
+	<update id="updatePassword" parameterType="com.pm.domain.system.User">
+		update ts_user set  
+		user_password = #{user_password} 
+		where user_id = #{user_id} 
+	</update>
+		
+	<update id="deleteUser" parameterType="com.pm.domain.system.User">		
+		update ts_user set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where user_id = #{user_id} 
+		and user_id != '1'  
+		and delete_flag = '0' 
+	</update>
+	
+	<update id="deleteUserByStaff" parameterType="com.pm.domain.system.User">		
+		update ts_user set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where staff_id = #{staff_id} 
+		and staff_type = #{staff_type} 
+		and user_id != '1'  
+		and delete_flag = '0' 
+	</update>
+	
+	
+		
+	<select id="queryUserByPager_mysql" parameterType="map"   resultMap="userMap">
+		<include refid="userPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryUserByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="userPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="userPagerSql">
+		SELECT user1.*, dept.dept_name as user_deptname
+		FROM ts_user user1 left join ts_dept dept on user1.user_deptid = dept.dept_id 
+		WHERE user1.delete_flag = '0'  
+		<if test="User.user_deptid != null and User.user_deptid != ''">
+			AND user1.user_deptid =  #{User.user_deptid}
+		</if>
+		
+		<if test="User.user_name != null and User.user_name != ''">
+			AND user1.user_name like concat('%',TRIM(#{User.user_name}),'%')  
+		</if>
+		
+		<if test="delete_flag != null and delete_flag != ''">
+			AND user1.delete_flag =  #{User.delete_flag}
+		</if>
+		
+		<include refid="permission"/>
+		
+		order by user1.delete_flag , user1.build_time
+	
+	</sql>	
+	
+	<sql id="permission">		
+		
+		<if test="UserPermit.range != null and UserPermit.range != ''">
+			
+			<if test="UserPermit.range == 1">
+				
+			</if>
+			<if test="UserPermit.range == 2">
+					<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+							and user1.user_deptid =  #{UserPermit.user_deptid} 
+					</if>
+					<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">						
+							and user1.user_id =  #{UserPermit.user_id} 
+					</if>
+			</if>
+			<if test="UserPermit.range == 3">
+				and user1.user_id =  #{UserPermit.user_id}  
+			</if>
+			
+		</if>
+		
+		<if test="UserPermit.range == null or UserPermit.range == ''">
+			and 1 != 1
+		</if>
+		
+	
+	</sql>
+	
+	
+	<insert id="insertUserRole" parameterType="com.pm.domain.system.User">	
+		 insert into ts_user_role  (user_id, role_id) values  (#{user_id}, #{role_id})
+	</insert>
+	
+	<delete id="deleteUserRole" parameterType="com.pm.domain.system.User">
+		delete from ts_user_role where user_id = #{user_id} and role_id =  #{role_id}
+	</delete>
+	 
+
+</mapper>

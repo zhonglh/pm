@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SalesStatisticsMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.Statistics" id="statisticsMap" />
+		
+	
+	
+	<select id="queryByQuarterByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryQuarterPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByQuarterByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryQuarterPagerSql"/>
+		) c
+		
+	</select>
+
+	
+	<sql id="queryQuarterPagerSql">		
+	
+		
+	select  quarter, sum(amount) as statistics_amount from (
+		select ms.* 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		inner join 			(
+				select project_id,(statement_month-statement_month%100+(floor(statement_month%100/4)+1)) as quarter,
+				sum(case when amount is NULL  then 0 else amount end) as amount 
+				from tb_monthly_statement where verify_userid is not NULL 			
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND statement_month >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND statement_month <= #{Statistics.month2} 
+				]]>
+				</if>			
+				group by project_id, (statement_month-statement_month%100+(floor(statement_month%100/4)+1))
+		)ms
+		on project.project_id = ms.project_id 		
+	) a group by quarter 
+	order by quarter desc		
+	
+	</sql>	
+	
+	
+	<select id="queryByYearByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryYearPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByYearByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryYearPagerSql"/>
+		) c
+		
+	</select>
+	
+	
+	<sql id="queryYearPagerSql">		
+	select  year1, sum(amount) as statistics_amount from (
+		select ms.*
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		inner join 			(
+				select project_id,floor(statement_month/100) year1,
+				sum(case when amount is NULL  then 0 else amount end) as amount 
+				from tb_monthly_statement where verify_userid is not NULL 			
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND statement_month >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND statement_month <= #{Statistics.month2} 
+				]]>
+				</if>			
+				group by project_id, floor(statement_month/100)
+		)ms
+		on project.project_id = ms.project_id 		
+	) a group by year1 
+	order by year1 desc
+	</sql>
+
+		
+	
+	
+	<select id="queryByAllByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryAllPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByAllByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryAllPagerSql"/>
+		) c
+		
+	</select>
+
+
+	<sql id="queryAllPagerSql">		
+		select sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id 				
+	</sql>		
+	
+	
+	
+	<select id="queryByDeptByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByDeptPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByDeptByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByDeptPagerSql"/>
+		) c
+		
+	</select>
+	
+	<sql id="queryByDeptPagerSql">	
+		select project.deptid,project.deptname ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id
+		group by project.deptid,project.deptname 
+		order by project.deptname 			
+	</sql>			
+	
+	
+	
+	
+	<select id="queryByExecDeptByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByExecDeptPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByExecDeptByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByExecDeptPagerSql"/>
+		) c
+		
+	</select>
+	
+
+	<sql id="queryByExecDeptPagerSql">	
+		select project.exec_amount_deptid,project.exec_amount_deptname ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id
+		group by project.exec_amount_deptid,project.exec_amount_deptname 
+		order by project.exec_amount_deptname 		
+	</sql>			
+	
+	
+	
+	<select id="queryBySalesDeptByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryBySalesDeptPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryBySalesDeptByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryBySalesDeptPagerSql"/>
+		) c
+		
+	</select>
+	
+	
+	<sql id="queryBySalesDeptPagerSql">	
+		select project.sales_amount_deptid,project.sales_amount_deptname ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id
+		group by project.sales_amount_deptid,project.sales_amount_deptname 
+		order by project.sales_amount_deptname 		
+	</sql>		
+	
+	
+	<select id="queryByClientByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByClientPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByClientByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByClientPagerSql"/>
+		) c
+		
+	</select>
+	
+
+	<sql id="queryByClientPagerSql">		
+		select project.project_client_id,project.project_client_name ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id
+		group by project.project_client_id,project.project_client_name 
+		order by project.project_client_name 	
+	</sql>		
+	
+	
+	
+	<select id="queryByInfoSourceByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByInfoSourcePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByInfoSourceByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByInfoSourcePagerSql"/>
+		) c
+		
+	</select>
+	
+	
+	<sql id="queryByInfoSourcePagerSql">			
+		select project.info_sources_userid,project.info_sources_username ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id
+		group by project.info_sources_userid,project.info_sources_username 
+		order by project.info_sources_username 		
+	</sql>		
+	
+	
+	<select id="queryByManagerByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByManagerPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByManagerByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByManagerPagerSql"/>
+		) c
+		
+	</select>
+	
+
+
+	<sql id="queryByManagerPagerSql">				
+		select project.manage_userid,project.manage_username ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id
+		group by project.manage_userid,project.manage_username 
+		order by project.manage_username 	
+	</sql>		
+
+		
+
+	
+	<select id="queryBySalesByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryBySalesPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryBySalesByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryBySalesPagerSql"/>
+		) c
+		
+	</select>
+	
+
+
+	<sql id="queryBySalesPagerSql">				
+		select project.sales_userid,project.sales_username ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id
+		group by project.sales_userid,project.sales_username 
+		order by project.sales_username 	
+	</sql>		
+	
+	
+	
+		
+	<select id="queryByProjectByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByProjectPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByProjectByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByProjectPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="queryByProjectPagerSql">	
+	
+		select project.*,ms.amount as statistics_amount
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
+			from tb_monthly_statement where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND statement_month >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND statement_month <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) ms				
+		on project.project_id = ms.project_id
+		order by project.build_datetime
+				
+	
+	</sql>	
+	
+	
+
+	 
+
+</mapper>

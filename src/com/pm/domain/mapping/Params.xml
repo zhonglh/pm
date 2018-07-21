@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ParamsMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	
+	<resultMap type="com.pm.domain.business.Params" id="paramsMap" />
+	
+
+	
+	<update id="updateParams" parameterType="com.pm.domain.business.Params">
+		update tb_param set  
+		param_value = #{param_value}
+		where param_id = #{param_id} 
+	</update>
+
+	
+	<select id="queryAllParams" parameterType="com.pm.domain.business.Params" resultMap="paramsMap">
+		select * from tb_param where 1 = 1 
+		<if test="param_id != null and param_id != ''">
+			and param_id =  #{param_id} 
+		</if>
+		<if test="param_key != null and param_key != ''">
+			and param_key =  #{param_key} 
+		</if>
+		order by (param_id + 1)
+	</select>
+	
+
+	 
+
+</mapper>

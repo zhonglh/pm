@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StaffCostAnalysisMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />	
+	<resultMap type="com.pm.domain.business.StaffCostAnalysis" id="staffCostAnalysisMap" />
+	<resultMap type="com.pm.domain.business.StatisticsDetail" id="statisticsDetailMap" />
+	
+	
+		
+	<select id="queryProfitAnalysisByPager_mysql" parameterType="map"   resultMap="staffCostAnalysisMap">
+		<include refid="profitAnalysisPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryProfitAnalysisByCount_mysql" parameterType="map"  resultType="map" >
+		 SELECT COUNT(*) as COUNT1,sum(technical_profit) as SUM1 FROM (
+			<include refid="profitAnalysisPagerSql"/>
+		) c		
+	</select>	
+	
+	
+	<sql id="profitAnalysisPagerSql">
+		
+		select * from(				
+				select xx.*, (technical_income-technical_cost) technical_profit,
+				
+				(
+					case when months+months2 = 0  then (technical_income-technical_cost) else 
+						( (technical_income-technical_cost)/(case when months = 0   	then months2 else months end) ) 
+					end 
+				) as profit 
+
+				 from (
+				
+					select staff.*, other_staff.staff_name as recruiter_name, data1.type,
+					sum(case when type = '1'   	then amount else 0 end) as technical_income,
+					sum(case when type != '1'   	then amount else 0 end) as technical_cost,
+					sum(case when type = '1'   	then 1 else 0 end) months  ,
+					sum(case when type = '2'   	then 1 else 0 end) months2  
+					from tb_staff_costs staff 						 join (	
+						select * from (		
+							select * from (		
+								select a.project_id, p.project_name, b.staff_id, '1' as type,
+							  	a.statement_month as month1,
+								case when b.total_cost is NULL  then 0 else b.total_cost*(1-${StaffCost.tax_rate}) end amount 
+								from tb_monthly_statement a, tb_monthly_statement_detail b ,
+								vb_project p 
+								where a.verify_userid is not NULL 	
+								and a.monthly_statement_id = b.monthly_statement_id 
+								and a.project_id = p.project_id 	
+							) a
+							union all
+							select * from (
+								select a.project_id, p.project_name, a.staff_id, '2' as type,
+							  	a.salary_month as month1 ,
+								(a.should_salary  + a.endowment_insurance_bycompany +
+								a.medical_insurance_bycompany + a.losejob_insurance_bycompany +
+								a.maternity_insurance_bycompany + a.jobharm_insurance_bycompany +
+								a.reservefund_bypcompany + a.actual_bonus + a.overdue_tax_salary ) amount
+								from tb_salary a ,	vb_project p 
+								where a.verify_userid is not NULL 	
+								and a.project_id = p.project_id 
+							) b
+							union all
+							select * from(			
+							 	select a.project_id, p.project_name, c.staff_id, '3' as type,
+							  	a.use_month as month1 ,
+								a.amount
+								from tb_reimburse_costs a ,	vb_project p , tb_staff_costs c
+								where a.verify_userid is not NULL 	
+								and a.project_id = p.project_id 
+								and a.staff_id = c.staff_id 
+							) c		
+						) dd 	
+						where 1=1 
+						<if test="StaffCost.month1 != 0">
+							<![CDATA[	
+								AND dd.month1 >= #{StaffCost.month1} 
+							]]>
+						</if> 			
+						<if test="StaffCost.month2 != 0">
+							<![CDATA[	
+								AND dd.month1 <= #{StaffCost.month2} 
+							]]>
+						</if>							
+								
+					) data1 on staff.staff_id = data1.staff_id 
+					left join tb_other_staff other_staff
+					on staff.recruiter = other_staff.staff_id 
+					where 1=1 	
+										
+					<if test="StaffCost.project_name != null and StaffCost.project_name != ''">
+						AND data1.project_name like concat('%',TRIM(#{StaffCost.project_name}),'%')   
+					</if>
+					
+					<if test="StaffCost.delete_flag != null and StaffCost.delete_flag != ''">
+						AND staff.delete_flag = #{StaffCost.delete_flag}
+					</if>
+					<if test="StaffCost.outsource_staff != null and StaffCost.outsource_staff != ''">
+						AND staff.outsource_staff = #{StaffCost.outsource_staff}
+					</if>		
+					
+					<if test="StaffCost.staff_no != null and StaffCost.staff_no != ''">
+						AND staff.staff_no like concat('%',TRIM(#{StaffCost.staff_no}),'%')   
+					</if>
+					
+					<if test="StaffCost.staff_name != null and StaffCost.staff_name != ''">
+						AND staff.staff_name like concat('%',TRIM(#{StaffCost.staff_name}),'%')   
+					</if>
+					
+					
+					<if test="StaffCost.recruiter_name != null and StaffCost.recruiter_name != ''">
+						AND other_staff.staff_name like concat('%',TRIM(#{StaffCost.recruiter_name}),'%')   
+					</if>
+					
+					 group by staff.staff_id  
+					 
+				) xx 	
+			
+			) analysis 
+				
+		<if test="StaffCost.orderby != null and StaffCost.orderby != ''">
+			order by delete_flag , ${StaffCost.orderby}  ,import_order
+		</if>
+		
+		
+		<if test="StaffCost.orderby == null or StaffCost.orderby == ''">
+			order by delete_flag , build_datetime ,import_order
+		</if>
+		
+	
+		
+	</sql>
+	
+	
+
+
+		
+	<select id="queryProfitAnalysisDetailIncomeByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="profitAnalysisDetailIncomePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryProfitAnalysisDetailIncomeByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="profitAnalysisDetailIncomePagerSql"/>
+		) c		
+	</select>
+   
+
+	<sql id="profitAnalysisDetailIncomePagerSql">
+		SELECT business.*
+		FROM  tb_staff_costs sc 
+		inner join (
+			<include refid="StatisticsDetailMapping.all_data_21"/>	
+		) business		
+		on sc.staff_id = business.type_id
+		where sc.staff_id = #{Statistics.staff_id}
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[	
+			AND use_month >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND use_month <= #{Statistics.month2} 
+		]]>
+		</if>					
+		order by business_sort, use_month desc 
+	</sql>
+	
+	
+	
+	
+	
+	<select id="queryProfitAnalysisDetailCostByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="profitAnalysisDetailCostPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryProfitAnalysisDetailCostByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="profitAnalysisDetailCostPagerSql"/>
+		) c		
+	</select>
+   
+
+	<sql id="profitAnalysisDetailCostPagerSql">
+		SELECT business.*
+		FROM  tb_staff_costs sc 
+		inner join (
+			<include refid="StatisticsDetailMapping.all_data_31"/>	
+			union all
+			<include refid="StatisticsDetailMapping.all_data_60"/>	
+		) business		
+		on sc.staff_id = business.type_id
+		where sc.staff_id = #{Statistics.staff_id}
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[	
+			AND use_month >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND use_month <= #{Statistics.month2} 
+		]]>
+		</if>					
+		order by business_sort desc, use_month desc 
+	</sql>
+		
+	
+	
+
+</mapper>

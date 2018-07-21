@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+	<mapper namespace="PotentialClientFollowupMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PotentialClientFollowup" id="potentialClientFollowupMap" />
+
+
+	<select id="getPotentialClientFollowup" parameterType="com.pm.domain.business.PotentialClientFollowup" resultMap="potentialClientFollowupMap">
+		select pcf.* ,pc.client_name as potential_client_name 
+		from tb_potential_client_followup pcf  
+		INNER JOIN tb_potential_client pc  
+		on pcf.potential_client_id = pc.id 
+		where pcf.id = #{id}
+	</select>
+	
+
+	<select id="getPotentialClientFollowupByClient" parameterType="com.pm.domain.business.PotentialClientFollowup" resultMap="potentialClientFollowupMap">
+		select pcf.* ,pc.client_name as potential_client_name 
+		from tb_potential_client_followup pcf  
+		INNER JOIN tb_potential_client pc  
+		on pcf.potential_client_id = pc.id 
+		where pcf.potential_client_id = #{potential_client_id}
+	</select>
+	
+
+	<insert id="addPotentialClientFollowup" parameterType="com.pm.domain.business.PotentialClientFollowup" >
+		insert into  tb_potential_client_followup(
+			id,potential_client_id,link_time,link_type,link_content,description,
+			build_datetime,build_userid,build_username
+		)values  (
+			#{id},#{potential_client_id},#{link_time},#{link_type},#{link_content},#{description},
+			#{build_datetime},#{build_userid},#{build_username}		
+		)
+	</insert>
+
+	<update id="updatePotentialClientFollowup" parameterType="com.pm.domain.business.PotentialClientFollowup" >
+		update  tb_potential_client_followup set 
+		potential_client_id=#{potential_client_id},
+		link_time=#{link_time},
+		link_type=#{link_type},
+		link_content=#{link_content},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deletePotentialClientFollowup" parameterType="com.pm.domain.business.PotentialClientFollowup" >
+		delete from  tb_potential_client_followup
+		where id=#{id}
+	</delete>
+
+
+	<select id="queryPotentialClientFollowupByPager_mysql" parameterType="map"  resultMap="potentialClientFollowupMap" >
+		<include refid="potentialClientFollowupPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPotentialClientFollowupByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="potentialClientFollowupPagerSql"/> )c
+	</select>
+
+	<sql id="potentialClientFollowupPagerSql">
+		select pcf.* ,pc.client_name as potential_client_name 
+		from tb_potential_client_followup pcf  
+		INNER JOIN tb_potential_client pc  
+		on pcf.potential_client_id = pc.id 
+		WHERE pcf.potential_client_id = #{PotentialClientFollowup.potential_client_id} 
+		order by pcf.link_time 
+	</sql>
+
+</mapper>

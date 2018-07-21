@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProjectStaffCostMapping">
+
+
+
+	<resultMap type="java.util.Map" id="map" />
+
+
+	<resultMap type="com.pm.domain.business.ProjectStaffCost" id="projectStaffCostMap" />
+
+
+
+	<select id="computeProjectStaffCost" parameterType="com.pm.domain.business.Salary"
+		resultMap="projectStaffCostMap">
+		select salary.staff_id, wa.project_id,salary.salary_month as work_month,
+		DATE_ADD(str_to_date(salary.salary_month*100+20,'%Y%m%d'),INTERVAL 1
+		month) as pay_date,
+		salary.salary_id,wa.attendance_id,wa.work_days,
+		salary.work_days as total_work_days ,
+		salary.actual_salary as amount,
+		salary.personal_income_tax,
+		( salary.pension_insurance+salary.endowment_insurance_bycompany+
+		salary.medical_Insurance+salary.medical_insurance_bycompany+
+		salary.unemployment_insurance+salary.losejob_insurance_bycompany+
+		salary.maternity_insurance_bycompany+salary.jobharm_insurance_bycompany)
+		as insurance_amount,
+		(salary.accumulation_fund+salary.reservefund_bypcompany) as
+		pub_funds_amount,
+		(
+		salary.pension_insurance+salary.endowment_insurance_bycompany+
+		salary.medical_Insurance+salary.medical_insurance_bycompany+
+		salary.unemployment_insurance+salary.losejob_insurance_bycompany+
+		salary.maternity_insurance_bycompany+salary.jobharm_insurance_bycompany+
+		salary.personal_income_tax +
+		salary.actual_salary+salary.accumulation_fund+salary.reservefund_bypcompany)
+		as all_amount,
+		staff.staff_name, staff.staff_no, project.project_no,
+		project.project_name
+		from tb_salary salary
+		inner join tb_work_attendance wa
+		on salary.staff_id = wa.staff_id
+		and salary.salary_month = wa.attendance_month
+		and wa.delete_flag = '0'
+		INNER JOIN tb_staff_costs staff
+		on salary.staff_id = staff.staff_id
+		INNER JOIN vb_project project
+		on wa.project_id = project.project_id
+		where salary.salary_id = #{salary_id}
+	</select>
+
+
+
+
+
+
+	<insert id="addProjectStaffCost" parameterType="com.pm.domain.business.ProjectStaffCost">
+		insert into tb_project_staff_cost
+		(
+		project_staffcost_id, staff_id, project_id, amount,work_month,pay_date,
+		insurance_amount,pub_funds_amount,personal_income_tax, other_amount,
+		all_amount,
+		salary_id,attendance_id,work_days,build_datetime,build_username,build_userid
+		)values (
+		#{project_staffcost_id}, #{staff_id},#{project_id}, #{amount}, #{work_month}, #{pay_date},
+		#{insurance_amount}, #{pub_funds_amount}, #{personal_income_tax},
+		#{other_amount}, #{all_amount},
+		#{salary_id}, #{attendance_id},#{work_days}, #{build_datetime}, #{build_username},
+		#{build_userid}
+		)
+	</insert>
+
+
+
+	<delete id="deleteProjectStaffCost" parameterType="com.pm.domain.business.Salary">
+		delete from tb_project_staff_cost
+		where salary_id = #{salary_id}
+	</delete>
+
+
+
+
+
+	<select id="getProjectStaffCost" parameterType="com.pm.domain.business.ProjectStaffCost"
+		resultMap="projectStaffCostMap">
+		select psc.* ,project.project_name,project.project_no,
+		staff.staff_name , staff.staff_no, salary.work_days as total_work_days
+		from tb_project_staff_cost psc
+		INNER JOIN vb_project project
+		on psc.project_id = project.project_id
+		inner join tb_staff_costs staff
+		on psc.staff_id = staff.staff_id
+		inner join tb_salary salary
+		on psc.salary_id = salary.salary_id
+		WHERE project_staffcost_id = #{project_staffcost_id}
+	</select>
+
+
+	<select id="getProjectStaffCostBySalary" parameterType="map"
+		resultMap="projectStaffCostMap">
+		select psc.* ,project.project_name,project.project_no,
+		staff.staff_name , staff.staff_no, salary.work_days as total_work_days
+		from tb_project_staff_cost psc
+		INNER JOIN vb_project project
+		on psc.project_id = project.project_id
+		inner join tb_staff_costs staff
+		on psc.staff_id = staff.staff_id
+		inner join tb_salary salary
+		on psc.salary_id = salary.salary_id
+		WHERE salary.salary_id in
+		<foreach item="salary" collection="list" open="(" separator=","
+			close=")">
+			#{salary.salary_id}
+		</foreach>
+
+	</select>
+
+
+
+
+
+	<select id="queryProjectStaffCostByPager_mysql" parameterType="map"
+		resultMap="projectStaffCostMap">
+		<include refid="projectStaffCostPagerSql" />
+		LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryProjectStaffCostByCount_mysql" parameterType="map"
+		resultType="map">
+		SELECT COUNT(*) as COUNT1,sum(all_amount) as SUM1 FROM (
+		<include refid="projectStaffCostPagerSql" />
+		) c
+
+	</select>
+
+
+	<sql id="projectStaffCostPagerSql">
+
+		select psc.* ,project.project_name,project.project_no,
+		staff.staff_name , staff.staff_no , salary.work_days as
+		total_work_days
+		from tb_project_staff_cost psc
+		INNER JOIN vb_project project
+		on psc.project_id = project.project_id
+		inner join tb_staff_costs staff
+		on psc.staff_id = staff.staff_id
+		inner join tb_salary salary
+		on psc.salary_id = salary.salary_id
+		WHERE 1 = 1
+
+
+
+		<if
+			test="ProjectStaffCost.dept_id != null and ProjectStaffCost.dept_id != ''">
+			AND project.deptid = #{ProjectStaffCost.dept_id}
+		</if>
+
+		<if
+			test="ProjectStaffCost.project_id != null and ProjectStaffCost.project_id != ''">
+			AND project.project_id = #{ProjectStaffCost.project_id}
+		</if>
+
+		<if
+			test="ProjectStaffCost.project_name != null and ProjectStaffCost.project_name != ''">
+			AND project.project_name like
+			concat('%',TRIM(#{ProjectStaffCost.project_name}),'%')
+		</if>
+
+		<if
+			test="ProjectStaffCost.project_no != null and ProjectStaffCost.project_no != ''">
+			AND project.project_no like
+			concat('%',TRIM(#{ProjectStaffCost.project_no}),'%')
+		</if>
+
+
+		<if
+			test="ProjectStaffCost.staff_id != null and ProjectStaffCost.staff_id != ''">
+			AND staff.staff_id = #{ProjectStaffCost.staff_id}
+		</if>
+
+		<if
+			test="ProjectStaffCost.staff_name != null and ProjectStaffCost.staff_name != ''">
+			AND staff.staff_name like
+			concat('%',TRIM(#{ProjectStaffCost.staff_name}),'%')
+		</if>
+
+
+
+		<if test="ProjectStaffCost.work_month != 0 ">
+			AND psc.work_month = #{ProjectStaffCost.work_month}
+		</if>
+
+
+		<if test="ProjectStaffCost.work_month1 != 0 ">
+			<![CDATA[
+			AND psc.work_month >= #{ProjectStaffCost.work_month1}
+			]]>
+		</if>
+
+		<if test="ProjectStaffCost.work_month2 != 0 ">
+			<![CDATA[
+			AND psc.work_month <= #{ProjectStaffCost.work_month2}
+			]]>
+		</if>
+
+
+		<include refid="ProjectAuthMapping.permission" />
+
+
+		order by psc.work_month desc,project.build_datetime desc,
+		staff.build_datetime desc, staff.import_order
+
+	</sql>
+
+
+</mapper>

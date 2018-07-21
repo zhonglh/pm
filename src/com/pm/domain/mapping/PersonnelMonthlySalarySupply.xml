@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="PersonnelMonthlySalarySupplyMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PersonnelMonthlySalarySupply" id="personnelMonthlySalarySupplyMap" />
+
+
+	<select id="getPersonnelMonthlySalarySupply" parameterType="com.pm.domain.business.PersonnelMonthlySalarySupply" resultMap="personnelMonthlySalarySupplyMap">
+		
+		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,
+		pmss.supply_type,pmss.supply_time,pmss.amount,pmss.description
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_salarysupply pmss  
+		on pmb.id = pmss.id
+		inner join tb_staff_costs sc 
+		on pmb.staff_id = sc.staff_id
+		left JOIN tb_project project  
+		on pmb.project_id = project.project_id 
+		where pmss.id = #{id}
+	</select>
+
+	<insert id="addPersonnelMonthlySalarySupply" parameterType="com.pm.domain.business.PersonnelMonthlySalarySupply" >
+		insert into  personnel_monthly_salarysupply(
+			id,supply_type,supply_time,amount,
+			description
+		)values  (
+			#{id},#{supply_type},#{supply_time},#{amount},
+			#{description}
+		)
+	</insert>
+
+	<update id="updatePersonnelMonthlySalarySupply" parameterType="com.pm.domain.business.PersonnelMonthlySalarySupply" >
+		update  personnel_monthly_salarysupply set 
+		supply_type=#{supply_type},
+		supply_time=#{supply_time},
+		amount=#{amount},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+	<delete id="deletePersonnelMonthlySalarySupply" parameterType="com.pm.domain.business.PersonnelMonthlySalarySupply" >
+		delete from  personnel_monthly_salarysupply
+		where id=#{id}
+	</delete>
+
+	<select id="queryPersonnelMonthlySalarySupplyTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="personnelMonthlySalarySupplyPagerSql"/>
+		) c
+	</select>
+
+	<select id="queryPersonnelMonthlySalarySupplyByPager_mysql" parameterType="map"  resultMap="personnelMonthlySalarySupplyMap" >
+		<include refid="personnelMonthlySalarySupplyPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPersonnelMonthlySalarySupplyByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="personnelMonthlySalarySupplyPagerSql"/> )c
+	</select>
+
+	<sql id="personnelMonthlySalarySupplyPagerSql">
+		
+		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,aa.need_approve,
+		pmss.supply_type,pmss.supply_time,pmss.amount,pmss.description
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_salarysupply pmss  
+		on pmb.id = pmss.id
+		inner join tb_staff_costs sc 
+		on pmb.staff_id = sc.staff_id
+		left JOIN tb_project project  
+		on pmb.project_id = project.project_id 
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'PERSONNELMONTHLYBASE' group by data_id) aa
+		on pmb.id = aa.data_id	
+		WHERE 1=1 
+		
+		
+		<if test="PersonnelMonthlySalarySupply.the_month != 0 ">
+			<![CDATA[
+			AND pmb.the_month = #{PersonnelMonthlySalarySupply.the_month} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlySalarySupply.staff_id != null and PersonnelMonthlySalarySupply.staff_id != ''">
+			<![CDATA[
+			AND pmb.staff_id = #{PersonnelMonthlySalarySupply.staff_id} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlySalarySupply.monthly_type != null and PersonnelMonthlySalarySupply.monthly_type != ''">
+			<![CDATA[
+			AND pmb.monthly_type = #{PersonnelMonthlySalarySupply.monthly_type} 
+			]]>
+		</if>
+		
+		
+		<if test="PersonnelMonthlySalarySupply.verify_flag != null and PersonnelMonthlySalarySupply.verify_flag != ''">
+			<if test="PersonnelMonthlySalarySupply.verify_flag == 1">
+					and pmb.verify_userid is not null 
+			</if>
+			<if test="PersonnelMonthlySalarySupply.verify_flag == 0">			
+					and pmb.verify_userid is null 
+			</if>
+		</if>		
+		
+		
+		<include refid="ProjectAuthMapping.permission" /> 
+		order by pmb.monthly_type, pmb.the_month,pmb.build_datetime , pmb.import_order 
+	</sql>
+
+</mapper>

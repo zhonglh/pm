@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StatisticsDetailMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.StatisticsDetail" id="statisticsDetailMap" />	
+
+	
+		
+	<select id="queryGrossProfit1DetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="queryGrossProfit1DetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryGrossProfit1DetailByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryGrossProfit1DetailPagerSql"/>
+		) c		
+	</select>
+   
+
+	<sql id="queryGrossProfit1DetailPagerSql">
+		SELECT business.*
+		FROM (<include refid="all_data"/>) business		
+		inner join tb_project project 
+		on business.project_id = project.project_id
+		where 1=1 and business.business_sort in ('10','30','41','50')
+		and not EXISTS (select 1 from vb_begin_data1 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
+				
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id}
+		</if>
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[	
+			AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+		]]>
+		</if>	
+		
+		<include refid="ProjectAuthMapping.permission"/>			
+		
+		order by business_sort, use_month desc ,project.project_id,build_datetime desc 
+	</sql>	
+	
+	
+	
+
+		
+	<select id="queryGrossProfit2DetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="queryGrossProfit2DetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryGrossProfit2DetailByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryGrossProfit2DetailPagerSql"/>
+		) c		
+	</select>
+   
+
+	<sql id="queryGrossProfit2DetailPagerSql">
+		SELECT business.*
+		FROM (<include refid="all_data"/>) business		
+		inner join tb_project project 
+		on business.project_id = project.project_id
+		where 1=1 and business.business_sort in ('20','30','40','51')
+		and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
+				
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id}
+		</if>
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[	
+			AND use_month >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND use_month <= #{Statistics.month2} 
+		]]>
+		</if>	
+		
+		<include refid="ProjectAuthMapping.permission"/>			
+		order by business_sort, use_month desc ,project.project_id,build_datetime desc 
+	</sql>	
+		
+		
+		
+
+	<select id="querySalesDetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="querySalesDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="querySalesDetailByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="querySalesDetailPagerSql"/>
+		) c		
+	</select>
+   
+
+	<sql id="querySalesDetailPagerSql">
+		SELECT business.*
+		FROM (<include refid="all_data"/>) business		
+		inner join tb_project project 
+		on business.project_id = project.project_id
+		where 1=1 and business.business_sort in ('20')
+				
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id}
+		</if>
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[	
+			AND use_month >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND use_month <= #{Statistics.month2} 
+		]]>
+		</if>	
+		
+		<include refid="ProjectAuthMapping.permission"/>
+		
+		order by business_sort, use_month desc ,project.project_id,build_datetime desc 
+	</sql>	
+				
+				
+				
+
+	<select id="queryReceivablesDetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="queryReceivablesDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryReceivablesDetailByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryReceivablesDetailPagerSql"/>
+		) c		
+	</select>
+   
+
+	<sql id="queryReceivablesDetailPagerSql">
+		SELECT business.*
+		FROM (<include refid="all_data"/>) business		
+		inner join tb_project project 
+		on business.project_id = project.project_id
+		where 1=1 and business.business_sort in ('10','20')
+				
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id}
+		</if>
+		
+		<if test="Statistics.month1 != 0">
+		<![CDATA[
+			AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+		]]>
+		</if> 			
+		<if test="Statistics.month2 != 0">
+		<![CDATA[	
+			AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+		]]>
+		</if>	
+		
+		<include refid="ProjectAuthMapping.permission"/>	
+		
+		order by business_sort, use_month desc ,project.project_id,build_datetime desc 
+	</sql>	
+								
+		
+	<sql id="all_data">
+			
+		<include refid="all_data_10"/>	
+		union all
+		<include refid="all_data_20"/>	
+		union all
+		<include refid="all_data_30"/>				
+		union all			
+		<include refid="all_data_40"/>				
+		union all			
+		<include refid="all_data_41"/>	
+		union all			
+		<include refid="all_data_50"/>	
+		union all			
+		<include refid="all_data_51"/>				
+		
+	</sql>
+	
+	
+	
+	
+	
+	
+	<sql id="all_data_10">	
+			select receivedPayment.receive_payment_id as obj_id ,project.project_id,project.project_name,project.project_no	,
+			'收入' as amount_type, '到款记录' as business_type,	  '10' as business_sort,
+			receivedPayment.receive_payment_amount as amount,
+			receivedPayment.receive_payment_month as use_month,  receivedPayment.receive_payment_datetime as pay_date,
+			dd_rai.dic_data_name as  otherdesc, receivedPayment.description, receivedPayment.payment_unit as business_name	,
+			receivedPayment.receivable_accounts_item_id as type_id 	, receivedPayment.build_datetime
+			from tb_received_payment receivedPayment 
+			INNER JOIN tb_project project 
+			on receivedPayment.project_id = project.project_id 
+			INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id 			
+			where  receivedPayment.verify_userid is not null
+	</sql>
+	
+	
+	<sql id="all_data_20">	
+			SELECT ms.monthly_statement_id as obj_id, project.project_id,project.project_name, project.project_no , 
+			'收入' as amount_type, '月度结算单' as business_type, '20' as business_sort,
+			ms.amount,ms.statement_month as use_month, str_to_date(ms.statement_month*100+01,'%Y%m%d') as pay_date,
+			'' as  otherdesc, ms.description,
+			(case when statement_type='1'   	then '外包结算' when statement_type='2'   	then '外派结算' when statement_type='3'   	then '历史结算' else '其它结算' end)  as business_name,
+			''  as type_id 	 , ms.build_datetime
+			FROM tb_monthly_statement ms 
+			inner join tb_project project 
+			on ms.project_id = project.project_id
+			left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'MONTHLY_STATEMENT' group by data_id) aa
+			on ms.monthly_statement_id = aa.data_id
+			where   ms.verify_userid is not null
+	</sql>
+	
+	
+	<sql id="all_data_21">	
+			SELECT ms.monthly_statement_id as obj_id, project.project_id,project.project_name, project.project_no , 
+			'收入' as amount_type, '月度结算单' as business_type, '21' as business_sort,
+			detail.total_cost*(1-${Statistics.tax_rate}) as amount,ms.statement_month as use_month, str_to_date(ms.statement_month*100+01,'%Y%m%d') as pay_date,
+			'' as  otherdesc, ms.description,
+			(case when statement_type='1'   	then '外包结算' when statement_type='2'   	then '外派结算' when statement_type='3'   	then '历史结算' else '其它结算' end)  as business_name,
+			detail.staff_id  as type_id 	 , ms.build_datetime
+			FROM tb_monthly_statement ms 
+			inner join tb_monthly_statement_detail detail
+			on ms.monthly_statement_id = detail.monthly_statement_id 
+			inner join tb_project project 
+			on ms.project_id = project.project_id			
+			where   ms.verify_userid is not null
+	</sql>
+	
+	<sql id="all_data_30">	
+			select rc.reimburse_id as obj_id, rc.project_id,
+			project_name,project_no,'成本' as amount_type, '报销' as business_type, '30' as business_sort,
+			rc.amount,rc.use_month, rc.pay_date,  dd_rai.dic_data_name as  otherdesc, rc.description,
+			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
+			rc.pay_item_id  as type_id, rc.build_datetime
+			from tb_reimburse_costs rc 
+			INNER JOIN tb_project project 
+			on rc.project_id = project.project_id 			
+			INNER join ts_dic_data dd_rai on rc.pay_item_id = dd_rai.id 	
+			left JOIN tb_staff_costs staff 
+			on rc.staff_id = staff.staff_id 
+			where rc.delete_flag = '0' and rc.verify_userid is not null
+	</sql>
+	
+	
+	<sql id="all_data_31">	
+			select rc.reimburse_id as obj_id, rc.project_id,
+			project_name,project_no,'成本' as amount_type, '报销' as business_type, '31' as business_sort,
+			rc.amount,rc.use_month, rc.pay_date,  dd_rai.dic_data_name as  otherdesc, rc.description,
+			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
+			staff.staff_id  as type_id, rc.build_datetime
+			from tb_reimburse_costs rc 
+			INNER JOIN tb_project project 
+			on rc.project_id = project.project_id 			
+			INNER join ts_dic_data dd_rai 
+			on rc.pay_item_id = dd_rai.id 	
+			INNER JOIN tb_staff_costs staff 
+			on rc.staff_id = staff.staff_id 
+			where rc.delete_flag = '0' and rc.verify_userid is not null
+	</sql>
+	
+	
+	<sql id="all_data_40">			
+			select pe.project_expend_id as obj_id, pe.project_id,
+			project_name,project_no,'成本' as amount_type, '项目付款信息' as business_type, '40' as business_sort,
+			case when (pe.pay_amount is NULL OR pe.pay_amount = 0) then pe.amount else pe.pay_amount end as amount,
+			pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
+			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime
+			from tb_project_expend pe 
+			INNER JOIN tb_project project 
+			on pe.project_id = project.project_id 
+			WHERE pe.delete_flag = '0' and pe.verify_userid is not null
+	</sql>
+	
+	<sql id="all_data_41">			
+			select pe.project_expend_id as obj_id, pe.project_id,
+			project_name,project_no,'成本' as amount_type, '项目付款信息' as business_type, '41' as business_sort,
+			pe.pay_amount as amount,pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
+			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime
+			from tb_project_expend pe 
+			INNER JOIN tb_project project 
+			on pe.project_id = project.project_id 
+			WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pay_date is not null
+	</sql>
+	
+	
+	<sql id="all_data_50">	
+		select psc.project_staffcost_id as obj_id, psc.project_id ,project.project_name,project.project_no,
+			'成本' as amount_type, '项目人员成本' as business_type,  '50' as business_sort,
+			 psc.amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
+			staff.staff_name  as business_name	, '' as type_id, psc.build_datetime
+			from tb_project_staff_cost psc 
+			INNER JOIN tb_project project 
+			on psc.project_id = project.project_id 
+			inner join tb_staff_costs staff
+			on psc.staff_id = staff.staff_id	
+	</sql>
+	
+	<sql id="all_data_51">	
+		select psc.project_staffcost_id as obj_id, psc.project_id ,project.project_name,project.project_no,
+			'成本' as amount_type, '项目人员成本' as business_type,  '51' as business_sort,
+			 psc.all_amount as amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
+			staff.staff_name  as business_name	, '' as type_id , psc.build_datetime
+			from tb_project_staff_cost psc 
+			INNER JOIN tb_project project 
+			on psc.project_id = project.project_id 
+			inner join tb_staff_costs staff
+			on psc.staff_id = staff.staff_id	
+	</sql>
+	
+	<!-- 工资 -->
+	<sql id="all_data_60">	
+			select psc.salary_id as obj_id, psc.project_id ,project.project_name,project.project_no,
+			'成本' as amount_type, '人员工资' as business_type,  '60' as business_sort,
+			(
+				psc.should_salary+psc.endowment_insurance_bycompany+psc.medical_insurance_bycompany+
+				psc.losejob_insurance_bycompany+psc.maternity_insurance_bycompany+psc.jobharm_insurance_bycompany+
+				psc.reservefund_bypcompany+psc.overdue_tax_salary+psc.actual_bonus
+			) as amount,  psc.salary_month as use_month ,
+			DATE_ADD(str_to_date(psc.salary_month*100+20,'%Y%m%d'),INTERVAL 1 month) as pay_date, 
+			'' as otherdesc, psc.description as description,	
+			staff.staff_name  as business_name	, psc.staff_id as type_id , psc.build_datetime
+			from tb_salary psc 
+			INNER JOIN vb_project project 
+			on psc.project_id = project.project_id 
+			inner join tb_staff_costs staff
+			on psc.staff_id = staff.staff_id	
+			and psc.verify_userid is not null
+	</sql>
+	
+	
+	
+	 
+
+</mapper>

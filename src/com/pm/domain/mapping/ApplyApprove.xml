@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ApplyApproveMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.ApplyApprove" id="applyApproveMap" />
+	
+	
+
+
+	
+	<select id="needHandle" parameterType="com.pm.domain.business.ApplyApprove" resultMap="applyApproveMap">
+		SELECT * FROM tb_apply_approve  where delete_flag='0'  
+		and data_id =  #{data_id}
+		and data_type =  #{data_type}
+		and operation_type = '1' 
+		and need_approve = '1'
+		and delete_flag='0'  
+		order by operatioin_time desc		
+	</select>	
+	
+	<select id="queryByDataId" parameterType="com.pm.domain.business.ApplyApprove" resultMap="applyApproveMap">
+		SELECT * FROM tb_apply_approve  where 
+		data_id =  #{data_id}
+		and data_type =  #{data_type}
+		order by operatioin_time desc
+	</select>	
+		
+	<insert id="addApplyApprove" parameterType="com.pm.domain.business.ApplyApprove">		 
+	  		insert into tb_apply_approve(
+				id, user_id, user_name, operatioin_time,operation_type,data_type,data_id,
+			  	description,need_approve,approve_result,delete_flag
+			)values(
+		  		#{id},#{user_id},#{user_name},#{operatioin_time},#{operation_type},#{data_type},#{data_id},
+		  		#{description},#{need_approve},#{approve_result},#{delete_flag}
+		  	)
+	</insert>
+	
+	
+	<update id="updateApplyApprove" parameterType="com.pm.domain.business.ApplyApprove">
+		update tb_apply_approve set  
+		need_approve =#{need_approve} 
+		where id = #{id} 
+	</update>
+		
+		
+		
+	<update id="deleteApplyApprove" parameterType="com.pm.domain.system.Dept">		
+		update tb_apply_approve set  
+		delete_flag = '1' 
+		where id = #{id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+	 
+
+</mapper>

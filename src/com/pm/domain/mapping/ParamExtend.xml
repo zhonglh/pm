@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ParamExtendMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	
+	<resultMap type="com.pm.domain.business.ParamExtend" id="paramExtendMap" />
+	
+
+	
+	<update id="updateParamExtend" parameterType="com.pm.domain.business.ParamExtend">
+		update tb_param_extend set  
+		type1 = #{type1},
+		realVal = #{realVal},
+		processor = #{processor},
+		expression = #{expression}
+		where param_id = #{param_id} 
+	</update>
+
+	
+	<select id="queryAllParamExtend" parameterType="com.pm.domain.business.ParamExtend" resultMap="paramExtendMap">
+		select * from tb_param_extend where 1 = 1 
+		<if test="group1 != null and group1 != ''">
+			and group1 =  #{group1} 
+		</if>
+		<if test="group2 != null and group2 != ''">
+			and group2 =  #{group2} 
+		</if>
+		order by param_id
+	</select>
+	
+
+	 
+
+</mapper>

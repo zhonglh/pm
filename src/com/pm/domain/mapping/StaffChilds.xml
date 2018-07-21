@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="StaffChildsMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.StaffChilds" id="staffChildsMap" />
+
+
+
+	<!-- 调用存储过程 -->
+	<select id="processStaffChilds" parameterType="Map" statementType="CALLABLE" >
+			{call pro_staff_childlist(
+				#{pro_staff_id,jdbcType=VARCHAR,mode=IN}
+			)}	
+	</select>
+
+
+	<delete id="deleteStaffChilds" parameterType="com.pm.domain.business.StaffChilds" >
+		delete from  tb_staff_childs
+		where staff_id=#{staff_id} or child_id =#{staff_id}
+	</delete>
+
+</mapper>

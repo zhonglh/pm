@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProjectExpendMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+
+
+	<resultMap type="com.pm.domain.business.ProjectExpend" id="projectExpendMap" />
+	
+	
+	
+	<select id="getProjectExpend" parameterType="com.pm.domain.business.ProjectExpend" resultMap="projectExpendMap">				
+		select pe.* ,project.project_name,project.project_no		
+		from tb_project_expend pe 
+		INNER JOIN vb_project project 
+		on pe.project_id = project.project_id 
+		where pe.project_expend_id = #{project_expend_id}
+	</select>
+	
+	
+	
+		
+		
+	<insert id="addProjectExpend" parameterType="com.pm.domain.business.ProjectExpend">
+	 	 insert into tb_project_expend
+		 (
+		 	project_expend_id, project_id,pay_amount, sub_contractor_name, sub_contractor_no,invoiceno,expend_object,
+		  	use_month,pay_date,amount,description,build_datetime,build_username,build_userid,delete_flag
+		)values  (
+			#{project_expend_id}, #{project_id},#{pay_amount},#{sub_contractor_name}, #{sub_contractor_no}, #{invoiceno}, #{expend_object}, 
+		  	#{use_month},#{pay_date}, #{amount},#{description}, #{build_datetime}, #{build_username}, #{build_userid}, #{delete_flag}
+		 )
+	</insert>
+	
+	
+	<update id="updateProjectExpend" parameterType="com.pm.domain.business.ProjectExpend">
+		update tb_project_expend set 
+		project_id =  #{project_id},
+		sub_contractor_name =  #{sub_contractor_name},
+		sub_contractor_no =  #{sub_contractor_no},
+		expend_object =  #{expend_object},
+		invoiceno =  #{invoiceno},
+		use_month =  #{use_month},		
+		amount =  #{amount},
+		description =  #{description}
+		where project_expend_id = #{project_expend_id}
+		and verify_userid is null
+		and delete_flag = '0'
+	
+	</update>
+	
+
+
+	<update id="doPay" parameterType="com.pm.domain.business.ProjectExpend">
+		update tb_project_expend set 
+		invoiceno  = #{invoiceno},
+		pay_date  = #{pay_date},
+		pay_amount = #{pay_amount}
+		where project_expend_id = #{project_expend_id}
+		and delete_flag = '0'
+	
+	</update>
+	
+
+		
+	<update id="verifyProjectExpend" parameterType="com.pm.domain.business.ProjectExpend">
+		update tb_project_expend set 
+		verify_userid = #{verify_userid},
+		verify_username = #{verify_username},
+		verify_datetime = #{verify_datetime}
+		where project_expend_id = #{project_expend_id}
+		and verify_userid is null
+		and delete_flag = '0' 
+	</update>	
+	
+	
+	
+	<update id="unVerifyProjectExpend" parameterType="com.pm.domain.business.ProjectExpend">
+		update tb_project_expend set 
+		verify_userid = null,
+		verify_username = null,
+		verify_datetime = null
+		where project_expend_id = #{project_expend_id}
+		and verify_userid is not null
+		and delete_flag = '0' 
+	</update>	
+		
+		
+	<delete id="deleteProjectExpend" parameterType="com.pm.domain.business.ProjectExpend">		
+		delete from  tb_project_expend
+		where project_expend_id = #{project_expend_id} 
+		and verify_userid is null
+		and delete_flag = '0'
+	</delete>
+	
+	
+	
+			
+	<select id="queryProjectExpendByPager_mysql" parameterType="map"   resultMap="projectExpendMap">
+		<include refid="projectExpendPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryProjectExpendByCount_mysql" parameterType="map"  resultType="map" >
+		SELECT COUNT(*) as COUNT1 , sum(amount) as SUM1 FROM (
+			<include refid="projectExpendPagerSql"/>
+		) c		
+	</select>   
+   
+
+	<sql id="projectExpendPagerSql">			
+		select pe.* ,project.project_name,project.project_no, aa.need_approve 	
+		from tb_project_expend pe 
+		INNER JOIN vb_project project 
+		on pe.project_id = project.project_id 
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'PROJECT_EXPEND' group by data_id) aa
+		on pe.project_expend_id = aa.data_id
+		WHERE pe.delete_flag = '0' 
+		
+		
+		<if test="ProjectExpend.dept_id != null and ProjectExpend.dept_id != ''">
+			AND project.deptid =  #{ProjectExpend.dept_id}  
+		</if>	
+		
+		<if test="ProjectExpend.project_id != null and ProjectExpend.project_id != ''">
+			AND project.project_id = #{ProjectExpend.project_id}
+		</if>
+		
+		<if test="ProjectExpend.project_name != null and ProjectExpend.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{ProjectExpend.project_name}),'%')  
+		</if>
+		
+		<if test="ProjectExpend.project_no != null and ProjectExpend.project_no != ''">
+			AND project.project_no like concat('%',TRIM(#{ProjectExpend.project_no}),'%')  
+		</if>
+		
+		
+		<if test="ProjectExpend.sub_contractor_name != null and ProjectExpend.sub_contractor_name != ''">
+			AND pe.sub_contractor_name like concat('%',TRIM(#{ProjectExpend.sub_contractor_name}),'%')  
+		</if>
+		
+		
+		<if test="ProjectExpend.invoiceno != null and ProjectExpend.invoiceno != ''">
+			AND pe.invoiceno like concat('%',TRIM(#{ProjectExpend.invoiceno}),'%')  
+		</if>
+		
+		<if test="ProjectExpend.use_month != 0 ">
+			AND pe.use_month = #{ProjectExpend.use_month}
+		</if>
+		
+		
+		<if test="ProjectExpend.use_month1 != 0 ">
+			<![CDATA[
+			AND pe.use_month >= #{ProjectExpend.use_month1}
+			]]>
+		</if>
+		<if test="ProjectExpend.use_month2 != 0 ">
+			<![CDATA[
+			AND pe.use_month <= #{ProjectExpend.use_month2}
+			]]>
+		</if>
+		
+		
+		
+		<if test="ProjectExpend.pay_date1 != null ">
+			<![CDATA[
+			AND pe.pay_date >= #{ProjectExpend.pay_date1}
+			]]>
+		</if>
+		<if test="ProjectExpend.pay_date2 != null ">
+			<![CDATA[	
+			AND pe.pay_date <= #{ProjectExpend.pay_date2}
+			]]>
+		</if>
+				
+		
+		<if test="ProjectExpend.verify_flag != null and ProjectExpend.verify_flag != ''">
+			<if test="ProjectExpend.verify_flag == 1">
+					and pe.verify_userid is not null 
+			</if>
+			<if test="ProjectExpend.verify_flag == 2">			
+					and pe.verify_userid is null
+			</if>
+		</if>				
+		
+		<include refid="ProjectAuthMapping.permission"/>
+		
+		
+		order by pe.use_month  desc,project.build_datetime desc,pe.build_datetime desc 
+	
+	</sql>	
+	
+	 
+
+</mapper>

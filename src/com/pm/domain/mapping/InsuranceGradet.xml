@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InsuranceGradeMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+
+
+	<resultMap type="com.pm.domain.business.InsuranceGrade" id="insuranceGradeMap" />
+	
+	
+	
+	<select id="isExist" parameterType="com.pm.domain.business.InsuranceGrade" resultMap="insuranceGradeMap">	
+		select * from tb_insurance_grade 
+		where insurance_radix = #{insurance_radix} 
+		and delete_flag = '0' 
+		<if test="insurance_grade_id != null and insurance_grade_id != ''">
+		<![CDATA[
+			and insurance_grade_id <> #{insurance_grade_id}
+		]]>
+		</if>	
+	</select>
+	
+	<select id="queryInsuranceGrade" parameterType="map" resultMap="insuranceGradeMap">		
+		select *
+		from tb_insurance_grade 
+		where 1 = 1 		
+		<if test="insurance_grade_id != null and insurance_grade_id != ''">
+		and insurance_grade_id = #{insurance_grade_id}	
+		</if>
+		<if test="insurance_radix != null and insurance_radix != ''">
+		and insurance_radix = #{insurance_radix}	
+		</if>		
+		<if test="delete_flag != null and delete_flag != ''">
+		and delete_flag = #{delete_flag}
+		</if>
+		order by insurance_radix
+	</select>
+		
+	
+	<insert id="addInsuranceGrade" parameterType="com.pm.domain.business.InsuranceGrade">
+		insert into tb_insurance_grade(
+			insurance_grade_id,insurance_radix,base_cardinal, endowment_insurance_bypersonal, medical_insurance_bypersonal, 
+			losejob_insurance_bypersonal, reservefund_bypersonal,
+			incometax_bypersonal,endowment_insurance_bycompany, medical_insurance_bycompany, losejob_insurance_bycompany, maternity_insurance_bycompany,
+			jobharm_insurance_bycompany,reservefund_bypcompany,
+			build_datetime,build_userid,build_username,delete_flag
+		)
+		values(
+			#{insurance_grade_id}, #{insurance_radix},#{base_cardinal}, #{endowment_insurance_bypersonal}, #{medical_insurance_bypersonal},
+			#{losejob_insurance_bypersonal}, #{reservefund_bypersonal}, 
+			#{incometax_bypersonal}, #{endowment_insurance_bycompany}, #{medical_insurance_bycompany},#{losejob_insurance_bycompany}, #{maternity_insurance_bycompany}, 
+			#{jobharm_insurance_bycompany}, #{reservefund_bypcompany},
+			#{build_datetime},#{build_userid},#{build_username},#{delete_flag}
+		)
+	</insert>	
+	
+	
+	<update id="updateInsuranceGrade" parameterType="com.pm.domain.business.InsuranceGrade">
+		update tb_insurance_grade set  
+		insurance_radix = #{insurance_radix},
+		base_cardinal = #{base_cardinal},
+		endowment_insurance_bypersonal = #{endowment_insurance_bypersonal},
+		medical_insurance_bypersonal = #{medical_insurance_bypersonal},
+		losejob_insurance_bypersonal = #{losejob_insurance_bypersonal},
+		reservefund_bypersonal =  #{reservefund_bypersonal},
+		incometax_bypersonal = #{incometax_bypersonal},
+		endowment_insurance_bycompany = #{endowment_insurance_bycompany},
+		medical_insurance_bycompany = #{medical_insurance_bycompany},
+		losejob_insurance_bycompany =#{losejob_insurance_bycompany} ,		
+		maternity_insurance_bycompany = #{maternity_insurance_bycompany},
+		jobharm_insurance_bycompany = #{jobharm_insurance_bycompany},
+		reservefund_bypcompany = #{reservefund_bypcompany}
+		where insurance_grade_id = #{insurance_grade_id}  
+	</update>
+		
+		
+		
+	<update id="deleteInsuranceGrade" parameterType="com.pm.domain.business.InsuranceGrade">		
+		update tb_insurance_grade set 
+		delete_flag = '1',
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where insurance_grade_id = #{insurance_grade_id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RoleMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.system.Role" id="roleMap">
+		<result column="role_id" property="role_id"/>
+		<result column="role_name" property="role_name"/>
+		<result column="data_range" property="data_range"/>
+		<result column="role_type" property="role_type"/>
+		<result column="build_time" property="build_time"/>
+		<result column="build_userid" property="build_userid"/>
+		<result column="build_username" property="build_username"/>
+		<result column="delete_flag" property="delete_flag"/>
+		<result column="delete_datetime" property="delete_datetime"/>
+		<result column="delete_userid" property="delete_userid"/>
+		<result column="delete_username" property="delete_username"/>
+	</resultMap>
+
+
+
+	<resultMap type="com.pm.domain.system.Permit" id="permitMap">
+		<result column="permit_id" property="permit_id"/>
+		<result column="permit_name" property="permit_name"/>
+		<result column="permit_name_i18n" property="permit_name_i18n"/>
+		<result column="group_no" property="group_no"/>
+		<result column="group_code_i18n" property="group_code_i18n"/>		
+	</resultMap>
+	
+	<resultMap type="com.pm.vo.UserPermit" id="userPermitMap">
+		<result column="permit_id" property="permit_id"/>
+		<result column="permit_name" property="permit_name"/>
+		<result column="permit_name_i18n" property="permit_name_i18n"/>
+		<result column="group_no" property="group_no"/>
+		<result column="group_code_i18n" property="group_code_i18n"/>	
+		<result column="data_range" property="range"/>	
+		<result column="user_id" property="user_id"/>	
+		<result column="user_deptid" property="user_deptid"/>		
+	</resultMap>
+
+	
+	
+
+	<select id="isExist" parameterType="com.pm.domain.system.Role" resultMap="roleMap">
+		SELECT * FROM ts_role
+		where delete_flag = '0' 
+		and role_name =  #{role_name}		
+		<if test="role_id != null and role_id != ''">
+			<![CDATA[
+				and role_id <> #{role_id}
+			]]>
+		</if>
+	</select>			
+	
+	<insert id="addRole" parameterType="com.pm.domain.system.Role">		 
+	  insert into ts_role
+		  (role_id, role_name,  data_range,role_type,build_time,build_userid,build_username,delete_flag)
+			values
+		  (#{role_id}, #{role_name}, #{data_range}, #{role_type},#{build_time},#{build_userid},#{build_username},#{delete_flag})
+	</insert>
+	
+
+	<insert id="addRolePermit" parameterType="com.pm.domain.system.Role">		 
+	  insert into ts_role_permit
+		  (role_id, permit_id)
+			values
+		  (#{role_id},#{permit_id})
+	</insert>	
+	
+	
+	<update id="updateRole" parameterType="com.pm.domain.system.Role">
+		update ts_role set  
+		role_name = #{role_name},
+		data_range = #{data_range}
+		where role_id = #{role_id} 
+	</update>
+	
+	<delete id="deleteRolePermit" parameterType="com.pm.domain.system.Role">
+		delete from ts_role_permit where role_id = #{role_id}  and permit_id = #{permit_id} 
+	</delete>
+		
+	<delete id="deleteAllRolePermit" parameterType="com.pm.domain.system.Role">
+		delete from ts_role_permit where role_id = #{role_id} 
+	</delete>
+		
+	<update id="deleteRole" parameterType="com.pm.domain.system.Role">		
+		update ts_role set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where role_id = #{role_id} 
+		and delete_flag = '0' 
+	</update>
+		
+		
+		
+
+	<select id="getRole" parameterType="com.pm.domain.system.Role" resultMap="roleMap">
+		SELECT * FROM ts_role
+		where role_id = #{role_id}
+	</select>			
+	
+	
+	<select id="queryRole" parameterType="com.pm.domain.system.Role" resultMap="roleMap">
+		SELECT *
+		FROM ts_role
+		where 1=1 and delete_flag = '0'  
+		<if test="role_name != null and role_name != ''">
+			AND role_name like concat('%',TRIM(#{role_name}),'%')  
+		</if>
+		order by build_time 
+	</select>		
+	
+		
+	<select id="queryRoleByUser" parameterType="com.pm.domain.system.User" resultMap="roleMap">
+		SELECT role.*
+		FROM ts_user_role ur inner join  ts_role role on ur.role_id = role.role_id 
+		where 1=1 and role.delete_flag = '0'  
+		and ur.user_id = #{user_id}		
+		order by role.build_time 
+	</select>	
+	
+	
+	<select id="getAllPermics"  resultMap="permitMap">
+		SELECT * FROM ts_permit order by group_no , permit_id 
+	</select>
+	
+	<select id="getPermicsByRole" parameterType="com.pm.domain.system.Role" resultMap="permitMap">
+		SELECT p.* FROM ts_role_permit rp , ts_permit p 
+		where rp.permit_id = p.permit_id 
+		and rp.role_id = #{role_id}		
+		order by p.permit_id 
+	</select>		
+	
+
+	<select id="queryPermitsByUser" parameterType="com.pm.domain.system.User" resultMap="userPermitMap">
+		select p.*,r.data_range, user.user_id,user.user_deptid , user.staff_id 
+		from ts_user user,ts_user_role ur , ts_role r , ts_role_permit rp, ts_permit p
+		where user.user_id = ur.user_id
+		and ur.role_id = r.role_id 
+		and r.role_id = rp.role_id 
+		and rp.permit_id  = p.permit_id
+		and ur.user_id = #{user_id} 
+		and r.delete_flag = '0' 
+		and user.delete_flag = '0'
+		<if test="permit_id != null and permit_id != ''">
+			AND p.permit_id =  #{permit_id}
+		</if>
+		order by r.data_range 
+	</select>
+			
+
+	 
+
+</mapper>

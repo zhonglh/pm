@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SalaryMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.Salary" id="salaryMap" />
+	
+	
+	
+	<select id="getSalaryByProjectMonth" parameterType="com.pm.domain.business.Salary" resultMap="salaryMap">
+		select presalary.staff_id, presalary.project_id,	presalary.salary_month,		presalary.should_work_days,
+		presalary.work_days,	presalary.paid_leave_days,	presalary.business_trip_days,
+		presalary.personal_leave_days,		presalary.sick_leave_days,	presalary.neglect_work_days,
+		presalary.late_days,presalary.weekend_overtime_days,
+		CONCAT(presalary.description,ifnull(pmss.description,'')) as description  ,	
+				
+		salary.actual_bonus,salary.overdue_tax_salary ,	
+		staff.staff_name,staff.computer_allowance, staff.meal_allowance,staff.confirmation_date,			
+		staff.extra_expend ,	
+			
+		<![CDATA[
+		case when staff.confirmation_date is null then 0 when (#{date1} < staff.confirmation_date && #{date2} >= staff.confirmation_date ) then 1 else 0 end showhl,
+		case when staff.confirmation_date is null ||(staff.confirmation_date is not null && #{date1} >= staff.confirmation_date ) then staff.basic_salary else staff.tryout_basic_salary end as basic_salary,
+		case when staff.confirmation_date is null ||(staff.confirmation_date is not null && #{date1} >= staff.confirmation_date ) then staff.post_salary else staff.tryout_post_salary end as post_salary,
+		case when staff.confirmation_date is null ||(staff.confirmation_date is not null && #{date1} >= staff.confirmation_date ) then staff.performance_allowances else staff.tryout_performance_allowances end as performance_allowances,
+		
+		]]>
+		
+		case when salary.travel_allowance is null then staff.travel_allowance else salary.travel_allowance end as travel_allowance,
+		case when salary.tax_bonus is null then staff.project_allowance else salary.tax_bonus end as tax_bonus,
+		case when salary.actual_extra_allowance is null then staff.extra+ifnull(pmss.amount,0) else salary.actual_extra_allowance end as actual_extra_allowance,
+		
+		case when salary.pension_insurance is null then    staff.endowment_insurance_bypersonal else salary.pension_insurance end as pension_insurance,
+		case when salary.medical_Insurance is null then    staff.medical_insurance_bypersonal else salary.medical_Insurance end as medical_Insurance,
+		case when salary.unemployment_insurance is null then    staff.losejob_insurance_bypersonal else salary.unemployment_insurance end as unemployment_insurance,
+		case when salary.accumulation_fund is null then   staff.reservefund_bypersonal else salary.accumulation_fund end as accumulation_fund,
+		
+		case when salary.endowment_insurance_bycompany is null then   staff.endowment_insurance_bycompany else salary.endowment_insurance_bycompany end as endowment_insurance_bycompany,
+		case when salary.medical_insurance_bycompany is null then   staff.medical_insurance_bycompany else salary.medical_insurance_bycompany end as medical_insurance_bycompany,
+		case when salary.losejob_insurance_bycompany is null then   staff.losejob_insurance_bycompany else salary.losejob_insurance_bycompany end as losejob_insurance_bycompany,
+		case when salary.maternity_insurance_bycompany is null then   staff.maternity_insurance_bycompany else salary.maternity_insurance_bycompany end as maternity_insurance_bycompany,
+		case when salary.jobharm_insurance_bycompany is null then   staff.jobharm_insurance_bycompany else salary.jobharm_insurance_bycompany end as jobharm_insurance_bycompany,
+		case when salary.reservefund_bypcompany is null then   staff.reservefund_bypcompany else salary.reservefund_bypcompany end as reservefund_bypcompany 
+		
+		from (
+			select staff_id, '${project_id}' as  project_id, max(attendance_month) as  salary_month,
+			(max(should_work_days)+sum(legal_holidays)) as should_work_days,
+			sum(work_days) as work_days,
+			sum(legal_holidays+swopped_holidays+annual_leave_days) as paid_leave_days,
+			sum(business_trip_days) as business_trip_days,
+			sum(personal_leave_days) as personal_leave_days,
+			sum(sick_leave_days) as sick_leave_days,
+			sum(neglect_work_days) as neglect_work_days,
+			sum(late_days) as late_days,
+			sum(weekend_overtime_days) as weekend_overtime_days,
+			group_CONCAT(remark) as description 
+			from (
+			<include refid="projectComputeSalaryPagerSql"/>
+			) salary1 group by staff_id
+		)presalary left join ( select * from tb_salary where delete_flag='0' and  salary_month = #{salary_pre_month} ) salary 
+		on presalary.staff_id = salary.staff_id 
+		inner join tb_staff_costs staff 
+		on presalary.staff_id = staff.staff_id
+		and staff.outsource_staff = '0' 
+		
+		left join (
+			select staff_id ,  sum(amount) as amount , group_CONCAT(description) as description from (
+					select base.staff_id , ss.amount			,
+					case when ss.description is null then CONCAT(supply_type,CAST(ss.amount AS char)) else ss.description end description
+					from personnel_monthly_base base 
+					join personnel_monthly_salarysupply ss
+					on base.id = ss.id 
+					where base.verify_userid is not null  and base.the_month = #{salary_month}
+					and base.staff_id in(
+						select staff_id from tb_work_attendance 
+						where attendance_month = #{salary_month}
+						and project_id = #{project_id} and delete_flag ='0'
+					)
+				) aa group by staff_id 
+		) pmss on presalary.staff_id = pmss.staff_id 
+		order by staff.build_datetime, staff.import_order
+	
+	</select>	
+	
+	
+	
+	<sql id="projectComputeSalaryPagerSql">
+		select * from tb_work_attendance 
+		where attendance_month = #{salary_month}
+		and delete_flag ='0' 
+		and staff_id in (
+			select staff_id from tb_work_attendance 
+			where attendance_month = #{salary_month}
+			and project_id = #{project_id}
+			and concat(staff_id,work_days) in(	
+						
+				select concat(staff_id , max(work_days))
+				from tb_work_attendance 
+				where attendance_month = #{salary_month}
+				and staff_id in (
+					select staff_id from tb_work_attendance 
+					where attendance_month = #{salary_month}
+					and project_id = #{project_id} and delete_flag ='0'
+				) group by staff_id			
+			
+			) and staff_id not in (
+				select staff_id from tb_salary where salary_month =  #{salary_month}  and delete_flag ='0'
+			)
+		)
+	</sql>
+	
+	<select id="getSalary" parameterType="com.pm.domain.business.Salary" resultMap="salaryMap">
+		SELECT salary.* ,project.project_name, project.project_no, 
+		sc.staff_name , sc.computer_allowance, sc.meal_allowance,sc.confirmation_date  ,						
+		dd_ct.dic_data_name as contract_type_name,	
+		dd_ca.dic_data_name as contract_attach_name
+		
+		FROM tb_salary  salary 
+		inner join vb_project project 
+		on salary.project_id = project.project_id
+		inner join tb_staff_costs sc 
+		on salary.staff_id = sc.staff_id				
+		left join ts_dic_data dd_ct on sc.contract_type = dd_ct.id
+		left join ts_dic_data dd_ca on sc.contract_attach = dd_ca.id	
+		where salary.salary_id = #{salary_id}
+	</select>	
+		
+	<insert id="addSalary" parameterType="com.pm.domain.business.Salary">		 
+		insert into tb_salary(
+		  	salary_id, staff_id, project_id, salary_month,basic_salary,post_salary,performance_allowances,
+			travel_allowance,tax_bonus,should_work_days,work_days,paid_leave_days,
+		  	business_trip_days, personal_leave_days, sick_leave_days, neglect_work_days,
+		  	late_days, weekend_overtime_days, sick_leave_salary, neglect_work_salary,late_salary,
+		  	actual_travel_allowance, actual_computer_allowance, actual_extra_allowance, overtime_allowance,meals_allowance,
+		  	actual_tax_bonus, should_salary, pension_insurance, unemployment_insurance,medical_Insurance,
+		  	accumulation_fund, deductions_cost, taxable_income, personal_income_tax,actual_bonus,
+		  	endowment_insurance_bycompany,medical_insurance_bycompany,losejob_insurance_bycompany,maternity_insurance_bycompany,
+		  	jobharm_insurance_bycompany,reservefund_bypcompany,overdue_tax_salary, actual_salary,extra_expend,description,
+		  	build_username,build_userid,build_datetime,delete_flag
+		)values(
+			#{salary_id}, #{staff_id},#{project_id}, #{salary_month}, #{basic_salary},#{post_salary},#{performance_allowances},
+			#{travel_allowance}, #{tax_bonus},#{should_work_days}, #{work_days}, #{paid_leave_days},
+			#{business_trip_days}, #{personal_leave_days},#{sick_leave_days}, #{neglect_work_days},
+			#{late_days}, #{weekend_overtime_days},#{sick_leave_salary}, #{neglect_work_salary}, #{late_salary},			
+			#{actual_travel_allowance}, #{actual_computer_allowance},#{actual_extra_allowance}, #{overtime_allowance}, #{meals_allowance},			
+			#{actual_tax_bonus}, #{should_salary},#{pension_insurance}, #{unemployment_insurance}, #{medical_Insurance},			
+			#{accumulation_fund}, #{deductions_cost},#{taxable_income}, #{personal_income_tax}, #{actual_bonus},
+			#{endowment_insurance_bycompany},#{medical_insurance_bycompany},#{losejob_insurance_bycompany},#{maternity_insurance_bycompany},
+			#{jobharm_insurance_bycompany},#{reservefund_bypcompany},#{overdue_tax_salary}, #{actual_salary},#{extra_expend},#{description},
+			#{build_username},#{build_userid},#{build_datetime},#{delete_flag} 
+		)
+	</insert>
+	
+	
+	<update id="updateSalary" parameterType="com.pm.domain.business.Salary">			
+		
+		update tb_salary set  
+		basic_salary = #{basic_salary},
+		post_salary = #{post_salary},
+		performance_allowances = #{performance_allowances},
+		travel_allowance =#{travel_allowance} ,
+		tax_bonus =#{tax_bonus} ,
+		should_work_days =#{should_work_days} ,
+		work_days =#{work_days} ,
+		business_trip_days =#{business_trip_days} ,
+		personal_leave_days =#{personal_leave_days} ,
+		sick_leave_days =#{sick_leave_days} ,
+		neglect_work_days =#{neglect_work_days} ,		
+		
+		late_days =#{late_days} ,
+		weekend_overtime_days =#{weekend_overtime_days} ,
+		sick_leave_salary =#{sick_leave_salary} ,
+		neglect_work_days =#{neglect_work_days} ,
+		late_salary =#{late_salary} ,
+		actual_travel_allowance =#{actual_travel_allowance} ,
+		actual_computer_allowance =#{actual_computer_allowance} ,
+		actual_extra_allowance =#{actual_extra_allowance} ,
+		overtime_allowance =#{overtime_allowance} ,
+		meals_allowance =#{meals_allowance} ,
+		
+		actual_tax_bonus =#{actual_tax_bonus} ,
+		should_salary =#{should_salary} ,		
+		pension_insurance =#{pension_insurance} ,
+		unemployment_insurance =#{unemployment_insurance} ,
+		medical_Insurance =#{medical_Insurance} ,
+		
+		
+		endowment_insurance_bycompany = #{endowment_insurance_bycompany},
+		medical_insurance_bycompany = #{medical_insurance_bycompany},
+		losejob_insurance_bycompany = #{losejob_insurance_bycompany},
+		maternity_insurance_bycompany = #{maternity_insurance_bycompany},
+		jobharm_insurance_bycompany = #{jobharm_insurance_bycompany},
+		reservefund_bypcompany = #{reservefund_bypcompany},
+		
+		
+		accumulation_fund =#{accumulation_fund} ,
+		deductions_cost =#{deductions_cost} ,
+		taxable_income =#{taxable_income} ,
+		personal_income_tax =#{personal_income_tax} ,
+		actual_bonus =#{actual_bonus} ,
+		overdue_tax_salary =#{overdue_tax_salary} ,
+		actual_salary =#{actual_salary} ,
+		extra_expend = #{extra_expend} ,
+		description =#{description}
+		
+		where salary_id = #{salary_id} 
+		and verify_userid is null
+		
+	</update>
+		
+		
+		
+	<delete id="deleteSalary" parameterType="com.pm.domain.business.Salary">
+		delete from tb_salary 
+		where   verify_userid is null  
+		
+		
+		
+		<if test="(salary_id == null or salary_id != '') and (project_id == null or project_id == '') and salary_month == 0">
+			  and 1=2 
+		</if>
+		
+		<if test="salary_id != null and salary_id != ''">
+			  and salary_id = #{salary_id} 
+		</if>
+
+		<if test="project_id != null and project_id != ''">
+			  and  project_id = #{project_id}    
+		</if>	
+		
+		<if test="salary_month != 0">
+			and salary_month = #{salary_month}
+		</if>				
+		
+	</delete>
+	
+	<update id="verifySalary" parameterType="com.pm.domain.business.Salary">
+		update tb_salary 
+		set 
+		verify_username =  #{verify_username} ,
+		verify_userid =  #{verify_userid} ,
+		verify_datetime =  #{verify_datetime} 
+		where salary_id = #{salary_id} 
+		and verify_userid is null
+	</update>
+	
+	
+	
+	
+	<update id="unVerifySalary" parameterType="com.pm.domain.business.Salary">
+		update tb_salary 
+		set 
+		verify_username = null ,
+		verify_userid =  null,
+		verify_datetime =  null 
+		where salary_id = #{salary_id} 
+		and verify_userid is not null
+	</update>
+	
+	
+		
+	<select id="querySalaryByPager_mysql" parameterType="map"   resultMap="salaryMap">
+		<include refid="salaryPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="querySalaryByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="salaryPagerSql"/>
+		) c
+		
+	</select>	
+	
+	
+	
+	
+	
+	
+	
+	<select id="querySalaryGroupByPager_mysql" parameterType="map"   resultMap="salaryMap">		 
+	 	select project_id, salary_month ,count(*) as project_salary_number,count(verify_userid = '') as verify_number,
+	 	min(project_no) as project_no,min(project_name) as project_name, max(confirmation_date) as confirmation_date,
+	 	max(need_approve) as need_approve,
+		min(build_datetime) as build_datetime,min(build_username) as build_username
+	 	from(
+			<include refid="salaryPagerSql"/>
+		) att group by project_id, salary_month
+		order by salary_month desc ,project_id
+		LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="querySalaryGroupByCount_mysql" parameterType="map"  resultType="map" >
+		 SELECT COUNT(*) as COUNT1,sum(actual_salary) as SUM1 FROM (
+		 	select project_id, salary_month,sum(actual_salary) as actual_salary  from(
+			<include refid="salaryPagerSql"/>
+			) att group by project_id, salary_month
+		) c
+		
+	</select>	
+	
+	
+   
+   
+
+	<sql id="salaryPagerSql">
+		
+		SELECT salary.* ,project.project_name, project.project_no, sc.staff_name , aa.need_approve 	,
+		
+		<![CDATA[
+		case when sc.confirmation_date is null then 0 when (#{Salary.date1} < sc.confirmation_date && #{Salary.date2} >= sc.confirmation_date ) then 1 else 0 end showhl,		
+		]]>
+		
+						
+		dd_ct.dic_data_name as contract_type_name,	
+		dd_ca.dic_data_name as contract_attach_name,
+		sc.computer_allowance, sc.meal_allowance,sc.identity_card_number,sc.securty_unit,sc.open_account,sc.bank_card_number,sc.confirmation_date  
+		FROM tb_salary  salary 
+		inner join vb_project project 
+		on salary.project_id = project.project_id
+		inner join tb_staff_costs sc 
+		on salary.staff_id = sc.staff_id					
+		left join ts_dic_data dd_ct on sc.contract_type = dd_ct.id
+		left join ts_dic_data dd_ca on sc.contract_attach = dd_ca.id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'SALARY' group by data_id) aa
+		on salary.salary_id = aa.data_id	
+		WHERE salary.delete_flag = '0'		
+		
+		
+
+		<if test="Salary.salary_id != null and Salary.salary_id != ''">
+			AND salary.salary_id =  #{Salary.salary_id}  
+		</if>
+		
+		<if test="Salary.dept_id != null and Salary.dept_id != ''">
+			AND project.deptid =  #{Salary.dept_id}  
+		</if>	
+
+		<if test="Salary.project_id != null and Salary.project_id != ''">
+			AND salary.project_id =  #{Salary.project_id}  
+		</if>
+		
+		
+		<if test="Salary.project_name != null and Salary.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{Salary.project_name}),'%')  
+		</if>
+		
+		
+		<if test="Salary.salary_month != null and Salary.salary_month != 0 ">
+			<![CDATA[
+			AND salary.salary_month =  #{Salary.salary_month}  
+			]]>
+		</if>
+		
+		
+		<if test="Salary.salary_month1 != null and Salary.salary_month1 != 0 ">
+			<![CDATA[
+			AND salary.salary_month >=  #{Salary.salary_month1}  
+			]]>
+		</if>
+		
+		
+		<if test="Salary.salary_month2 != null and Salary.salary_month2 != 0 ">
+			<![CDATA[
+			AND salary.salary_month <=  #{Salary.salary_month2}  
+			]]>
+		</if>
+		
+		<if test="Salary.staff_id != null and Salary.staff_id != ''">
+			AND salary.staff_id =  #{Salary.staff_id}  
+		</if>
+		
+		
+		
+		<if test="Salary.staff_name != null and Salary.staff_name != ''">
+			AND sc.staff_name like concat('%',TRIM(#{Salary.staff_name}),'%')  
+		</if>
+		
+		
+		<if test="Salary.verify_flag != null and Salary.verify_flag != ''">
+			<if test="Salary.verify_flag == 1">
+					and salary.verify_userid is not null 
+			</if>
+			<if test="Salary.verify_flag == 2">			
+					and salary.verify_userid is null
+			</if>
+		</if>
+		
+		
+		<include refid="ProjectAuthMapping.permission"/>
+	
+		order by salary.salary_month desc, project.build_datetime desc,  sc.build_datetime, sc.import_order
+		
+	</sql>	
+	
+
+
+</mapper>

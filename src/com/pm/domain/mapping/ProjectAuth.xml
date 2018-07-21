@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProjectAuthMapping">
+
+	<sql id="permission">		
+		
+		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
+			
+			<if test="UserPermit.range == 1">
+				
+			</if>
+			<if test="UserPermit.range == 2">
+					<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+							and (project.sales_amount_deptid =  #{UserPermit.user_deptid} or project.exec_amount_deptid =  #{UserPermit.user_deptid} or project.deptid =  #{UserPermit.user_deptid}) 
+					</if>
+					<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">						
+						<if test="UserPermit.staff_id != null and UserPermit.staff_id != ''">						
+							and ( 
+								project.sales_userid = #{UserPermit.staff_id} or 
+								project.recruitment_userid = #{UserPermit.staff_id} or 
+								project.sales_userid = #{UserPermit.staff_id} or 
+								project.info_sources_userid = #{UserPermit.staff_id} or 
+								project.manage_userid = #{UserPermit.staff_id} or 
+								project.sales_after_userid = #{UserPermit.staff_id} or
+								project.approve_user_id = #{UserPermit.staff_id}
+							) 
+						</if>
+						
+						<if test="UserPermit.staff_id == null or UserPermit.staff_id == ''">	
+							and 1!=1
+						</if>
+					</if>
+			</if>
+			<if test="UserPermit.range == 3">
+					<if test="UserPermit.staff_id != null and UserPermit.staff_id != ''">
+						and ( 
+							project.sales_userid = #{UserPermit.staff_id} or 
+							project.recruitment_userid = #{UserPermit.staff_id} or 
+							project.sales_userid = #{UserPermit.staff_id} or 
+							project.info_sources_userid = #{UserPermit.staff_id} or 
+							project.manage_userid = #{UserPermit.staff_id} or 
+							project.sales_after_userid = #{UserPermit.staff_id} or
+							project.approve_user_id = #{UserPermit.staff_id}
+						) 
+					</if>
+					
+					<if test="UserPermit.staff_id == null or UserPermit.staff_id == ''">	
+						and 1!=1
+					</if>
+			</if>
+			
+		</if>
+		
+		<if test="UserPermit == null or UserPermit.range == null or UserPermit.range == ''">
+			and 1 != 1
+		</if>
+		
+	
+	</sql>	
+	 
+
+</mapper>

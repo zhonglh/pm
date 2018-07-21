@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MenuMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.system.Menu" id="menuMap">
+		<result column="menu_id" property="menu_id"/>
+		<result column="menu_name" property="menu_name"/>
+		<result column="menu_i18n_name" property="menu_i18n_name"/>
+		<result column="menulevel" property="menulevel"/>
+		<result column="pmenu_id" property="pmenu_id"/>
+		<result column="menu_url" property="menu_url"/>
+		<result column="order_no" property="order_no"/>
+		<result column="menu_type" property="menu_type"/>
+		<result column="leaf_flag" property="leaf_flag"/>
+	</resultMap>
+
+
+	<select id="queryMenusByUserId" parameterType="com.pm.domain.system.User" resultMap="menuMap">
+	   select * from (
+		select m.* from ts_user_role ur , ts_role r , ts_role_permit rp,
+		ts_permit p,ts_menu_permit mp, ts_menu m
+		where ur.role_id = r.role_id 
+		and r.role_id = rp.role_id 
+		and rp.permit_id  = p.permit_id
+		and p.permit_id = mp.permit_id
+		and mp.menu_id = m.menu_id
+		and ur.user_id = #{user_id} 
+		and r.delete_flag = '0' 
+		order by m.pmenu_id , m.order_no
+		) menu 
+		union
+		select * from ts_menu where menu_id in(
+			select m.pmenu_id from ts_user_role ur , ts_role r , ts_role_permit rp,
+			ts_permit p,ts_menu_permit mp, ts_menu m
+			where ur.role_id = r.role_id 
+			and r.role_id = rp.role_id 
+			and rp.permit_id  = p.permit_id
+			and p.permit_id = mp.permit_id
+			and mp.menu_id = m.menu_id
+			and ur.user_id = #{user_id}
+			and r.delete_flag = '0' 			
+		) order by order_no 
+	</select>
+	 
+
+</mapper>

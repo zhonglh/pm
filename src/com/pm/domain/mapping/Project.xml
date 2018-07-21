@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProjectMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.Project" id="projectMap" />
+
+
+	<resultMap type="com.pm.domain.business.ProjectStaff" id="projectStaffMap" />
+	
+
+
+	<resultMap type="com.pm.domain.business.ProjectContract" id="projectContractMap" />
+	
+	
+	
+	<select id="isExist" parameterType="com.pm.domain.business.Project" resultMap="projectMap">
+		SELECT * FROM tb_project  where delete_flag='0'  
+		<if test="project_name != null and project_name != ''">
+			and project_name = #{project_name} 
+		</if>
+		<if test="project_no != null and project_no != ''">
+			and project_no = #{project_no} 
+		</if>
+		<if test="project_id != null and project_id != ''">
+		<![CDATA[
+			and project_id <> #{project_id}
+		]]>
+		</if>
+		
+	</select>	
+
+	
+	<select id="queryProjectStaff" parameterType="com.pm.domain.business.Project"   resultMap="projectStaffMap">
+		select projectstaff.*,staffcosts.staff_name , project.project_name 
+		from  tb_project_staff projectstaff inner join tb_staff_costs staffcosts
+		on projectstaff.staff_id = staffcosts.staff_id		
+		inner join tb_project project 
+		on projectstaff.project_id = project.project_id
+		where projectstaff.project_id = #{project_id} 
+		order by projectstaff.delete_flag , projectstaff.leave_project_datetime ,projectstaff.build_datetime 
+	</select>	
+	
+	
+	
+	<select id="queryProjectStaffByStaff" parameterType="com.pm.domain.business.StaffCost"   resultMap="projectStaffMap">
+		select projectstaff.*,staffcosts.staff_name , project.project_name 
+		from  tb_project_staff projectstaff inner join tb_staff_costs staffcosts
+		on projectstaff.staff_id = staffcosts.staff_id		
+		inner join tb_project project 
+		on projectstaff.project_id = project.project_id	
+		where projectstaff.staff_id = #{staff_id} 
+		order by projectstaff.delete_flag , projectstaff.leave_project_datetime desc ,projectstaff.build_datetime 
+	</select>	
+	
+	
+	<select id="getProjectStaff" parameterType="com.pm.domain.business.ProjectStaff"   resultMap="projectStaffMap">
+		select projectstaff.*,staffcosts.staff_name , project.project_name 
+		from  tb_project_staff projectstaff inner join tb_staff_costs staffcosts
+		on projectstaff.staff_id = staffcosts.staff_id		
+		inner join tb_project project 
+		on projectstaff.project_id = project.project_id	
+		where projectstaff.project_staff_id = #{project_staff_id}
+	</select>	
+	
+	
+	<insert id="addProjectStaff" parameterType="com.pm.domain.business.ProjectStaff">
+		insert into tb_project_staff(
+			project_staff_id,project_id, staff_id, join_project_datetime, leave_project_datetime,technical_cost,client_dept,
+			description,build_datetime,build_userid,build_username,delete_flag
+		)
+		values(
+			#{project_staff_id}, #{project_id}, #{staff_id},#{join_project_datetime}, #{leave_project_datetime}, 
+			#{technical_cost},#{client_dept}, #{description}, 
+			#{build_datetime},#{build_userid},#{build_username},#{delete_flag}
+		)
+	</insert>
+	
+	
+	<update id="updateProjectStaff" parameterType="com.pm.domain.business.ProjectStaff">		
+		update tb_project_staff set  
+		join_project_datetime = #{join_project_datetime} ,
+		technical_cost = #{technical_cost} ,
+		client_dept = #{client_dept}
+		where project_staff_id = #{project_staff_id}  
+		and delete_flag = '0'
+	</update>
+	
+	<delete id="doRemoveProjectStaff" parameterType="com.pm.domain.business.ProjectStaff">	
+		delete from tb_project_staff 
+		where project_staff_id = #{project_staff_id}  
+		and delete_flag = '0'
+	</delete>
+	
+	
+	<update id="deleteProjectStaff" parameterType="com.pm.domain.business.ProjectStaff">		
+		update tb_project_staff set  
+		description = #{description} ,
+		delete_flag = '1' ,
+		leave_project_datetime = #{leave_project_datetime} ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where project_staff_id = #{project_staff_id} 
+	</update>
+	
+
+	
+	<update id="deleteProjectStaffByStaff" parameterType="com.pm.domain.business.StaffCost">		
+		update tb_project_staff set  
+		delete_flag = '1' ,
+		leave_project_datetime = #{leave_job_datetime} ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where staff_id = #{staff_id} 
+		and delete_flag = '0'
+	</update>	
+	
+	
+	<update id="deleteProjectStaffByProject" parameterType="com.pm.domain.business.Project">		
+		update tb_project_staff set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where project_id = #{project_id} 
+		and delete_flag = '0'
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	<select id="queryProjectContract" parameterType="com.pm.domain.business.Project"   resultMap="projectContractMap">
+		select * from tb_project_contract_attachment 	
+		where project_id = #{project_id}
+	</select>	
+	
+	<select id="getProjectContract" parameterType="com.pm.domain.business.ProjectContract"   resultMap="projectContractMap">
+		select * from tb_project_contract_attachment 	
+		where attachment_id = #{attachment_id}
+	</select>	
+	
+	
+	
+	
+	<insert id="addProjectContract" parameterType="com.pm.domain.business.ProjectContract">
+		insert into tb_project_contract_attachment(
+			attachment_id, project_id, attachment_name, attachment_path,
+			build_datetime,build_userid,build_username
+		)
+		values(
+			#{attachment_id}, #{project_id},#{attachment_name}, #{attachment_path}, 
+			#{build_datetime},#{build_userid},#{build_username}
+		)
+	</insert>
+	
+	<delete id="deleteProjectContract" parameterType="com.pm.domain.business.ProjectContract">
+		delete from tb_project_contract_attachment where attachment_id = #{attachment_id}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="getProject" parameterType="map" resultMap="projectMap">
+		SELECT project.*, client.client_name as project_client_name,client.client_no as project_client_no,
+		recruitment_user.staff_name as recruitment_username,
+		sales_user.staff_name as sales_username, infosource_user.staff_name as info_sources_username, manage.staff_name as manage_username,
+		sales_before.staff_name as sales_before_username, sales_after.staff_name as  sales_after_username, approve_user.staff_name approve_user_name,
+		sales_dept.dept_name as sales_amount_deptname,exec_dept.dept_name as exec_amount_deptname, dept.dept_name as deptname  
+		FROM tb_project project 
+		left join tb_client  client on project.project_client_id = client.client_id 
+		left join tb_other_staff  recruitment_user on project.recruitment_userid = recruitment_user.staff_id 
+		left join tb_other_staff  sales_user on project.sales_userid = sales_user.staff_id 
+		left join tb_other_staff  infosource_user on project.info_sources_userid = infosource_user.staff_id 
+		left join tb_other_staff  manage on project.manage_userid = manage.staff_id 
+		left join tb_other_staff  sales_before on project.sales_before_userid = sales_before.staff_id 
+		left join tb_other_staff  sales_after on project.sales_after_userid = sales_after.staff_id 		
+		left join tb_other_staff approve_user on project.approve_user_id=approve_user.staff_id
+		left join ts_dept  sales_dept on project.sales_amount_deptid = sales_dept.dept_id 
+		left join ts_dept  exec_dept on project.exec_amount_deptid = exec_dept.dept_id 		
+		left join ts_dept  dept on project.deptid = dept.dept_id 		
+		WHERE 1 = 1   and project.delete_flag = '0'		
+		AND project.project_id = #{Project.project_id}
+	</select>
+		
+	<insert id="addProject" parameterType="com.pm.domain.business.Project">
+	  insert into tb_project
+		  (project_id, project_no, project_name, project_client_id,project_contacts_name,
+		  project_contacts_tel,recruitment_userid,sales_userid,info_sources_userid,manage_userid,
+		  sales_before_userid,sales_after_userid,sales_amount_deptid,exec_amount_deptid,deptid,
+		  project_type,project_amount,estimate_costs,start_date,sign_contract_flag,contract_no,approve_user_id,
+		  description,build_datetime,build_userid,build_username,delete_flag)
+			values
+		  (#{project_id}, #{project_no},#{project_name}, #{project_client_id}, #{project_contacts_name}, 
+		  #{project_contacts_tel}, #{recruitment_userid},#{sales_userid}, #{info_sources_userid}, #{manage_userid}, 
+		  #{sales_before_userid}, #{sales_after_userid},#{sales_amount_deptid}, #{exec_amount_deptid}, #{deptid}, 
+		  #{project_type}, #{project_amount},#{estimate_costs}, #{start_date}, #{sign_contract_flag},  #{contract_no}, #{approve_user_id}, 
+		  #{description}, #{build_datetime},#{build_userid},#{build_username},#{delete_flag})
+	</insert>
+	
+	
+	<update id="updateProject" parameterType="com.pm.domain.business.Project">
+		update tb_project set  
+		project_no = #{project_no},
+		project_name = #{project_name},
+		project_type = #{project_type},
+		project_client_id = #{project_client_id},
+		project_contacts_name = #{project_contacts_name},
+		project_contacts_tel = #{project_contacts_tel},
+		recruitment_userid = #{recruitment_userid},
+		sales_userid = #{sales_userid},
+		info_sources_userid = #{info_sources_userid},
+		manage_userid = #{manage_userid},
+		sales_before_userid = #{sales_before_userid},
+		sales_after_userid = #{sales_after_userid},
+		sales_amount_deptid = #{sales_amount_deptid},
+		exec_amount_deptid = #{exec_amount_deptid},
+		deptid = #{deptid},
+		project_amount = #{project_amount},
+		estimate_costs = #{estimate_costs},
+		start_date = #{start_date},
+		sign_contract_flag = #{sign_contract_flag},
+		contract_no = #{contract_no},
+		approve_user_id = #{approve_user_id},
+		description =#{description} 
+		where project_id = #{project_id} 
+	</update>
+		
+		
+		
+	<update id="deleteProject" parameterType="com.pm.domain.business.Project">		
+		update tb_project set  
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where project_id = #{project_id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+	
+		
+	<select id="queryProjectByPager_mysql" parameterType="map"   resultMap="projectMap">
+		<include refid="projectPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryProjectByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="projectPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="projectPagerSql">
+		SELECT project.*, client.client_name as project_client_name,client.client_no as project_client_no,
+		recruitment_user.staff_name as recruitment_username,
+		sales_user.staff_name as sales_username, infosource_user.staff_name as info_sources_username, manage.staff_name as manage_username,
+		sales_before.staff_name as sales_before_username, sales_after.staff_name as  sales_after_username,
+		sales_dept.dept_name as sales_amount_deptname,exec_dept.dept_name as exec_amount_deptname, dept.dept_name as deptname ,
+		costs.amount 
+		FROM tb_project project 
+		left join tb_client  client on project.project_client_id = client.client_id 
+		left join tb_other_staff  recruitment_user on project.recruitment_userid = recruitment_user.staff_id 
+		left join tb_other_staff  sales_user on project.sales_userid = sales_user.staff_id 
+		left join tb_other_staff  infosource_user on project.info_sources_userid = infosource_user.staff_id 
+		left join tb_other_staff  manage on project.manage_userid = manage.staff_id 
+		left join tb_other_staff  sales_before on project.sales_before_userid = sales_before.staff_id 
+		left join tb_other_staff  sales_after on project.sales_after_userid = sales_after.staff_id 
+		left join ts_dept  sales_dept on project.sales_amount_deptid = sales_dept.dept_id 
+		left join ts_dept  exec_dept on project.exec_amount_deptid = exec_dept.dept_id 		
+		left join ts_dept  dept on project.deptid = dept.dept_id 
+		left join (
+			select project_id, sum(amount) amount from (
+			select project_id, amount from tb_project_expend where delete_flag = '0'  and verify_userid is not NULL 
+			union all
+			select project_id, amount from tb_reimburse_costs  where delete_flag = '0'  	and verify_userid is not NULL  
+			union all
+			select project_id, amount from tb_project_staff_cost where 1=1 
+			) a group by project_id
+		)costs	 on project.project_id = costs.project_id 	 
+		WHERE 1 = 1		
+		
+		<if test="Project.delete_flag != null and Project.delete_flag != ''">
+			AND project.delete_flag = #{Project.delete_flag}
+		</if>
+		
+		<if test="Project.project_id != null and Project.project_id != ''">
+			AND project.project_id = #{Project.project_id}
+		</if>
+		
+		<if test="Project.project_name != null and Project.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{Project.project_name}),'%')  
+		</if>
+		<if test="Project.project_no != null and Project.project_no != ''">
+			AND project.project_no like concat('%',TRIM(#{Project.project_no}),'%')  
+		</if>
+		
+
+		<if test="Project.project_client_id != null and Project.project_client_id != ''">
+			AND project.project_client_id like concat('%',TRIM(#{Project.project_client_id}),'%')  
+		</if>		
+		
+		
+		<if test="Project.project_client_id != null and Project.project_client_id != ''">
+			AND project.project_client_id  = #{Project.project_client_id}
+		</if>	
+		
+		
+		<if test="Project.project_client_name != null and Project.project_client_name != ''">
+			AND client.client_name  like concat('%',TRIM(#{Project.project_client_name}),'%')  
+		</if>	
+		
+		
+		
+		
+		<if test="Project.sales_amount_deptid != null and Project.sales_amount_deptid != ''">
+			AND project.sales_amount_deptid  = #{Project.sales_amount_deptid}
+		</if>	
+		
+		
+		
+		<if test="Project.sales_amount_deptname != null and Project.sales_amount_deptname != ''">
+			AND sales_dept.dept_name like concat('%',TRIM(#{Project.sales_amount_deptname}),'%')  
+		</if>	
+		
+		
+		<if test="Project.exec_amount_deptid != null and Project.exec_amount_deptid != ''">
+			AND project.exec_amount_deptid  = #{Project.exec_amount_deptid}
+		</if>	
+		
+		
+		
+		<if test="Project.exec_amount_deptname != null and Project.exec_amount_deptname != ''">
+			AND exec_dept.dept_name like concat('%',TRIM(#{Project.exec_amount_deptname}),'%')  
+		</if>	
+		
+		
+		
+		<if test="Project.deptid != null and Project.deptid != ''">
+			AND project.deptid  = #{Project.deptid}
+		</if>	
+		
+		
+		<if test="Project.project_type != null and Project.project_type != ''">
+			AND project.project_type  = #{Project.project_type}
+		</if>	
+				
+		
+		<include refid="ProjectAuthMapping.permission"/>
+		
+		order by project.build_datetime desc
+	
+	</sql>	
+
+</mapper>

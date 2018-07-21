@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="PersonnelMonthlyBaseMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PersonnelMonthlyBase" id="personnelMonthlyBaseMap" />
+
+
+	<select id="getPersonnelMonthlyBase" parameterType="com.pm.domain.business.PersonnelMonthlyBase" resultMap="personnelMonthlyBaseMap">
+		select pmb.* ,project.project_name,project.project_no
+		from personnel_monthly_base pmb
+		left JOIN tb_project project 
+		on pmb.project_id = project.project_id 
+		where pmb.id = #{id}
+	</select>
+	
+
+	<select id="getNotCheckNumByWorkAttendance" parameterType="com.pm.domain.business.PersonnelMonthlyBase" resultType="int" >
+		select count(*) c
+		from personnel_monthly_base pmb
+		where pmb.the_month = #{the_month}
+		and pmb.verify_userid is null 
+		<if test="project_id != null and project_id != ''">
+		and pmb.staff_id in (
+			select staff_id from tb_work_attendance 
+			where attendance_month = #{the_month}			
+			and project_id = #{project_id}  			
+		)
+		</if>
+	</select>
+	
+	
+
+	<insert id="addPersonnelMonthlyBase" parameterType="com.pm.domain.business.PersonnelMonthlyBase" >
+		insert into  personnel_monthly_base(
+			id,the_month,monthly_type,dept_id,project_id,
+			staff_id,import_order,build_datetime,build_userid,build_username,
+			verify_username,verify_userid,verify_datetime
+		)values  (
+			#{id},#{the_month},#{monthly_type},#{dept_id},#{project_id},
+			#{staff_id},#{import_order},#{build_datetime},#{build_userid},#{build_username},
+			#{verify_username},#{verify_userid},#{verify_datetime}
+		)
+	</insert>
+
+	<update id="updatePersonnelMonthlyBase" parameterType="com.pm.domain.business.PersonnelMonthlyBase" >
+		update  personnel_monthly_base set 
+		the_month=#{the_month},
+		monthly_type=#{monthly_type},
+		dept_id=#{dept_id},
+		project_id=#{project_id},
+		staff_id=#{staff_id},
+		version_no = version_no + 1 
+		where id=#{id} 
+		and verify_userid is null 
+	</update>
+
+	<update id="verifyPersonnelMonthlyBase" parameterType="com.pm.domain.business.PersonnelMonthlyBase" >
+		update  personnel_monthly_base set 
+		verify_userid = #{verify_userid}, 
+		verify_username =  #{verify_username}, 
+		verify_datetime = #{verify_datetime} ,
+		version_no = version_no + 1 
+		where id=#{id}
+		and verify_userid is null
+	</update>
+
+	<update id="unVerifyPersonnelMonthlyBase" parameterType="com.pm.domain.business.PersonnelMonthlyBase" >
+		update  personnel_monthly_base set 
+		verify_userid = null, 
+		verify_username = null, 
+		verify_datetime = null ,
+		version_no = version_no + 1 
+		where id=#{id} and verify_userid is not null
+	</update>
+
+	<delete id="deletePersonnelMonthlyBase" parameterType="com.pm.domain.business.PersonnelMonthlyBase" >
+		delete from  personnel_monthly_base
+		where id=#{id}
+		and verify_userid is null
+	</delete>
+
+	<select id="queryPersonnelMonthlyBaseTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="personnelMonthlyBasePagerSql"/>
+		) c
+	</select>
+
+	<select id="queryPersonnelMonthlyBaseByPager_mysql" parameterType="map"  resultMap="personnelMonthlyBaseMap" >
+		<include refid="personnelMonthlyBasePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPersonnelMonthlyBaseByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="personnelMonthlyBasePagerSql"/> )c
+	</select>
+
+	<sql id="personnelMonthlyBasePagerSql">
+		select pmb.* ,project.project_name,project.project_no 
+		from personnel_monthly_base pmb  
+		left JOIN tb_project project  
+		on pmb.project_id = project.project_id 
+		WHERE 1=1 
+		
+		<if test="PersonnelMonthlyBase.the_month != 0 ">
+			<![CDATA[
+			AND pmb.the_month = #{PersonnelMonthlyBase.the_month} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlyBase.staff_id != null and PersonnelMonthlyBase.staff_id != ''">
+			<![CDATA[
+			AND pmb.staff_id = #{PersonnelMonthlyBase.staff_id} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlyBase.monthly_type != null and PersonnelMonthlyBase.monthly_type != ''">
+			<![CDATA[
+			AND pmb.monthly_type = #{PersonnelMonthlyBase.monthly_type} 
+			]]>
+		</if>
+		
+		
+		<if test="PersonnelMonthlyBase.verify_flag != null and PersonnelMonthlyBase.verify_flag != ''">
+			<if test="PersonnelMonthlyBase.verify_flag == 1">
+					and pmb.verify_userid is not null 
+			</if>
+			<if test="PersonnelMonthlyBase.verify_flag == 0">			
+					and pmb.verify_userid is null 
+			</if>
+		</if>		
+		
+		<include refid="ProjectAuthMapping.permission" /> 
+	</sql>
+
+</mapper>

@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StaffCostMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+
+
+	<resultMap type="com.pm.domain.business.StaffCost" id="staffCostMap" />
+	
+	
+	
+	
+	
+	<select id="isExist" parameterType="com.pm.domain.business.StaffCost" resultMap="staffCostMap">	
+		select * from vb_all_staff where staff_no = #{staff_no} 
+		<if test="staff_id != null and staff_id != ''">
+		<![CDATA[
+			and staff_id <> #{staff_id}
+		]]>
+		</if>	
+	</select>
+	
+	<select id="getAllStaff"  resultMap="staffCostMap">	
+		select * from vb_all_staff
+	</select>
+	
+	
+	<select id="getAllStaffBySearch" parameterType="com.pm.domain.business.StaffCost" resultMap="staffCostMap">	
+		
+		select staff.*,
+		leadstaff.staff_name as lead_name ,leadstaff.staff_no as lead_no ,
+		project.project_id,project.project_name, other_staff.staff_name as recruiter_name ,
+		grade.insurance_radix , grade.base_cardinal ,dd_nati.dic_data_name as nationality_name,
+		dd_cp.dic_data_name as census_property_name, dd_edu.dic_data_name as educational_name ,		
+		dd_ct.dic_data_name as contract_type_name,	
+		dd_ca.dic_data_name as contract_attach_name, 
+		dd_ss.dic_data_name as social_security_name ,	
+			
+		dd_specialty.dic_data_name as specialty_name ,
+		dd_ic.dic_data_name as insured_city_name ,
+		dd_wa.dic_data_name as working_address_name ,
+		dd_certificate.dic_data_name as certificate_name 
+		
+		
+		from tb_staff_costs staff left join vb_all_staff leadstaff
+		on staff.lead_id = leadstaff.staff_id
+		left join tb_other_staff other_staff
+		on staff.recruiter = other_staff.staff_id 
+		left join tb_project_staff projectstaff
+		on staff.staff_id = projectstaff.staff_id and projectstaff.delete_flag ='0' 
+		left join vb_project project 
+		on projectstaff.project_id = project.project_id and project.delete_flag ='0' 
+		left join tb_insurance_grade grade
+		on staff.insurance_grade_id = grade.insurance_grade_id 
+		left join ts_dic_data dd_nati on staff.nationality = dd_nati.id
+		left join ts_dic_data dd_cp on staff.census_property = dd_cp.id
+		left join ts_dic_data dd_edu on staff.educational = dd_edu.id 		
+		left join ts_dic_data dd_ct on staff.contract_type = dd_ct.id
+		left join ts_dic_data dd_ca on staff.contract_attach = dd_ca.id
+		left join ts_dic_data dd_ss on staff.social_security = dd_ss.id
+		
+		left join ts_dic_data dd_specialty on staff.specialty = dd_specialty.id
+		left join ts_dic_data dd_ic on staff.insured_city = dd_ic.id
+		left join ts_dic_data dd_wa on staff.working_address = dd_wa.id
+		left join ts_dic_data dd_certificate on staff.certificate = dd_certificate.id
+		
+		where staff.delete_flag = '0' 		
+		<if test="insurance_grade_id != null and insurance_grade_id != ''">
+				and staff.insurance_grade_id = #{insurance_grade_id}
+		</if>
+	</select>
+	
+
+	
+	<select id="getStaffCost" parameterType="map" resultMap="staffCostMap">		
+		select staff.*,leadstaff.staff_name as lead_name ,leadstaff.staff_no as lead_no ,
+		project.project_id,project.project_name, other_staff.staff_name as recruiter_name ,
+		grade.insurance_radix , grade.base_cardinal ,dd_nati.dic_data_name as nationality_name,
+		dd_cp.dic_data_name as census_property_name, dd_edu.dic_data_name as educational_name ,		
+		dd_ct.dic_data_name as contract_type_name,	
+		dd_ca.dic_data_name as contract_attach_name, 
+		dd_ss.dic_data_name as social_security_name ,				
+		dd_specialty.dic_data_name as specialty_name ,
+		dd_ic.dic_data_name as insured_city_name ,
+		dd_wa.dic_data_name as working_address_name ,
+		dd_certificate.dic_data_name as certificate_name 
+		
+		from tb_staff_costs staff left join vb_all_staff leadstaff
+		on staff.lead_id = leadstaff.staff_id
+		left join tb_other_staff other_staff
+		on staff.recruiter = other_staff.staff_id 
+		left join tb_project_staff projectstaff
+		on staff.staff_id = projectstaff.staff_id and projectstaff.delete_flag ='0' 
+		left join vb_project project 
+		on projectstaff.project_id = project.project_id and project.delete_flag ='0' 
+		left join tb_insurance_grade grade
+		on staff.insurance_grade_id = grade.insurance_grade_id 
+		left join ts_dic_data dd_nati on staff.nationality = dd_nati.id
+		left join ts_dic_data dd_cp on staff.census_property = dd_cp.id
+		left join ts_dic_data dd_edu on staff.educational = dd_edu.id 		
+		left join ts_dic_data dd_ct on staff.contract_type = dd_ct.id
+		left join ts_dic_data dd_ca on staff.contract_attach = dd_ca.id
+		left join ts_dic_data dd_ss on staff.social_security = dd_ss.id
+		
+		
+		left join ts_dic_data dd_specialty on staff.specialty = dd_specialty.id
+		left join ts_dic_data dd_ic on staff.insured_city = dd_ic.id
+		left join ts_dic_data dd_wa on staff.working_address = dd_wa.id
+		left join ts_dic_data dd_certificate on staff.certificate = dd_certificate.id
+		where staff.staff_id = #{StaffCost.staff_id}	
+	</select>
+	
+	
+	<select id="getStaffCostByName" parameterType="com.pm.domain.business.StaffCost" resultMap="staffCostMap">
+		select * from tb_staff_costs staff where staff_name = #{staff_name}	 order by delete_flag asc
+	</select>
+	
+
+		
+	
+	<insert id="addStaffCost" parameterType="com.pm.domain.business.StaffCost">
+		insert into  tb_staff_costs(
+			staff_id,staff_no,staff_name,recruiter,job_title,
+			sex,birthday,nationality,census_property,identity_card_number,
+			tel,pressing_tel,qq,contract_start_date,contract_end_date,
+			contract_number,graduate_school,educational,registered_residence,postal_address,
+			join_datetime,leave_job_datetime,totalcost,firstquotes,qustomerquotes,
+			confirmation_date,tryout_salary,tryout_basic_salary,tryout_post_salary,tryout_performance_allowances,
+			official_salary,basic_salary,post_salary,performance_allowances,computer_allowance,
+			meal_allowance,project_allowance,travel_allowance,insurance_grade_id,securty_unit,
+			endowment_insurance_bypersonal,medical_insurance_bypersonal,losejob_insurance_bypersonal,reservefund_bypersonal,incometax_bypersonal,
+			endowment_insurance_bycompany,medical_insurance_bycompany,losejob_insurance_bycompany,maternity_insurance_bycompany,jobharm_insurance_bycompany,
+			reservefund_bypcompany,extra,outsource_staff,email,open_account,
+			bank_card_number,lead_id,extra_expend,can_send_info,
+			contract_type,contract_attach,social_security,description,
+			specialty,graduation_date,working_life,insured_city,working_address,certificate,
+			import_order,build_datetime,build_userid,build_username,delete_flag
+		)values  (
+			#{staff_id},#{staff_no},#{staff_name},#{recruiter},#{job_title},
+			#{sex},#{birthday},#{nationality},#{census_property},#{identity_card_number},
+			#{tel},#{pressing_tel},#{qq},#{contract_start_date},#{contract_end_date},
+			#{contract_number},#{graduate_school},#{educational},#{registered_residence},#{postal_address},
+			#{join_datetime},#{leave_job_datetime},#{totalcost},#{firstquotes},#{qustomerquotes},
+			#{confirmation_date},#{tryout_salary},#{tryout_basic_salary},#{tryout_post_salary},#{tryout_performance_allowances},
+			#{official_salary},#{basic_salary},#{post_salary},#{performance_allowances},#{computer_allowance},
+			#{meal_allowance},#{project_allowance},#{travel_allowance},#{insurance_grade_id},#{securty_unit},
+			#{endowment_insurance_bypersonal},#{medical_insurance_bypersonal},#{losejob_insurance_bypersonal},#{reservefund_bypersonal},#{incometax_bypersonal},
+			#{endowment_insurance_bycompany},#{medical_insurance_bycompany},#{losejob_insurance_bycompany},#{maternity_insurance_bycompany},#{jobharm_insurance_bycompany},
+			#{reservefund_bypcompany},#{extra},#{outsource_staff},#{email},#{open_account},
+			#{bank_card_number},#{lead_id},#{extra_expend},#{can_send_info},
+			#{contract_type},#{contract_attach},#{social_security},#{description},			
+			#{specialty},#{graduation_date},#{working_life},#{insured_city},#{working_address},#{certificate},
+			#{import_order},#{build_datetime},#{build_userid},#{build_username},#{delete_flag}
+		)
+	</insert>	
+	
+	
+	
+	<update id="updateWorkinfLife">
+		update tb_staff_costs set working_life = working_life + 1/12 , version_no = version_no + 1 ;
+	</update>
+	
+	
+	<update id="updateStaffCostSecurtyUnit" parameterType="com.pm.domain.business.StaffCost">
+		update tb_staff_costs set  
+		securty_unit = #{securty_unit},
+		version_no = version_no + 1 
+		where staff_id = #{staff_id}  
+	</update>
+	
+	<update id="updateStaffQustomerQuotes" parameterType="com.pm.domain.business.StaffCost">
+		update tb_staff_costs set  
+		qustomerquotes = #{qustomerquotes}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}  
+		and delete_flag = '0' 
+	</update>	
+	
+	
+	<update id="updateStaffFirstquotes" parameterType="com.pm.domain.business.StaffCost">
+		update tb_staff_costs set  
+		firstquotes = #{firstquotes}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}  
+		and delete_flag = '0' 
+		and firstquotes = 0
+	</update>
+	
+	
+	<update id="updateStaffCost" parameterType="com.pm.domain.business.StaffCost">
+		update tb_staff_costs set  
+		staff_no=#{staff_no},
+		staff_name=#{staff_name},
+		recruiter=#{recruiter},
+		job_title=#{job_title},
+		sex=#{sex},
+		birthday=#{birthday},
+		nationality=#{nationality},
+		census_property=#{census_property},
+		identity_card_number=#{identity_card_number},
+		tel=#{tel},
+		pressing_tel=#{pressing_tel},
+		qq=#{qq},
+		contract_start_date=#{contract_start_date},
+		contract_end_date=#{contract_end_date},
+		contract_number=#{contract_number},
+		graduate_school=#{graduate_school},
+		educational=#{educational},
+		registered_residence=#{registered_residence},
+		postal_address=#{postal_address},
+		join_datetime=#{join_datetime},
+		leave_job_datetime=#{leave_job_datetime},
+		totalcost=#{totalcost},
+		firstquotes=#{firstquotes},
+		qustomerquotes=#{qustomerquotes},
+		confirmation_date=#{confirmation_date},
+		tryout_salary=#{tryout_salary},
+		tryout_basic_salary=#{tryout_basic_salary},
+		tryout_post_salary=#{tryout_post_salary},
+		tryout_performance_allowances=#{tryout_performance_allowances},
+		official_salary=#{official_salary},
+		basic_salary=#{basic_salary},
+		post_salary=#{post_salary},
+		performance_allowances=#{performance_allowances},
+		computer_allowance=#{computer_allowance},
+		meal_allowance=#{meal_allowance},
+		project_allowance=#{project_allowance},
+		travel_allowance=#{travel_allowance},
+		insurance_grade_id=#{insurance_grade_id},
+		securty_unit=#{securty_unit},
+		endowment_insurance_bypersonal=#{endowment_insurance_bypersonal},
+		medical_insurance_bypersonal=#{medical_insurance_bypersonal},
+		losejob_insurance_bypersonal=#{losejob_insurance_bypersonal},
+		reservefund_bypersonal=#{reservefund_bypersonal},
+		incometax_bypersonal=#{incometax_bypersonal},
+		endowment_insurance_bycompany=#{endowment_insurance_bycompany},
+		medical_insurance_bycompany=#{medical_insurance_bycompany},
+		losejob_insurance_bycompany=#{losejob_insurance_bycompany},
+		maternity_insurance_bycompany=#{maternity_insurance_bycompany},
+		jobharm_insurance_bycompany=#{jobharm_insurance_bycompany},
+		reservefund_bypcompany=#{reservefund_bypcompany},
+		extra=#{extra},
+		outsource_staff=#{outsource_staff},
+		email=#{email},
+		open_account=#{open_account},
+		bank_card_number=#{bank_card_number},
+		lead_id=#{lead_id},
+		extra_expend=#{extra_expend},
+		can_send_info=#{can_send_info},		
+		contract_type=#{contract_type},
+		contract_attach=#{contract_attach},
+		social_security=#{social_security},
+						
+		specialty=#{specialty},
+		graduation_date=#{graduation_date},
+		working_life=#{working_life},
+		insured_city=#{insured_city},
+		working_address=#{working_address},
+		certificate=#{certificate},		
+		description=#{description}, 
+		version_no = version_no + 1
+		where staff_id = #{staff_id}  
+		and delete_flag = '0'  and version_no = #{version_no}
+	</update>
+		
+		
+		
+	<update id="deleteStaffCost" parameterType="com.pm.domain.business.StaffCost">		
+		update tb_staff_costs set 
+		delete_flag = '1' ,
+		leave_job_datetime = #{leave_job_datetime},
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username} 
+		where staff_id = #{staff_id} 
+		and delete_flag = '0' 
+	</update>
+	
+	
+	
+	
+	<select id="getStaffCostNum" parameterType="map" resultMap="staffCostMap">	
+		
+		select sum(
+			case when 
+			<if test="StaffCost.date1 != null and StaffCost.date2 != nul ">	
+				<![CDATA[
+				staff.join_datetime >= #{StaffCost.date1} and staff.join_datetime <= #{StaffCost.date2}
+				]]>
+			</if>
+			
+			<if test="StaffCost.date1 == null and StaffCost.date2 == nul ">	
+				staff.join_datetime
+			</if>
+			
+			
+			<if test="StaffCost.date1 == null and StaffCost.date2 != nul ">	
+			<![CDATA[
+				staff.join_datetime <= #{StaffCost.date2}
+			]]>
+			</if>
+			
+			<if test="StaffCost.date1 != null and StaffCost.date2 == nul ">		
+			<![CDATA[			
+				staff.join_datetime >= #{StaffCost.date1}
+			]]>
+			</if>			   
+			then 1 else 0 end 
+		) as joinnum , 
+		sum(
+			case when 
+			<if test="StaffCost.date1 != null and StaffCost.date2 != nul ">	
+			<![CDATA[
+				staff.leave_job_datetime >= #{StaffCost.date1} and staff.leave_job_datetime <= #{StaffCost.date2}
+			]]>
+			</if>
+			
+			<if test="StaffCost.date1 == null and StaffCost.date2 == nul ">	
+				staff.leave_job_datetime
+			</if>
+			
+			
+			<if test="StaffCost.date1 == null and StaffCost.date2 != nul ">	
+			<![CDATA[
+				staff.leave_job_datetime <= #{StaffCost.date2}
+			]]>
+			</if>
+			
+			<if test="StaffCost.date1 != null and StaffCost.date2 == nul ">		
+			<![CDATA[
+				staff.leave_job_datetime >= #{StaffCost.date1}
+			]]>
+			</if>			   
+			then 1 else 0 end 
+		) as leavenum  
+
+		<include refid="staffCostFromSql"/>
+	</select>	
+	
+	
+	
+	
+	
+			
+	<select id="queryAllStaffCostByPager_mysql" parameterType="map"   resultMap="staffCostMap">
+		<include refid="staffAllCostPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryAllStaffCostByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="staffAllCostPagerSql"/>
+		) c		
+	</select>	
+	
+	<sql id="staffAllCostPagerSql">
+		select staff.* from vb_all_staff staff where delete_flag = '0' 
+		<if test="StaffCost.staff_name != null and StaffCost.staff_name != ''">
+			AND staff.staff_name like concat('%',TRIM(#{StaffCost.staff_name}),'%')   
+		</if>
+		
+		<if test="StaffCost.staff_no != null and StaffCost.staff_no != ''">
+			AND staff.staff_no like concat('%',TRIM(#{StaffCost.staff_no}),'%')   
+		</if>
+		
+		<if test="StaffCost.outsource_staff != null and StaffCost.outsource_staff != ''">
+			AND staff.outsource_staff = #{StaffCost.outsource_staff}
+		</if>
+		
+		
+		<if test="StaffCost.staff_type != null and StaffCost.staff_type != ''">
+			AND staff.staff_type = #{StaffCost.staff_type}
+		</if>
+		
+		<if test="ConditionStaffCost.ex_staff_id != null and ConditionStaffCost.ex_staff_id != ''">
+			<!-- 
+			AND staff.staff_id != #{ConditionStaffCost.ex_staff_id}
+			 -->
+			 AND staff.staff_id not in (select child_id from tb_staff_childs where staff_id = #{ConditionStaffCost.ex_staff_id})
+		</if>
+		
+	</sql>
+	
+	
+	
+	
+	
+	
+		
+	<select id="queryStaffCostByPager_mysql" parameterType="map"   resultMap="staffCostMap">
+		<include refid="staffCostPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryStaffCostByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="staffCostPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="staffCostPagerSql">
+		select staff.*,leadstaff.staff_name as lead_name ,leadstaff.staff_no as lead_no ,
+		project.project_id,project.project_name, other_staff.staff_name as recruiter_name ,
+		projectstaffcost.technical_cost ,	grade.insurance_radix ,  grade.base_cardinal , dept.dept_name as dept_name,
+		dd_nati.dic_data_name as nationality_name,
+		dd_cp.dic_data_name as census_property_name, 
+		dd_edu.dic_data_name as educational_name ,  				
+		dd_ct.dic_data_name as contract_type_name,	
+		dd_ca.dic_data_name as contract_attach_name, 
+		dd_ss.dic_data_name as social_security_name ,			
+		dd_specialty.dic_data_name as specialty_name ,
+		dd_ic.dic_data_name as insured_city_name ,
+		dd_wa.dic_data_name as working_address_name ,
+		dd_certificate.dic_data_name as certificate_name ,
+		
+		case when 
+			<if test="StaffCost.date1 != null and StaffCost.date2 != nul ">	
+				<![CDATA[
+				staff.join_datetime >= #{StaffCost.date1} and staff.join_datetime <= #{StaffCost.date2}
+				]]>
+			</if>
+			
+			<if test="StaffCost.date1 == null and StaffCost.date2 == nul ">	
+				staff.join_datetime
+			</if>
+			
+			
+			<if test="StaffCost.date1 == null and StaffCost.date2 != nul ">	
+			<![CDATA[
+				staff.join_datetime <= #{StaffCost.date2}
+			]]>
+			</if>
+			
+			<if test="StaffCost.date1 != null and StaffCost.date2 == nul ">		
+			<![CDATA[			
+				staff.join_datetime >= #{StaffCost.date1}
+			]]>
+			</if>			   
+			then 1 else 0 end as joinnum,
+			case when 
+			<if test="StaffCost.date1 != null and StaffCost.date2 != nul ">	
+			<![CDATA[
+				staff.leave_job_datetime >= #{StaffCost.date1} and staff.leave_job_datetime <= #{StaffCost.date2}
+			]]>
+			</if>
+			
+			<if test="StaffCost.date1 == null and StaffCost.date2 == nul ">	
+				staff.leave_job_datetime
+			</if>
+			
+			
+			<if test="StaffCost.date1 == null and StaffCost.date2 != nul ">	
+			<![CDATA[
+				staff.leave_job_datetime <= #{StaffCost.date2}
+			]]>
+			</if>
+			
+			<if test="StaffCost.date1 != null and StaffCost.date2 == nul ">		
+			<![CDATA[			
+				staff.leave_job_datetime >= #{StaffCost.date1}
+			]]>
+			</if>			   
+			then 1 else 0 end as leavenum			
+		<include refid="staffCostFromSql"/>
+	</sql>
+		
+
+	<sql id="staffCostFromSql">			
+		from tb_staff_costs staff left join vb_all_staff leadstaff
+		on staff.lead_id = leadstaff.staff_id 
+		left join tb_other_staff other_staff
+		on staff.recruiter = other_staff.staff_id 
+		left join tb_project_staff projectstaff
+		on staff.staff_id = projectstaff.staff_id and projectstaff.delete_flag ='0' 
+		left join vb_project project 
+		on projectstaff.project_id = project.project_id  
+		left join ts_dept dept on project.deptid = dept.dept_id
+		left join (select staff_id,max(technical_cost) as technical_cost from tb_project_staff group by staff_id ) projectstaffcost 
+		on staff.staff_id = projectstaffcost.staff_id 
+		left join tb_insurance_grade grade 
+		on staff.insurance_grade_id = grade.insurance_grade_id 
+		left join ts_dic_data dd_nati on staff.nationality = dd_nati.id
+		left join ts_dic_data dd_cp on staff.census_property = dd_cp.id
+		left join ts_dic_data dd_edu on staff.educational = dd_edu.id 		
+		left join ts_dic_data dd_ct on staff.contract_type = dd_ct.id
+		left join ts_dic_data dd_ca on staff.contract_attach = dd_ca.id
+		left join ts_dic_data dd_ss on staff.social_security = dd_ss.id		
+		left join ts_dic_data dd_specialty on staff.specialty = dd_specialty.id
+		left join ts_dic_data dd_ic on staff.insured_city = dd_ic.id
+		left join ts_dic_data dd_wa on staff.working_address = dd_wa.id
+		left join ts_dic_data dd_certificate on staff.certificate = dd_certificate.id 
+		where 1=1 		
+		<if test="StaffCost.project_name != null and StaffCost.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{StaffCost.project_name}),'%')   
+		</if>
+		
+		<if test="StaffCost.delete_flag != null and StaffCost.delete_flag != ''">
+			AND staff.delete_flag = #{StaffCost.delete_flag}
+		</if>
+		<if test="StaffCost.outsource_staff != null and StaffCost.outsource_staff != ''">
+			AND staff.outsource_staff = #{StaffCost.outsource_staff}
+		</if>
+		
+		
+		
+		<if test="StaffCost.staff_id != null and StaffCost.staff_id != ''">
+			AND staff.staff_id = #{StaffCost.staff_id}
+		</if>
+		
+		
+		<if test="StaffCost.dept_id != null and StaffCost.dept_id != ''">
+			AND dept.dept_id = #{StaffCost.dept_id}
+		</if>
+		
+		<if test="StaffCost.staff_no != null and StaffCost.staff_no != ''">
+			AND staff.staff_no like concat('%',TRIM(#{StaffCost.staff_no}),'%')   
+		</if>
+		
+		<if test="StaffCost.staff_name != null and StaffCost.staff_name != ''">
+			AND staff.staff_name like concat('%',TRIM(#{StaffCost.staff_name}),'%')   
+		</if>
+		
+		<if test="ConditionStaffCost != null and ConditionStaffCost.in_project != null and ConditionStaffCost.in_project != '' ">
+			<if test="ConditionStaffCost.in_project == '1'">
+				AND project.project_id is not null 
+			</if>
+			<if test="ConditionStaffCost.in_project == 1">
+				AND project.project_id is not null 
+			</if>			
+
+			<if test="ConditionStaffCost.in_project == '0'">
+				AND project.project_id is null 
+			</if>	
+
+			<if test="ConditionStaffCost.in_project ==0">
+				AND project.project_id is null 
+			</if>						
+		</if>
+		
+
+		
+		<if test="StaffCost.recruiter_name != null and StaffCost.recruiter_name != ''">
+			AND other_staff.staff_name like concat('%',TRIM(#{StaffCost.recruiter_name}),'%')   
+		</if>
+		
+		
+		
+		<if test="StaffCost.date1 != null">
+		<![CDATA[		
+			AND ( staff.join_datetime >= #{StaffCost.date1}	or staff.leave_job_datetime >= #{StaffCost.date1} )
+		]]>
+		</if>		
+		<if test="StaffCost.date2 != null">
+		<![CDATA[		
+			AND ( staff.join_datetime <= #{StaffCost.date2}	or staff.leave_job_datetime <= #{StaffCost.date2} )
+		]]>
+		</if>
+		
+		
+		<if test="StaffCost.join_datetime1 != null">
+		<![CDATA[		
+			AND  (staff.join_datetime is not null and staff.join_datetime >= #{StaffCost.join_datetime1}	)
+		]]>
+		</if>		
+		<if test="StaffCost.join_datetime2 != null">
+		<![CDATA[		
+			AND (staff.join_datetime is not null and staff.join_datetime <= #{StaffCost.join_datetime2} )
+		]]>
+		</if>
+		
+		
+		<if test="StaffCost.leave_job_datetime1 != null">
+		<![CDATA[		
+			AND  (staff.leave_job_datetime is not null and staff.leave_job_datetime >= #{StaffCost.leave_job_datetime1}	)
+		]]>
+		</if>		
+		<if test="StaffCost.leave_job_datetime2 != null">
+		<![CDATA[		
+			AND (staff.leave_job_datetime is not null and staff.leave_job_datetime <= #{StaffCost.leave_job_datetime2} )
+		]]>
+		</if>
+		
+
+		<if test="ConditionStaffCost != null and ConditionStaffCost.ex_staff_id != null and ConditionStaffCost.ex_staff_id != '' ">
+				AND staff.staff_id != #{ConditionStaffCost.ex_staff_id}								
+		</if>
+
+		
+		
+		<include refid="permission"/>	
+		
+		
+		
+		<if test="StaffCost.orderby != null and StaffCost.orderby != ''">
+			order by ${StaffCost.orderby} 
+		</if>
+		
+		
+		<if test="StaffCost.orderby == null or StaffCost.orderby == ''">
+			order by staff.delete_flag , staff.build_datetime ,staff.import_order
+		</if>
+		
+				
+	
+	</sql>	
+	
+	
+	
+	
+
+	
+
+	<sql id="permission">		
+		
+		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
+			
+			<if test="UserPermit.range == 1">
+				
+			</if>
+			<if test="UserPermit.range == 2">
+					<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+							and (dept.dept_id =  #{UserPermit.user_deptid}) 
+					</if>
+					<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">						
+						<if test="UserPermit.staff_id != null and UserPermit.staff_id != ''">						
+							and ( 
+								project.sales_userid = #{UserPermit.staff_id} or 
+								project.recruitment_userid = #{UserPermit.staff_id} or 
+								project.sales_userid = #{UserPermit.staff_id} or 
+								project.info_sources_userid = #{UserPermit.staff_id} or 
+								project.manage_userid = #{UserPermit.staff_id} or 
+								project.sales_after_userid = #{UserPermit.staff_id} or
+								project.approve_user_id = #{UserPermit.staff_id}
+							) 
+						</if>
+						
+						<if test="UserPermit.staff_id == null or UserPermit.staff_id == ''">	
+							and 1=2 
+						</if>
+					</if>
+			</if>
+			<if test="UserPermit.range == 3">
+					<if test="UserPermit.staff_id != null and UserPermit.staff_id != ''">
+						and ( 
+							project.sales_userid = #{UserPermit.staff_id} or 
+							project.recruitment_userid = #{UserPermit.staff_id} or 
+							project.sales_userid = #{UserPermit.staff_id} or 
+							project.info_sources_userid = #{UserPermit.staff_id} or 
+							project.manage_userid = #{UserPermit.staff_id} or 
+							project.sales_after_userid = #{UserPermit.staff_id} or
+							project.approve_user_id = #{UserPermit.staff_id}
+						) 
+					</if>
+					
+					<if test="UserPermit.staff_id == null or UserPermit.staff_id == ''">	
+						and 1=2 
+					</if>
+			</if>
+			
+		</if>
+		
+		<if test="UserPermit == null or UserPermit.range == null or UserPermit.range == ''">
+			and 1=2 
+		</if>
+		
+	
+	</sql>	 
+
+</mapper>

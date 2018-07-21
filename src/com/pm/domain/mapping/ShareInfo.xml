@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ShareInfoMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.ShareInfo" id="shareInfoMap" />
+
+
+	<select id="getShareInfo" parameterType="com.pm.domain.business.ShareInfo" resultMap="shareInfoMap">
+		select shareinfo.*
+		from tb_share_info shareinfo
+		where shareinfo.id = #{id}
+	</select>
+
+	<insert id="addShareInfo" parameterType="com.pm.domain.business.ShareInfo" >
+		insert into  tb_share_info(
+			id,file_id,share_user_id,is_share_all,begin_time,
+			end_time,build_datetime,build_userid,build_username
+		)values  (
+			#{id},#{file_id},#{share_user_id},#{is_share_all},#{begin_time},
+			#{end_time},#{build_datetime},#{build_userid},#{build_username}
+		)
+	</insert>
+
+	<update id="updateShareInfo" parameterType="com.pm.domain.business.ShareInfo" >
+		update  tb_share_info set 
+		file_id=#{file_id},
+		share_user_id=#{share_user_id},
+		is_share_all=#{is_share_all},
+		begin_time=#{begin_time},
+		end_time=#{end_time}
+		where id=#{id} 
+	</update>
+
+	<delete id="deleteShareInfo" parameterType="com.pm.domain.business.ShareInfo" >
+		delete from  tb_share_info
+		where id=#{id}
+	</delete>
+
+
+	<select id="queryShareInfoByPager_mysql" parameterType="map"  resultMap="shareInfoMap" >
+		<include refid="shareInfoPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryShareInfoByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="shareInfoPagerSql"/> )c
+	</select>
+
+	<sql id="shareInfoPagerSql">
+		select shareinfo.*
+		from tb_share_info shareinfo  
+		WHERE 1=1 
+	</sql>
+
+</mapper>

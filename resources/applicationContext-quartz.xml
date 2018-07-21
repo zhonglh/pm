@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd ">
+	
+	
+    <bean id="staffCostAutoRun" class="com.pm.autorun.StaffCostAutoRun" />
+
+    <bean id="monthJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="staffCostAutoRun" />
+        <property name="targetMethod" value="autoAddWorkingLife" />
+    </bean>
+    
+    
+    <bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="monthJob" />
+        <property name="cronExpression">
+            <value>1 1 9 1 * ?</value>
+        </property>
+    </bean>
+    
+    
+        <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTriggerBean" />
+            </list>
+        </property>
+    </bean>
+	
+</beans>

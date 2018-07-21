@@ -1,0 +1,1206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GrossProfitStatisticsMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.Statistics" id="statisticsMap" />
+		
+	
+	
+	<select id="queryByQuarterByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryQuarterPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByQuarterByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryQuarterPagerSql"/>
+		) c
+		
+	</select>
+
+	
+	<sql id="queryQuarterPagerSql">		
+	select  quarter, sum(amount) as statistics_amount , ROUND(sum(amount)/sum(total_amount)*100,2) as statistics_rate 
+		from (
+		select project.project_name,rp.*
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		inner join 			(
+				select project_id,(year(receive_payment_datetime)*100+quarter(receive_payment_datetime)) as quarter,
+				sum(case when receive_payment_amount is NULL   	then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) as amount ,
+				sum(case when receive_payment_amount is NULL   	then 0 else receive_payment_amount end) as total_amount 
+				from tb_received_payment where verify_userid is not NULL 			
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+				]]>
+				</if>			
+				group by project_id, (year(receive_payment_datetime)*100+quarter(receive_payment_datetime))
+		)rp 
+		on project.project_id = rp.project_id 
+		union all
+		select project.project_name,psc.* 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
+		inner join 	(
+				select project_id, (year(pay_date)*100+quarter(pay_date)) as quarter,
+				sum(case when amount is NULL  then 0 else amount end)*-1 as amount ,
+				0 as total_amount
+				from tb_project_staff_cost where 1=1 
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+				]]>
+				</if>						
+				group by project_id,(year(pay_date)*100+quarter(pay_date))
+		)psc 
+		on project.project_id = psc.project_id 		
+		union all 
+		select project.project_name,pe.* 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
+		inner join 	(
+				select project_id, (year(pay_date)*100+quarter(pay_date)) as quarter,
+				sum(case when pay_amount is NULL  then 0 else pay_amount end)*-1 amount  ,
+				0 as total_amount
+				from tb_project_expend where delete_flag = '0' and pay_date is not null 
+				and verify_userid is not NULL 
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+				]]>
+				</if>			
+				group by project_id,  (year(pay_date)*100+quarter(pay_date))
+		)pe 
+		on project.project_id = pe.project_id 
+		union all
+		select project.project_name,rc.* 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
+		inner join 	(
+				select project_id,  (year(pay_date)*100+quarter(pay_date)) as quarter,
+				sum(case when amount is NULL  then 0 else amount end)*-1 as amount  ,
+				0 as total_amount 
+				from tb_reimburse_costs  where delete_flag = '0' 
+				and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+				and verify_userid is not NULL  
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+				]]>
+				</if>				
+				group by project_id,  (year(pay_date)*100+quarter(pay_date)) 
+		)rc 
+		on project.project_id = rc.project_id 
+	) a group by quarter 
+	order by quarter desc
+	</sql>	
+	
+	
+	<select id="queryByYearByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryYearPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByYearByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryYearPagerSql"/>
+		) c
+		
+	</select>
+	
+	
+	<sql id="queryYearPagerSql">		
+	select  year1, sum(amount) as statistics_amount , ROUND(sum(amount)/sum(total_amount)*100,2) as statistics_rate 
+		from (
+		select project.project_name,rp.*
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		inner join 			(
+				select project_id,year(receive_payment_datetime) year1,
+				sum(case when receive_payment_amount is NULL   	then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) as amount ,
+				sum(case when receive_payment_amount is NULL   	then 0 else receive_payment_amount end) as total_amount 
+				from tb_received_payment where verify_userid is not NULL 			
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+				]]>
+				</if>			
+				group by project_id, year(receive_payment_datetime)
+		)rp 
+		on project.project_id = rp.project_id 
+		union all
+		select project.project_name,psc.* 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
+		inner join 	(
+				select project_id, year(pay_date) year1,
+				sum(case when amount is NULL  then 0 else amount end)*-1 as amount ,
+				0 as total_amount
+				from tb_project_staff_cost where 1=1 
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+				]]>
+				</if>						
+				group by project_id, year(pay_date)
+		)psc 
+		on project.project_id = psc.project_id 		
+		union all
+		select project.project_name,pe.* 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
+		inner join 	(
+				select project_id, year(pay_date) year1,
+				sum(case when pay_amount is NULL  then 0 else pay_amount end)*-1 amount ,
+				0 as total_amount
+				from tb_project_expend where delete_flag = '0'  and pay_date is not null 
+				and verify_userid is not NULL 
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+				]]>
+				</if>			
+				group by project_id, year(pay_date)
+		)pe 
+		on project.project_id = pe.project_id 
+		union all
+		select project.project_name,rc.* 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
+		inner join 	(
+				select project_id, year(pay_date) year1,
+				sum(case when amount is NULL  then 0 else amount end)*-1 as amount ,
+				0 as total_amount
+				from tb_reimburse_costs  where delete_flag = '0' 
+				and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+				and verify_userid is not NULL  
+				<if test="Statistics.month1 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+				]]>
+				</if> 			
+				<if test="Statistics.month2 != 0">
+				<![CDATA[	
+					AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+				]]>
+				</if>				
+				group by project_id, year(pay_date)
+		)rc 
+		on project.project_id = rc.project_id 
+	) a group by year1 
+	order by year1 desc
+	</sql>
+
+	
+		
+	
+	
+	<select id="queryByAllByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryAllPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByAllByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryAllPagerSql"/>
+		) c
+		
+	</select>
+
+
+	<sql id="queryAllPagerSql">
+		select 		
+		sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND(sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/sum(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount ,
+			sum(case when receive_payment_amount is NULL   	then 0 else receive_payment_amount end) as total_amount 
+			
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0'  and pay_date is not null
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 
+		
+		
+	
+	</sql>		
+	
+	
+	
+	<select id="queryByDeptByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByDeptPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByDeptByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByDeptPagerSql"/>
+		) c
+		
+	</select>
+	
+	<sql id="queryByDeptPagerSql">	
+		select project.deptid,project.deptname ,
+		sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND(sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/sum(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, 
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount ,
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) as total_amount
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0'  and pay_date is not null
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 
+		
+		group by project.deptid,project.deptname
+		order by project.deptname
+	
+	</sql>			
+	
+	
+	
+	
+	<select id="queryByExecDeptByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByExecDeptPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByExecDeptByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByExecDeptPagerSql"/>
+		) c
+		
+	</select>
+	
+
+	<sql id="queryByExecDeptPagerSql">	
+		select project.exec_amount_deptid,project.exec_amount_deptname ,
+		sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND(sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/sum(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, 
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount  ,
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) as total_amount 
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0'  and pay_date is not null
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 
+		
+		group by project.exec_amount_deptid,project.exec_amount_deptname
+		order by project.exec_amount_deptname
+	
+	</sql>			
+	
+	
+	
+	<select id="queryBySalesDeptByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryBySalesDeptPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryBySalesDeptByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryBySalesDeptPagerSql"/>
+		) c
+		
+	</select>
+	
+	
+	<sql id="queryBySalesDeptPagerSql">	
+		select project.sales_amount_deptid,project.sales_amount_deptname ,
+		sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND(sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/sum(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, 
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount ,
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) as total_amount 
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0' and pay_date is not null 
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 
+		
+		group by project.sales_amount_deptid,project.sales_amount_deptname
+		order by project.sales_amount_deptname
+	
+	</sql>		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="queryByClientByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByClientPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByClientByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByClientPagerSql"/>
+		) c
+		
+	</select>
+	
+
+	<sql id="queryByClientPagerSql">				
+		select project.project_client_id,	project.project_client_name,
+		sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND(sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/sum(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, 
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount ,
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) as total_amount 
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0' and pay_date is not null
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 
+		
+		group by project.project_client_id,	project.project_client_name
+		order by project.project_client_name
+	
+	</sql>		
+	
+	
+	
+	<select id="queryByInfoSourceByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByInfoSourcePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByInfoSourceByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByInfoSourcePagerSql"/>
+		) c
+		
+	</select>
+	
+	
+	<sql id="queryByInfoSourcePagerSql">				
+		select project.info_sources_userid,	project.info_sources_username,
+		sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND(sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/sum(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, 
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount ,
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) as total_amount 
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0'  and pay_date is not null
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 	
+		
+		group by project.info_sources_userid,	project.info_sources_username
+		order by project.info_sources_username
+	
+	</sql>		
+	
+	
+	<select id="queryByManagerByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByManagerPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByManagerByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByManagerPagerSql"/>
+		) c
+		
+	</select>
+	
+
+
+	<sql id="queryByManagerPagerSql">				
+		select 
+		project.manage_userid,
+		project.manage_username,
+		sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND(sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/sum(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project  
+		left join (
+			select project_id, 
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount ,
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) as total_amount 
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0'  and pay_date is not null
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 
+		
+		
+		group by project.manage_userid, project.manage_username 
+		order by project.manage_username 
+	
+	</sql>		
+	
+		
+
+	
+	<select id="queryBySalesByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryBySalesPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryBySalesByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryBySalesPagerSql"/>
+		) c
+		
+	</select>
+	
+
+
+	<sql id="queryBySalesPagerSql">				
+		select 
+		project.sales_userid,
+		project.sales_username,
+		sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND(sum(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/sum(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, 
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount ,
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) as total_amount 
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0' and pay_date is not null
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 
+		
+		group by project.sales_userid,project.sales_username 
+		order by project.sales_username 
+	
+	</sql>		
+	
+	
+	
+	
+	
+	
+	
+		
+	<select id="queryByProjectByPager_mysql" parameterType="map"   resultMap="statisticsMap">
+		<include refid="queryByProjectPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryByProjectByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="queryByProjectPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+	<sql id="queryByProjectPagerSql">				
+		select project.project_id, 
+		project.project_name,
+		project.project_no,
+		project.sales_username,
+		project.manage_username,
+		project.info_sources_username,
+		project.sales_amount_deptname,
+		project.exec_amount_deptname, 
+		project.deptname ,
+		(
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)as statistics_amount,
+		ROUND((
+		(case when rp.receive_payment_amount is NULL  then 0 else rp.receive_payment_amount end)
+		-(case when psc.amount is NULL  then 0 else psc.amount end)
+		-(case when rc.amount is NULL  then 0 else rc.amount end)
+		-(case when pe.amount is NULL  then 0 else pe.amount end)
+		)/(case when total_amount is NULL  then 0 else total_amount end)*100,2) as  statistics_rate 
+		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
+		left join (
+			select project_id, 
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount*(1-${Statistics.tax_rate}) end) receive_payment_amount ,
+			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) as total_amount 
+			from tb_received_payment where verify_userid is not NULL 			
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>			
+			group by project_id
+		) rp
+		on project.project_id = rp.project_id
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_project_staff_cost where 1=1 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		) psc
+		on project.project_id = psc.project_id 
+		left join (
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			from tb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data1 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			and verify_userid is not NULL  
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>					
+			group by project_id
+		)  rc 
+		on project.project_id = rc.project_id 
+		left join (
+			select project_id, sum(case when pay_amount is NULL  then 0 else pay_amount end) amount 
+			from tb_project_expend where  delete_flag = '0'  and pay_date is not null
+			and verify_userid is not NULL 
+			<if test="Statistics.month1 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1} 
+			]]>
+			</if> 			
+			<if test="Statistics.month2 != 0">
+			<![CDATA[	
+				AND DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2} 
+			]]>
+			</if>				
+			group by project_id
+		)  pe
+		on project.project_id = pe.project_id 
+		
+				
+		order by project.build_datetime
+	
+	</sql>	
+	
+	
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="RecruitInfoMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.RecruitInfo" id="recruitInfoMap" />
+
+
+	<select id="getRecruitInfo" parameterType="com.pm.domain.business.RecruitInfo" resultMap="recruitInfoMap">
+		select recruit.* , dd_rc.dic_data_name as resume_source_name 
+		from tb_recruit_info recruit 
+		join ts_dic_data dd_rc on recruit.resume_source = dd_rc.id
+		where recruit.id = #{id}
+	</select>
+	
+	
+	
+	<select id="getRecruitInfoByNoSource" parameterType="com.pm.domain.business.RecruitInfo" resultMap="recruitInfoMap">
+		select recruit.* 
+		from tb_recruit_info recruit 
+		where recruit.resume_no = #{resume_no} 
+		and resume_source = #{resume_source} 
+	</select>
+
+	<insert id="addRecruitInfo" parameterType="com.pm.domain.business.RecruitInfo" >
+		insert into  tb_recruit_info(
+			id,resume_no,resume_source,build_datetime,build_username,build_userid
+		)values  (
+			#{id},#{resume_no},#{resume_source},#{build_datetime},#{build_username},#{build_userid}		
+		)
+	</insert>
+
+
+
+
+
+	<select id="queryRecruitInfoByPager_mysql" parameterType="map"  resultMap="recruitInfoMap" >
+		<include refid="recruitInfoPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryRecruitInfoByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="recruitInfoPagerSql"/> )c
+	</select>
+
+	<sql id="recruitInfoPagerSql">
+		select recruit.* , dd_rc.dic_data_name as resume_source_name 
+		from tb_recruit_info recruit 		
+		join ts_dic_data dd_rc on recruit.resume_source = dd_rc.id
+		WHERE 1=1
+		
+		<if test="RecruitInfo.resume_no != null and RecruitInfo.resume_no != ''">
+			and resume_no = #{RecruitInfo.resume_no}
+		</if>
+		<if test="RecruitInfo.resume_source != null and RecruitInfo.resume_source != ''">
+			and resume_source = #{RecruitInfo.resume_source}
+		</if>
+		order by recruit.build_datetime desc
+	</sql>
+
+</mapper>

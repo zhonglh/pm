@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ContractMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.Contract" id="contractMap" />
+
+	
+	
+	<select id="getContractNoExist" parameterType="com.pm.domain.business.Contract" resultMap="contractMap">
+		select contract.* from tb_contract contract where contract_no  = #{contract_no} 
+		<if test="id != null and id != ''">
+			AND id != #{id}
+		</if>
+	</select>
+	
+
+
+	<select id="getContract" parameterType="com.pm.domain.business.Contract" resultMap="contractMap">
+		select contract.* ,project.project_name,project.project_no,dd_sa.dic_data_name as storage_addr_name,
+		client.client_name as project_client_name , otherstaff.staff_name as sales_username
+		from tb_contract contract 
+		INNER JOIN vb_project project 
+		on contract.project_id = project.project_id 
+		left join tb_client  client 
+		on project.project_client_id = client.client_id 
+		left join tb_other_staff otherstaff 
+		on contract.sales_userid = otherstaff.staff_id
+		left join ts_dic_data dd_sa on contract.storage_addr = dd_sa.id 
+		where contract.id = #{id}
+	</select>
+
+	<insert id="addContract" parameterType="com.pm.domain.business.Contract" >
+		insert into  tb_contract(
+			id,storage_addr,project_id,contract_no,
+			exec_contract,monthly_expenses,monthly_expenses2,signing_date,validity_date1,validity_date2,
+			sales_userid,client_linkman,corporation,submit_date,contract_number,description,
+			build_datetime,build_userid,build_username
+		)values  (
+			#{id},#{storage_addr},#{project_id},#{contract_no},
+			#{exec_contract},#{monthly_expenses},#{monthly_expenses2},#{signing_date},#{validity_date1},#{validity_date2},
+			#{sales_userid},#{client_linkman},#{corporation},#{submit_date},#{contract_number},#{description},
+			#{build_datetime},#{build_userid},#{build_username}		)
+	</insert>
+
+	<update id="updateContract" parameterType="com.pm.domain.business.Contract" >
+		update  tb_contract set 
+		storage_addr=#{storage_addr},
+		project_id=#{project_id},
+		contract_no=#{contract_no},
+		exec_contract=#{exec_contract},
+		monthly_expenses=#{monthly_expenses},
+		monthly_expenses2=#{monthly_expenses2},
+		signing_date=#{signing_date},
+		validity_date1=#{validity_date1},
+		validity_date2=#{validity_date2},
+		sales_userid=#{sales_userid},
+		client_linkman=#{client_linkman},
+		corporation=#{corporation},
+		submit_date=#{submit_date},
+		contract_number=#{contract_number},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deleteContract" parameterType="com.pm.domain.business.Contract" >
+		delete from  tb_contract
+		where id=#{id}
+	</delete>
+
+	<select id="queryContractTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="contractPagerSql"/>
+		) c
+	</select>
+
+	<select id="queryContractByPager_mysql" parameterType="map"  resultMap="contractMap" >
+		<include refid="contractPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryContractByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="contractPagerSql"/> )c
+	</select>
+
+	<sql id="contractPagerSql">
+		select contract.* ,project.project_name,project.project_no,dd_sa.dic_data_name as storage_addr_name,
+		client.client_name as project_client_name , otherstaff.staff_name as sales_username
+		from tb_contract contract 
+		INNER JOIN vb_project project 
+		on contract.project_id = project.project_id 
+		left join tb_client  client 
+		on project.project_client_id = client.client_id 
+		left join tb_other_staff otherstaff 
+		on contract.sales_userid = otherstaff.staff_id 
+		left join ts_dic_data dd_sa on contract.storage_addr = dd_sa.id 
+		WHERE 1=1 
+		
+		
+		<if test="Contract.project_id != null and Contract.project_id != ''">
+			AND project.project_id = #{Contract.project_id}
+		</if>
+		
+		<if test="Contract.project_name != null and Contract.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{Contract.project_name}),'%')  
+		</if>
+		
+		<if test="Contract.contract_no != null and Contract.contract_no != ''">
+			AND contract.contract_no like concat('%',TRIM(#{Contract.contract_no}),'%')  
+		</if>
+		
+		
+		
+		<if test="Contract.date1 != null ">	
+			<![CDATA[
+				and contract.submit_date >= #{Contract.date1}
+			]]>
+		</if>
+		
+		<if test="Contract.date2 != null ">	
+			<![CDATA[
+				and contract.submit_date <= #{Contract.date2}
+			]]>
+		</if>
+		
+		
+		<include refid="ProjectAuthMapping.permission" /> 		
+		
+		order by contract.build_datetime desc 
+	</sql>
+
+</mapper>

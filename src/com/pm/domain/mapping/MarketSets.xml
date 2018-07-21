@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="MarketSetsMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.system.MarketSets" id="marketSetsMap" />
+
+
+	<select id="getMarketSets" parameterType="com.pm.domain.system.MarketSets" resultMap="marketSetsMap">
+		select ms.* ,		
+		case when ms.affect_strategy='1' 	then '固定' else '递减' end as affect_strategy_name 		
+		from ts_market_sets ms
+		where ms.id = #{id}
+	</select>
+
+	<insert id="addMarketSets" parameterType="com.pm.domain.system.MarketSets" >
+		insert into  ts_market_sets(
+			id,affect_level_number,affect_ratio,affect_strategy,affect_decline_factor,platform_ratio
+		)values  (
+			#{id},#{affect_level_number},#{affect_ratio},#{affect_strategy},#{affect_decline_factor},#{platform_ratio}
+		)
+	</insert>
+
+	<update id="updateMarketSets" parameterType="com.pm.domain.system.MarketSets" >
+		update  ts_market_sets set 
+		affect_level_number=#{affect_level_number},
+		affect_ratio=#{affect_ratio},
+		affect_strategy=#{affect_strategy},
+		affect_decline_factor=#{affect_decline_factor},
+		platform_ratio=#{platform_ratio}
+		where id=#{id} 
+	</update>
+
+
+</mapper>

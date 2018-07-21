@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="DicDataMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.DicData" id="dicdataMap" />
+	<resultMap type="com.pm.domain.business.DicType" id="dictypeMap" />
+	
+	
+	<select id="getAllDicType" parameterType="com.pm.domain.business.DicType" resultMap="dictypeMap">
+		select dictypeMap.* 
+		from ts_dic_type dictypeMap
+	</select>
+	
+	<select id="getDicType" parameterType="com.pm.domain.business.DicType" resultMap="dictypeMap">
+		select dictypeMap.* 
+		from ts_dic_type dictypeMap
+		where id = #{id}
+	</select>
+	
+	
+	
+	
+	
+
+	<select id="getMaxDicDataByType" parameterType="com.pm.domain.business.DicType" resultType="int">
+		select max(dic_sort) + 1
+		from ts_dic_data dicData 
+		where dic_type_id = #{dic_type_id }
+		and delete_flag = '0' 
+	</select>
+	
+	
+	<select id="getDicDataByPre" parameterType="com.pm.domain.business.DicData" resultMap="dicdataMap">
+		<![CDATA[	
+		select dicData.* 
+		from ts_dic_data dicData 
+		where dic_type_id = #{dic_type_id }
+		and dic_sort <  #{dic_sort }
+		and delete_flag = '0' 
+		order by dicData.dic_sort desc LIMIT 0,1 
+		]]>
+	</select>
+	
+	<select id="getDicDataByNext" parameterType="com.pm.domain.business.DicData" resultMap="dicdataMap">
+		<![CDATA[	
+		select dicData.* 
+		from ts_dic_data dicData 
+		where dic_type_id = #{dic_type_id }
+		and dic_sort >  #{dic_sort }
+		and delete_flag = '0' 
+		order by dicData.dic_sort LIMIT 0,1 
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<select id="getDicDataByType" parameterType="com.pm.domain.business.DicData" resultMap="dicdataMap">
+		select dicData.* 
+		from ts_dic_data dicData 
+		where dic_type_id = #{dic_type_id }
+		and delete_flag = '0' 
+		order by dicData.dic_sort 
+	</select>
+
+	<select id="getDicData" parameterType="com.pm.domain.business.DicData" resultMap="dicdataMap">
+		select dicData.* , dicType.dic_type_name 
+		from ts_dic_data dicData join ts_dic_type dicType 
+		on dicData.dic_type_id = dicType.id
+		where dicData.id = #{id}
+	</select>
+
+	<insert id="addDicData" parameterType="com.pm.domain.business.DicData" >
+		insert into  ts_dic_data(
+			id,dic_type_id,dic_data_name,dic_sort,build_datetime,build_userid,build_username
+
+		)values  (
+			#{id},#{dic_type_id},#{dic_data_name},#{dic_sort},#{build_datetime},#{build_userid},#{build_username}
+		)
+	</insert>
+
+	<update id="updateDicData" parameterType="com.pm.domain.business.DicData" >
+		update  ts_dic_data set 
+		dic_data_name=#{dic_data_name}
+		where id=#{id} 
+	</update>
+	
+	<update id="updateDicDataSort" parameterType="com.pm.domain.business.DicData" >
+		update  ts_dic_data set 
+		dic_sort=#{dic_sort} 
+		where id=#{id} 
+	</update>
+	
+	
+	
+	
+	<update id="deleteDicData" parameterType="com.pm.domain.business.DicData" >
+		update  ts_dic_data set 
+		delete_flag='1'
+		where id=#{id} 
+	</update>
+	
+	
+	
+	<update id="recoverDicData" parameterType="com.pm.domain.business.DicData" >
+		update  ts_dic_data set 
+		delete_flag='0' ,
+		dic_sort=#{dic_sort} 
+		where id=#{id} 
+	</update>
+
+
+
+	<select id="queryDicDataByPager_mysql" parameterType="map"  resultMap="dicdataMap" >
+		<include refid="dicdataPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryDicDataByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="dicdataPagerSql"/> )c
+	</select>
+
+
+	<sql id="dicdataPagerSql">
+		select dicData.* 
+		from ts_dic_data dicData 
+		WHERE 1=1  
+		
+		<if test="DicData.dic_type_id != null and DicData.dic_type_id != ''">
+			and dicData.dic_type_id = #{DicData.dic_type_id} 		
+		</if>
+		
+		<if test="DicData.delete_flag != null and DicData.delete_flag != ''">
+			and dicData.delete_flag = #{DicData.delete_flag} 
+		</if>
+		order by dicData.delete_flag ,dicData.dic_sort  
+	</sql>
+
+</mapper>

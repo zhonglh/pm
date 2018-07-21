@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DepartCostsMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+
+
+	<resultMap type="com.pm.domain.business.DepartCosts" id="departCostsMap" />
+	
+	
+	
+	<select id="getDepartCosts" parameterType="com.pm.domain.business.DepartCosts" resultMap="departCostsMap">			
+		select rc.* ,project.project_name,project.project_no,
+		staff.staff_no, dept.dept_name , 
+		dc.dic_data_name as pay_item_name,		
+		if(staff.staff_id = null or staff.staff_id = '' , rc.staff_id , staff.staff_name) as staff_name 
+		from tb_depart_costs rc
+		left JOIN vb_project project 
+		on rc.project_id = project.project_id 
+		left JOIN tb_other_staff staff 
+		on rc.staff_id = staff.staff_id 
+		join ts_dept dept 
+		on rc.dept_id = dept.dept_id 
+		left join ts_dic_data dc on rc.pay_item_id = dc.id		
+		where rc.id = #{id}
+	</select>
+	
+	
+	
+		
+		
+	<insert id="addDepartCosts" parameterType="com.pm.domain.business.DepartCosts">
+	 	 insert into tb_depart_costs
+		 (
+		 	id, staff_id, dept_id,project_id, pay_item_id,use_month,pay_date,import_order,
+		  	amount,description,build_datetime,build_username,build_userid,delete_flag
+		)values  (
+			#{id}, #{staff_id},  #{dept_id}, #{project_id}, #{pay_item_id}, #{use_month}, #{pay_date}, #{import_order}, 
+		  	#{amount},#{description}, #{build_datetime}, #{build_username}, #{build_userid}, #{delete_flag}
+		 )
+	</insert>
+	
+	
+	<update id="updateDepartCosts" parameterType="com.pm.domain.business.DepartCosts">
+		update tb_depart_costs set 
+		project_id =  #{project_id},
+		staff_id =  #{staff_id},
+		dept_id =  #{dept_id},
+		pay_item_id =  #{pay_item_id},
+		use_month =  #{use_month},
+		pay_date =  #{pay_date},
+		amount =  #{amount},
+		description =  #{description}
+		where id = #{id}
+		and verify_userid is null
+		and delete_flag = '0'
+	
+	</update>
+	
+		
+	<update id="verifyDepartCosts" parameterType="com.pm.domain.business.DepartCosts">
+		update tb_depart_costs set 
+		verify_userid = #{verify_userid},
+		verify_username = #{verify_username},
+		verify_datetime = #{verify_datetime}
+		where id = #{id}
+		and verify_userid is null
+		and delete_flag = '0' 
+	</update>
+	
+	
+	<update id="unVerifyDepartCosts" parameterType="com.pm.domain.business.DepartCosts">
+		update tb_depart_costs set 
+		verify_userid = null,
+		verify_username = null,
+		verify_datetime = null 
+		where id = #{id} 
+		and verify_userid is not null
+		and delete_flag = '0' 
+	</update>
+	
+		
+	<delete id="deleteDepartCosts" parameterType="com.pm.domain.business.DepartCosts">		
+		delete from  tb_depart_costs
+		where id = #{id} 
+		and verify_userid is null
+		and delete_flag = '0'		
+	</delete>
+	
+	
+	
+	
+	
+		
+	<select id="queryDepartCostsByPager_mysql" parameterType="map"   resultMap="departCostsMap">
+		<include refid="departCostsPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryDepartCostsByCount_mysql" parameterType="map"  resultType="map" >
+		 SELECT COUNT(*) as COUNT1,sum(amount) as SUM1 FROM (
+			<include refid="departCostsPagerSql"/>
+		) c
+		
+	</select>	
+	
+   
+   
+
+	<sql id="departCostsPagerSql">
+		select rc.* ,project.project_name,project.project_no,
+		staff.staff_no, dept.dept_name ,
+		dc.dic_data_name as pay_item_name,		
+		if(staff.staff_id = null or staff.staff_id = '' , rc.staff_id , staff.staff_name) as staff_name ,
+		aa.need_approve 
+		from tb_depart_costs rc
+		left JOIN vb_project project 
+		on rc.project_id = project.project_id 
+		left  JOIN tb_other_staff staff 
+		on rc.staff_id = staff.staff_id 
+		join ts_dept dept 
+		on rc.dept_id = dept.dept_id 		
+		left join ts_dic_data dc on rc.pay_item_id = dc.id	
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'DEPART_COSTS' group by data_id) aa
+		on rc.id = aa.data_id		
+		WHERE rc.delete_flag = '0' 
+		
+		<if test="DepartCosts.project_id != null and DepartCosts.project_id != ''">
+			AND project.project_id = #{DepartCosts.project_id}
+		</if>
+		
+		<if test="DepartCosts.project_name != null and DepartCosts.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{DepartCosts.project_name}),'%')  
+		</if>
+		
+		<if test="DepartCosts.project_no != null and DepartCosts.project_no != ''">
+			AND project.project_no like concat('%',TRIM(#{DepartCosts.project_no}),'%')  
+		</if>
+		
+
+		<if test="DepartCosts.pay_item_id != null and DepartCosts.pay_item_id != ''">
+			AND rc.pay_item_id = #{DepartCosts.pay_item_id}
+		</if>		
+		
+		<if test="DepartCosts.dept_id != null and DepartCosts.dept_id != ''">
+			AND dept.dept_id = #{DepartCosts.dept_id}
+		</if>
+		
+		<if test="DepartCosts.staff_name != null and DepartCosts.staff_name != ''">
+			AND (
+				staff.staff_name like concat('%',TRIM(#{DepartCosts.staff_name}),'%')  or 
+				rc.staff_id like concat('%',TRIM(#{DepartCosts.staff_name}),'%') 
+			)
+		</if>
+		
+		
+		
+		<if test="DepartCosts.use_month1 != 0 ">
+			<![CDATA[	
+			AND rc.use_month >= #{DepartCosts.use_month1}
+			]]>
+		</if>
+		<if test="DepartCosts.use_month2 != 0 ">
+			<![CDATA[	
+			AND rc.use_month <= #{DepartCosts.use_month2}
+			]]>
+		</if>
+		
+				
+		<if test="DepartCosts.pay_date1 != null ">
+			<![CDATA[	
+			AND rc.pay_date >= #{DepartCosts.pay_date1}
+			]]>
+		</if>
+		<if test="DepartCosts.pay_date2 != null ">
+			<![CDATA[	
+			AND rc.pay_date <= #{DepartCosts.pay_date2}
+			]]>
+		</if>
+				
+
+		<if test="DepartCosts.verify_flag != null and DepartCosts.verify_flag != ''">
+			<if test="DepartCosts.verify_flag == 1">
+					and rc.verify_userid is not null 
+			</if>
+			<if test="DepartCosts.verify_flag == 2">			
+					and rc.verify_userid is null
+			</if>
+		</if>						
+		
+		<include refid="DeptMapping.permission"/>		
+		
+		order by rc.use_month  desc,project.build_datetime desc, rc.build_datetime, rc.import_order
+	
+	</sql>	
+	
+	 
+
+</mapper>

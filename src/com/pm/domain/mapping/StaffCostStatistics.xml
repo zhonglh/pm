@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StaffCostStatisticsMapping">
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.StaffCostStatistics" id="staffCostStatisticsMap" />
+
+		
+	<select id="queryJoinStaffCostStatisticsByPager_mysql" parameterType="map"   resultMap="staffCostStatisticsMap">
+		<include refid="staffJoinPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryJoinStaffCostStatisticsByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="staffJoinPagerSql"/>
+		) c
+		
+	</select>	 
+	
+
+
+	<sql id="staffJoinPagerSql">
+		select ps.* , sc.staff_no,sc.staff_name,other_staff.staff_name as recruitment_username,
+		dept.dept_name,project.project_no,project.project_name
+		<include refid="staffJoinFromSql"/>
+	</sql>
+	
+	<sql id="staffJoinFromSql">			
+		from tb_staff_costs sc 
+		inner join tb_other_staff other_staff on sc.recruiter = other_staff.staff_id 
+		inner join tb_project_staff ps on sc.staff_id = ps.staff_id
+		join tb_project project on ps.project_id = project.project_id
+		inner join ts_dept dept on project.deptid = dept.dept_id
+		where 1=1 
+		
+		
+		<if test="StaffCostStatistics.dept_id != null and StaffCostStatistics.dept_id != ''">
+			AND project.deptid = #{StaffCostStatistics.dept_id}
+		</if>	
+		
+		
+		<if test="StaffCostStatistics.delete_flag != null and StaffCostStatistics.delete_flag != ''">
+			AND sc.delete_flag = #{StaffCostStatistics.delete_flag}
+		</if>
+		
+		
+		
+		
+		<if test="StaffCostStatistics.project_name != null and StaffCostStatistics.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{StaffCostStatistics.project_name}),'%')   
+		</if>
+				
+		<if test="StaffCostStatistics.staff_no != null and StaffCostStatistics.staff_no != ''">
+			AND sc.staff_no like concat('%',TRIM(#{StaffCostStatistics.staff_no}),'%')   
+		</if>
+		
+		<if test="StaffCostStatistics.staff_name != null and StaffCostStatistics.staff_name != ''">
+			AND sc.staff_name like concat('%',TRIM(#{StaffCostStatistics.staff_name}),'%')   
+		</if>
+				
+
+		
+		<if test="StaffCostStatistics.recruitment_username != null and StaffCostStatistics.recruitment_username != ''">
+			AND other_staff.staff_name like concat('%',TRIM(#{StaffCostStatistics.recruitment_username}),'%')   
+		</if>
+		
+		
+		
+		<if test="StaffCostStatistics.date1 != null">
+		<![CDATA[		
+			AND  ps.join_project_datetime >= #{StaffCostStatistics.date1}
+		]]>
+		</if>
+		
+		<if test="StaffCostStatistics.date2 != null">
+		<![CDATA[		
+			AND  ps.join_project_datetime <= #{StaffCostStatistics.date2}	
+		]]>
+		</if>
+		
+		<include refid="StaffCostMapping.permission"/>	 
+		
+		order by dept.dept_no, project.project_id, sc.build_datetime, ps.join_project_datetime
+	
+		
+
+	</sql>
+	
+	
+	
+	
+	<select id="queryLeaveStaffCostStatisticsByPager_mysql" parameterType="map"   resultMap="staffCostStatisticsMap">
+		<include refid="staffLeavePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryLeaveStaffCostStatisticsByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="staffLeavePagerSql"/>
+		) c
+		
+	</select>	
+	
+
+	<sql id="staffLeavePagerSql">
+		select ps.* , sc.staff_no,sc.staff_name,other_staff.staff_name as recruitment_username,
+		dept.dept_name,project.project_no,project.project_name
+		<include refid="staffLeaveFromSql"/>
+	</sql>
+	
+	<sql id="staffLeaveFromSql">			
+		from tb_staff_costs sc 
+		inner join tb_other_staff other_staff on sc.recruiter = other_staff.staff_id 
+		inner join tb_project_staff ps on sc.staff_id = ps.staff_id
+		inner join tb_project project on ps.project_id = project.project_id
+		inner join ts_dept dept on project.deptid = dept.dept_id
+		where 1=1 and ps.leave_project_datetime is not null
+		
+		
+		<if test="StaffCostStatistics.dept_id != null and StaffCostStatistics.dept_id != ''">
+			AND project.deptid = #{StaffCostStatistics.dept_id}
+		</if>
+		
+		
+		<if test="StaffCostStatistics.delete_flag != null and StaffCostStatistics.delete_flag != ''">
+			AND sc.delete_flag = #{StaffCostStatistics.delete_flag}
+		</if>
+		
+		<if test="StaffCostStatistics.project_name != null and StaffCostStatistics.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{StaffCostStatistics.project_name}),'%')   
+		</if>
+				
+		<if test="StaffCostStatistics.staff_no != null and StaffCostStatistics.staff_no != ''">
+			AND sc.staff_no like concat('%',TRIM(#{StaffCostStatistics.staff_no}),'%')   
+		</if>
+		
+		<if test="StaffCostStatistics.staff_name != null and StaffCostStatistics.staff_name != ''">
+			AND sc.staff_name like concat('%',TRIM(#{StaffCostStatistics.staff_name}),'%')   
+		</if>
+				
+
+		
+		<if test="StaffCostStatistics.recruitment_username != null and StaffCostStatistics.recruitment_username != ''">
+			AND other_staff.staff_name like concat('%',TRIM(#{StaffCostStatistics.recruitment_username}),'%')   
+		</if>
+		
+		
+		
+		<if test="StaffCostStatistics.date1 != null">
+		<![CDATA[		
+			AND ps.leave_project_datetime >= #{StaffCostStatistics.date1}	
+		]]>
+		</if>
+		
+		<if test="StaffCostStatistics.date2 != null">
+		<![CDATA[		
+			AND  ps.leave_project_datetime <= #{StaffCostStatistics.date2}	
+		]]>
+		</if>
+		
+
+		<include refid="StaffCostMapping.permission"/>	 
+		
+		order by dept.dept_no, project.project_id, sc.build_datetime, ps.leave_project_datetime
+		
+
+	</sql>
+	
+	
+	
+	
+</mapper>

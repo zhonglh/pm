@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ThReceivedPaymentMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.ThReceivedPayment" id="thReceivedPaymentMap" />
+
+
+	<select id="getThReceivedPayment" parameterType="com.pm.domain.business.ThReceivedPayment" resultMap="thReceivedPaymentMap">
+		select rp.*  
+		from th_received_payment rp
+		where rp.id = #{id}
+	</select>
+
+	<insert id="addThReceivedPayment" parameterType="com.pm.domain.business.ThReceivedPayment" >
+		insert into  th_received_payment(			
+			id,his_date,his_user_id,his_user_name,his_operation_type,
+			receive_payment_id,project_id,invoice_id,payment_unit,
+			receive_payment_month,receive_payment_amount,receive_payment_datetime,receivable_accounts_item_id,description,
+			build_datetime,build_username,build_userid,verify_username,verify_userid,
+			verify_datetime,project_name,project_no,invoice_no,invoice_amount,
+			contract_id,contract_no,receivable_accounts_item_name,str_month
+		)values  (			
+			#{id},#{his_date},#{his_user_id},#{his_user_name}, #{his_operation_type},
+			#{receive_payment_id},#{project_id},#{invoice_id},#{payment_unit},
+			#{receive_payment_month},#{receive_payment_amount},#{receive_payment_datetime},#{receivable_accounts_item_id},#{description},
+			#{build_datetime},#{build_username},#{build_userid},#{verify_username},#{verify_userid},
+			#{verify_datetime},#{project_name},#{project_no},#{invoice_no},#{invoice_amount},
+			#{contract_id},#{contract_no},#{receivable_accounts_item_name},#{str_month}
+		)
+	</insert>
+
+	<select id="queryThReceivedPaymentTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="thReceivedPaymentPagerSql"/>
+		) c
+	</select>
+
+	<select id="queryThReceivedPaymentByPager_mysql" parameterType="map"  resultMap="thReceivedPaymentMap" >
+		<include refid="thReceivedPaymentPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryThReceivedPaymentByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="thReceivedPaymentPagerSql"/> )c
+	</select>
+
+	<sql id="thReceivedPaymentPagerSql">
+		select rp.* 
+		from th_received_payment rp  
+		WHERE receive_payment_id = #{ThReceivedPayment.receive_payment_id} 
+		order by his_date desc
+	</sql>
+
+</mapper>

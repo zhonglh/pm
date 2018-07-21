@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ShareToUserMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.ShareToUser" id="shareToUserMap" />
+
+
+	<select id="getShareToUser" parameterType="com.pm.domain.business.ShareToUser" resultMap="shareToUserMap">
+		select stu.*
+		from tb_share_to_user stu
+		where stu.id = #{id}
+	</select>
+	
+	
+	<select id="getShareToUserByShare" parameterType="com.pm.domain.business.ShareToUser" resultMap="shareToUserMap">
+		select stu.* , user.user_name as to_user_name 
+		from tb_share_to_user stu  join ts_user user on stu.to_user_id = user.user_id		
+		where stu.share_id = #{share_id}
+	</select>
+
+	<insert id="addShareToUser" parameterType="com.pm.domain.business.ShareToUser" >
+		insert into  tb_share_to_user(
+			id,share_id,to_user_id
+		)values  (
+			#{id},#{share_id},#{to_user_id}
+		)
+	</insert>
+
+	<update id="updateShareToUser" parameterType="com.pm.domain.business.ShareToUser" >
+		update  tb_share_to_user set 
+		share_id=#{share_id},
+		to_user_id=#{to_user_id}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deleteShareToUser" parameterType="com.pm.domain.business.ShareToUser" >
+		delete from  tb_share_to_user
+		where id=#{id}
+	</delete>
+	
+	
+
+	<delete id="deleteShareToUserByShare" parameterType="com.pm.domain.business.ShareToUser" >
+		delete from  tb_share_to_user
+		where share_id=#{share_id}
+	</delete>
+
+
+	<select id="queryShareToUserByPager_mysql" parameterType="map"  resultMap="shareToUserMap" >
+		<include refid="shareToUserPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryShareToUserByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="shareToUserPagerSql"/> )c
+	</select>
+
+	<sql id="shareToUserPagerSql">
+		select stu.* , user.user_name as to_user_name 
+		from tb_share_to_user stu  join ts_user user on stu.to_user_id = user.user_id
+		WHERE 1=1 
+		<if test="ShareToUser.share_id != null and ShareToUser.share_id != ''">					
+			AND stu.share_id =  #{ShareToUser.share_id}  
+		</if>
+	</sql>
+
+</mapper>

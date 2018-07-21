@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="FileInfoMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.FileInfo" id="fileInfoMap" />
+
+
+	<select id="getFileInfo" parameterType="com.pm.domain.business.FileInfo" resultMap="fileInfoMap">
+		select fileinfo.*
+		from tb_file_info fileinfo		
+		where fileinfo.id = #{id}
+	</select>
+	
+
+	<select id="getAll" parameterType="com.pm.domain.business.FileInfo" resultMap="fileInfoMap">
+		select fileinfo.*
+		from tb_file_info fileinfo		
+		where 1=1		
+		<if test="parent_id != null and parent_id != ''"> and parent_id = #{parent_id} </if>
+		<if test="build_userid != null and build_userid != ''"> and build_userid = #{build_userid} </if>
+		<if test="is_folder != null and is_folder != ''"> and is_folder = #{is_folder} </if>
+	</select>
+	
+
+	<insert id="addFileInfo" parameterType="com.pm.domain.business.FileInfo" >
+		insert into  tb_file_info(
+			id,file_name,file_size,show_name,ext,
+			is_folder,parent_id,file_md5,is_share,build_datetime,
+			build_userid,build_username
+		)values  (
+			#{id},#{file_name},#{file_size},#{show_name},#{ext},
+			#{is_folder},#{parent_id},#{file_md5},#{is_share},#{build_datetime},
+			#{build_userid},#{build_username}
+		)
+	</insert>
+
+	<update id="updateFileInfo" parameterType="com.pm.domain.business.FileInfo" >
+		update  tb_file_info set 
+		file_name=#{file_name},
+		file_size=#{file_size},
+		show_name=#{show_name},
+		ext=#{ext},
+		is_folder=#{is_folder},
+		parent_id=#{parent_id},
+		file_md5=#{file_md5},
+		is_share=#{is_share}
+		where id=#{id} 
+	</update>
+	
+	
+	<update id="updateFileInfoParentId" parameterType="com.pm.domain.business.FileInfo" >
+		update  tb_file_info set 
+		parent_id=#{parent_id}
+		where id=#{id} 
+	</update>
+	
+
+
+	<delete id="deleteFileInfo" parameterType="com.pm.domain.business.FileInfo" >
+		delete from  tb_file_info
+		where id=#{id}
+	</delete>
+
+
+	<select id="queryFileInfoByPager_mysql" parameterType="map"  resultMap="fileInfoMap" >
+		<include refid="fileInfoPagerSql"/> 
+		order by is_folder desc ,  build_datetime desc 
+		LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryFileInfoByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="fileInfoPagerSql"/> )c
+	</select>
+
+	<sql id="fileInfoPagerSql">
+		select fileinfo.* 
+		from tb_file_info fileinfo  
+		WHERE 1=1 
+		<if test="FileInfo.parent_id != null and FileInfo.parent_id != ''"> and parent_id = #{FileInfo.parent_id} </if>
+		<if test="FileInfo.parent_id == null or FileInfo.parent_id == ''"> and (parent_id is null or parent_id = '') </if>
+		<if test="FileInfo.build_userid != null and FileInfo.build_userid != ''"> and build_userid = #{FileInfo.build_userid} </if>
+	</sql>
+	
+	
+	
+	
+	<select id="queryFileShareInfoByPager_mysql" parameterType="map"  resultMap="fileInfoMap" >
+		<include refid="fileShareInfoPagerSql"/> 
+		order by fileinfo.is_folder desc ,  share.build_datetime desc 
+		LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryFileShareInfoByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="fileShareInfoPagerSql"/> )c
+	</select>
+
+	<sql id="fileShareInfoPagerSql">
+		select fileinfo.* , share.build_datetime as share_datetime 
+		from tb_file_info fileinfo  
+		join tb_share_info share on fileinfo.id = share.file_id
+		WHERE 1=1 
+		<if test="FileInfo.build_userid != null and FileInfo.build_userid != ''"> and fileinfo.build_userid = #{FileInfo.build_userid} </if>
+		<if test="FileInfo.is_share != null and FileInfo.is_share != ''"> and fileinfo.is_share = #{FileInfo.is_share} </if>
+	</sql>
+	
+	
+	
+	<select id="queryFileShareMyInfoByPager_mysql" parameterType="map"  resultMap="fileInfoMap" >
+		<include refid="fileShareMyInfoPagerSql"/> 
+		order by is_folder desc ,  share_datetime desc 
+		LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryFileShareMyInfoByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="fileShareMyInfoPagerSql"/> )c
+	</select>
+	
+	<sql id="fileShareMyInfoPagerSql">
+		select * from (
+			select fileinfo.* , share.build_datetime as share_datetime 
+			from tb_file_info fileinfo  
+			join tb_share_info share on fileinfo.id = share.file_id
+			WHERE 1=1 and share.is_share_all = '1' and fileinfo.build_userid != #{FileInfo.build_userid}
+			union all
+			select distinct  fileinfo.* , share.build_datetime as share_datetime 
+			from tb_file_info fileinfo  
+			join tb_share_info share on fileinfo.id = share.file_id and share.is_share_all = '0'
+			join tb_share_to_user shareto on share.id = shareto.share_id
+			WHERE 1=1   and shareto.to_user_id = #{FileInfo.build_userid}
+		) a
+		</sql>
+
+</mapper>

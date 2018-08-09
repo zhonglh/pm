@@ -450,8 +450,10 @@ public class PubMethod {
 
 		List<Colume> columes = BusinessExcel.getImportColume(clz);
 
-		int position = list.get(0).length - columes.size();
-		if( position < 0) position = 0;
+		int position = 0;
+		//position = list.get(0).length - columes.size();
+		//if( position < 0) position = 0;
+
 		
 		for(String[] strArray : list){
 			T t = clz.newInstance();

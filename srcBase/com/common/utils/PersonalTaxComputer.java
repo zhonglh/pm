@@ -12,7 +12,7 @@ import com.pm.util.PubMethod;
 public class PersonalTaxComputer {
 	
 	//免征额
-	private static final double exemption_amount = 3500.00;
+	private static final double exemption_amount = 5000.00;
 	
 	/**
 	 * 计算速算扣除数
@@ -20,14 +20,15 @@ public class PersonalTaxComputer {
 	 * @return
 	 */
 	private static double getQuickDeduction(double d){
-		
-		if	   (d > 83500)	return 13505;
-		else if(d > 58500)	return 5505;
-		else if(d > 38500) return 2755;
-		else if(d > 12500) return 1005;
-		else if(d > 8000) return 555;
-		else if(d > 5000) return 105;
-		else if(d > 3500) return 0;
+
+
+		if	   (d > 80000) return 15160;
+		else if(d > 55000) return 7160;
+		else if(d > 35000) return 4410;
+		else if(d > 25000) return 2660;
+		else if(d > 12000)  return 1410;
+		else if(d > 3000)  return 210;
+		else if(d > 0)  return 0;
 		else return 0;
 	}
 	
@@ -37,13 +38,13 @@ public class PersonalTaxComputer {
 	 * @return
 	 */
 	private static double getTaxRate(double d){
-		if	   (d > 83500) return 0.45;
-		else if(d > 58500) return 0.35;
-		else if(d > 38500) return 0.30;
-		else if(d > 12500) return 0.25;
-		else if(d > 8000)  return 0.20;
-		else if(d > 5000)  return 0.10;
-		else if(d > 3500)  return 0.03;
+		if	   (d > 80000) return 0.45;
+		else if(d > 55000) return 0.35;
+		else if(d > 35000) return 0.30;
+		else if(d > 25000) return 0.25;
+		else if(d > 12000)  return 0.20;
+		else if(d > 3000)  return 0.10;
+		else if(d > 0)  return 0.03;
 		else return 0;
 	}
 	
@@ -53,7 +54,8 @@ public class PersonalTaxComputer {
 	 * @return
 	 */
 	public static double getIncomeTax(double d){
-		double tax =  (d-exemption_amount) * getTaxRate(d) - getQuickDeduction(d);
+		double ynsde = d-exemption_amount;
+		double tax =  ynsde * getTaxRate(ynsde) - getQuickDeduction(ynsde);
 		return PubMethod.getNumberFormatByDouble(Math.abs(tax));
 	}
 

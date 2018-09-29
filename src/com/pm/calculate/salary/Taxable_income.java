@@ -22,7 +22,7 @@ public class Taxable_income extends AbstractSalaryClculate implements ISalaryCal
 		double should_salary = salary.getShould_salary();
 		double deductions_cost = salary.getDeductions_cost();
 		
-		result = should_salary - deductions_cost - 3500;
+		result = should_salary - deductions_cost - 5000;
 		//if(result < 0) result = 0;
 		result = NumberKit.getNumberFormatByDouble(result);	
 		salary.setTaxable_income(result);

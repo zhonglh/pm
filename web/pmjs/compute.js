@@ -378,7 +378,7 @@
 	 * @param val
 	 */
 	function taxable_income(field,key,val){
-		var result = field.should_salary - field.deductions_cost - 3500;
+		var result = field.should_salary - field.deductions_cost - 5000;
 		result = fixed(result);		
 		//if(result < 0) result = 0;
 		backFill(field,key,result);
@@ -392,27 +392,30 @@
 	 * @param val
 	 */
 	function personal_income_tax(field,key,val){
-		
 		var result = 0;
-		
-		var paySalary = field.should_salary - field.deductions_cost;
-		var taxableIncome = field.taxable_income;
-		
-		if(paySalary > 83500){
-			result = taxableIncome * 0.45 - 13505;
-		}else if(paySalary > 58500){
-			result = taxableIncome * 0.35 - 5505;
-		}else if(paySalary > 38500){
-			result = taxableIncome * 0.30 - 2755;
-		}else if(paySalary > 12500){
-			result = taxableIncome * 0.25 - 1005;
-		}else if(paySalary > 8000){
-			result = taxableIncome * 0.20 - 555;
-		}else if(paySalary > 5000){
-			result = taxableIncome * 0.10 - 105;
-		}else if(paySalary > 3500){
-			result = taxableIncome * 0.03;
-		}
+
+        var taxableIncome = field.taxable_income;
+		var paySalary = taxableIncome ;
+		//field.should_salary - field.deductions_cost;
+
+
+        if(paySalary > 80000){
+            result = taxableIncome * 0.45 - 15160;
+        }else if(paySalary > 55000){
+            result = taxableIncome * 0.35 - 7160;
+        }else if(paySalary > 35000){
+            result = taxableIncome * 0.30 - 4410;
+        }else if(paySalary > 25000){
+            result = taxableIncome * 0.25 - 2660;
+        }else if(paySalary > 12000){
+            result = taxableIncome * 0.20 - 1410;
+        }else if(paySalary > 3000){
+            result = taxableIncome * 0.10 - 210;
+        }else if(paySalary > 0){
+            result = taxableIncome * 0.03;
+        }else {
+            result = 0;
+        }
 		result = fixed(result);	
 		if(result < 0) result = 0;
 		backFill(field,key,result);

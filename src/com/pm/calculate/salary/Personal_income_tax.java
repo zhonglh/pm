@@ -18,28 +18,31 @@ public class Personal_income_tax extends AbstractSalaryClculate implements ISala
 	@Override
 	public void calculate(Salary salary,Map<String, Params> paramMap, Map<String,ParamExtend> paramExtMap) {
 		double result = 0.0;
-		
 
-		double paySalary = salary.getShould_salary() - salary.getDeductions_cost();
+
 		double taxableIncome = salary.getTaxable_income();
+		double paySalary = taxableIncome;
+		//salary.getShould_salary() - salary.getDeductions_cost();
 		
 		
 
 
-		if(paySalary > 83500){
-			result = taxableIncome * 0.45 - 13505;
-		}else if(paySalary > 58500){
-			result = taxableIncome * 0.35 - 5505;
-		}else if(paySalary > 38500){
-			result = taxableIncome * 0.30 - 2755;
-		}else if(paySalary > 12500){
-			result = taxableIncome * 0.25 - 1005;
-		}else if(paySalary > 8000){
-			result = taxableIncome * 0.20 - 555;
-		}else if(paySalary > 5000){
-			result = taxableIncome * 0.10 - 105;
-		}else if(paySalary > 3500){
+		if(paySalary > 80000){
+			result = taxableIncome * 0.45 - 15160;
+		}else if(paySalary > 55000){
+			result = taxableIncome * 0.35 - 7160;
+		}else if(paySalary > 35000){
+			result = taxableIncome * 0.30 - 4410;
+		}else if(paySalary > 25000){
+			result = taxableIncome * 0.25 - 2660;
+		}else if(paySalary > 12000){
+			result = taxableIncome * 0.20 - 1410;
+		}else if(paySalary > 3000){
+			result = taxableIncome * 0.10 - 210;
+		}else if(paySalary > 0){
 			result = taxableIncome * 0.03;
+		}else {
+			result = 0;
 		}
 
 		if(result < 0) result = 0;

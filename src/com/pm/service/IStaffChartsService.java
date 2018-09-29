@@ -65,7 +65,7 @@ public interface IStaffChartsService {
 	 * @param ctx
 	 * @param marketMap
 	 * @param staffExEntity
-	 * @param pager
+	 * @param marketMap
 	 * @return
 	 */
 	public Series getOriginalModel2(double taxRate,Map<String, Object> ctx,Map<String,Object> marketMap,

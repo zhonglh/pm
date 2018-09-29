@@ -214,7 +214,6 @@ public class SalaryGroupAction extends BaseAction {
 	
 	/**
 	 * 自动生成所有上个月的工资
-	 * @param addSalary
 	 * @param res
 	 * @param request
 	 * @return

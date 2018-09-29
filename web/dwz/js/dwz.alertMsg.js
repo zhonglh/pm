@@ -39,7 +39,7 @@ var alertMsg = {
 			this._closeTimer = null;
 		}
 		if (this._types.info == type || this._types.correct == type){
-			this._closeTimer = setTimeout(function(){alertMsg.close()}, 3500);
+			this._closeTimer = setTimeout(function(){alertMsg.close()}, 2500);
 		} else {
 			$(this._bgId).show();
 		}

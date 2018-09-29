@@ -82,7 +82,7 @@ var ie=("ActiveXObject" in window);
 <script src="${webroot}/pmjs/url.js" type="text/javascript"></script>
 <script src="${webroot}/pmjs/jump.js" type="text/javascript"></script>
 <script src="${webroot}/pmjs/self.js" type="text/javascript"></script>
-<script src="${webroot}/pmjs/compute.js" type="text/javascript"></script>
+<script src="${webroot}/pmjs/compute.js?t="+new Data()  type="text/javascript"></script>
 <script src="${webroot}/pmjs/check.js" type="text/javascript"></script>
 <script src="${webroot}/pmjs/computeMonthlyStatement.js" type="text/javascript"></script>
 <script src="${webroot}/pmjs/edittable.js" type="text/javascript"></script>

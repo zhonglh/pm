@@ -30,7 +30,7 @@ var ie=("ActiveXObject" in window);
 
 
 <script src="${webroot}/pmjs/myMath.js" type="text/javascript"></script>
-<script src="${webroot}/pmjs/compute4Datagrid.js" type="text/javascript"></script>
+<script src="${webroot}/pmjs/compute4Datagrid.js?t="+new Date() type="text/javascript"></script>
 
 <script type="text/javascript">
 <c:forEach var="paramExtend"  varStatus="status1" items="${paramExtends}">

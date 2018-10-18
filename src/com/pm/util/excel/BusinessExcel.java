@@ -182,7 +182,6 @@ public class BusinessExcel {
 	 * @param export
 	 * @param list
 	 * @param clz
-	 * @param writeTitle	是否需要写标题
 	 * @param addNumber	是否需要增加 "序号" 列
 	 */
 	public static <T> void export(XlsExport export,List<String> heads,List<T> list, Class<T> clz,  boolean addNumber ) {

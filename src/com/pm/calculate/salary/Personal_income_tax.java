@@ -51,4 +51,17 @@ public class Personal_income_tax extends AbstractSalaryClculate implements ISala
 
 	}
 
+
+
+
+	public static void main(String[] args) {
+
+
+		System.out.println(NumberKit.getNumberFormatByDouble(45.166));
+		System.out.println(NumberKit.getNumberFormatByDouble(45.117));
+		System.out.println(NumberKit.getNumberFormatByDouble(45.121));
+		System.out.println(NumberKit.getNumberFormatByDouble(45.2));
+
+	}
+
 }

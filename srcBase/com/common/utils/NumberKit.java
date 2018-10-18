@@ -71,7 +71,7 @@ public class NumberKit {
     
 
     public static double getNumberForBigDecimal(double s, int decimal){
-        BigDecimal s1 = new BigDecimal(s).setScale (decimal, BIGDECIMAL_ROUND);
+        BigDecimal s1 = new BigDecimal(String.valueOf(s)).setScale (decimal, BIGDECIMAL_ROUND);
         return s1.doubleValue ();
     }
     public static double getNumberForBigDecimal(BigDecimal s, int decimal){
@@ -98,7 +98,7 @@ public class NumberKit {
      * @return
      */
     public static double getNumberFormatByDouble(double s){
-        BigDecimal number = new BigDecimal (s);
+        BigDecimal number = new BigDecimal (String.valueOf(s));
         number = number.setScale (DECIMAL_POINT, BIGDECIMAL_ROUND);
         return number.doubleValue ();
     }
@@ -134,7 +134,7 @@ public class NumberKit {
      * @return
      */
     public static double getNumberFormatByFloat(float s){
-        BigDecimal number = new BigDecimal (s);
+        BigDecimal number = new BigDecimal (String.valueOf(s));
         number = number.setScale (DECIMAL_POINT, BIGDECIMAL_ROUND);
         return number.doubleValue ();
     }

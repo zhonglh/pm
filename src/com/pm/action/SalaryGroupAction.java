@@ -85,7 +85,7 @@ public class SalaryGroupAction extends BaseAction {
 	
 	/**
 	 * 导出Excel
-	 * @param searchStaffCost
+	 * @param searchSalary
 	 * @param res
 	 * @param request
 	 */

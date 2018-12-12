@@ -31,7 +31,6 @@ public class BusinessExcel {
 	/**
 	 * 
 	 * @param response
-	 * @param heads	表头
 	 * @param list	列表
 	 * @param clz	对象类型
 	 */
@@ -130,15 +129,21 @@ public class BusinessExcel {
 				if(f.isAnnotationPresent(EntityAnnotation.class)){
 					EntityAnnotation entityAnnotation = f.getAnnotation(EntityAnnotation.class);
 					if(!isAll){
-						if(entityAnnotation.item_sort() == 0) continue;
+						if(entityAnnotation.item_sort() == 0) {
+							continue;
+						}
 						if(isImport) {
-							if(entityAnnotation.length() == 0) continue;
+							if(entityAnnotation.length() == 0) {
+								continue;
+							}
 						}
 					}
 					
 					if(entityAnnotation.business_name() != null && entityAnnotation.business_name().length() > 0){
 						if(businessName != null && businessName.length() >0){
-							if(entityAnnotation.business_name().indexOf(businessName) == -1) continue;
+							if(entityAnnotation.business_name().indexOf(businessName) == -1) {
+								continue;
+							}
 						}
 					}
 					
@@ -192,7 +197,9 @@ public class BusinessExcel {
 			int rowIndex = 0;
 			int headLength = 0;
 			
-			if(heads != null) headLength = heads.size();
+			if(heads != null) {
+				headLength = heads.size();
+			}
 			
 			rowIndex = headLength;
 			
@@ -210,7 +217,9 @@ public class BusinessExcel {
 				export.createRow(export.getCurrXSSFSheet(),rowIndex++);
 				
 				export.getCurrRow().setHeight((short)400);
-				if(addNumber) export.setTitleCell(0, getNumberName());
+				if(addNumber) {
+					export.setTitleCell(0, getNumberName());
+				}
 				
 				columes = getColume(clz);
 				for (Colume colume : columes) {
@@ -252,14 +261,20 @@ public class BusinessExcel {
 	 * @param heads
 	 */
 	public static <T> void exportHeads(XlsExport export,List<String> heads ) {
-		if(heads == null || heads.isEmpty() ) return ;
+		if(heads == null || heads.isEmpty() ) {
+			return ;
+		}
 		
 		XSSFCellStyle cellStyle1 = getXSSFCellStyle1(export.getCurrXSSFSheet().getWorkbook());
 		XSSFCellStyle cellStyle2 = getXSSFCellStyle2(export.getCurrXSSFSheet().getWorkbook());
 		XSSFRow hssfRow = export.getCurrXSSFSheet().getRow(export.getCurrXSSFSheet().getLastRowNum());	
 		int cellLength = 13 ;
-		if(hssfRow != null) cellLength = hssfRow.getLastCellNum();
-		if(cellLength > 13) cellLength = 13;
+		if(hssfRow != null) {
+			cellLength = hssfRow.getLastCellNum();
+		}
+		if(cellLength > 13) {
+			cellLength = 13;
+		}
 		 
 		for(int i=0;i<heads.size();i++){
 			export.createRow(export.getCurrXSSFSheet(),i);
@@ -270,8 +285,9 @@ public class BusinessExcel {
 
 				export.getCurrRow().setHeightInPoints(20);  
 				export.getCurrRow().setHeight((short)700);
+			} else {
+				cell.setCellStyle(cellStyle2);
 			}
-			else cell.setCellStyle(cellStyle2);
 			cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 			cell.setCellValue(heads.get(i));
 			
@@ -353,17 +369,25 @@ public class BusinessExcel {
 
 		int position = addNumber ? 0 : 1;
 		
-		if(list == null) return ;
+		if(list == null) {
+			return ;
+		}
 		
-		if(columes == null) columes = getColume(clz);
+		if(columes == null) {
+			columes = getColume(clz);
+		}
 		
 		int index = 1;
 		
 		for(T t : list){
-			if(t == null) continue;
+			if(t == null) {
+				continue;
+			}
 			export.createRow(export.getCurrXSSFSheet(),rowIndex++);
 			
-			if(export.specialHand(t, columes, addNumber)) continue;
+			if(export.specialHand(t, columes, addNumber)) {
+				continue;
+			}
 			
 			if(addNumber) {
 				export.setCell(0 , index);

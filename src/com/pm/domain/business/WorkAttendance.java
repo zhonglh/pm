@@ -366,8 +366,11 @@ public class WorkAttendance implements Serializable , ISort{
 	}
 	
 	public String getStr_month() {
-		if(str_month == null && attendance_month != 0) return String.valueOf(attendance_month);
-		else return str_month;
+		if(str_month == null && attendance_month != 0) {
+			return String.valueOf(attendance_month);
+		} else {
+			return str_month;
+		}
 	}
 	public void setStr_month(String str_month) {
 		this.str_month = str_month;

@@ -187,9 +187,9 @@ public class WorkAttendanceGroupAction extends BaseAction {
 
 	@RequestMapping(params = "method=downloadtemplet")
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/workAttendance.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "考勤模板.xlsx" ,response,false);  		
+
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/workAttendance.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "考勤模板.xlsx" ,response,false);
 		return null;  
 	}  	
 		
@@ -211,8 +211,9 @@ public class WorkAttendanceGroupAction extends BaseAction {
 		String fileType = null;
 		try{
 			fileType = FileKit.getFileNameType(file.getOriginalFilename());
-			if(!BusinessUtil.EXCEL_TYPE.contains(fileType)) 
-				return this.ajaxForwardError(request, "请输入Excel文件！",true);
+			if(!BusinessUtil.EXCEL_TYPE.contains(fileType)) {
+				return this.ajaxForwardError(request, "请输入Excel文件！", true);
+			}
 		}catch(Exception e){			
 		}
 		
@@ -223,11 +224,15 @@ public class WorkAttendanceGroupAction extends BaseAction {
 			return this.ajaxForwardError(request, "该文件无法解析！",true);
 		}
 		
-		if(list == null || list.size() == 0) return this.ajaxForwardError(request, "该文件内容为空！",true);
+		if(list == null || list.size() == 0) {
+			return this.ajaxForwardError(request, "该文件内容为空！",true);
+		}
 		
 		int index = 0;
 		for(String[] row : list){
-			if(row.length<15) return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
+			if(row.length<15) {
+				return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
+			}
 			index ++;
 		}
 		
@@ -272,7 +277,9 @@ public class WorkAttendanceGroupAction extends BaseAction {
 		if(workAttendances != null) {
 			for(WorkAttendance workAttendance : workAttendances){
 				boolean b = checkWorkAttendance(workAttendance,projectMap,staffCostMap,checkedWorkAttendanceMap);
-				if(b) monthProjectMap.put(workAttendance.getProject_id()+String.valueOf(workAttendance.getAttendance_month()), workAttendance);
+				if(b) {
+					monthProjectMap.put(workAttendance.getProject_id()+String.valueOf(workAttendance.getAttendance_month()), workAttendance);
+				}
 			}
 		}
 		
@@ -291,8 +298,9 @@ public class WorkAttendanceGroupAction extends BaseAction {
 				workAttendance1.setAttendance_day2(DateKit.fmtDateToStr(date2, BusinessUtil.DT_FORMAT));
 				
 				List<WorkAttendance> technical_cost_list = workAttendanceService.getWorkAttendanceByProjectMonth(workAttendance1);
-				if(technical_cost_list != null && technical_cost_list.size() >0 )
+				if(technical_cost_list != null && technical_cost_list.size() >0 ) {
 					was.addAll(technical_cost_list);
+				}
 			}
 		}
 		
@@ -333,8 +341,12 @@ public class WorkAttendanceGroupAction extends BaseAction {
 					}
 					
 				}catch(Exception e){
-					if(e.getMessage() == null || e.getMessage().indexOf("Key_2")!=-1 || e.getMessage().indexOf("key 2")!=-1) workAttendance.setErrorInfo("已经有此考勤记录");
-					else workAttendance.setErrorInfo(e.getMessage());
+					if(e.getMessage() == null || e.getMessage().indexOf("Key_2")!=-1 || e.getMessage().indexOf("key 2")!=-1) {
+						workAttendance.setErrorInfo("已经有此考勤记录");
+					}
+					else {
+						workAttendance.setErrorInfo(e.getMessage());
+					}
 					isAllOK = false;
 				}
 			}else {

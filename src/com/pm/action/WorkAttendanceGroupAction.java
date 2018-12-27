@@ -244,7 +244,6 @@ public class WorkAttendanceGroupAction extends BaseAction {
 
 
 		//查找所有项目
-
 		Project searchProject = new Project();
 		searchProject.setDelete_flag(BusinessUtil.NOT_DELETEED);
 		Pager<Project> projects = projectService.queryProject(searchProject, userPermit, PubMethod.getPagerByAll(request, Project.class));

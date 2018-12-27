@@ -327,8 +327,41 @@
 				<label>证书：</label>
 				${staffCost1.certificate_name}
 			</p>
-			
+
+
+
+
+
+
+			<div class="divider"></div>
+
+
 			<p>
+				<label>子女教育：</label>
+				<fmt:formatNumber value="${staffCost1.children_education }" type="number" pattern="####0.00#"/>
+			</p>
+
+			<p>
+				<label>继续教育：</label>
+				<fmt:formatNumber value="${staffCost1.continuing_education }" type="number" pattern="####0.00#"/>
+			</p>
+
+			<p>
+				<label>住房贷款利息：</label>
+				<fmt:formatNumber value="${staffCost1.housing_loans }" type="number" pattern="####0.00#"/>
+			</p>
+
+			<p>
+				<label>住房租金：</label>
+				<fmt:formatNumber value="${staffCost1.housing_rent }" type="number" pattern="####0.00#"/>
+			</p>
+
+			<p>
+				<label>赡养老人：</label>
+				<fmt:formatNumber value="${staffCost1.support_elderly }" type="number" pattern="####0.00#"/>
+			</p>
+			
+			<p style="margin-top: 20px">
 				<dl class="nowrap">
 					<dt>备注：</dt>
 					<dd>${staffCost1.description }</dd>

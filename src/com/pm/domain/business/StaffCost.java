@@ -14,258 +14,277 @@ import com.pm.util.log.EntityAnnotation;
  */
 @SuppressWarnings("serial")
 public class StaffCost implements Serializable {
-	
-	
-
-	private String staff_id;
-	
-
-	@EntityAnnotation(item_name="员工工号", item_sort=1,length=30)
-	private String staff_no;
-	
-	@EntityAnnotation(item_name="员工名称", item_sort=2,length=60)
-	private String staff_name;	
-	
-
-	@EntityAnnotation(item_name="岗位名称", item_sort=5,length=36)
-	private String job_title;
-	
-	//招聘人员ID
-	private String recruiter;	
-	
-	
-
-	@EntityAnnotation(item_name="性别", item_sort=7)
-	private String sex;
-	
-
-	@EntityAnnotation(item_name="生日", item_sort=8)
-	private Date birthday;  	
-
-	//民族
-	private String nationality;
-	
-	//户籍性质
-	private String census_property ;
-
-	@EntityAnnotation(item_name="身份证号", item_sort=11,length=18)
-	private String identity_card_number;
-	
-
-	@EntityAnnotation(item_name="联系电话", item_sort=12,length=30)
-	private String tel;	
-	
-
-	@EntityAnnotation(item_name="紧急联系人电话", item_sort=13,length=20)
-	private String pressing_tel ;
-	
-
-	@EntityAnnotation(item_name="QQ号码", item_sort=14,length=20)
-	private String qq ;
-
-	@EntityAnnotation(item_name="合同开始时间", item_sort=15,length=10)
-	private Date contract_start_date ;
-	
-	@EntityAnnotation(item_name="合同结束时间", item_sort=16,length=10)
-	private Date contract_end_date   ;
-
-	@EntityAnnotation(item_name="签约次数", item_sort=17,length=6)
-	private int contract_number;
-
-	@EntityAnnotation(item_name="毕业学校", item_sort=18,length=120)
-	private String graduate_school;
-
-	//学历
-	private String educational ;
-	
-	//专业
-	private String specialty ;
-	
-
-	@EntityAnnotation(item_name="毕业时间", item_sort=21,length=10)
-	private Date graduation_date;
-	
-	@EntityAnnotation(item_name="工作年限", item_sort=22,length=7)
-	private double working_life ;
-	
-	
-	
-
-	@EntityAnnotation(item_name="户口所在地", item_sort=23,length=200)
-	private String registered_residence;
-
-	@EntityAnnotation(item_name="通讯地址", item_sort=24,length=200)
-	private String postal_address    ;	
-	
-
-	@EntityAnnotation(item_name="入职时间", item_sort=25,length=10)
-	private Timestamp join_datetime;	
-	
-
-	@EntityAnnotation(item_name="离职时间", item_sort=26)
-	private Timestamp leave_job_datetime;
-	
-
-	@EntityAnnotation(item_name="人员总成本", item_sort=27,length=10)
-	private double totalcost ;
-	
-
-
-	@EntityAnnotation(item_name="客户最初报价", item_sort=28,length=10)
-	private double firstquotes;
-	
-	
-	@EntityAnnotation(item_name="客户最新报价",item_sort=29)
-	private double qustomerquotes;
-	
-
-	@EntityAnnotation(item_name="转正日期", item_sort=30,length=10)
-	private Date confirmation_date   ;	
-
-	@EntityAnnotation(item_name="试用期工资", item_sort=31,length=10)
-	private double tryout_salary     ;
-	
-	//试用期工资
-	private double tryout_basic_salary;	
-	private double tryout_post_salary;
-	private double tryout_performance_allowances;
-	
-
-	@EntityAnnotation(item_name="正式工资", item_sort=32,length=10)
-	private double official_salary;  
-
-
-	@EntityAnnotation(item_name="基本工资", item_sort=33)
-	private double basic_salary;	
-
-	@EntityAnnotation(item_name="岗位工资", item_sort=34)
-	private double post_salary;
-
-	@EntityAnnotation(item_name="绩效津贴", item_sort=35)
-	private double performance_allowances;
-		
-
-	@EntityAnnotation(item_name="电脑补助", item_sort=36,length=10)
-	private double computer_allowance;
-
-	@EntityAnnotation(item_name="餐补(每天)", item_sort=37,length=10)
-	private double meal_allowance;
-
-	@EntityAnnotation(item_name="奖金(税前)", item_sort=38,length=10)
-	private double project_allowance;
-	
-
-	@EntityAnnotation(item_name="出差补助", item_sort=39,length=10)
-	private double travel_allowance;
-	
-	
-	//保险档次ID
-	private String insurance_grade_id;
-	
-
-
-	@EntityAnnotation(item_name="社保缴纳单位", item_sort=41,length=200)
-	private String securty_unit;
-
-	@EntityAnnotation(item_name="个人缴纳养老保险", item_sort=42)
-	private double endowment_insurance_bypersonal;
-
-	@EntityAnnotation(item_name="个人缴纳医疗保险", item_sort=43)
-	private double medical_insurance_bypersonal;
-
-	@EntityAnnotation(item_name="个人缴纳失业保险", item_sort=44)
-	private double losejob_insurance_bypersonal;
-
-	@EntityAnnotation(item_name="个人缴纳公积金", item_sort=45)
-	private double reservefund_bypersonal;
-
-	@EntityAnnotation(item_name="缴纳个人所得税", item_sort=46)
-	private double incometax_bypersonal;
-
-	@EntityAnnotation(item_name="公司缴纳养老保险", item_sort=47)
-	private double endowment_insurance_bycompany;
-
-	@EntityAnnotation(item_name="公司缴纳医疗保险", item_sort=48)
-	private double medical_insurance_bycompany;
-
-	@EntityAnnotation(item_name="公司缴纳失业保险", item_sort=49)
-	private double losejob_insurance_bycompany;
-
-	@EntityAnnotation(item_name="公司缴纳生育保险", item_sort=50)
-	private double maternity_insurance_bycompany;
-
-	@EntityAnnotation(item_name="公司缴纳工伤保险", item_sort=51)
-	private double jobharm_insurance_bycompany;
-
-	@EntityAnnotation(item_name="公司缴纳公积金", item_sort=52)
-	private double reservefund_bypcompany;	
 
 
 
-	@EntityAnnotation(item_name="额外", item_sort=53,length=10)
-	private double extra;	
-
-	@EntityAnnotation(item_name="是否外协人员", item_sort=54,length=1)
-	private String outsource_staff;
-	
-	
-
-	@EntityAnnotation(item_name="邮箱地址", item_sort=55,length=60)
-	private String email;
-	
+    private String staff_id;
 
 
-	@EntityAnnotation(item_name="开户行", item_sort=56,length=200)
-	private String open_account;
+    @EntityAnnotation(item_name="员工工号", item_sort=1,length=30)
+    private String staff_no;
 
-	@EntityAnnotation(item_name="银行卡号", item_sort=57,length=50)
-	private String bank_card_number;
-	
+    @EntityAnnotation(item_name="员工名称", item_sort=2,length=60)
+    private String staff_name;
 
-	//上级ID
-	private String lead_id;
 
-	@EntityAnnotation(item_name="额外支出", item_sort=60,length=13)
-	private double extra_expend;
+    @EntityAnnotation(item_name="岗位名称", item_sort=5,length=36)
+    private String job_title;
 
-	
-	@EntityAnnotation(item_name="是否允许发送信息", item_sort=61,length=1)
-	private String can_send_info = BusinessUtil.STAFF_CAN_SEND_MESSAGE;
-	
+    //招聘人员ID
+    private String recruiter;
 
-	//合同种类
-	private String contract_type;	
 
-	//合同归属
-	private String contract_attach;
 
-	//社保说明
-	private String social_security;
-	
-	
-	//参保城市
-	private String insured_city;
-	
-	//工作地点
-	private String working_address;
-	
-	//证书
-	private String certificate;
+    @EntityAnnotation(item_name="性别", item_sort=7)
+    private String sex;
 
-	@EntityAnnotation(item_name="备注" , item_sort=69,length=300)
-	private String description;
-	
-	//版本号
-	private int version_no;
-	
-	private int import_order;
-	private Timestamp build_datetime;
-	private String build_userid;
-	private String build_username;
-	private String delete_flag;
-	private Timestamp delete_datetime;
-	private String delete_userid;
-	private String delete_username;
+
+    @EntityAnnotation(item_name="生日", item_sort=8)
+    private Date birthday;
+
+    //民族
+    private String nationality;
+
+    //户籍性质
+    private String census_property ;
+
+    @EntityAnnotation(item_name="身份证号", item_sort=11,length=18)
+    private String identity_card_number;
+
+
+    @EntityAnnotation(item_name="联系电话", item_sort=12,length=30)
+    private String tel;
+
+
+    @EntityAnnotation(item_name="紧急联系人电话", item_sort=13,length=20)
+    private String pressing_tel ;
+
+
+    @EntityAnnotation(item_name="QQ号码", item_sort=14,length=20)
+    private String qq ;
+
+    @EntityAnnotation(item_name="合同开始时间", item_sort=15,length=10)
+    private Date contract_start_date ;
+
+    @EntityAnnotation(item_name="合同结束时间", item_sort=16,length=10)
+    private Date contract_end_date   ;
+
+    @EntityAnnotation(item_name="签约次数", item_sort=17,length=6)
+    private int contract_number;
+
+    @EntityAnnotation(item_name="毕业学校", item_sort=18,length=120)
+    private String graduate_school;
+
+    //学历
+    private String educational ;
+
+    //专业
+    private String specialty ;
+
+
+    @EntityAnnotation(item_name="毕业时间", item_sort=21,length=10)
+    private Date graduation_date;
+
+    @EntityAnnotation(item_name="工作年限", item_sort=22,length=7)
+    private double working_life ;
+
+
+
+
+    @EntityAnnotation(item_name="户口所在地", item_sort=23,length=200)
+    private String registered_residence;
+
+    @EntityAnnotation(item_name="通讯地址", item_sort=24,length=200)
+    private String postal_address    ;
+
+
+    @EntityAnnotation(item_name="入职时间", item_sort=25,length=10)
+    private Timestamp join_datetime;
+
+
+    @EntityAnnotation(item_name="离职时间", item_sort=26)
+    private Timestamp leave_job_datetime;
+
+
+    @EntityAnnotation(item_name="人员总成本", item_sort=27,length=10)
+    private double totalcost ;
+
+
+
+    @EntityAnnotation(item_name="客户最初报价", item_sort=28,length=10)
+    private double firstquotes;
+
+
+    @EntityAnnotation(item_name="客户最新报价",item_sort=29)
+    private double qustomerquotes;
+
+
+    @EntityAnnotation(item_name="转正日期", item_sort=30,length=10)
+    private Date confirmation_date   ;
+
+    @EntityAnnotation(item_name="试用期工资", item_sort=31,length=10)
+    private double tryout_salary     ;
+
+    //试用期工资
+    private double tryout_basic_salary;
+    private double tryout_post_salary;
+    private double tryout_performance_allowances;
+
+
+    @EntityAnnotation(item_name="正式工资", item_sort=32,length=10)
+    private double official_salary;
+
+
+    @EntityAnnotation(item_name="基本工资", item_sort=33)
+    private double basic_salary;
+
+    @EntityAnnotation(item_name="岗位工资", item_sort=34)
+    private double post_salary;
+
+    @EntityAnnotation(item_name="绩效津贴", item_sort=35)
+    private double performance_allowances;
+
+
+    @EntityAnnotation(item_name="电脑补助", item_sort=36,length=10)
+    private double computer_allowance;
+
+    @EntityAnnotation(item_name="餐补(每天)", item_sort=37,length=10)
+    private double meal_allowance;
+
+    @EntityAnnotation(item_name="奖金(税前)", item_sort=38,length=10)
+    private double project_allowance;
+
+
+    @EntityAnnotation(item_name="出差补助", item_sort=39,length=10)
+    private double travel_allowance;
+
+
+    //保险档次ID
+    private String insurance_grade_id;
+
+
+
+    @EntityAnnotation(item_name="社保缴纳单位", item_sort=41,length=200)
+    private String securty_unit;
+
+    @EntityAnnotation(item_name="个人缴纳养老保险", item_sort=42)
+    private double endowment_insurance_bypersonal;
+
+    @EntityAnnotation(item_name="个人缴纳医疗保险", item_sort=43)
+    private double medical_insurance_bypersonal;
+
+    @EntityAnnotation(item_name="个人缴纳失业保险", item_sort=44)
+    private double losejob_insurance_bypersonal;
+
+    @EntityAnnotation(item_name="个人缴纳公积金", item_sort=45)
+    private double reservefund_bypersonal;
+
+    @EntityAnnotation(item_name="缴纳个人所得税", item_sort=46)
+    private double incometax_bypersonal;
+
+    @EntityAnnotation(item_name="公司缴纳养老保险", item_sort=47)
+    private double endowment_insurance_bycompany;
+
+    @EntityAnnotation(item_name="公司缴纳医疗保险", item_sort=48)
+    private double medical_insurance_bycompany;
+
+    @EntityAnnotation(item_name="公司缴纳失业保险", item_sort=49)
+    private double losejob_insurance_bycompany;
+
+    @EntityAnnotation(item_name="公司缴纳生育保险", item_sort=50)
+    private double maternity_insurance_bycompany;
+
+    @EntityAnnotation(item_name="公司缴纳工伤保险", item_sort=51)
+    private double jobharm_insurance_bycompany;
+
+    @EntityAnnotation(item_name="公司缴纳公积金", item_sort=52)
+    private double reservefund_bypcompany;
+
+
+
+    @EntityAnnotation(item_name="额外", item_sort=53,length=10)
+    private double extra;
+
+    @EntityAnnotation(item_name="是否外协人员", item_sort=54,length=1)
+    private String outsource_staff;
+
+
+
+    @EntityAnnotation(item_name="邮箱地址", item_sort=55,length=60)
+    private String email;
+
+
+
+    @EntityAnnotation(item_name="开户行", item_sort=56,length=200)
+    private String open_account;
+
+    @EntityAnnotation(item_name="银行卡号", item_sort=57,length=50)
+    private String bank_card_number;
+
+
+    //上级ID
+    private String lead_id;
+
+    @EntityAnnotation(item_name="额外支出", item_sort=60,length=13)
+    private double extra_expend;
+
+
+    @EntityAnnotation(item_name="是否允许发送信息", item_sort=61,length=1)
+    private String can_send_info = BusinessUtil.STAFF_CAN_SEND_MESSAGE;
+
+
+    //合同种类
+    private String contract_type;
+
+    //合同归属
+    private String contract_attach;
+
+    //社保说明
+    private String social_security;
+
+
+    //参保城市
+    private String insured_city;
+
+    //工作地点
+    private String working_address;
+
+    //证书
+    private String certificate;
+
+
+
+    //子女教育
+    private double children_education;
+
+    //继续教育
+    private double continuing_education;
+
+    //住房贷款利息
+    private double housing_loans;
+
+    //住房租金
+    private double housing_rent;
+
+    //赡养老人
+    private double support_elderly;
+
+
+
+    @EntityAnnotation(item_name="备注" , item_sort=69,length=300)
+    private String description;
+
+    //版本号
+    private int version_no;
+
+    private int import_order;
+    private Timestamp build_datetime;
+    private String build_userid;
+    private String build_username;
+    private String delete_flag;
+    private Timestamp delete_datetime;
+    private String delete_userid;
+    private String delete_username;
 	
 	
 	///////////////////////////////////////////////
@@ -1096,8 +1115,43 @@ public class StaffCost implements Serializable {
 		this.version_no = version_no;
 	}
 
-	
-	
+	public double getChildren_education() {
+		return children_education;
+	}
 
+	public void setChildren_education(double children_education) {
+		this.children_education = children_education;
+	}
 
+	public double getContinuing_education() {
+		return continuing_education;
+	}
+
+	public void setContinuing_education(double continuing_education) {
+		this.continuing_education = continuing_education;
+	}
+
+	public double getHousing_loans() {
+		return housing_loans;
+	}
+
+	public void setHousing_loans(double housing_loans) {
+		this.housing_loans = housing_loans;
+	}
+
+	public double getHousing_rent() {
+		return housing_rent;
+	}
+
+	public void setHousing_rent(double housing_rent) {
+		this.housing_rent = housing_rent;
+	}
+
+	public double getSupport_elderly() {
+		return support_elderly;
+	}
+
+	public void setSupport_elderly(double support_elderly) {
+		this.support_elderly = support_elderly;
+	}
 }

@@ -260,7 +260,14 @@
 		working_life=#{working_life},
 		insured_city=#{insured_city},
 		working_address=#{working_address},
-		certificate=#{certificate},		
+		certificate=#{certificate},
+
+		children_education=#{children_education},
+		continuing_education=#{continuing_education},
+		housing_loans=#{housing_loans},
+		housing_rent=#{housing_rent},
+		support_elderly=#{support_elderly},
+
 		description=#{description}, 
 		version_no = version_no + 1
 		where staff_id = #{staff_id}  

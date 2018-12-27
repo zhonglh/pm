@@ -1545,8 +1545,9 @@ public class StaffCostAction extends BaseAction {
 				index ++ ;
 			}
 			
-			if(staffCosts != null && staffCosts.length > 0)
-			staffCostService.deleteStaffCost(staffCosts);
+			if(staffCosts != null && staffCosts.length > 0) {
+				staffCostService.deleteStaffCost(staffCosts);
+			}
 			
 			//todo
 			//if(staffCost_ids.length == 1) BusinessSend.send(StaffCost.class.getSimpleName() , staffCost_ids [0]);

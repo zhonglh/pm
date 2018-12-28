@@ -43,7 +43,7 @@ public class StaffAdditionalDeduction implements Serializable {
 
     private StaffCost staffCost;
 
-    private String errorInfo;
+    private String errorInfo = "";
 
 
     public String getStaff_id() {

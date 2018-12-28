@@ -132,7 +132,7 @@
 			
 		</ul>
 	</div>
-	<table class="table" width="6200" layoutH="162">
+	<table class="table" width="6640" layoutH="162">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
@@ -216,6 +216,13 @@
 				<th width="100">社保城市</th>
 				<th width="240">工作地点</th>
 				<th width="80">证书</th>
+
+				<th width="80">子女教育</th>
+				<th width="80">继续教育</th>
+				<th width="120">住房贷款利息</th>
+				<th width="80">住房租金</th>
+				<th width="80">赡养老人</th>
+
 				<th width="600">备注</th>
 				
 				
@@ -363,6 +370,14 @@
 				<td>${staffcost.insured_city_name }</td>
 				<td title="${staffcost.working_address_name }">${staffcost.working_address_name }</td>
 				<td>${staffcost.certificate_name }</td>
+
+
+				<td align="right"><fmt:formatNumber value="${staffcost.children_education }" type="currency" pattern="#0.00"/></td>
+				<td align="right"><fmt:formatNumber value="${staffcost.continuing_education }" type="currency" pattern="#0.00"/></td>
+				<td align="right"><fmt:formatNumber value="${staffcost.housing_loans }" type="currency" pattern="#0.00"/></td>
+				<td align="right"><fmt:formatNumber value="${staffcost.housing_rent }" type="currency" pattern="#0.00"/></td>
+				<td align="right"><fmt:formatNumber value="${staffcost.support_elderly }" type="currency" pattern="#0.00"/></td>
+
 				<td title="${staffcost.description }">${staffcost.description }</td>
 				
 				

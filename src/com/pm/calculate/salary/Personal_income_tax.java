@@ -22,7 +22,6 @@ public class Personal_income_tax extends AbstractSalaryClculate implements ISala
 
 		double taxableIncome = salary.getTaxable_income();
 		double paySalary = taxableIncome;
-		//salary.getShould_salary() - salary.getDeductions_cost();
 		
 		
 
@@ -45,7 +44,7 @@ public class Personal_income_tax extends AbstractSalaryClculate implements ISala
 			result = 0;
 		}
 
-		if(result < 0) result = 0;
+		if(result < 0) {result = 0;}
 		result = NumberKit.getNumberFormatByDouble(result);	
 		salary.setPersonal_income_tax(result);
 

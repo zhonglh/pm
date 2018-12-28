@@ -3,6 +3,7 @@ package com.pm.action;
 
 import com.common.actions.BaseAction;
 import com.common.beans.Pager;
+import com.common.enums.EnumYesNo;
 import com.common.utils.file.FileKit;
 import com.pm.domain.business.StaffCost;
 import com.pm.service.IRoleService;
@@ -101,7 +102,7 @@ public class StaffAdditionalDeductionAction extends BaseAction {
         }
         int index = 0;
         for(String[] row : list){
-            if(row.length<8) {
+            if(row.length<7) {
                 return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
             }
             index ++;
@@ -262,6 +263,7 @@ public class StaffAdditionalDeductionAction extends BaseAction {
             searchStaffCost.setDept_name(request.getParameter("dept.dept_name"));
         }
 
+        searchStaffCost.setDelete_flag(EnumYesNo.No.getCode());
         Pager<StaffCost> pager = staffCostService.queryStaffCost(searchStaffCost, null,userPermit, PubMethod.getPagerByAll(request, StaffCost.class));
 
 
@@ -273,7 +275,7 @@ public class StaffAdditionalDeductionAction extends BaseAction {
         }
 
         try{
-            BusinessExcel.export(response, null, list, StaffAdditionalDeduction.class);
+            BusinessExcel.export(response, null, list, StaffAdditionalDeduction.class , false);
         }catch(Exception e){
             e.printStackTrace();
         }

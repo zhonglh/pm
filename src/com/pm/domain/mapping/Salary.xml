@@ -19,8 +19,9 @@
 		CONCAT(presalary.description,ifnull(pmss.description,'')) as description  ,	
 				
 		salary.actual_bonus,salary.overdue_tax_salary ,	
-		staff.staff_name,staff.computer_allowance, staff.meal_allowance,staff.confirmation_date,			
-		staff.extra_expend ,	
+		staff.staff_name,staff.computer_allowance, staff.meal_allowance,staff.confirmation_date,
+		staff.extra_expend ,
+		staff_id.children_education,staff_id.continuing_education,staff_id.housing_loans,staff_id.housing_rent,staff_id.support_elderly,
 			
 		<![CDATA[
 		case when staff.confirmation_date is null then 0 when (#{date1} < staff.confirmation_date && #{date2} >= staff.confirmation_date ) then 1 else 0 end showhl,
@@ -140,6 +141,7 @@
 		  	accumulation_fund, deductions_cost, taxable_income, personal_income_tax,actual_bonus,
 		  	endowment_insurance_bycompany,medical_insurance_bycompany,losejob_insurance_bycompany,maternity_insurance_bycompany,
 		  	jobharm_insurance_bycompany,reservefund_bypcompany,overdue_tax_salary, actual_salary,extra_expend,description,
+			children_education,continuing_education,housing_loans,housing_rent,support_elderly,
 		  	build_username,build_userid,build_datetime,delete_flag
 		)values(
 			#{salary_id}, #{staff_id},#{project_id}, #{salary_month}, #{basic_salary},#{post_salary},#{performance_allowances},
@@ -151,6 +153,7 @@
 			#{accumulation_fund}, #{deductions_cost},#{taxable_income}, #{personal_income_tax}, #{actual_bonus},
 			#{endowment_insurance_bycompany},#{medical_insurance_bycompany},#{losejob_insurance_bycompany},#{maternity_insurance_bycompany},
 			#{jobharm_insurance_bycompany},#{reservefund_bypcompany},#{overdue_tax_salary}, #{actual_salary},#{extra_expend},#{description},
+			#{children_education},#{continuing_education},#{housing_loans},#{housing_rent},#{support_elderly},
 			#{build_username},#{build_userid},#{build_datetime},#{delete_flag} 
 		)
 	</insert>
@@ -195,7 +198,12 @@
 		maternity_insurance_bycompany = #{maternity_insurance_bycompany},
 		jobharm_insurance_bycompany = #{jobharm_insurance_bycompany},
 		reservefund_bypcompany = #{reservefund_bypcompany},
-		
+
+		children_education=#{children_education},
+		continuing_education=#{continuing_education},
+		housing_loans=#{housing_loans},
+		housing_rent=#{housing_rent},
+		support_elderly=#{support_elderly},
 		
 		accumulation_fund =#{accumulation_fund} ,
 		deductions_cost =#{deductions_cost} ,

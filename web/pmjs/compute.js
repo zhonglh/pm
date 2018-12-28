@@ -38,7 +38,7 @@
 			eval("field."+key+" = result;");
 			
 			var $id = $("#id",field.tr);
-			$id.val(field.tr.index()+1);	
+			$id.val(field.tr.index()+1);
 		}
 	}
 
@@ -127,6 +127,14 @@
 			unemployment_insurance: parseFloat($("#unemployment_insurance",$tr).val()),
 			medical_Insurance: parseFloat($("#medical_Insurance",$tr).val()),
 			accumulation_fund: parseFloat($("#accumulation_fund",$tr).val()),
+
+            children_education: parseFloat($("#children_education",$tr).val()),
+            continuing_education: parseFloat($("#continuing_education",$tr).val()),
+            housing_loans: parseFloat($("#housing_loans",$tr).val()),
+            housing_rent: parseFloat($("#housing_rent",$tr).val()),
+            support_elderly: parseFloat($("#support_elderly",$tr).val()),
+
+
 			deductions_cost: parseFloat($("#deductions_cost",$tr).val()),
 			taxable_income: parseFloat($("#taxable_income",$tr).val()),
 			personal_income_tax: parseFloat($("#personal_income_tax",$tr).val()),
@@ -364,8 +372,21 @@
 	 * @param val
 	 */
 	function deductions_cost(field,key,val){
+
+		//三险一金
 		var result = field.pension_insurance + field.unemployment_insurance;
 		result = result + field.medical_Insurance + field.accumulation_fund;
+
+		//专项附加扣除
+        result += field.children_education;
+        result += field.continuing_education;
+        result += field.support_elderly;
+        if(field.housing_loans > 0){
+            result += field.housing_loans;
+        }else {
+            result += field.housing_rent;
+        }
+
 		result = fixed(result);		
 		backFill(field,key,result);	
 	}

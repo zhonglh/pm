@@ -26,7 +26,7 @@
 			
 			<div class="divider"></div>
 			
-			<table class="list nowrap salaryComputer" width="3900" layoutH="175">
+			<table class="list nowrap salaryComputer" width="4340" layoutH="175">
 				<thead>
 					<tr>
 					
@@ -69,6 +69,16 @@
 						<th width="80" nowrap>工伤单位</th>
 						<th width="100" nowrap>公积金个人</th>
 						<th width="100" nowrap>公积金单位</th>
+
+
+						<th width="80" nowrap>子女教育</th>
+						<th width="80" nowrap>继续教育</th>
+						<th width="120" nowrap>住房贷款利息</th>
+						<th width="80" nowrap>住房租金</th>
+						<th width="80" nowrap>赡养老人</th>
+
+
+
 						<th width="120" nowrap>准许扣除的费用</th>
 						<th width="120" nowrap>应纳税所得额</th>
 						<th width="80" nowrap>所得税</th>
@@ -130,7 +140,16 @@
 						<td><input type="text" size="7" maxlength="10"  id="maternity_insurance_bycompany" name="maternity_insurance_bycompany${status1.index + 1 }" class="number required" value="${salary.maternity_insurance_bycompany }" /></td>	
 						<td><input type="text" size="7" maxlength="10"  id="jobharm_insurance_bycompany" name="jobharm_insurance_bycompany${status1.index + 1 }" class="number required" value="${salary.jobharm_insurance_bycompany }" /></td>					
 						<td><input type="text" size="7" maxlength="10"  id="accumulation_fund" name="accumulation_fund${status1.index + 1 }" class="number required" value="${salary.accumulation_fund }" /></td>
-						<td><input type="text" size="7" maxlength="10"  id="reservefund_bypcompany" name="reservefund_bypcompany${status1.index + 1 }" class="number required" value="${salary.reservefund_bypcompany }" /></td>								
+						<td><input type="text" size="7" maxlength="10"  id="reservefund_bypcompany" name="reservefund_bypcompany${status1.index + 1 }" class="number required" value="${salary.reservefund_bypcompany }" /></td>
+
+
+
+						<td><input type="text" size="7" maxlength="10"  id="children_education" name="children_education${status1.index + 1 }" class="number required" value="${salary.children_education }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="continuing_education" name="continuing_education${status1.index + 1 }" class="number required" value="${salary.continuing_education }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="housing_loans" name="housing_loans${status1.index + 1 }" class="number required" value="${salary.housing_loans }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="housing_rent" name="housing_rent${status1.index + 1 }" class="number required" value="${salary.housing_rent }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="support_elderly" name="support_elderly${status1.index + 1 }" class="number required" value="${salary.support_elderly }" /></td>
+
 						<td><input type="text" size="7" maxlength="10"  id="deductions_cost" name="deductions_cost${status1.index + 1 }" class="number required" value="${salary.deductions_cost }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="taxable_income" name="taxable_income${status1.index + 1 }" class="number required" value="${salary.taxable_income }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="personal_income_tax" name="personal_income_tax${status1.index + 1 }" class="number required" value="${salary.personal_income_tax }" /></td>

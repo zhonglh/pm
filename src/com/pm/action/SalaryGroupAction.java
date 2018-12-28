@@ -1,53 +1,31 @@
 package com.pm.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.alibaba.fastjson.JSON;
 import com.common.actions.BaseAction;
 import com.common.beans.Pager;
 import com.common.utils.DateKit;
 import com.common.utils.IDKit;
 import com.pm.calculate.SalaryCalculate;
-import com.pm.domain.business.ApplyApprove;
-import com.pm.domain.business.EasyUIDatagrid;
-import com.pm.domain.business.Insurance;
-import com.pm.domain.business.ParamExtend;
-import com.pm.domain.business.PersonnelMonthlySalary;
-import com.pm.domain.business.Project;
-import com.pm.domain.business.Salary;
-import com.pm.domain.business.WorkAttendance;
+import com.pm.domain.business.*;
 import com.pm.domain.system.User;
-import com.pm.service.IApplyApproveService;
-import com.pm.service.IInsuranceService;
-import com.pm.service.IParamExtendService;
-import com.pm.service.IPersonnelMonthlyBaseService;
-import com.pm.service.IProjectService;
-import com.pm.service.IRoleService;
-import com.pm.service.ISalaryService;
-import com.pm.service.IWorkAttendanceService;
+import com.pm.service.*;
 import com.pm.util.PubMethod;
-import com.pm.util.constant.BusinessUtil;
-import com.pm.util.constant.EnumApplyApproveType;
-import com.pm.util.constant.EnumEntityType;
-import com.pm.util.constant.EnumOperationType;
-import com.pm.util.constant.EnumPermit;
+import com.pm.util.constant.*;
 import com.pm.util.excel.BusinessExcel;
 import com.pm.vo.UserPermit;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 
+/**
+ * @author Administrator
+ */
 @Controller
 @RequestMapping(value = "SalaryGroupAction.do")
 public class SalaryGroupAction extends BaseAction {
@@ -70,9 +48,7 @@ public class SalaryGroupAction extends BaseAction {
 
 	@Autowired
 	private IApplyApproveService applyApproveService;	
-	
-	@Autowired
-	private IParamExtendService paramExtendService;
+
 	
 
 	@Autowired
@@ -248,18 +224,9 @@ public class SalaryGroupAction extends BaseAction {
 		if(waPager == null || waPager.getResultList() == null || waPager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "操作错误，上个月的考勤没有已审核通过的！",true);
 		}
-		
 
-		
-		ParamExtend paramExtend = new ParamExtend();
-		paramExtend.setGroup1(BusinessUtil.PARAM_GROUP_SALARY);			
-		List<ParamExtend> paramExtends = paramExtendService.queryAllParamExtend(paramExtend);
-		Map<String, ParamExtend>	paramExtMap = new HashMap<String, ParamExtend>();
-		if(paramExtends != null){
-			for(ParamExtend temp : paramExtends){
-				paramExtMap.put(temp.getGroup2(), temp);
-			}
-		}
+
+		Map<String, ParamExtend> paramExtMap = getParamExtendMap();
 
 		Project searchProject = new Project();
 		searchProject.setDelete_flag(BusinessUtil.NOT_DELETEED);
@@ -276,8 +243,10 @@ public class SalaryGroupAction extends BaseAction {
 			Salary salary1 = new Salary();
 			salary1.setProject_id(wa.getProject_id());
 			salary1.setSalary_month(wa.getAttendance_month());
+
+			//增加单个项目的工资信息
 			List<Salary> list = this.getSalarysByWorkAttendance(salary1);
-			if(list != null && list.size() >0 ) lists.add(list);
+			if(list != null && list.size() >0 ) {lists.add(list);}
 			salary1 = null;
 		}
 		
@@ -331,7 +300,10 @@ public class SalaryGroupAction extends BaseAction {
 		
 		if(ids == null || ids.length ==0){
 			return this.ajaxForwardError(request, "没有添加任何工资记录！",true);
-		}		
+		}
+
+		Map<String, ParamExtend> paramExtMap = getParamExtendMap();
+
 		
 		List<Salary> list = new ArrayList<Salary>();
 		for(String index : ids){
@@ -381,6 +353,13 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setMaternity_insurance_bycompany(Double.parseDouble(request.getParameter("maternity_insurance_bycompany"+index)));
 			salary.setJobharm_insurance_bycompany(Double.parseDouble(request.getParameter("jobharm_insurance_bycompany"+index)));
 			salary.setReservefund_bypcompany(Double.parseDouble(request.getParameter("reservefund_bypcompany"+index)));
+
+
+			salary.setChildren_education(Double.parseDouble(request.getParameter("children_education"+index)));
+			salary.setContinuing_education(Double.parseDouble(request.getParameter("continuing_education"+index)));
+			salary.setHousing_loans(Double.parseDouble(request.getParameter("housing_loans"+index)));
+			salary.setHousing_rent(Double.parseDouble(request.getParameter("housing_rent"+index)));
+			salary.setSupport_elderly(Double.parseDouble(request.getParameter("support_elderly"+index)));
 			
 			salary.setDeductions_cost(Double.parseDouble(request.getParameter("deductions_cost"+index)));
 			salary.setTaxable_income(Double.parseDouble(request.getParameter("taxable_income"+index)));
@@ -394,7 +373,11 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setBuild_datetime(PubMethod.getCurrentDate());
 			salary.setBuild_userid(sessionUser.getUser_id());
 			salary.setBuild_username(sessionUser.getUser_name());
-			salary.setDelete_flag(BusinessUtil.NOT_DELETEED);			
+			salary.setDelete_flag(BusinessUtil.NOT_DELETEED);
+
+
+			SalaryCalculate.getInstance().calculate(salary, null, paramExtMap);
+
 			list.add(salary);
 		}
 		
@@ -417,20 +400,22 @@ public class SalaryGroupAction extends BaseAction {
 		
 	}
 
-	
+
 
 	@RequestMapping(params = "method=updateSalaryGroup4Datagrid")
 	public String updateSalaryGroup4Datagrid(String info,HttpServletResponse res,HttpServletRequest request){	
 		List<Salary> salarys = null;
-		if(info!=null && info.length()>0) salarys = JSON.parseArray(info, Salary.class);
+		if(info!=null && info.length()>0) {
+			salarys = JSON.parseArray(info, Salary.class);
+		}
 		if(salarys!=null && salarys.size()>0) {
 			List<Salary> updateSalarys = new ArrayList<Salary>();
 			List<Salary> delSalarys = new ArrayList<Salary>();
 			for(Salary salary : salarys){
 
-				if(salary.getVerify_userid() != null && !salary.getVerify_userid().isEmpty()) continue;
-				
-				else {
+				if(salary.getVerify_userid() != null && !salary.getVerify_userid().isEmpty()) {
+					continue;
+				}else {
 					if("2".equals(salary.getId())){
 						Salary temp = new Salary();
 						temp.setSalary_id(salary.getSalary_id());
@@ -441,12 +426,14 @@ public class SalaryGroupAction extends BaseAction {
 				}
 			}
 			
-			if(updateSalarys != null && !updateSalarys.isEmpty())
+			if(updateSalarys != null && !updateSalarys.isEmpty()) {
 				salaryService.updateSalary(updateSalarys);
+			}
 			
 
-			if(delSalarys != null && !delSalarys.isEmpty())
+			if(delSalarys != null && !delSalarys.isEmpty()) {
 				salaryService.deleteSalary(delSalarys.toArray(new Salary[delSalarys.size()]));
+			}
 				
 		}
 		return this.ajaxForwardSuccess(request, rel, true);
@@ -471,10 +458,13 @@ public class SalaryGroupAction extends BaseAction {
 			return this.ajaxForwardSuccess(request);
 		}
 
+
+		Map<String, ParamExtend> paramExtMap = getParamExtendMap();
+
 		List<Salary> list = new ArrayList<Salary>();
 		for(String index : ids){
 
-			if(index.equals("0")) continue;
+			if(index.equals("0")) {continue;}
 			
 			Salary salary = new Salary();
 			salary.setSalary_id(request.getParameter("salary_id"+index));
@@ -526,6 +516,12 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setMaternity_insurance_bycompany(Double.parseDouble(request.getParameter("maternity_insurance_bycompany"+index)));
 			salary.setJobharm_insurance_bycompany(Double.parseDouble(request.getParameter("jobharm_insurance_bycompany"+index)));
 			salary.setReservefund_bypcompany(Double.parseDouble(request.getParameter("reservefund_bypcompany"+index)));
+
+			salary.setChildren_education(Double.parseDouble(request.getParameter("children_education"+index)));
+			salary.setContinuing_education(Double.parseDouble(request.getParameter("continuing_education"+index)));
+			salary.setHousing_loans(Double.parseDouble(request.getParameter("housing_loans"+index)));
+			salary.setHousing_rent(Double.parseDouble(request.getParameter("housing_rent"+index)));
+			salary.setSupport_elderly(Double.parseDouble(request.getParameter("support_elderly"+index)));
 			
 			salary.setDeductions_cost(Double.parseDouble(request.getParameter("deductions_cost"+index)));
 			salary.setTaxable_income(Double.parseDouble(request.getParameter("taxable_income"+index)));
@@ -533,7 +529,10 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setActual_bonus(Double.parseDouble(request.getParameter("actual_bonus"+index)));
 			salary.setOverdue_tax_salary(Double.parseDouble(request.getParameter("overdue_tax_salary"+index)));
 			salary.setActual_salary(Double.parseDouble(request.getParameter("actual_salary"+index)));
-			salary.setDescription(request.getParameter("description"+index));			
+			salary.setDescription(request.getParameter("description"+index));
+
+			SalaryCalculate.getInstance().calculate(salary, null, paramExtMap);
+
 			list.add(salary);
 		}
 		
@@ -559,11 +558,13 @@ public class SalaryGroupAction extends BaseAction {
 	private void paramprocess(HttpServletRequest request,Salary salary){	
 		salary.setProject_id(request.getParameter("project.project_id"));	
 		
-		if(salary.getProject_no() == null || salary.getProject_no().isEmpty())
-		salary.setProject_no(request.getParameter("project.project_no"));
+		if(salary.getProject_no() == null || salary.getProject_no().isEmpty()) {
+			salary.setProject_no(request.getParameter("project.project_no"));
+		}
 		
-		if(salary.getProject_name() == null || salary.getProject_name().isEmpty())
-		salary.setProject_name(request.getParameter("project.project_name"));
+		if(salary.getProject_name() == null || salary.getProject_name().isEmpty()) {
+			salary.setProject_name(request.getParameter("project.project_name"));
+		}
 	}
 
 	
@@ -584,17 +585,9 @@ public class SalaryGroupAction extends BaseAction {
 		Salary salary1 = salary;
 		paramprocess(request,salary1);
 		User sessionUser = PubMethod.getUser(request);
-		
 
-		ParamExtend paramExtend = new ParamExtend();
-		paramExtend.setGroup1(BusinessUtil.PARAM_GROUP_SALARY);			
-		List<ParamExtend> paramExtends = paramExtendService.queryAllParamExtend(paramExtend);
-		Map<String, ParamExtend>	paramExtMap = new HashMap<String, ParamExtend>();
-		if(paramExtends != null){
-			for(ParamExtend temp : paramExtends){
-				paramExtMap.put(temp.getGroup2(), temp);
-			}
-		}
+
+		Map<String, ParamExtend> paramExtMap = getParamExtendMap();
 
 		List<Salary> list = getSalarysByWorkAttendance(salary1);
 		
@@ -626,7 +619,9 @@ public class SalaryGroupAction extends BaseAction {
 		salary1.setDate2(date2);
 		
 		List<Salary> list = salaryService.getSalaryByProjectMonth(salary1);
-		if(list == null) list = new ArrayList<Salary>();
+		if(list == null) {
+			list = new ArrayList<Salary>();
+		}
 		
 		Insurance searchInsurance = new Insurance();
 		searchInsurance.setProject_id(salary1.getProject_id());
@@ -835,7 +830,9 @@ public class SalaryGroupAction extends BaseAction {
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
 		
 		Pager<Salary> pager = salaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, Salary.class));
-		if(pager.getResultList() == null) pager.setResultList(new ArrayList());
+		if(pager.getResultList() == null) {
+			pager.setResultList(new ArrayList());
+		}
 		
 		EasyUIDatagrid datagrid = new EasyUIDatagrid(pager.getResultList().size(),pager.getResultList());
 		
@@ -963,8 +960,9 @@ public class SalaryGroupAction extends BaseAction {
 				}
 				
 				for(Salary tmp : pager.getResultList() ){
-					if(tmp.getVerify_userid() != null && tmp.getVerify_userid().length() > 0)
+					if(tmp.getVerify_userid() != null && tmp.getVerify_userid().length() > 0) {
 						continue;
+					}
 
 					tmp.setVerify_datetime(PubMethod.getCurrentDate());
 					tmp.setVerify_userid(sessionUser.getUser_id());
@@ -1008,9 +1006,10 @@ public class SalaryGroupAction extends BaseAction {
 			List<Salary> salarys = new ArrayList<Salary>();
 			for(String salary_id : ids){
 				Salary salary = salaryService.getSalary(salary_id);
-				if(salary == null) continue;
-				if(salary.getVerify_userid() != null && salary.getVerify_userid().length() > 0)
+				if(salary == null) {continue;}
+				if(salary.getVerify_userid() != null && salary.getVerify_userid().length() > 0) {
 					continue;
+				}
 				
 				salary.setVerify_datetime(PubMethod.getCurrentDate());
 				salary.setVerify_userid(sessionUser.getUser_id());

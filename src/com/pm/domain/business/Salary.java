@@ -133,39 +133,60 @@ public class Salary implements Serializable {
 	private double accumulation_fund;
 
 	@EntityAnnotation(item_name="公司缴纳公积金",item_sort=35)
-	private double reservefund_bypcompany;	
+	private double reservefund_bypcompany;
+
+
+
+
+	@EntityAnnotation(item_name="子女教育", item_sort=36,length=8)
+	private double children_education;
+
+	@EntityAnnotation(item_name="继续教育", item_sort=37,length=8)
+	private double continuing_education;
+
+	@EntityAnnotation(item_name="住房贷款利息", item_sort=38,length=8)
+	private double housing_loans;
+
+	@EntityAnnotation(item_name="住房租金", item_sort=39,length=8)
+	private double housing_rent;
+
+	@EntityAnnotation(item_name="赡养老人", item_sort=40,length=8)
+	private double support_elderly;
+
+
+
 	
-	@EntityAnnotation(item_name="准许扣除的费用",item_sort=36)
+	@EntityAnnotation(item_name="准许扣除的费用",item_sort=41)
 	private double deductions_cost;
 	
-	@EntityAnnotation(item_name="应纳税所得额",item_sort=37)
+	@EntityAnnotation(item_name="应纳税所得额",item_sort=42)
 	private double taxable_income;
 	
-	@EntityAnnotation(item_name="个人所得税",item_sort=38)
+	@EntityAnnotation(item_name="个人所得税",item_sort=43)
 	private double personal_income_tax;
 	
-	@EntityAnnotation(item_name="奖金(后)",item_sort=39)
+	@EntityAnnotation(item_name="奖金(后)",item_sort=44)
 	private double actual_bonus;
 	
-	@EntityAnnotation(item_name="补税工资",item_sort=40)
+	@EntityAnnotation(item_name="补税工资",item_sort=45)
 	private double overdue_tax_salary;
 	
-	@EntityAnnotation(item_name="实发工资",item_sort=41)
+	@EntityAnnotation(item_name="实发工资",item_sort=46)
 	private double actual_salary;	
 	
 	
 
-	@EntityAnnotation(item_name="社保缴纳单位", item_sort=42)
+	@EntityAnnotation(item_name="社保缴纳单位", item_sort=47)
 	private String securty_unit;	
 
 
-	@EntityAnnotation(item_name="身份证号", item_sort=43)
+	@EntityAnnotation(item_name="身份证号", item_sort=48)
 	private String identity_card_number;	
 
-	@EntityAnnotation(item_name="开户行", item_sort=44)
+	@EntityAnnotation(item_name="开户行", item_sort=49)
 	private String open_account;
 
-	@EntityAnnotation(item_name="银行卡号", item_sort=45)
+	@EntityAnnotation(item_name="银行卡号", item_sort=50)
 	private String bank_card_number;
 	
 	
@@ -175,7 +196,7 @@ public class Salary implements Serializable {
 	
 	
 
-	@EntityAnnotation(item_name="说明",item_sort=48)
+	@EntityAnnotation(item_name="说明",item_sort=53)
 	private String description;
 	
 	
@@ -208,10 +229,10 @@ public class Salary implements Serializable {
 	
 	
 
-	@EntityAnnotation(item_name="合同种类", item_sort=46)
+	@EntityAnnotation(item_name="合同种类", item_sort=51)
 	private String contract_type_name;	
 
-	@EntityAnnotation(item_name="合同归属", item_sort=47)
+	@EntityAnnotation(item_name="合同归属", item_sort=52)
 	private String contract_attach_name;
 	
 	
@@ -832,8 +853,9 @@ public class Salary implements Serializable {
 	}
 
 	public String getVerity_status() {
-		if(this.verify_userid!=null && this.verify_userid.length()>0)
-			verity_status="1";
+		if(this.verify_userid!=null && this.verify_userid.length()>0) {
+			verity_status = "1";
+		}
 		return verity_status;
 	}
 
@@ -931,9 +953,43 @@ public class Salary implements Serializable {
 	}
 
 
-	
-	
-	
-	
-	
+	public double getChildren_education() {
+		return children_education;
+	}
+
+	public void setChildren_education(double children_education) {
+		this.children_education = children_education;
+	}
+
+	public double getContinuing_education() {
+		return continuing_education;
+	}
+
+	public void setContinuing_education(double continuing_education) {
+		this.continuing_education = continuing_education;
+	}
+
+	public double getHousing_loans() {
+		return housing_loans;
+	}
+
+	public void setHousing_loans(double housing_loans) {
+		this.housing_loans = housing_loans;
+	}
+
+	public double getHousing_rent() {
+		return housing_rent;
+	}
+
+	public void setHousing_rent(double housing_rent) {
+		this.housing_rent = housing_rent;
+	}
+
+	public double getSupport_elderly() {
+		return support_elderly;
+	}
+
+	public void setSupport_elderly(double support_elderly) {
+		this.support_elderly = support_elderly;
+	}
 }

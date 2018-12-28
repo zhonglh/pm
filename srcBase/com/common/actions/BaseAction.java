@@ -17,6 +17,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.domain.business.ParamExtend;
+import com.pm.service.IParamExtendService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,10 +83,32 @@ public class BaseAction {
     
 
 	@Autowired
-	private IParamsService paramsService;
+    protected IParamsService paramsService;
 	
 	@Autowired
 	private IMarketSetsService marketSetsService;
+
+
+    @Autowired
+    protected IParamExtendService paramExtendService;
+
+
+    /**
+     * 获取扩展参数
+     * @return
+     */
+    protected Map<String, ParamExtend> getParamExtendMap() {
+        ParamExtend paramExtend = new ParamExtend();
+        paramExtend.setGroup1(BusinessUtil.PARAM_GROUP_SALARY);
+        List<ParamExtend> paramExtends = paramExtendService.queryAllParamExtend(paramExtend);
+        Map<String, ParamExtend>	paramExtMap = new HashMap<String, ParamExtend>();
+        if(paramExtends != null){
+            for(ParamExtend temp : paramExtends){
+                paramExtMap.put(temp.getGroup2(), temp);
+            }
+        }
+        return paramExtMap;
+    }
 	
 	
 	public MarketSets getMarketSets(){
@@ -99,7 +123,6 @@ public class BaseAction {
 
 	/**
 	 * 计算税率
-	 * @param searchStatistics
 	 */
 	public double computeTaxRate() {
 		try{

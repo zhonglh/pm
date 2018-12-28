@@ -20,6 +20,9 @@ import com.pm.util.PubMethod;
 import com.pm.util.constant.BusinessUtil;
 import com.pm.vo.UserPermit;
 
+/**
+ * @author Administrator
+ */
 @Component
 public class SalaryServiceImpl implements ISalaryService{
 
@@ -35,7 +38,8 @@ public class SalaryServiceImpl implements ISalaryService{
 	private IPersonnelMonthlyCalculationDao personnelMonthlyCalculationDao;
 	
 
-	public Pager<Salary> querySalaryGroup(Salary salary, UserPermit userPermit,Pager<Salary> pager){
+	@Override
+	public Pager<Salary> querySalaryGroup(Salary salary, UserPermit userPermit, Pager<Salary> pager){
 		return salaryDao.querySalaryGroup(salary, userPermit, pager);
 	}
 
@@ -48,7 +52,9 @@ public class SalaryServiceImpl implements ISalaryService{
 	@Override
 	public void addSalary(List<Salary> salarys) {		
 		
-		if(salarys == null || salarys.isEmpty()) return ;
+		if(salarys == null || salarys.isEmpty()) {
+			return ;
+		}
 		Salary deleteSalary = new Salary();
 		deleteSalary.setProject_id(salarys.get(0).getProject_id());
 		deleteSalary.setSalary_month(salarys.get(0).getSalary_month());
@@ -85,7 +91,9 @@ public class SalaryServiceImpl implements ISalaryService{
 		for(Salary salary : salarys){
 			int size = salaryDao.verifySalary(salary);
 
-			if(size == 0) throw new PMException (CommonErrorConstants.e029901);
+			if(size == 0) {
+				throw new PMException (CommonErrorConstants.e029901);
+			}
 		}	
 		
 		
@@ -121,7 +129,9 @@ public class SalaryServiceImpl implements ISalaryService{
 				projectStaffCostService.deleteProjectStaffCost(new Salary[]{salary1});
 				int size = salaryDao.unVerifySalary(salary1);
 
-				if(size == 0) throw new PMException (CommonErrorConstants.e029902);
+				if(size == 0) {
+					throw new PMException (CommonErrorConstants.e029902);
+				}
 			}
 		}
 		
@@ -136,7 +146,9 @@ public class SalaryServiceImpl implements ISalaryService{
 	@Override
 	public List<Salary> getSalaryByProjectMonth(Salary salary) {
 		
-		if(salary.getSalary_month() == 0) return null;
+		if(salary.getSalary_month() == 0) {
+			return null;
+		}
 		if(salary.getProject_salary_number() == 0){
 			/*int salary_month = salary.getSalary_month();
 			if(salary_month%100 == 1){
@@ -152,6 +164,7 @@ public class SalaryServiceImpl implements ISalaryService{
 		
 	}
 
+	@Override
 	public List<PersonnelMonthlySalary> getCurrSalaryByWorkAttendance(Salary search){
 		return personnelMonthlyCalculationDao.getCurrSalaryByWorkAttendance(search);
 	}

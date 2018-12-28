@@ -256,6 +256,14 @@
 				<th data-options="field:'jobharm_insurance_bycompany',width:80,editor:{type:'numberbox',options:{precision:2,required:true}}">工伤单位</th>
 				<th data-options="field:'accumulation_fund',width:100,editor:{type:'numberbox',options:{precision:2,required:true}}">公积金个人</th>
 				<th data-options="field:'reservefund_bypcompany',width:100,editor:{type:'numberbox',options:{precision:2,required:true}}">公积金单位</th>
+
+
+				<th data-options="field:'children_education',width:160">子女教育</th>
+				<th data-options="field:'continuing_education',width:160">继续教育</th>
+				<th data-options="field:'housing_loans',width:160">住房贷款利息</th>
+				<th data-options="field:'housing_rent',width:160">住房租金</th>
+				<th data-options="field:'support_elderly',width:160">赡养老人</th>
+
 				<th data-options="field:'deductions_cost',width:160">准许扣除的费用</th>
 				<th data-options="field:'taxable_income',width:160">应纳税所得额</th>
 				<th data-options="field:'personal_income_tax',width:80">所得税</th>

@@ -262,8 +262,22 @@
 	 * @param val
 	 */
 	function deductions_cost(field,key,val){
+
+		//三险一金
 		var result = fixed(field.pension_insurance) + fixed(field.unemployment_insurance);
 		result = result + fixed(field.medical_Insurance) + fixed(field.accumulation_fund);
+
+		//专项扣除费用
+        result += field.children_education;
+        result += field.continuing_education;
+        result += field.support_elderly;
+        if(field.housing_loans > 0){
+            result += field.housing_loans;
+        }else {
+            result += field.housing_rent;
+        }
+
+
 		result = fixed(result);		
 		backFill(field,key,result);	
 	}

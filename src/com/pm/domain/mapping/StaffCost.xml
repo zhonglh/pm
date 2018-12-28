@@ -138,6 +138,7 @@
 			bank_card_number,lead_id,extra_expend,can_send_info,
 			contract_type,contract_attach,social_security,description,
 			specialty,graduation_date,working_life,insured_city,working_address,certificate,
+			children_education,continuing_education,housing_loans,housing_rent,support_elderly,
 			import_order,build_datetime,build_userid,build_username,delete_flag
 		)values  (
 			#{staff_id},#{staff_no},#{staff_name},#{recruiter},#{job_title},
@@ -154,6 +155,7 @@
 			#{bank_card_number},#{lead_id},#{extra_expend},#{can_send_info},
 			#{contract_type},#{contract_attach},#{social_security},#{description},			
 			#{specialty},#{graduation_date},#{working_life},#{insured_city},#{working_address},#{certificate},
+			#{children_education},#{continuing_education},#{housing_loans},#{housing_rent},#{support_elderly},
 			#{import_order},#{build_datetime},#{build_userid},#{build_username},#{delete_flag}
 		)
 	</insert>	

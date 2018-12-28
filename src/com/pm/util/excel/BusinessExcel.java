@@ -119,7 +119,9 @@ public class BusinessExcel {
 			
 			String businessName = ThreadLocalBusinessNameHolder.getBusinessName();
 			
-			if(fs == null || fs.length == 0) return null;
+			if(fs == null || fs.length == 0) {
+				return null;
+			}
 			List<Colume> list = new ArrayList<Colume>();
 			for(Field f : fs){
 				if(f.isAnnotationPresent(EntityAnnotation.class)){

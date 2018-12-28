@@ -3,13 +3,8 @@ package com.pm.action;
 
 import com.common.actions.BaseAction;
 import com.common.beans.Pager;
-import com.common.utils.IDKit;
 import com.common.utils.file.FileKit;
-import com.pm.domain.business.DicData;
-import com.pm.domain.business.InsuranceGrade;
-import com.pm.domain.business.OtherStaff;
 import com.pm.domain.business.StaffCost;
-import com.pm.domain.system.User;
 import com.pm.service.IRoleService;
 import com.pm.service.IStaffCostService;
 import com.pm.util.Config;
@@ -226,27 +221,28 @@ public class StaffAdditionalDeductionAction extends BaseAction {
             b = false;
         }
 
-
         if(sad.getContinuing_education()<0){
             sad.setErrorInfo(sad.getErrorInfo() + "请填写正确的继续教育;");
             b = false;
         }
-
 
         if(sad.getHousing_loans()<0 || sad.getHousing_loans() > 1000){
             sad.setErrorInfo(sad.getErrorInfo() + "请填写正确的住房贷款利息;");
             b = false;
         }
 
-
         if(sad.getHousing_rent()<0 || sad.getHousing_rent()>1500){
             sad.setErrorInfo(sad.getErrorInfo() + "请填写正确的住房租金;");
             b = false;
         }
 
-
         if(sad.getSupport_elderly()<0 || sad.getSupport_elderly()>2000){
             sad.setErrorInfo(sad.getErrorInfo() + "请填写正确的赡养老人;");
+            b = false;
+        }
+
+
+        if(sad.getErrorInfo() != null && !sad.getErrorInfo().isEmpty()) {
             b = false;
         }
 

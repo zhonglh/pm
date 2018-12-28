@@ -179,10 +179,10 @@ public class StaffCostAction extends BaseAction {
 		}
 		int index = 0;
 		for(String[] row : list){
-			if(row.length<45) {
+			if(row.length<50) {
 				return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
 			}
-			if(row.length>50) {
+			if(row.length>55) {
 				return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据太长，请按照模板填写！",true);
 			}
 			index ++;
@@ -618,6 +618,35 @@ public class StaffCostAction extends BaseAction {
 				b = false;
 			}
 		}
+
+
+
+
+		if(staffCost.getChildren_education()<0){
+			staffCost.setErrorInfo(staffCost.getErrorInfo() + "请填写正确的子女教育;");
+			b = false;
+		}
+
+		if(staffCost.getContinuing_education()<0){
+			staffCost.setErrorInfo(staffCost.getErrorInfo() + "请填写正确的继续教育;");
+			b = false;
+		}
+
+		if(staffCost.getHousing_loans()<0 || staffCost.getHousing_loans() > 1000){
+			staffCost.setErrorInfo(staffCost.getErrorInfo() + "请填写正确的住房贷款利息;");
+			b = false;
+		}
+
+		if(staffCost.getHousing_rent()<0 || staffCost.getHousing_rent()>1500){
+			staffCost.setErrorInfo(staffCost.getErrorInfo() + "请填写正确的住房租金;");
+			b = false;
+		}
+
+		if(staffCost.getSupport_elderly()<0 || staffCost.getSupport_elderly()>2000){
+			staffCost.setErrorInfo(staffCost.getErrorInfo() + "请填写正确的赡养老人;");
+			b = false;
+		}
+
 		
 		if(staffCost.getErrorInfo() != null && !staffCost.getErrorInfo().isEmpty()) {
 			b = false;
@@ -1428,8 +1457,12 @@ public class StaffCostAction extends BaseAction {
 		}catch(Exception e){
 			
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "数据格式错误！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "数据格式错误！", true);
+		}
 		
 	}
 	
@@ -1460,8 +1493,12 @@ public class StaffCostAction extends BaseAction {
 		}catch(Exception e){
 			throw e;
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "数据格式错误！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "数据格式错误！", true);
+		}
 		
 	}	
 	

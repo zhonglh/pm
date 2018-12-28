@@ -445,9 +445,12 @@ public class PubMethod {
 	
 	
 	public static <T> List<T> stringArray2List(List<String[]> list,Class<T> clz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		if(list == null || list.isEmpty()) return null;
-		List<T> ts = new ArrayList<T>();
+		if(list == null || list.isEmpty()) {
+			return null;
+		}
 
+
+		List<T> ts = new ArrayList<T>();
 		List<Colume> columes = BusinessExcel.getImportColume(clz);
 
 		int position = 0;
@@ -461,25 +464,34 @@ public class PubMethod {
 			int len = strArray.length;
 			for(Colume colume : columes){
 				colume.getField().setAccessible(true);
-				if(index >= len) break;
+				if(index >= len) {
+					break;
+				}
 				Object obj = null;
 				try{
-					if(strArray[index] != null && !strArray[index].isEmpty())
-					obj = getObject(colume,strArray[index]);
+					if(strArray[index] != null && !strArray[index].isEmpty()) {
+						obj = getObject(colume, strArray[index]);
+					}
 				}catch(Exception e){
 					e.printStackTrace();
 					String errorInfo = (String)clz.getMethod("getErrorInfo").invoke(t);
-					if(errorInfo == null) errorInfo = "";
+					if(errorInfo == null) {
+						errorInfo = "";
+					}
 					clz.getMethod("setErrorInfo",String.class).invoke(t, errorInfo + "" + colume.getName() + " 数据格式错误; ");
 				}
 				
-				if(obj != null) colume.getField().set(t, obj);
+				if(obj != null) {
+					colume.getField().set(t, obj);
+				}
 				
 				if(strArray[index]!=null &&strArray[index].length()>0){
 					int columeLength = colume.getLength();
 					if(columeLength >0 && columeLength < strArray[index].length()){
 						String errorInfo = (String)clz.getMethod("getErrorInfo").invoke(t);
-						if(errorInfo == null) errorInfo = "";
+						if(errorInfo == null) {
+							errorInfo = "";
+						}
 						clz.getMethod("setErrorInfo",String.class).invoke(t, errorInfo + "" + colume.getName() + "  内容太长; ");
 					}
 					 
@@ -495,7 +507,9 @@ public class PubMethod {
 	}
 	
 	public static Object getObject(Colume colume,String val){
-		if(val == null || val.trim().isEmpty()) return null;
+		if(val == null || val.trim().isEmpty()) {
+			return null;
+		}
 		val = val.trim();
 		
 		Field field = colume.getField();
@@ -521,8 +535,12 @@ public class PubMethod {
 	}
 	
 	public static String changeQuarterView(String quarter){
-		if(quarter == null) return null;
-		if(quarter.length() != 6) return quarter;
+		if(quarter == null) {
+			return null;
+		}
+		if(quarter.length() != 6) {
+			return quarter;
+		}
 		StringBuffer sb = new StringBuffer(quarter.substring(0,4));
 		sb.append("年第").append(quarter.charAt(5));
 		sb.append("季度");
@@ -531,7 +549,9 @@ public class PubMethod {
 	
 	public static String getMonthChinseStr(int month){
 		String monthStr = String.valueOf(month);
-		if(monthStr.length() != 6) return "";
+		if(monthStr.length() != 6) {
+			return "";
+		}
 		return monthStr.substring(0,4)+"年"+monthStr.substring(4)+"月";
 	}
 
@@ -613,7 +633,9 @@ public class PubMethod {
 
 		 if(request.getSession().getAttribute("PAGE_SIZE") != null){
 			 int sessoinPageSize = (int)request.getSession().getAttribute("PAGE_SIZE");
-			 if(sessoinPageSize != pageSize) request.getSession().setAttribute("PAGE_SIZE", pageSize);
+			 if(sessoinPageSize != pageSize) {
+			 	request.getSession().setAttribute("PAGE_SIZE", pageSize);
+			 }
 		 }else {
 			 request.getSession().setAttribute("PAGE_SIZE", pageSize);
 		 }

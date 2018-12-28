@@ -254,24 +254,25 @@ public class StaffCost implements Serializable {
 
 
 
-    //子女教育
-    private double children_education;
 
-    //继续教育
-    private double continuing_education;
+	@EntityAnnotation(item_name="子女教育", item_sort=69,length=8)
+	private double children_education;
 
-    //住房贷款利息
-    private double housing_loans;
+	@EntityAnnotation(item_name="继续教育", item_sort=70,length=8)
+	private double continuing_education;
 
-    //住房租金
-    private double housing_rent;
+	@EntityAnnotation(item_name="住房贷款利息", item_sort=71,length=8)
+	private double housing_loans;
 
-    //赡养老人
-    private double support_elderly;
+	@EntityAnnotation(item_name="住房租金", item_sort=72,length=8)
+	private double housing_rent;
+
+	@EntityAnnotation(item_name="赡养老人", item_sort=73,length=8)
+	private double support_elderly;
 
 
 
-    @EntityAnnotation(item_name="备注" , item_sort=69,length=300)
+    @EntityAnnotation(item_name="备注" , item_sort=74,length=300)
     private String description;
 
     //版本号

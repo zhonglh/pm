@@ -536,13 +536,17 @@ public class PubMethod {
 	}
 
 	public static String[] List2Array(List<String> list) {
-		if (list == null || list.size() == 0)
+		if (list == null || list.size() == 0) {
 			return null;
-		else {
+		}else {
 			String[] objArray = new String[list.size()];
 			int len = objArray.length;
 			for (int index = 0; index < len; index++) {
-				objArray[index] = list.get(index);
+				String cellVal = list.get(index);
+				if(cellVal != null){
+					cellVal = cellVal.trim();
+				}
+				objArray[index] = cellVal ;
 			}
 			return objArray;
 		}

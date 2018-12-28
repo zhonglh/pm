@@ -171,6 +171,19 @@
 		version_no = version_no + 1 
 		where staff_id = #{staff_id}  
 	</update>
+
+
+
+	<update id="updateStaffCostAdditionalDeduction" parameterType="com.pm.domain.business.StaffCost">
+		update tb_staff_costs set
+		children_education = #{children_education},
+		continuing_education = #{continuing_education},
+		housing_loans = #{housing_loans},
+		housing_rent = #{housing_rent},
+		support_elderly = #{support_elderly}
+		where staff_id = #{staff_id}
+	</update>
+
 	
 	<update id="updateStaffQustomerQuotes" parameterType="com.pm.domain.business.StaffCost">
 		update tb_staff_costs set  

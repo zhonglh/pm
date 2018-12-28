@@ -18,10 +18,22 @@ public interface IStaffCostDao {
 	
 
 	
-	public int updateStaffCost(StaffCost staffCost) ; 
-	
-	//修改社保缴纳单位
-	public int updateStaffCostSecurtyUnit(StaffCost staffCost) ; 
+	public int updateStaffCost(StaffCost staffCost) ;
+
+	/**
+	 * 修改社保缴纳单位
+	 * @param staffCost
+	 * @return
+	 */
+	public int updateStaffCostSecurtyUnit(StaffCost staffCost) ;
+
+	/**
+	 * 修改专项附件扣除
+	 * @param staffCost
+	 * @return
+	 */
+	public int updateStaffCostAdditionalDeduction(StaffCost staffCost) ;
+
 	
 
 	public void updateWorkinfLife() ;

@@ -39,6 +39,12 @@ public class StaffCostDaoImpl extends BatisDao implements IStaffCostDao {
 		String sql = "StaffCostMapping.updateStaffCostSecurtyUnit";
 		return this.update(sql, staffCost);
 	}
+
+
+	public int updateStaffCostAdditionalDeduction(StaffCost staffCost) {
+		String sql = "StaffCostMapping.updateStaffCostAdditionalDeduction";
+		return this.update(sql, staffCost);
+	}
 	
 	public int updateStaffQustomerQuotes(StaffCost staffCost) {
 		String sql = "StaffCostMapping.updateStaffQustomerQuotes";

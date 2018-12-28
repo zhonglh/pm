@@ -133,6 +133,13 @@ public class StaffCostServiceImpl implements IStaffCostService {
 	}
 
 	@Override
+	public int updateStaffCostAdditionalDeduction(StaffCost staffCost) {
+		int size = staffCostDao.updateStaffCostAdditionalDeduction(staffCost);
+		if(size == 0) throw new PMException("111111", "操作错误，已有其他人和你同时修改人员成本信息，请重新操作！");
+		else return size;
+	}
+
+	@Override
 	public void deleteStaffCost(StaffCost[] staffCosts) {
 		for(StaffCost staffCost : staffCosts){			
 			staffCostDao.deleteStaffCost(staffCost);			

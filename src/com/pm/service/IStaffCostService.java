@@ -32,6 +32,11 @@ public interface IStaffCostService {
 			StaffPositions[] staffPositionss,
 			StaffRaiseRecord[] staffRaiseRecords,
 			StaffRewardPenalty[] staffRewardPenaltys) ;
+
+
+
+	@LogAnnotation(operation_type=LogConstant.OPERATION_UPDATE,entity_type=LogConstant.ENTITY_STAFF_COST)
+	public int updateStaffCostAdditionalDeduction(StaffCost staffCost) ;
 	
 
 	@LogAnnotation(operation_type=LogConstant.OPERATION_DELETE,entity_type=LogConstant.ENTITY_STAFF_COST)
@@ -60,7 +65,7 @@ public interface IStaffCostService {
 
 	
 	/**
-	 * 查询人员
+	 * 查询在职人员
 	 * @param staffCost
 	 * @return
 	 */

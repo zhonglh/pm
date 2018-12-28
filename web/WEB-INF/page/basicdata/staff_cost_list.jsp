@@ -115,7 +115,20 @@
 			
 			<c:if test="${operation_insert != null && operation_insert != '' }">				
 				<li><a class="icon" href="${webroot }/StaffCostAction.do?method=downloadtemplet" target="dwzExport" targetType="navTab" title="确定要导出这模板吗?"><span>下载模板</span></a></li>
-			</c:if>				
+			</c:if>
+
+
+			<li class="line">line</li>
+
+
+			<c:if test="${operation_insert != null && operation_insert != '' }">
+				<li><a class="add" href="${webroot }/StaffAdditionalDeductionAction.do?method=toExcel" mask="true" width="850" height="480" rel="staff_costs_add" target="dialog"><span>导入专项附加扣除</span></a></li>
+			</c:if>
+
+			<c:if test="${operation_insert != null && operation_insert != '' }">
+				<li><a class="icon" href="${webroot }/StaffAdditionalDeductionAction.do?method=downloadtemplet" target="dwzExport" targetType="navTab" title="确定要导出这模板吗?"><span>下载专项附加扣除模板</span></a></li>
+			</c:if>
+
 			
 		</ul>
 	</div>

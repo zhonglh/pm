@@ -174,11 +174,17 @@ public class StaffCostAction extends BaseAction {
 			return this.ajaxForwardError(request, "该文件无法解析！",true);
 		}
 		
-		if(list == null || list.size() == 0) return this.ajaxForwardError(request, "该文件内容为空！",true);
+		if(list == null || list.size() == 0) {
+			return this.ajaxForwardError(request, "该文件内容为空！",true);
+		}
 		int index = 0;
 		for(String[] row : list){
-			if(row.length<45) return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
-			if(row.length>50) return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据太长，请按照模板填写！",true);
+			if(row.length<45) {
+				return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
+			}
+			if(row.length>50) {
+				return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据太长，请按照模板填写！",true);
+			}
 			index ++;
 		}
 		
@@ -197,10 +203,10 @@ public class StaffCostAction extends BaseAction {
 		}
 		
 		
-		Pager<OtherStaff> OtherStaffpager = otherStaffService.queryOtherStaff(new OtherStaff(), userPermit, PubMethod.getPagerByAll(request, OtherStaff.class));
+		Pager<OtherStaff> otherStaffpager = otherStaffService.queryOtherStaff(new OtherStaff(), userPermit, PubMethod.getPagerByAll(request, OtherStaff.class));
 		Map<String,OtherStaff>  otherStaffMap = new HashMap<String,OtherStaff>();
-		if(OtherStaffpager.getResultList()!=null){
-			for(OtherStaff otherStaff : OtherStaffpager.getResultList()){
+		if(otherStaffpager.getResultList()!=null){
+			for(OtherStaff otherStaff : otherStaffpager.getResultList()){
 				otherStaffMap.put(otherStaff.getStaff_name(), otherStaff);
 				otherStaffMap.put(otherStaff.getStaff_no(), otherStaff);
 			}
@@ -285,7 +291,9 @@ public class StaffCostAction extends BaseAction {
 			Map<String,	StaffCost>  staffCostMap,
 			Map<String,OtherStaff>  otherStaffMap){
 		boolean b = true;
-		if(staffCost.getLead_no() == null || staffCost.getLead_no().isEmpty()) return b;
+		if(staffCost.getLead_no() == null || staffCost.getLead_no().isEmpty()) {
+			return b;
+		}
 		StaffCost staffCostLead = staffCostMap.get(staffCost.getLead_no());
 		if(staffCostLead != null && (staffCostLead.getErrorInfo() == null || staffCostLead.getErrorInfo().trim().isEmpty())) {
 			staffCost.setLead_id(staffCostLead.getStaff_id());
@@ -512,9 +520,13 @@ public class StaffCostAction extends BaseAction {
 
 		if(staffCost.getOutsource_staff() != null && staffCost.getOutsource_staff().length() > 0){
 			if("1".equals(staffCost.getOutsource_staff()) || "是".equals(staffCost.getOutsource_staff()) || "yes".equals(staffCost.getOutsource_staff()) || "YES".equals(staffCost.getOutsource_staff())){
-				if(b) staffCost.setOutsource_staff("1");
+				if(b) {
+					staffCost.setOutsource_staff("1");
+				}
 			}else if("0".equals(staffCost.getOutsource_staff()) || "否".equals(staffCost.getOutsource_staff()) || "no".equals(staffCost.getOutsource_staff()) || "NO".equals(staffCost.getOutsource_staff())){
-				if(b) staffCost.setOutsource_staff("0");
+				if(b) {
+					staffCost.setOutsource_staff("0");
+				}
 			}else {
 				staffCost.setErrorInfo(staffCost.getErrorInfo() + "是否外协人员 错误;");
 				b = false;
@@ -525,9 +537,13 @@ public class StaffCostAction extends BaseAction {
 
 		if(staffCost.getCan_send_info() != null && staffCost.getCan_send_info().length() > 0){
 			if("1".equals(staffCost.getCan_send_info()) || "是".equals(staffCost.getCan_send_info()) || "yes".equalsIgnoreCase(staffCost.getCan_send_info()) || "Y".equalsIgnoreCase(staffCost.getCan_send_info())){
-				if(b) staffCost.setCan_send_info("1");
+				if(b) {
+					staffCost.setCan_send_info("1");
+				}
 			}else if("0".equals(staffCost.getCan_send_info()) || "否".equals(staffCost.getCan_send_info()) || "no".equalsIgnoreCase(staffCost.getCan_send_info()) || "N".equalsIgnoreCase(staffCost.getCan_send_info())){
-				if(b) staffCost.setCan_send_info("0");
+				if(b) {
+					staffCost.setCan_send_info("0");
+				}
 			}else {
 				staffCost.setErrorInfo(staffCost.getErrorInfo() + "是否允许发送信息 错误;");
 				b = false;
@@ -603,8 +619,9 @@ public class StaffCostAction extends BaseAction {
 			}
 		}
 		
-		if(staffCost.getErrorInfo() != null && !staffCost.getErrorInfo().isEmpty())
+		if(staffCost.getErrorInfo() != null && !staffCost.getErrorInfo().isEmpty()) {
 			b = false;
+		}
 		
 		return b;
 	}
@@ -614,9 +631,9 @@ public class StaffCostAction extends BaseAction {
 
 	@RequestMapping(params = "method=downloadtemplet")
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/staffcost.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "人员成本模板.xlsx" ,response,false);  		
+
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/staffcost.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "人员成本模板.xlsx" ,response,false);
 		return null;  
 	}  
 	
@@ -716,8 +733,9 @@ public class StaffCostAction extends BaseAction {
 				
 				BeanUtils.copyProperties(staffCost, excel);
 				excel.setDiff(excel.getFirstquotes() * (1 - tax_rate) - excel.getTotalcost());
-				if(null == excel.getRecruiter_name() || excel.getRecruiter_name().isEmpty())
+				if(null == excel.getRecruiter_name() || excel.getRecruiter_name().isEmpty()) {
 					excel.setRecruiter_name("未知招聘人");
+				}
 				
 				if(!excel.getRecruiter_name().equals(oldRecruiter)){
 					oldRecruiter = excel.getRecruiter_name();
@@ -929,12 +947,13 @@ public class StaffCostAction extends BaseAction {
 				
 				staffCost.setDifference(staffCost.getQustomerquotes() * (1-tax_rate) - staffCost.getTotalcost());
 				
-				if(staffCost.getConfirmation_date() != null)
-					staffCost.setConfirmation_month(DateKit.fmtDateToYM(staffCost.getConfirmation_date()));				
+				if(staffCost.getConfirmation_date() != null) {
+					staffCost.setConfirmation_month(DateKit.fmtDateToYM(staffCost.getConfirmation_date()));
+				}
 
-				if(staffCost.getContract_end_date() != null)
+				if(staffCost.getContract_end_date() != null) {
 					staffCost.setContract_end_month(DateKit.fmtDateToYM(staffCost.getContract_end_date()));
-				
+				}
 			}
 			
 		}
@@ -962,7 +981,9 @@ public class StaffCostAction extends BaseAction {
 	
 	private void paramprocess(HttpServletRequest request,StaffCost staffCost){	
 		
-		if(staffCost == null) staffCost = new StaffCost();
+		if(staffCost == null) {
+			staffCost = new StaffCost();
+		}
 		
 		staffCost.setLead_id(request.getParameter("lead.staff_id"));
 		staffCost.setLead_name(request.getParameter("lead.staff_name"));
@@ -975,7 +996,9 @@ public class StaffCostAction extends BaseAction {
 		staffCost.setInsurance_grade_id(request.getParameter("grade.insurance_grade_id"));
 		staffCost.setInsurance_radix(request.getParameter("grade.insurance_radix"));
 		String base_cardinal = request.getParameter("grade.base_cardinal");
-		if(StringUtils.isNotEmpty(base_cardinal)) staffCost.setBase_cardinal(Double.parseDouble(base_cardinal));
+		if(StringUtils.isNotEmpty(base_cardinal)) {
+			staffCost.setBase_cardinal(Double.parseDouble(base_cardinal));
+		}
 		
 
 		staffCost.setRecruiter(request.getParameter("job.user_id"));

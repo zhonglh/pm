@@ -271,12 +271,16 @@ public class ExcelRead  {
 			throw new Exception("文件类型错误，请导入xls类型的文件");
 		}finally{
 			try{
-				if(inputStream!=null) inputStream.close();
+				if(inputStream!=null) {
+					inputStream.close();
+				}
 			}catch(Exception e){
 				;
 			}
 			try{
-				if(wb!=null) wb.close();
+				if(wb!=null) {
+					wb.close();
+				}
 			}catch(Exception e){
 				;
 			}

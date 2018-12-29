@@ -87,11 +87,13 @@ public class SendMailTask implements Runnable{
 			htmml.append(" <body>");
 			
 
-			htmml.append(" <h3> "+ salaryMail.getStaff_name() +",你好！<br> 以下是您 ");
+			htmml.append(" <h3> "+ salaryMail.getStaff_name() +",你好！</h3>");
+
+			htmml.append("  <span margin-left='40px'> 以下是您在");
 			
 			htmml.append(salaryMail.getSalary_month()/100+"年"+salaryMail.getSalary_month()%100+"月");
 			
-			htmml.append(" 的工资详细信息！");
+			htmml.append("的工资详细信息！</span>");
 
 			htmml.append(" <br><br>");
 			
@@ -161,7 +163,8 @@ public class SendMailTask implements Runnable{
 			
 			htmml.append("</table>");
 
-			htmml.append(" <br><br><h4><b>注: </b><font color='red'>准许扣除的费用是指社保公积金个人扣除数</font></h4><br>");
+			htmml.append(" <br><br><h4><b>注: </b><span margin-left='160px'><font color='red'>准许扣除的费用是指社保公积金个人扣除数</font></span></h4><br>");
+			htmml.append(" <h4><b>专项附加扣除:</b><span margin-left='160px'><font color='red'>子女教育 继续教育  住房贷款利息  住房租金 赡养老人</font></span></h4><br>");
 			htmml.append(" </body>");
 			htmml.append("</html>");
 			

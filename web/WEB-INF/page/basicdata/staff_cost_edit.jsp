@@ -430,17 +430,17 @@
 
 			<p>
 				<label>住房贷款利息：</label>
-				<input name="housing_loans" class="number" type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${staffCost1.housing_loans }" type="number" pattern="####0.00#"/>" />
+				<input name="housing_loans" class="number" type="text" size="30" maxlength="10" max="1000" value="<fmt:formatNumber value="${staffCost1.housing_loans }" type="number" pattern="####0.00#"/>" />
 			</p>
 
 			<p>
 				<label>住房租金：</label>
-				<input name="housing_rent" class="number" type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${staffCost1.housing_rent }" type="number" pattern="####0.00#"/>" />
+				<input name="housing_rent" class="number" type="text" size="30" maxlength="10" max="1500" value="<fmt:formatNumber value="${staffCost1.housing_rent }" type="number" pattern="####0.00#"/>" />
 			</p>
 
 			<p>
 				<label>赡养老人：</label>
-				<input name="support_elderly" class="number" type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${staffCost1.support_elderly }" type="number" pattern="####0.00#"/>" />
+				<input name="support_elderly" class="number" type="text" size="30" maxlength="10" max="2000" value="<fmt:formatNumber value="${staffCost1.support_elderly }" type="number" pattern="####0.00#"/>" />
 			</p>
 
 

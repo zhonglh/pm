@@ -368,6 +368,8 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setOverdue_tax_salary(Double.parseDouble(request.getParameter("overdue_tax_salary"+index)));
 			salary.setActual_salary(Double.parseDouble(request.getParameter("actual_salary"+index)));
 			salary.setDescription(request.getParameter("description"+index));
+			salary.setComputer_allowance(Double.parseDouble(request.getParameter("computer_allowance"+index)));
+			salary.setMeal_allowance(Double.parseDouble(request.getParameter("meal_allowance"+index)));
 			
 			salary.setSalary_id(IDKit.generateId());
 			salary.setBuild_datetime(PubMethod.getCurrentDate());
@@ -427,6 +429,11 @@ public class SalaryGroupAction extends BaseAction {
 			}
 			
 			if(updateSalarys != null && !updateSalarys.isEmpty()) {
+
+				Map<String, ParamExtend> paramExtMap = getParamExtendMap();
+				for(Salary salary : updateSalarys){
+					SalaryCalculate.getInstance().calculate(salary, null, paramExtMap);
+				}
 				salaryService.updateSalary(updateSalarys);
 			}
 			
@@ -530,6 +537,8 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setOverdue_tax_salary(Double.parseDouble(request.getParameter("overdue_tax_salary"+index)));
 			salary.setActual_salary(Double.parseDouble(request.getParameter("actual_salary"+index)));
 			salary.setDescription(request.getParameter("description"+index));
+			salary.setComputer_allowance(Double.parseDouble(request.getParameter("computer_allowance"+index)));
+			salary.setMeal_allowance(Double.parseDouble(request.getParameter("meal_allowance"+index)));
 
 			SalaryCalculate.getInstance().calculate(salary, null, paramExtMap);
 

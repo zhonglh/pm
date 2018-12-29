@@ -21,7 +21,7 @@
 		salary.actual_bonus,salary.overdue_tax_salary ,	
 		staff.staff_name,staff.computer_allowance, staff.meal_allowance,staff.confirmation_date,
 		staff.extra_expend ,
-		staff_id.children_education,staff_id.continuing_education,staff_id.housing_loans,staff_id.housing_rent,staff_id.support_elderly,
+		staff.children_education,staff.continuing_education,staff.housing_loans,staff.housing_rent,staff.support_elderly,
 			
 		<![CDATA[
 		case when staff.confirmation_date is null then 0 when (#{date1} < staff.confirmation_date && #{date2} >= staff.confirmation_date ) then 1 else 0 end showhl,

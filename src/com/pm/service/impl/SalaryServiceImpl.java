@@ -65,10 +65,6 @@ public class SalaryServiceImpl implements ISalaryService{
 		}
 	}
 
-	@Override
-	public void updateSalary(Salary salary) {
-		salaryDao.updateSalary(salary);		
-	}
 
 	@Override
 	public void updateSalary(List<Salary> salarys) {

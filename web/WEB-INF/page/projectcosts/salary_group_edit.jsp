@@ -57,7 +57,7 @@
 						<th width="80" nowrap>额外补贴</th>
 						<th width="80" nowrap>加班补贴</th>
 						<th width="60" nowrap>餐补</th>
-						<th width="160" nowrap>实发奖金(税前)</th>
+						<th width="120" nowrap>实发奖金(税前)</th>
 						<!-- <th width="80" nowrap>额外支出</th>	 -->		
 						<th width="80" nowrap><b>应发工资</b></th>
 						

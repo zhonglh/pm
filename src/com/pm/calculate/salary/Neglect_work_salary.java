@@ -21,7 +21,7 @@ public class Neglect_work_salary extends AbstractSalaryClculate implements ISala
 
 		double should_work_days = salary.getShould_work_days();
 		double neglect_work_days = salary.getNeglect_work_days();
-		if(should_work_days != 0){
+		if(should_work_days != 0 && neglect_work_days!=0){
 			result = getCountSalary(salary)/should_work_days*neglect_work_days*2;
 			result = NumberKit.getNumberFormatByDouble(result);					
 		}

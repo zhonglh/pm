@@ -221,6 +221,7 @@
 		var result = 0.0;
 		if(field.should_work_days != 0){
 			try{
+				debugger
 				if(exp_sick_leave_salary!=undefined){
 					result = eval(exp_sick_leave_salary);
 				}else {
@@ -377,15 +378,6 @@
 		var result = field.pension_insurance + field.unemployment_insurance;
 		result = result + field.medical_Insurance + field.accumulation_fund;
 
-		//专项附加扣除
-        result += field.children_education;
-        result += field.continuing_education;
-        result += field.support_elderly;
-        if(field.housing_loans > 0){
-            result += field.housing_loans;
-        }else {
-            result += field.housing_rent;
-        }
 
 		result = fixed(result);		
 		backFill(field,key,result);	
@@ -400,6 +392,18 @@
 	 */
 	function taxable_income(field,key,val){
 		var result = field.should_salary - field.deductions_cost - 5000;
+
+
+        //专项附加扣除
+        result -= field.children_education;
+        result -= field.continuing_education;
+        result -= field.support_elderly;
+        if(field.housing_loans > 0){
+            result -= field.housing_loans;
+        }else {
+            result -= field.housing_rent;
+        }
+
 		result = fixed(result);		
 		//if(result < 0) result = 0;
 		backFill(field,key,result);

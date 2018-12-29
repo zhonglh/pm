@@ -17,7 +17,6 @@ public interface  ISalaryService extends IBaseService{
 	public void addSalary(List<Salary> salarys) ;
 	
 
-	public void updateSalary(Salary salary) ; 
 
 	@LogAnnotation(operation_type=LogConstant.OPERATION_UPDATE,entity_type=LogConstant.ENTITY_SALARY)
 	public void updateSalary(List<Salary> salarys) ; 

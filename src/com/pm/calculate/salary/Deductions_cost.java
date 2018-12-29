@@ -28,15 +28,6 @@ public class Deductions_cost extends AbstractSalaryClculate implements ISalaryCa
 		result = pension_insurance + unemployment_insurance;
 		result = result + medical_Insurance + accumulation_fund;
 
-		//增加 专项附加扣除
-		result += salary.getChildren_education();
-		result += salary.getContinuing_education();
-		result += salary.getSupport_elderly();
-		if(salary.getHousing_loans() > 0){
-			result += salary.getHousing_loans();
-		}else {
-			result += salary.getHousing_rent();
-		}
 
 		result = NumberKit.getNumberFormatByDouble(result);		
 		salary.setDeductions_cost(result);

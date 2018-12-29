@@ -21,8 +21,20 @@ public class Taxable_income extends AbstractSalaryClculate implements ISalaryCal
 
 		double should_salary = salary.getShould_salary();
 		double deductions_cost = salary.getDeductions_cost();
-		
+
+
 		result = should_salary - deductions_cost - 5000;
+
+		//增加 专项附加扣除
+		result -= salary.getChildren_education();
+		result -= salary.getContinuing_education();
+		result -= salary.getSupport_elderly();
+		if(salary.getHousing_loans() > 0){
+			result -= salary.getHousing_loans();
+		}else {
+			result -= salary.getHousing_rent();
+		}
+
 		//if(result < 0) result = 0;
 		result = NumberKit.getNumberFormatByDouble(result);	
 		salary.setTaxable_income(result);

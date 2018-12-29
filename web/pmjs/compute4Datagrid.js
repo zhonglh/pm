@@ -267,17 +267,6 @@
 		var result = fixed(field.pension_insurance) + fixed(field.unemployment_insurance);
 		result = result + fixed(field.medical_Insurance) + fixed(field.accumulation_fund);
 
-		//专项扣除费用
-        result += field.children_education;
-        result += field.continuing_education;
-        result += field.support_elderly;
-        if(field.housing_loans > 0){
-            result += field.housing_loans;
-        }else {
-            result += field.housing_rent;
-        }
-
-
 		result = fixed(result);		
 		backFill(field,key,result);	
 	}
@@ -291,6 +280,18 @@
 	 */
 	function taxable_income(field,key,val){
 		var result = fixed(field.should_salary) - fixed(field.deductions_cost) - 5000;
+
+
+        //专项附加扣除
+        result -= field.children_education;
+        result -= field.continuing_education;
+        result -= field.support_elderly;
+        if(field.housing_loans > 0){
+            result -= field.housing_loans;
+        }else {
+            result -= field.housing_rent;
+        }
+
 		result = fixed(result);		
 		//if(result < 0) result = 0;
 		backFill(field,key,result);

@@ -342,11 +342,6 @@
 			</p>
 
 			<p>
-				<label>继续教育：</label>
-				<fmt:formatNumber value="${staffCost1.continuing_education }" type="number" pattern="####0.00#"/>
-			</p>
-
-			<p>
 				<label>住房贷款利息：</label>
 				<fmt:formatNumber value="${staffCost1.housing_loans }" type="number" pattern="####0.00#"/>
 			</p>
@@ -359,6 +354,11 @@
 			<p>
 				<label>赡养老人：</label>
 				<fmt:formatNumber value="${staffCost1.support_elderly }" type="number" pattern="####0.00#"/>
+			</p>
+
+			<p>
+				<label>继续教育：</label>
+				<fmt:formatNumber value="${staffCost1.continuing_education }" type="number" pattern="####0.00#"/>
 			</p>
 			
 			<p style="margin-top: 20px">

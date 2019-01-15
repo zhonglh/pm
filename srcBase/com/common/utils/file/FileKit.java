@@ -39,9 +39,13 @@ public class FileKit {
 	public static String getFileFormatSize(long size){
 		
 		double kb = size/1024f;
-		if(kb < 1) return (size+"B");		
+		if(kb < 1) {
+			return (size+"B");
+		}
 		
-		else return (df.format(NumberKit.getNumberForBigDecimal(kb,0))+"KB");
+		else {
+			return (df.format(NumberKit.getNumberForBigDecimal(kb,0))+"KB");
+		}
 		
 		
 		
@@ -189,8 +193,9 @@ public class FileKit {
 		srcPath = separatorReplace(srcPath);
 		desPath = separatorReplace(desPath);
 		File folder = getFolder(srcPath);
-		if (null == folder)
+		if (null == folder) {
 			throw new FileNotFoundException(srcPath + " folder not found");
+		}
 		createFolder(desPath);
 		File[] files = folder.listFiles();
 		for (File file : files) {
@@ -216,8 +221,9 @@ public class FileKit {
 		srcPath = separatorReplace(srcPath);
 		desPath = separatorReplace(desPath);
 		File folder = getFolder(srcPath);
-		if (null == folder)
+		if (null == folder) {
 			throw new FileNotFoundException(srcPath + " folder not found");
+		}
 		createNewFolder(desPath);
 		File[] files = folder.listFiles();
 		for (File file : files) {
@@ -404,8 +410,9 @@ public class FileKit {
 	public static void deleteFile(String path) {
 		path = separatorReplace(path);
 		File file = getFile(path);
-		if (null != file)
+		if (null != file) {
 			file.delete();
+		}
 		// if (!file.delete ()) { throw new Exception
 		// ("delete file failure"); }
 	}
@@ -422,8 +429,9 @@ public class FileKit {
 			throws Exception {
 		dir = separatorReplace(dir);
 		File directory = getFolder(dir);
-		if (null == directory)
+		if (null == directory) {
 			return;
+		}
 		File[] files = directory.listFiles();
 		for (File file : files) {
 			if (file.isFile()) {
@@ -445,8 +453,9 @@ public class FileKit {
 	public static void deleteFolder(String path) throws Exception {
 		path = separatorReplace(path);
 		File folder = getFolder(path);
-		if (null == folder)
+		if (null == folder) {
 			return;
+		}
 		File[] files = folder.listFiles();
 		for (File file : files) {
 			if (file.isDirectory()) {
@@ -471,8 +480,9 @@ public class FileKit {
 		dir = separatorReplace(dir);
 		File f = null;
 		File folder = getFolder(dir);
-		if (null == folder)
+		if (null == folder) {
 			throw new FileNotFoundException(dir + " folder not found");
+		}
 		File[] files = folder.listFiles();
 		for (File file : files) {
 			if (file.isDirectory()) {
@@ -502,8 +512,9 @@ public class FileKit {
 			throws FileNotFoundException {
 		path = separatorReplace(path);
 		File file = getFile(path);
-		if (null == file)
+		if (null == file) {
 			throw new FileNotFoundException(path + " file not found");
+		}
 		String fileName = file.getName();
 		return getFileNameType(fileName);
 	}
@@ -518,9 +529,12 @@ public class FileKit {
 	}
 	
 	public static boolean isXlsx(String fileType){
-		if("xlsx".equalsIgnoreCase(fileType))
+		if("xlsx".equalsIgnoreCase(fileType)) {
 			return true;
-		else return false;
+		}
+		else {
+			return false;
+		}
 	}
 	
 
@@ -536,9 +550,9 @@ public class FileKit {
 	public static String getFileName(String filePath) {
 		filePath = separatorReplace(filePath);
 		String fileName = filePath;
-		if (fileName.indexOf("/") > -1)
-			fileName = filePath.substring(filePath.lastIndexOf("/") + 1,
-					filePath.length());
+		if (fileName.indexOf("/") > -1) {
+			fileName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length());
+		}
 		return fileName;
 	}
 
@@ -552,8 +566,9 @@ public class FileKit {
 	public static long getFileSize(String path) throws FileNotFoundException {
 		path = separatorReplace(path);
 		File file = getFile(path);
-		if (null == file)
+		if (null == file) {
 			throw new FileNotFoundException(path + " file not found");
+		}
 		return file.length();
 	}
 
@@ -597,8 +612,9 @@ public class FileKit {
 		path = separatorReplace(path);
 		long size = 0;
 		File folder = getFolder(path);
-		if (null == folder)
+		if (null == folder) {
 			throw new FileNotFoundException(path + " folder not found");
+		}
 		File[] files = folder.listFiles();
 		for (File file : files) {
 			if (file.isDirectory()) {
@@ -620,8 +636,9 @@ public class FileKit {
 	public static File getFile(String path) {
 		path = separatorReplace(path);
 		File file = new File(path);
-		if (!file.isFile())
+		if (!file.isFile()) {
 			return null;
+		}
 		return file;
 	}
 
@@ -635,8 +652,9 @@ public class FileKit {
 	public static File getFolder(String path) {
 		path = separatorReplace(path);
 		File folder = new File(path);
-		if (!folder.isDirectory())
+		if (!folder.isDirectory()) {
 			return null;
+		}
 		return folder;
 	}
 
@@ -651,8 +669,9 @@ public class FileKit {
 			throws FileNotFoundException {
 		path = separatorReplace(path);
 		File file = getFile(path);
-		if (null == file)
+		if (null == file) {
 			throw new FileNotFoundException(path + " file not found");
+		}
 		return new Date(file.lastModified());
 	}
 
@@ -667,8 +686,9 @@ public class FileKit {
 			throws FileNotFoundException {
 		path = separatorReplace(path);
 		File folder = getFolder(path);
-		if (null == folder)
+		if (null == folder) {
 			throw new FileNotFoundException(path + " folder not found");
+		}
 		return new Date(folder.lastModified());
 	}
 
@@ -696,7 +716,7 @@ public class FileKit {
 	/**
 	 * 将文件转成base64 字符串
 	 * 
-	 * @param path文件路径
+	 * @param path 文件路径
 	 * @return *
 	 * @throws Exception
 	 */
@@ -740,7 +760,7 @@ public class FileKit {
 	/**
 	 * 将文件头转换成16进制字符串
 	 * 
-	 * @param 原生byte
+	 * @param src 原生byte
 	 * @return 16进制字符串
 	 */
 	private static String bytesToHexString(byte[] src) {
@@ -837,10 +857,12 @@ public class FileKit {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (null != in)
+				if (null != in) {
 					in.close();
-				if (null != br)
+				}
+				if (null != br) {
 					br.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -892,16 +914,19 @@ public class FileKit {
 	 */
 	public static List<File> getFolderAllFile(File file) {
 		List<File> list = new ArrayList<File>();
-		if (file.isFile())
+		if (file.isFile()) {
 			list.add(file);
+		}
 		else {
 			File[] files = file.listFiles();
 			if (null != files && files.length > 0) {
 				for (File file2 : files) {
-					if (file2.isDirectory())
+					if (file2.isDirectory()) {
 						list.addAll(getFolderAllFile(file2));
-					else
+					}
+					else {
 						list.add(file2);
+					}
 				}
 			}
 		}
@@ -950,13 +975,22 @@ public class FileKit {
 		sb.append(File.separatorChar);
 		return sb;
 	}
+
+
+	public static String getServerDir(){
+		return new File(System.getProperty("user.dir")).getParentFile().getAbsolutePath();
+	}
 	
 	
 	
 	public static String replaceAllCurrFolder(String path){
-		if(path == null || path.isEmpty()) return null;
+		if(path == null || path.isEmpty()) {
+			return null;
+		}
 		int index = path.indexOf(File.separatorChar+"ContractAttach");
-		if(index <=0) return null;
+		if(index <=0) {
+			return null;
+		}
 		return path.replaceFirst(path.substring(0,index), Config.upload_path);
 	}
 
@@ -999,14 +1033,16 @@ public class FileKit {
 			throw new RuntimeException(e);
 		} finally {
 			try {
-				if (bis != null)
+				if (bis != null) {
 					bis.close();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			try {
-				if (bos != null)
+				if (bos != null) {
 					bos.close();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

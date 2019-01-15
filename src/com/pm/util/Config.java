@@ -1,5 +1,7 @@
 package com.pm.util;
 
+import com.common.utils.file.FileKit;
+
 import java.io.File;
 
 public class Config {
@@ -11,7 +13,7 @@ public class Config {
 	public static final int startRow = 2;
 	
 	static{		
-		upload_path = new File(System.getProperty("user.dir")).getParentFile().getAbsolutePath();
+		upload_path = FileKit.getServerDir();
 	}
 
 }

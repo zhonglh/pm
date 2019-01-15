@@ -16,7 +16,7 @@ import com.common.utils.encrypt.MacKit;
 
 public class FileStoreHelper  {
     private static Logger logger = LoggerFactory.getLogger(FileStoreHelper.class);
-    private static String baseDir;
+    private static String baseDir = FileKit.getServerDir();
     
     private static String firstpath = "uploadFile/default/user/";
 
@@ -183,11 +183,6 @@ public class FileStoreHelper  {
 		}
     }
 
-    
-
-	public static void setBaseDir(String baseDir) {
-		FileStoreHelper.baseDir = baseDir;
-	}
 
     
 	

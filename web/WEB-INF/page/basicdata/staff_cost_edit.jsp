@@ -423,10 +423,6 @@
 				<input name="children_education" class="number" type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${staffCost1.children_education }" type="number" pattern="####0.00#"/>" />
 			</p>
 
-			<p>
-				<label>继续教育：</label>
-				<input name="continuing_education" class="number" type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${staffCost1.continuing_education }" type="number" pattern="####0.00#"/>" />
-			</p>
 
 			<p>
 				<label>住房贷款利息：</label>
@@ -441,6 +437,12 @@
 			<p>
 				<label>赡养老人：</label>
 				<input name="support_elderly" class="number" type="text" size="30" maxlength="10" max="2000" value="<fmt:formatNumber value="${staffCost1.support_elderly }" type="number" pattern="####0.00#"/>" />
+			</p>
+
+
+			<p>
+				<label>继续教育：</label>
+				<input name="continuing_education" class="number" type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${staffCost1.continuing_education }" type="number" pattern="####0.00#"/>" />
 			</p>
 
 

@@ -29,18 +29,19 @@ public class StaffAdditionalDeduction implements Serializable {
     @EntityAnnotation(item_name="子女教育", item_sort=4,length=8)
     private double children_education;
 
-
-    @EntityAnnotation(item_name="继续教育", item_sort=5,length=8)
-    private double continuing_education;
-
-    @EntityAnnotation(item_name="住房贷款利息", item_sort=6,length=8)
+    @EntityAnnotation(item_name="住房贷款利息", item_sort=5,length=8)
     private double housing_loans;
 
-    @EntityAnnotation(item_name="住房租金", item_sort=7,length=8)
+    @EntityAnnotation(item_name="住房租金", item_sort=6,length=8)
     private double housing_rent;
 
-    @EntityAnnotation(item_name="赡养老人", item_sort=8,length=8)
+    @EntityAnnotation(item_name="赡养老人", item_sort=7,length=8)
     private double support_elderly;
+
+
+    @EntityAnnotation(item_name="继续教育", item_sort=8,length=8)
+    private double continuing_education;
+
 
 
     ///////////////////

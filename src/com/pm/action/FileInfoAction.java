@@ -161,7 +161,9 @@ public class FileInfoAction extends BaseAction {
 			fileInfo.setFile_size(0);
 			fileInfo.setIs_folder(EnumYesNo.Yes.getCode());
 			fileInfo.setIs_share(EnumYesNo.No.getCode());
-			if(parent_id == null || parent_id.isEmpty()) parent_id = null;
+			if(parent_id == null || parent_id.isEmpty()) {
+				parent_id = null;
+			}
 			fileInfo.setParent_id(parent_id);
 			fileInfo.setShow_name(addFileInfo.getShow_name());
 			
@@ -171,10 +173,15 @@ public class FileInfoAction extends BaseAction {
 			fileInfo.setBuild_username(sessionUser.getUser_name());
 			count = fileInfoService.addFileInfo(fileInfo);
 		}catch(Exception e){
-			if(model != null) FileStoreHelper.deleteFile(model,key);
+			if(model != null) {
+				FileStoreHelper.deleteFile(model,key);
+			}
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "该文件夹已经存在！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}else {
+			return this.ajaxForwardError(request, "该文件夹已经存在！", true);
+		}
 	}	
 	
 	
@@ -220,8 +227,9 @@ public class FileInfoAction extends BaseAction {
 		String parentFilter = "全部";
 		if(fileInfo1.getParent_id() !=null ){
 			FileInfo parent = fileInfoService.getFileInfo(fileInfo1.getParent_id());
-			if(parent != null)
-			parentFilter = parent.getFile_name();
+			if(parent != null) {
+				parentFilter = parent.getFile_name();
+			}
 		}
 		
 		request.setAttribute("parentFilter", parentFilter);	
@@ -260,7 +268,9 @@ public class FileInfoAction extends BaseAction {
 		if(fileInfos != null){
 			for(FileInfo temp : fileInfos ){
 				
-				if(childs.contains(temp.getId())) continue;
+				if(childs.contains(temp.getId())) {
+					continue;
+				}
 				
 				Ztree ztree = new Ztree();
 				ztree.setId(temp.getId());
@@ -288,12 +298,20 @@ public class FileInfoAction extends BaseAction {
 		User sessionUser = PubMethod.getUser(request);
 		FileInfo fileInfo1 = fileInfoService.getFileInfo(fileInfo.getId());
 		boolean isSame = false;
-		if(destFolderId == null || destFolderId.isEmpty() || destFolderId.equals("null")) destFolderId = null;
+		if(destFolderId == null || destFolderId.isEmpty() || destFolderId.equals("null")) {
+			destFolderId = null;
+		}
 		
-		if(destFolderId == null && fileInfo1.getParent_id() == null) isSame = true;
-		else if(destFolderId != null && fileInfo1.getParent_id() != null && destFolderId.equals(fileInfo1.getParent_id())) isSame = true;
+		if(destFolderId == null && fileInfo1.getParent_id() == null) {
+			isSame = true;
+		}
+		else if(destFolderId != null && fileInfo1.getParent_id() != null && destFolderId.equals(fileInfo1.getParent_id())) {
+			isSame = true;
+		}
 		
-		if(isSame) return this.ajaxForwardSuccess(request, rel, true);
+		if(isSame) {
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
 		
 		
 		String destPath = fileInfo1.getBuild_userid()+fileInfoService.getSelfPath(destFolderId)+File.separator + fileInfo1.getFile_name();
@@ -348,7 +366,9 @@ public class FileInfoAction extends BaseAction {
 			
 			DataSource dataSource = new MultipartFileDataSource(file);
 	        String show_name = file.getOriginalFilename();
-	        if(show_name != null && show_name.length() > 200) return "文件名称太长";
+	        if(show_name != null && show_name.length() > 200) {
+	        	return "文件名称太长";
+			}
 	        long file_size = file.getSize();
 	        model = sessionUser.getUser_id()+fileInfoService.getParentPath(parent_id);	
 	        StoreResult result = FileStoreHelper.saveStore(model, dataSource);	        
@@ -360,7 +380,9 @@ public class FileInfoAction extends BaseAction {
 			fileInfo.setFile_size(file_size);
 			fileInfo.setIs_folder("0");
 			fileInfo.setIs_share("0");
-			if(parent_id == null || parent_id.isEmpty()) parent_id = null;
+			if(parent_id == null || parent_id.isEmpty()) {
+				parent_id = null;
+			}
 			fileInfo.setParent_id(parent_id);
 			fileInfo.setShow_name(show_name);
 			
@@ -371,17 +393,23 @@ public class FileInfoAction extends BaseAction {
 		
 			count = fileInfoService.addFileInfo(fileInfo);
 		}catch(Exception e){
-			if(key != null && model != null) FileStoreHelper.deleteFile(model, key);
+			if(key != null && model != null) {
+				FileStoreHelper.deleteFile(model, key);
+			}
 			throw e;
 		}
-		if(count == 1) return "true";
-		else return "false";
+		if(count == 1) {
+			return "true";
+		}
+		else {
+			return "false";
+		}
 		
     }
 	
 	/**
 	 * 共享选择界面
-	 * @param searchFileInfo
+	 * @param file_id
 	 * @param res
 	 * @param request
 	 * @return
@@ -491,12 +519,18 @@ public class FileInfoAction extends BaseAction {
 			List<ShareToUser> toUsers = new ArrayList<ShareToUser>();
 			
 			String shareAll = shareInfo.getIs_share_all();
-			if(shareAll!=null && (shareAll.equals("on") || shareAll.equals("1")))  shareAll = EnumYesNo.Yes.getCode();
-			else shareAll = EnumYesNo.No.getCode();
+			if(shareAll!=null && (shareAll.equals("on") || shareAll.equals("1")))  {
+				shareAll = EnumYesNo.Yes.getCode();
+			}
+			else {
+				shareAll = EnumYesNo.No.getCode();
+			}
 			
 			if(shareAll.equals(EnumYesNo.No.getCode())){
 				List<Ztree> ztrees = null;			
-				if(info!=null && info.length()>0) ztrees = JSON.parseArray(info, Ztree.class);
+				if(info!=null && info.length()>0) {
+					ztrees = JSON.parseArray(info, Ztree.class);
+				}
 				if(ztrees != null && !ztrees.isEmpty()){
 					for(Ztree ztree : ztrees){
 						ShareToUser shareToUser = new ShareToUser();
@@ -511,7 +545,9 @@ public class FileInfoAction extends BaseAction {
 					
 			}
 			
-			if(shareInfo1 == null ) shareInfo1 = new ShareInfo();
+			if(shareInfo1 == null ) {
+				shareInfo1 = new ShareInfo();
+			}
 			
 			shareInfo1.setIs_share_all(shareAll);			
 			shareInfo1.setFile_id(shareInfo.getFile_id());			
@@ -537,8 +573,12 @@ public class FileInfoAction extends BaseAction {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "操作失败！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "操作失败！", true);
+		}
 	}	
 
 

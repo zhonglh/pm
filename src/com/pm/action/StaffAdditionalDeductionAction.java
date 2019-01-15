@@ -102,7 +102,7 @@ public class StaffAdditionalDeductionAction extends BaseAction {
         }
         int index = 0;
         for(String[] row : list){
-            if(row.length<7) {
+            if(row.length<8) {
                 return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
             }
             index ++;
@@ -287,6 +287,7 @@ public class StaffAdditionalDeductionAction extends BaseAction {
         sad.setStaff_id(staffCost.getStaff_id());
         sad.setStaff_name(staffCost.getStaff_name());
         sad.setStaff_no(staffCost.getStaff_no());
+        sad.setIdentity_card_number(staffCost.getIdentity_card_number());
         sad.setChildren_education(staffCost.getChildren_education());
         sad.setContinuing_education(staffCost.getContinuing_education());
         sad.setHousing_loans(staffCost.getHousing_loans());

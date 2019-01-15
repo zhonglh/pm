@@ -17,7 +17,8 @@ public class MySqlDateConverter extends DateTimeConverter {
     /* (non-Javadoc) 
      * @see org.apache.commons.beanutils.converters.AbstractConverter#getDefaultType() 
      */  
-    @SuppressWarnings("rawtypes")  
+    @Override
+    @SuppressWarnings("rawtypes")
     protected Class getDefaultType() {  
         return Date.class;  
     }  

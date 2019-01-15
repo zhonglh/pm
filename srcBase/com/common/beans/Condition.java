@@ -4,8 +4,6 @@ package com.common.beans;
  * @ClassName: Condition
  * @Title:
  * @Description:TODO(查询条件)
- * @Author:liweixi
- * @Since:2014年5月6日下午6:15:31
  * @Version:1.0
  */
 public class Condition {

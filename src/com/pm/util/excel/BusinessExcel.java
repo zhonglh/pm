@@ -33,7 +33,8 @@ public class BusinessExcel {
 	public static <T> void export(HttpServletResponse response,List<T> list,Class<T> clz ){	
 		BusinessExcel.export(response, null, list, clz);
 	}
-	public static <T> void export(HttpServletResponse response,List<String> heads,List<T> list,Class<T> clz ){		
+	public static <T> void export(HttpServletResponse response,List<String> heads,List<T> list,Class<T> clz ){
+		
 		XlsSimpleExport export = new XlsSimpleExport();
 		export(export,heads,list,clz);
 		response.setContentType("Application/excel");

@@ -703,7 +703,7 @@ public class StaffCostAction extends BaseAction {
 			paramList = paramsService.queryAllParams(params);
 			if(paramList != null && paramList.size() > 0){
 				staff_costs_threshold = Double.parseDouble(paramList.get(0).getParam_value());
-			}	
+			}
 
 			request.setAttribute("staff_costs_threshold", staff_costs_threshold);
 

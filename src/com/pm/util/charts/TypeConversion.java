@@ -5,10 +5,15 @@ import java.util.List;
 import com.pm.vo.echarts.series.Data;
 import com.pm.vo.reports.SmallItem;
 
+/**
+ * @author Administrator
+ */
 public class TypeConversion {
 	
 	public static Data toData(SmallItem smallItem){
-		if(smallItem == null) return null;
+		if(smallItem == null) {
+			return null;
+		}
 		Data data = new Data();
 		data.setName(smallItem.getName());
 		data.setValue(smallItem.getValue());
@@ -17,7 +22,9 @@ public class TypeConversion {
 
 
 	public static Data[] toDatas(List<SmallItem> smallItems){
-		if(smallItems == null || smallItems.size() < 0) return null;
+		if(smallItems == null || smallItems.size() < 0) {
+			return null;
+		}
 		Data[] datas = new Data[smallItems.size()];
 		int index = 0;
 		for(SmallItem smallItem : smallItems){

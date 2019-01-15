@@ -624,8 +624,12 @@ public class ProjectAction extends BaseAction {
 	public void printAttach(ProjectContract searchprojectContract,HttpServletResponse res,HttpServletRequest request) throws Exception{
 		try{
 			ProjectContract projectContract = projectService.getProjectContract(searchprojectContract);
-			if(projectContract == null) return ;
-			if(!projectContract.getProject_id().equals(searchprojectContract.getProject_id())) return ;		
+			if(projectContract == null) {
+				return ;
+			}
+			if(!projectContract.getProject_id().equals(searchprojectContract.getProject_id())) {
+				return ;
+			}
 			FileKit.pringFile(new String(Base64Kit.decode(projectContract.getAttachment_path())), projectContract.getAttachment_name(), request, res);
 		}catch(Exception e){
 			

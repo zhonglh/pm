@@ -59,8 +59,12 @@ public class FileStoreHelper  {
     public static void moveFile(String srcPath, String destPath){
     	try{
 	        File file = new File(baseDir + "/" + firstpath + srcPath);
-	        if(file.isDirectory())     FileKit.moveAndReplaceFolder(baseDir + "/" + firstpath + srcPath, baseDir + "/" + firstpath + destPath);
-	        else FileKit.moveAndNotReplaceFile(baseDir + "/" + firstpath + srcPath, baseDir + "/" + firstpath + destPath);
+	        if(file.isDirectory())     {
+	            FileKit.moveAndReplaceFolder(baseDir + "/" + firstpath + srcPath, baseDir + "/" + firstpath + destPath);
+            }
+	        else {
+	            FileKit.moveAndNotReplaceFile(baseDir + "/" + firstpath + srcPath, baseDir + "/" + firstpath + destPath);
+            }
     	}catch(Exception e){
     		
     	}
@@ -152,7 +156,9 @@ public class FileStoreHelper  {
     	try {
     		
 	    	File targetFile = new File(baseDir + "/"  + firstpath + model );
-	    	if(!targetFile.exists()) return ;
+	    	if(!targetFile.exists()) {
+	    	    return ;
+            }
 	    	if(targetFile.isDirectory()){	    		
 					FileKit.deleteFolder(baseDir + "/"  + firstpath + model );				
 	    	}else {
@@ -169,7 +175,9 @@ public class FileStoreHelper  {
     	try {
     		
 	    	File targetFile = new File(baseDir + "/"  + firstpath + model + "/" + key);
-	    	if(!targetFile.exists()) return ;
+	    	if(!targetFile.exists()) {
+	    	    return ;
+            }
 	    	if(targetFile.isDirectory()){
 	    		
 					FileKit.deleteFolder(baseDir + "/"  + firstpath + model + "/" + key);

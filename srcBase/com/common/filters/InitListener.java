@@ -21,7 +21,8 @@ public class InitListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		try{
 			//FileStoreHelper.setBaseDir( FileKit.getServerDir() );
-			
+			//FileStoreHelper.setBaseDir( event.getServletContext().getRealPath("/") );
+
 
 			//ConvertUtils.register(new MyDateConverter(null), java.util.Date.class);
 			//ConvertUtils.register(new MySqlTimestampConverter(null),java.sql.Timestamp.class);

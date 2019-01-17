@@ -19,7 +19,7 @@
 		CONCAT(presalary.description,ifnull(pmss.description,'')) as description  ,	
 				
 		salary.actual_bonus,salary.overdue_tax_salary ,	
-		staff.staff_name,staff.computer_allowance, staff.meal_allowance,staff.confirmation_date,
+		staff.staff_name,staff.join_datetime,staff.computer_allowance, staff.meal_allowance,staff.confirmation_date,
 		staff.extra_expend ,
 		staff.children_education,staff.continuing_education,staff.housing_loans,staff.housing_rent,staff.support_elderly,
 			
@@ -116,7 +116,7 @@
 	
 	<select id="getSalary" parameterType="com.pm.domain.business.Salary" resultMap="salaryMap">
 		SELECT salary.* ,project.project_name, project.project_no, 
-		sc.staff_name , sc.computer_allowance, sc.meal_allowance,sc.confirmation_date  ,						
+		sc.staff_name ,sc.join_datetime, sc.computer_allowance, sc.meal_allowance,sc.confirmation_date  ,
 		dd_ct.dic_data_name as contract_type_name,	
 		dd_ca.dic_data_name as contract_attach_name
 		
@@ -315,7 +315,7 @@
 
 	<sql id="salaryPagerSql">
 		
-		SELECT salary.* ,project.project_name, project.project_no, sc.staff_name , aa.need_approve 	,
+		SELECT salary.* ,project.project_name, project.project_no, sc.staff_name ,sc.join_datetime, aa.need_approve 	,
 		
 		<![CDATA[
 		case when sc.confirmation_date is null then 0 when (#{Salary.date1} < sc.confirmation_date && #{Salary.date2} >= sc.confirmation_date ) then 1 else 0 end showhl,		

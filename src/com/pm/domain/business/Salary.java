@@ -234,6 +234,10 @@ public class Salary implements Serializable {
 
 	@EntityAnnotation(item_name="合同归属", item_sort=52)
 	private String contract_attach_name;
+
+
+	@EntityAnnotation(item_name="入职时间", item_sort=54)
+	private Timestamp join_datetime;
 	
 	
 	//转正日期,从人员成本里获取
@@ -991,5 +995,13 @@ public class Salary implements Serializable {
 
 	public void setSupport_elderly(double support_elderly) {
 		this.support_elderly = support_elderly;
+	}
+
+	public Timestamp getJoin_datetime() {
+		return join_datetime;
+	}
+
+	public void setJoin_datetime(Timestamp join_datetime) {
+		this.join_datetime = join_datetime;
 	}
 }

@@ -60,7 +60,6 @@ public abstract class XlsExport {
 		this.sheet.createFreezePane(cols, rows);
 	}	
 
-	/** */
 	/**
 	 * 增加一行
 	 * 
@@ -97,7 +96,6 @@ public abstract class XlsExport {
 	}	
 	
 
-	/** */
 	/**
 	 * 设置单元格
 	 * 

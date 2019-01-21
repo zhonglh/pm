@@ -24,8 +24,12 @@ public class ExcelUtil {
 			URL url = ExcelUtil.class.getClassLoader().getResource(file);
 			if(url == null){				
 				url = ExcelUtil.class.getResource("/"+file);				
-				if(url == null) url = ExcelUtil.class.getResource(file);
-				if(url == null) url = Thread.currentThread().getContextClassLoader().getResource(file);
+				if(url == null) {
+					url = ExcelUtil.class.getResource(file);
+				}
+				if(url == null) {
+					url = Thread.currentThread().getContextClassLoader().getResource(file);
+				}
 			}
 			
 			inputStream = new FileInputStream(url.getPath());
@@ -36,7 +40,9 @@ public class ExcelUtil {
 			throw e;
 		}finally{
 			try{
-				if(inputStream != null) inputStream.close();
+				if(inputStream != null) {
+					inputStream.close();
+				}
 			}catch(Exception e){}
 		}
 	}
@@ -59,8 +65,9 @@ public class ExcelUtil {
 		int i;
 		int j;
 
-		if (pStartRow == -1 || pEndRow == -1)
+		if (pStartRow == -1 || pEndRow == -1) {
 			return;
+		}
 		
 		
 		
@@ -107,7 +114,9 @@ public class ExcelUtil {
 	
 	private static void copyCellStyle(XSSFCell srcCell,XSSFCellStyle srcCellStyle, XSSFCell distCell,XSSFCellStyle distCellStyle){
 		
-		if(srcCellStyle == null || distCellStyle == null) return ;
+		if(srcCellStyle == null || distCellStyle == null) {
+			return ;
+		}
 		distCellStyle.setAlignment(srcCellStyle.getAlignment());
 		distCellStyle.setBorderBottom(srcCellStyle.getBorderBottom());
 		distCellStyle.setFillBackgroundColor(srcCellStyle.getFillBackgroundColor());

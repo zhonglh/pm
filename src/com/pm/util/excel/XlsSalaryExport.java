@@ -25,10 +25,12 @@ public class XlsSalaryExport extends XlsSimpleExport {
 	}
 	
 
-	public <T> void createSheet(T t,int cols,int rows){
+	@Override
+	public <T> void createSheet(T t, int cols, int rows){
 		createSheet(t);
 	}
 	
+	@Override
 	public <T> void createSheet(T t){
 
 		if(t != null && t.getClass() == Salary.class){

@@ -15,6 +15,9 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * @author Administrator
+ */
 public class XlsSimpleExport extends XlsExport {
 
 	protected Map<Integer,XSSFCellStyle> cellStyleMap = new HashMap<Integer,XSSFCellStyle>();
@@ -43,7 +46,7 @@ public class XlsSimpleExport extends XlsExport {
 	/**
 	 * 导出Excel文件
 	 * 
-	 * @throws XLSException
+	 * @throws RuntimeException
 	 */
 	public void exportXls(String xlsFileName) throws RuntimeException {
 		exportXls(xlsFileName,workbook);
@@ -60,8 +63,9 @@ public class XlsSimpleExport extends XlsExport {
 			throw new RuntimeException("写入Excel文件出错!", e);
 		} finally {
 			try {
-				if (fOut != null)
+				if (fOut != null) {
 					fOut.close();
+				}
 			} catch (IOException e) {
 				//e.printStackTrace();
 			}
@@ -69,6 +73,7 @@ public class XlsSimpleExport extends XlsExport {
 	}
 	
 
+	@Override
 	public XSSFCellStyle commonStyle(int cellIndex) {
 		XSSFCellStyle cellStyle = cellStyleMap.get(cellIndex);
 		if(cellStyle == null){
@@ -96,13 +101,16 @@ public class XlsSimpleExport extends XlsExport {
 			throw new RuntimeException("导出Excel文件出错!", e);
 		} finally {
 			try{
-				if(sXSSFWorkbook != null)
+				if(sXSSFWorkbook != null) {
 					sXSSFWorkbook.close();
+				}
 			}catch(Exception e){
 				
 			}
 			try {
-				if (os != null)	os.close();
+				if (os != null)	{
+					os.close();
+				}
 			} catch (IOException e) {
 				//e.printStackTrace();
 			}

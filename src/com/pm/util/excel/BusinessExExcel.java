@@ -12,9 +12,7 @@ public class BusinessExExcel extends BusinessExcel {
 	/**
 	 * 
 	 * @param response
-	 * @param heads	表头
-	 * @param list	列表
-	 * @param clz	对象类型
+	 * @param lists	表头
 	 */
 	public static void export(HttpServletResponse response,List<List<?>> lists){	
 		export(response, null, lists);
@@ -40,8 +38,7 @@ public class BusinessExExcel extends BusinessExcel {
 	 * 
 	 * @param response
 	 * @param heads				表头， 非标题
-	 * @param list				数据，包括标题
-	 * @param clz				数据类型
+	 * @param lists				数据，包括标题
 	 * @param addNumber			是否自动增加序号列
 	 */
 	public static void export(HttpServletResponse response,List<String> heads,List<List<?>> lists,boolean addNumber ){			
@@ -64,9 +61,8 @@ public class BusinessExExcel extends BusinessExcel {
 	/**
 	 * 
 	 * @param export
-	 * @param list
-	 * @param clz
-	 * @param writeTitle	是否需要写标题
+	 * @param heads
+	 * @param lists
 	 * @param addNumber	是否需要增加 "序号" 列
 	 */
 	public static void export(XlsExport export,List<String> heads,List<List<?>> lists,  boolean addNumber ) {
@@ -77,7 +73,9 @@ public class BusinessExExcel extends BusinessExcel {
 			int rowIndex = 0;
 			int headLength = 0;
 			
-			if(heads != null) headLength = heads.size();
+			if(heads != null) {
+				headLength = heads.size();
+			}
 			
 			rowIndex = headLength;
 			
@@ -141,7 +139,9 @@ public class BusinessExExcel extends BusinessExcel {
 			export.createRow(export.getCurrXSSFSheet(),(rowIndex));
 			
 			export.getCurrRow().setHeight((short)400);
-			if(addNumber) export.setTitleCell(0, getNumberName());
+			if(addNumber) {
+				export.setTitleCell(0, getNumberName());
+			}
 			
 			columes = getColume(list.get(0).getClass());
 			for (Colume colume : columes) {
@@ -164,17 +164,25 @@ public class BusinessExExcel extends BusinessExcel {
 
 		int position = addNumber ? 0 : 1;
 		
-		if(list == null || list.isEmpty()) return ;
+		if(list == null || list.isEmpty()) {
+			return ;
+		}
 		
-		if(columes == null) columes = getColume(list.get(0).getClass());
+		if(columes == null) {
+			columes = getColume(list.get(0).getClass());
+		}
 		
 		int index = 1;
 		
 		for(Object t : list){
-			if(t == null) continue;
+			if(t == null) {
+				continue;
+			}
 			export.createRow(export.getCurrXSSFSheet(),rowIndex++);
 			
-			if(export.specialHand(t, columes, addNumber)) continue;
+			if(export.specialHand(t, columes, addNumber)) {
+				continue;
+			}
 			
 			if(addNumber) {
 				export.setCell(0 , index);

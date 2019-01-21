@@ -5,6 +5,7 @@ public class ThreadLocalHolder {
 
 
 	private static ThreadLocal<Class> clzThreadLocal = new ThreadLocal<Class>(){
+		@Override
 		public Class initialValue(){
 			return null;
 		}

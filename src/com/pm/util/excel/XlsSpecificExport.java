@@ -17,7 +17,7 @@ public class XlsSpecificExport extends XlsSimpleExport{
 	
 
 
-	@Autowired
+	@Override
 	public <T> void createSheet(T t, int cols, int rows) {
 		this.sheet = workbook.createSheet();
 		this.sheet.setDefaultColumnWidth(15);
@@ -25,7 +25,7 @@ public class XlsSpecificExport extends XlsSimpleExport{
 	}	
 	
 
-	@Autowired
+	@Override
 	public void setCell(int index, String value) {
 		if(value == null || value.isEmpty()){
 			
@@ -37,7 +37,7 @@ public class XlsSpecificExport extends XlsSimpleExport{
 		}
 	}
 	
-	@Autowired
+	@Override
 	public void setCell(int index, Date value) {
 		if (value != null) {
 			XSSFCell cell = getCurrRow().createCell(index);
@@ -52,7 +52,7 @@ public class XlsSpecificExport extends XlsSimpleExport{
 		}
 	}
 
-	@Autowired
+	@Override
 	public void setCell(int index, java.sql.Timestamp value) {
 		if (value != null) {
 			XSSFCell cell = getCurrRow().createCell(index);
@@ -80,11 +80,13 @@ public class XlsSpecificExport extends XlsSimpleExport{
 		}
 	}
 
+	@Override
 	public void setCell(int index, double value) {
 		setCell(index, value, XlsFormatEm.DOUBLE);
 	}
 	
 	
+	@Override
 	public XSSFCellStyle commonStyle() {
 		return getXSSFWorkbook().createCellStyle();		
 	}

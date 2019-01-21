@@ -12,6 +12,9 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import com.common.utils.DateKit;
 import com.pm.vo.DepartStatisticsItem;
 
+/**
+ * @author Administrator
+ */
 public class DepartStatisticsExcel extends BusinessExcel{
 	
 	
@@ -38,7 +41,9 @@ public class DepartStatisticsExcel extends BusinessExcel{
 			int rowIndex = 0;
 			int headLength = 0;
 			
-			if(heads != null) headLength = heads.size();
+			if(heads != null) {
+				headLength = heads.size();
+			}
 			
 			rowIndex = headLength;
 			
@@ -60,7 +65,9 @@ public class DepartStatisticsExcel extends BusinessExcel{
 	private static <T> void exprotContent(XlsExport export, List<List<DepartStatisticsItem>> lists, int rowIndex ) {		
 
 		
-		if(lists == null) return ;
+		if(lists == null) {
+			return ;
+		}
 		
 		DecimalFormat    df   = new DecimalFormat("######0.0000");   
 
@@ -68,7 +75,9 @@ public class DepartStatisticsExcel extends BusinessExcel{
 		int index = 0;
 		
 		for(List<DepartStatisticsItem> list: lists){
-			if(list == null || list.isEmpty()) continue;
+			if(list == null || list.isEmpty()) {
+				continue;
+			}
 			export.createRow(export.getCurrXSSFSheet(),rowIndex++);
 			
 			
@@ -88,8 +97,9 @@ public class DepartStatisticsExcel extends BusinessExcel{
 					
 					
 					
-					if(colnumber == 0 || index == 0) value = departStatistics.getItemName();
-					else{ 
+					if(colnumber == 0 || index == 0) {
+						value = departStatistics.getItemName();
+					}else{
 							if(departStatistics.getVal() == 0){
 								value =  new Double(0);
 							}

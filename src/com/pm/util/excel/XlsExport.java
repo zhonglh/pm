@@ -17,6 +17,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.common.utils.DateKit;
 
+/**
+ * @author Administrator
+ */
 public abstract class XlsExport {
 
 	protected XSSFWorkbook workbook;

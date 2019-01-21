@@ -6,6 +6,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * @author Administrator
+ */
 public final class LockKit {
 
     private static class LockKitHolder {
@@ -22,13 +25,7 @@ public final class LockKit {
     private Map<String, LockInfo> locks = new HashMap<String, LockInfo> ();
 
     /**
-     * @Title: getLock
-     * @Description: 获取一个lock
-     * @Author: Hongli
-     * @Since: 2014年11月3日下午4:33:43
-     * @param type
-     * @param id
-     * @return
+     * getLock
      */
     public Lock getLock(LockType type,String id){
         return getLock (type, id, true);
@@ -42,11 +39,15 @@ public final class LockKit {
             String lockType = type.getType () + id;
             if (locks.containsKey (lockType)) {
                 LockInfo lockinfo = locks.get (lockType);
-                if (isCount) lockinfo.countjj ();
+                if (isCount) {
+                    lockinfo.countjj ();
+                }
                 return lockinfo.getLock ();
             } else {
                 LockInfo newLock = new LockInfo (new ReentrantLock (),lockType);
-                if (isCount) newLock.countjj ();
+                if (isCount) {
+                    newLock.countjj ();
+                }
                 locks.put (lockType, newLock);
                 return newLock.getLock ();
             }
@@ -57,12 +58,7 @@ public final class LockKit {
     }
 
     /**
-     * @Title: remove
-     * @Description: 移除锁对像
-     * @Author: Hongli
-     * @Since: 2014年11月3日下午4:50:18
-     * @param type
-     * @param id
+     *  移除锁对像
      */
     public void remove(LockType type,String id){
         l.lock ();
@@ -87,13 +83,7 @@ public final class LockKit {
     }
 
     /**
-     * @Title: sync
-     * @Description: 同步执行
-     * @Author: Hongli
-     * @Since: 2014年11月3日下午5:11:52
-     * @param type
-     * @param id
-     * @param iCallback
+     * 同步执行
      */
     public void sync(LockType type,String id,ISyncCallback iCallback){
         ReentrantLock lock = (ReentrantLock) getLock (type, id, true);
@@ -128,18 +118,26 @@ public final class LockKit {
     }
 
     /**
-     * @ClassName: LockInfo
-     * @Title:
-     * @Description:锁信息
-     * @Author:Hongli
-     * @Since:2014年11月3日下午4:50:35
-     * @Version:1.0
+     * 锁信息
      */
     class LockInfo {
 
-        private Lock          lock;    // 锁对像
-        private AtomicInteger count;   // 锁被获取次数
-        private String        lockType; // 锁类型
+        /**
+         * 锁对像
+         */
+        private Lock          lock;
+
+
+        /**
+         * 锁被获取次数
+         */
+        private AtomicInteger count;
+
+
+        /**
+         * 锁类型
+         */
+        private String        lockType;
 
         public LockInfo(Lock lock, String lockType) {
             super ();
@@ -156,24 +154,10 @@ public final class LockKit {
             return count.get ();
         }
 
-        /**
-         * @Title: countjj
-         * @Description: count++
-         * @Author: Hongli
-         * @Since: 2014年11月3日下午4:51:19
-         * @return
-         */
         public int countjj(){
             return count.getAndIncrement ();
         }
 
-        /**
-         * @Title: countJJ
-         * @Description: count--
-         * @Author: Hongli
-         * @Since: 2014年11月3日下午4:51:30
-         * @return
-         */
         public int countJJ(){
             return count.getAndDecrement ();
         }

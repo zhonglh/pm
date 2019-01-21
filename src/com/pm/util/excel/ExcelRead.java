@@ -88,13 +88,17 @@ public class ExcelRead  {
 	
 	
 	public static List<String[]> getFormulasByDatas(HashMap<String, List<String[]>> data) {
-		if(data == null || data.isEmpty()) return null;
+		if(data == null || data.isEmpty()) {
+			return null;
+		}
 		return data.get(EXCEL_FORMULAS);
 	}
 
 
 	public static List<String[]> getValuesByDatas(HashMap<String, List<String[]>> data) {
-		if(data == null || data.isEmpty()) return null;
+		if(data == null || data.isEmpty()) {
+			return null;
+		}
 		return data.get(EXCEL_VALUES);
 	}	
 	
@@ -135,7 +139,9 @@ public class ExcelRead  {
 				//cellValue = "";
 			}
 			
-			if(cellValue != null ) cellValue = cellValue.trim();
+			if(cellValue != null ) {
+				cellValue = cellValue.trim();
+			}
 			return new String[]{cellValue,cellFormula};
 		} else {
 			return null;
@@ -241,12 +247,16 @@ public class ExcelRead  {
 			throw new Exception("文件类型错误，请导入xls类型的文件");
 		}finally{
 			try{
-				if(inputStream!=null) inputStream.close();
+				if(inputStream!=null) {
+					inputStream.close();
+				}
 			}catch(Exception e){
 				;
 			}
 			try{
-				if(wb!=null) wb.close();
+				if(wb!=null) {
+					wb.close();
+				}
 			}catch(Exception e){
 				;
 			}
@@ -306,9 +316,13 @@ public class ExcelRead  {
 	 * @return
 	 */
 	private static boolean isAllEmpty(List<String> list){
-		if(list == null || list.isEmpty()) return true;
+		if(list == null || list.isEmpty()) {
+			return true;
+		}
 		for(String str : list){
-			if(str != null && !str.isEmpty()) return false;
+			if(str != null && !str.isEmpty()) {
+				return false;
+			}
 		}
 		return true;
 	}

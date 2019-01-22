@@ -17,7 +17,7 @@ import com.pm.service.IStaffCostService;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.BusinessUtil;
 import com.pm.util.excel.BusinessExcel;
-import com.pm.util.excel.Colume;
+import com.pm.util.excel.Column;
 
 public class SendMailTask implements Runnable{
 	
@@ -99,7 +99,7 @@ public class SendMailTask implements Runnable{
 			
 			htmml.append(" <table  border=1 cellspacing=0 cellpadding=0 style='solid #CCFFFF;border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt; mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'");
 			
-			List<Colume> list = BusinessExcel.getColume(salaryMail.getClass());
+			List<Column> list = BusinessExcel.getColume(salaryMail.getClass());
 			if(list == null || list.isEmpty()){
 				remark = "没有取到工资信息";
 				throw new Exception(remark);

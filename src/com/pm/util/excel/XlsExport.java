@@ -3,7 +3,6 @@ package com.pm.util.excel;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -302,7 +301,7 @@ public abstract class XlsExport {
 
 	
 	
-	public <T> boolean specialHand(T t,List<Colume> columes,boolean addNumber){
+	public <T> boolean specialHand(T t, List<Column> columns, boolean addNumber){
 		return false;
 	}
 	

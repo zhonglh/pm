@@ -2,7 +2,7 @@ package com.pm.util.excel;
 
 import java.lang.reflect.Field;
 
-public class Colume {
+public class Column {
 	
 
 	//对应列序号

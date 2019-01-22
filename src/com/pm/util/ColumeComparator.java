@@ -2,14 +2,14 @@ package com.pm.util;
 
 import java.util.Comparator;
 
-import com.pm.util.excel.Colume;
+import com.pm.util.excel.Column;
 
-public class ColumeComparator implements Comparator<Colume> {
+public class ColumeComparator implements Comparator<Column> {
 	@Override
-	public int compare(Colume colume1, Colume colume2){
-		int result = colume1.getNumber() - colume2.getNumber() ;
+	public int compare(Column column1, Column column2){
+		int result = column1.getNumber() - column2.getNumber() ;
 		if(result == 0){
-			return colume1.getName().compareTo(colume2.getName());
+			return column1.getName().compareTo(column2.getName());
 		}else {
 			return  result;
 		}

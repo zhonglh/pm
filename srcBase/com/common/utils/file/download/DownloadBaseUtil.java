@@ -52,8 +52,7 @@ public class DownloadBaseUtil {
         encodedFileName = fileName.trim().replaceAll(" ", "_");
 
         String agent = request.getHeader("User-Agent");
-        boolean isMSIE = ((agent != null) && (agent.toUpperCase().indexOf(
-                "MSIE") != -1));
+        boolean isMSIE = ((agent != null) && (agent.toUpperCase().indexOf("MSIE") != -1));
 
         if (isMSIE) {
             encodedFileName = URLEncoder.encode(encodedFileName, "UTF-8");
@@ -82,7 +81,9 @@ public class DownloadBaseUtil {
         FileInputStream inputStream = null;
         ServletOutputStream outputStream = null;
         try {
-            if (!file.exists ()) return;
+            if (!file.exists ()) {
+                return;
+            }
             response.reset ();
             // 设置响应类型 PDF文件为"application/pdf"，WORD文件为："application/msword"， EXCEL文件为："application/vnd.ms-excel"。
             response.setContentType ("application/octet-stream;charset=utf-8");

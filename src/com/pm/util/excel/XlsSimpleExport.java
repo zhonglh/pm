@@ -42,7 +42,7 @@ public class XlsSimpleExport extends XlsExport {
 		this.sheet.setDefaultColumnWidth(15);
 	}
 
-	/** */
+
 	/**
 	 * 导出Excel文件
 	 * 
@@ -67,7 +67,7 @@ public class XlsSimpleExport extends XlsExport {
 					fOut.close();
 				}
 			} catch (IOException e) {
-				//e.printStackTrace();
+
 			}
 		}
 	}
@@ -112,7 +112,6 @@ public class XlsSimpleExport extends XlsExport {
 					os.close();
 				}
 			} catch (IOException e) {
-				//e.printStackTrace();
 			}
 		}
 	}

@@ -100,7 +100,7 @@ public class BusinessExcel {
 	
 
 	
-	public static   <T> List<Colume> getColume(Class<T> clz) {	
+	public static   <T> List<Column> getColume(Class<T> clz) {
 		return getColume(clz, false,false);
 	}
 	
@@ -109,11 +109,11 @@ public class BusinessExcel {
 	 * @param clz
 	 * @return
 	 */
-	public static   <T> List<Colume> getImportColume(Class<T> clz) {	
+	public static   <T> List<Column> getImportColume(Class<T> clz) {
 		return getColume(clz, false,true);
 	}
 	
-	public static   <T> List<Colume> getColume(final Class<T> clz,boolean isAll,boolean isImport) {		
+	public static   <T> List<Column> getColume(final Class<T> clz, boolean isAll, boolean isImport) {
 		
 		synchronized(clz){
 			Field[] fs =  PubMethod.getFields(clz);
@@ -123,7 +123,7 @@ public class BusinessExcel {
 			if(fs == null || fs.length == 0) {
 				return null;
 			}
-			List<Colume> list = new ArrayList<Colume>();
+			List<Column> list = new ArrayList<Column>();
 			for(Field f : fs){
 				if(f.isAnnotationPresent(EntityAnnotation.class)){
 					EntityAnnotation entityAnnotation = f.getAnnotation(EntityAnnotation.class);
@@ -147,13 +147,13 @@ public class BusinessExcel {
 					}
 					
 					
-					Colume colume = new Colume();
-					colume.setCode(f.getName());
-					colume.setName(entityAnnotation.item_name());
-					colume.setNumber(entityAnnotation.item_sort());
-					colume.setLength(entityAnnotation.length());
-					colume.setField(f);
-					list.add(colume);
+					Column column = new Column();
+					column.setCode(f.getName());
+					column.setName(entityAnnotation.item_name());
+					column.setNumber(entityAnnotation.item_sort());
+					column.setLength(entityAnnotation.length());
+					column.setField(f);
+					list.add(column);
 				}
 			}
 			if(list != null && list.size()>0){
@@ -161,8 +161,8 @@ public class BusinessExcel {
 			}
 			
 			int index = 1;
-			for(Colume colume : list){
-				colume.setNumber(index);
+			for(Column column : list){
+				column.setNumber(index);
 				index ++;
 			}
 			
@@ -203,7 +203,7 @@ public class BusinessExcel {
 			rowIndex = headLength;
 			
 			export.createSheet((list == null || list.isEmpty()) ? null : list.get(0),0,headLength+1);
-			List<Colume> columes = null;
+			List<Column> columns = null;
 			
 			int position = addNumber ? 0 : 1;
 			
@@ -220,9 +220,9 @@ public class BusinessExcel {
 					export.setTitleCell(0, getNumberName());
 				}
 				
-				columes = getColume(clz);
-				for (Colume colume : columes) {
-					export.setTitleCell(colume.getNumber() - position , colume.getName());
+				columns = getColume(clz);
+				for (Column column : columns) {
+					export.setTitleCell(column.getNumber() - position , column.getName());
 				}
 				
 				titleRows = new XSSFRow[1];
@@ -244,7 +244,7 @@ public class BusinessExcel {
 			exportHeads(export,heads);
 			
 	
-			exprotContent(export, list, clz, rowIndex, columes,addNumber);
+			exportContent(export, list, clz, rowIndex, columns,addNumber);
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -255,7 +255,7 @@ public class BusinessExcel {
 	
 	
 	/**
-	 * 根据最后一行的列数， 合并前面行的列， 表头居住显示
+	 * 根据最后一行的列数， 合并前面行的列， 表头居中显示
 	 * @param export
 	 * @param heads
 	 */
@@ -363,8 +363,8 @@ public class BusinessExcel {
 
 
 
-	protected static <T> void exprotContent(XlsExport export, List<T> list,
-			Class<T> clz, int rowIndex, List<Colume> columes, boolean addNumber ) {		
+	protected static <T> void exportContent(XlsExport export, List<T> list,
+											Class<T> clz, int rowIndex, List<Column> columns, boolean addNumber ) {
 
 		int position = addNumber ? 0 : 1;
 		
@@ -372,8 +372,8 @@ public class BusinessExcel {
 			return ;
 		}
 		
-		if(columes == null) {
-			columes = getColume(clz);
+		if(columns == null) {
+			columns = getColume(clz);
 		}
 		
 		int index = 1;
@@ -384,7 +384,7 @@ public class BusinessExcel {
 			}
 			export.createRow(export.getCurrXSSFSheet(),rowIndex++);
 			
-			if(export.specialHand(t, columes, addNumber)) {
+			if(export.specialHand(t, columns, addNumber)) {
 				continue;
 			}
 			
@@ -394,16 +394,16 @@ public class BusinessExcel {
 			
 			index ++;
 			
-			for (Colume colume : columes) {
-				colume.getField().setAccessible(true);
+			for (Column column : columns) {
+				column.getField().setAccessible(true);
 				try {
-					Object value = colume.getField().get(t);
+					Object value = column.getField().get(t);
 					if(value == null) {
-						export.setCell(colume.getNumber()- position , "");
+						export.setCell(column.getNumber()- position , "");
 						continue;
 					}
 					
-					setCellValue(export, position, colume, value);					
+					setCellValue(export, position, column, value);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}	
@@ -413,23 +413,23 @@ public class BusinessExcel {
 	}
 	
 	
-	protected static void setCellValue(XlsExport export, int position, Colume colume, Object value) {
-		if(colume.getField().getType().equals(String.class)){
-			export.setCell(colume.getNumber()- position , String.valueOf(value));
-		}else if(colume.getField().getType().equals(java.sql.Timestamp.class)){
-			export.setCell(colume.getNumber()- position , (java.sql.Timestamp)value);
-		}else if(colume.getField().getType().equals(java.util.Date.class)){
-			export.setCell(colume.getNumber()- position , (java.util.Date)value);
-		}else if(colume.getField().getType().equals(java.sql.Date.class)){
-			export.setCell(colume.getNumber()- position , (java.sql.Date)value);
-		}else if(colume.getField().getType().equals(int.class)){
-			export.setCell(colume.getNumber()- position , (int)value);
-		}else if(colume.getField().getType().equals(double.class)){
-			export.setCell(colume.getNumber()- position , (double)value);						
-		}else if(colume.getField().getType().equals(long.class)){
-			export.setCell(colume.getNumber()- position , (long)value);						
+	protected static void setCellValue(XlsExport export, int position, Column column, Object value) {
+		if(column.getField().getType().equals(String.class)){
+			export.setCell(column.getNumber()- position , String.valueOf(value));
+		}else if(column.getField().getType().equals(java.sql.Timestamp.class)){
+			export.setCell(column.getNumber()- position , (java.sql.Timestamp)value);
+		}else if(column.getField().getType().equals(java.util.Date.class)){
+			export.setCell(column.getNumber()- position , (java.util.Date)value);
+		}else if(column.getField().getType().equals(java.sql.Date.class)){
+			export.setCell(column.getNumber()- position , (java.sql.Date)value);
+		}else if(column.getField().getType().equals(int.class)){
+			export.setCell(column.getNumber()- position , (int)value);
+		}else if(column.getField().getType().equals(double.class)){
+			export.setCell(column.getNumber()- position , (double)value);
+		}else if(column.getField().getType().equals(long.class)){
+			export.setCell(column.getNumber()- position , (long)value);
 		}else {						
-			export.setCell(colume.getNumber()- position ,value.toString());		
+			export.setCell(column.getNumber()- position ,value.toString());
 		}
 	}	
 	

@@ -53,11 +53,13 @@ public class XlsSalaryExport extends XlsSimpleExport {
 	
 	
 
+	@Override
 	public boolean isWriteTitle() {
 	  return isWriteTitle;
 	}
 	
 
+	@Override
 	public XSSFCellStyle commonStyle(int cellIndex) {
 		
 		XSSFCellStyle lastCellStyle = null;
@@ -70,7 +72,9 @@ public class XlsSalaryExport extends XlsSimpleExport {
 				return lastCellStyle;
 			}
 		}catch(Exception e){
-			if(lastCellStyle != null) return lastCellStyle;
+			if(lastCellStyle != null) {
+				return lastCellStyle;
+			}
 		}		
 		return commonStyle();
 	}	
@@ -79,16 +83,17 @@ public class XlsSalaryExport extends XlsSimpleExport {
 	/**
 	 * 特殊处理的行， 项目名称
 	 * @param t
-	 * @param columes
+	 * @param columns
 	 * @param addNumber
 	 * @return
 	 */
-	public <T> boolean specialHand(T t,List<Colume> columes,boolean addNumber){
+	@Override
+	public <T> boolean specialHand(T t, List<Column> columns, boolean addNumber){
 		
 		if(t.getClass() == Salary.class){
 			Salary salary = (Salary)t;
 			if(salary.getSalary_id() == null){
-				int len = columes.size() + (addNumber ? 1 : 0);
+				int len = columns.size() + (addNumber ? 1 : 0);
 				for(int i = 0; i < len; i++){					
 					if(i == 1){
 						XSSFFont font1 = getCurrRow().getSheet().getWorkbook().createFont();

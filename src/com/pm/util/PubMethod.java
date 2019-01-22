@@ -32,7 +32,7 @@ import com.pm.domain.system.User;
 import com.pm.service.impl.SalaryMailServiceImpl;
 import com.pm.util.constant.BusinessUtil;
 import com.pm.util.excel.BusinessExcel;
-import com.pm.util.excel.Colume;
+import com.pm.util.excel.Column;
 import com.pm.util.log.EntityAnnotation;
 import com.pm.vo.DepartStatisticsItem;
 
@@ -48,27 +48,27 @@ public class PubMethod {
 	private static DecimalFormat   decimalFormat   =   new   DecimalFormat("#####0.00");
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat ("yyyy-MM-dd");
 	
-	public static String getString4Object(Colume colume,Object t){
+	public static String getString4Object(Column column, Object t){
 
 		try {
 
-			colume.getField().setAccessible(true);
-			Object value = colume.getField().get(t);
+			column.getField().setAccessible(true);
+			Object value = column.getField().get(t);
 			if(value == null) {
 				return "";
 			}
 			
-			if(colume.getField().getType().equals(String.class)){
+			if(column.getField().getType().equals(String.class)){
 				return String.valueOf(value);
-			}else if(colume.getField().getType().equals(java.sql.Timestamp.class)){
+			}else if(column.getField().getType().equals(java.sql.Timestamp.class)){
 				return dateFormat.format((java.sql.Timestamp)value);
-			}else if(colume.getField().getType().equals(java.sql.Date.class)){
+			}else if(column.getField().getType().equals(java.sql.Date.class)){
 				return dateFormat.format((java.sql.Date)value);
-			}else if(colume.getField().getType().equals(int.class)){
+			}else if(column.getField().getType().equals(int.class)){
 				return String.valueOf((int)value);
-			}else if(colume.getField().getType().equals(double.class)){
+			}else if(column.getField().getType().equals(double.class)){
 				return String.valueOf( (double)value);						
-			}else if(colume.getField().getType().equals(long.class)){
+			}else if(column.getField().getType().equals(long.class)){
 				return String.valueOf( (long)value);						
 			}else {						
 				return value.toString();		
@@ -451,7 +451,7 @@ public class PubMethod {
 
 
 		List<T> ts = new ArrayList<T>();
-		List<Colume> columes = BusinessExcel.getImportColume(clz);
+		List<Column> columns = BusinessExcel.getImportColume(clz);
 
 		int position = 0;
 		//position = list.get(0).length - columes.size();
@@ -462,15 +462,15 @@ public class PubMethod {
 			T t = clz.newInstance();
 			int index = position;
 			int len = strArray.length;
-			for(Colume colume : columes){
-				colume.getField().setAccessible(true);
+			for(Column column : columns){
+				column.getField().setAccessible(true);
 				if(index >= len) {
 					break;
 				}
 				Object obj = null;
 				try{
 					if(strArray[index] != null && !strArray[index].isEmpty()) {
-						obj = getObject(colume, strArray[index]);
+						obj = getObject(column, strArray[index]);
 					}
 				}catch(Exception e){
 					e.printStackTrace();
@@ -478,21 +478,21 @@ public class PubMethod {
 					if(errorInfo == null) {
 						errorInfo = "";
 					}
-					clz.getMethod("setErrorInfo",String.class).invoke(t, errorInfo + "" + colume.getName() + " 数据格式错误; ");
+					clz.getMethod("setErrorInfo",String.class).invoke(t, errorInfo + "" + column.getName() + " 数据格式错误; ");
 				}
 				
 				if(obj != null) {
-					colume.getField().set(t, obj);
+					column.getField().set(t, obj);
 				}
 				
 				if(strArray[index]!=null &&strArray[index].length()>0){
-					int columeLength = colume.getLength();
+					int columeLength = column.getLength();
 					if(columeLength >0 && columeLength < strArray[index].length()){
 						String errorInfo = (String)clz.getMethod("getErrorInfo").invoke(t);
 						if(errorInfo == null) {
 							errorInfo = "";
 						}
-						clz.getMethod("setErrorInfo",String.class).invoke(t, errorInfo + "" + colume.getName() + "  内容太长; ");
+						clz.getMethod("setErrorInfo",String.class).invoke(t, errorInfo + "" + column.getName() + "  内容太长; ");
 					}
 					 
 				}
@@ -506,13 +506,13 @@ public class PubMethod {
 		return ts;
 	}
 	
-	public static Object getObject(Colume colume,String val){
+	public static Object getObject(Column column, String val){
 		if(val == null || val.trim().isEmpty()) {
 			return null;
 		}
 		val = val.trim();
 		
-		Field field = colume.getField();
+		Field field = column.getField();
 		
 		if(field.getType().equals(String.class)){
 			return val;
@@ -530,7 +530,7 @@ public class PubMethod {
 		}else if(field.getType().equals(double.class) || field.getType().equals(Double.class)){
 			return Double.parseDouble(val);	
 		}else {
-			throw new RuntimeException(colume.getName()+"类型转换错误");
+			throw new RuntimeException(column.getName()+"类型转换错误");
 		}
 	}
 	

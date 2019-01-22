@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 
+/**
+ * @author Administrator
+ */
 public class BusinessExExcel extends BusinessExcel {
 	
 	
@@ -84,13 +87,13 @@ public class BusinessExExcel extends BusinessExcel {
 			
 			if(lists != null && lists.size() >0){
 				//输出第一个列表的标题
-				List<Colume> columes = exportTitle(export, lists.get(0),  addNumber,  rowIndex);
+				List<Column> columns = exportTitle(export, lists.get(0),  addNumber,  rowIndex);
 				
 				//根据标题 输出表头
 				exportHeads(export,heads);			
 	
 				//输出第一个列表的内容
-				exprotContent(export, lists.get(0), ++rowIndex, columes, addNumber ) ;
+				exprotContent(export, lists.get(0), ++rowIndex, columns, addNumber ) ;
 				
 				
 				//第一个列表已经输出过了
@@ -114,10 +117,10 @@ public class BusinessExExcel extends BusinessExcel {
 		for(List<?> list : lists){			
 	
 			
-			List<Colume> columes = exportTitle(export, list,  addNumber,  ++rowIndex);
+			List<Column> columns = exportTitle(export, list,  addNumber,  ++rowIndex);
 				
 
-			exprotContent(export, list, ++rowIndex, columes, addNumber ) ;
+			exprotContent(export, list, ++rowIndex, columns, addNumber ) ;
 			
 			rowIndex = list.size() + rowIndex -1;
 		
@@ -125,9 +128,9 @@ public class BusinessExExcel extends BusinessExcel {
 	}
 	
 
-	private static List<Colume> exportTitle(XlsExport export, List<?> list, boolean addNumber, int rowIndex) {
+	private static List<Column> exportTitle(XlsExport export, List<?> list, boolean addNumber, int rowIndex) {
 
-		List<Colume> columes = null;
+		List<Column> columns = null;
 		XSSFRow[] titleRows = null;
 		
 
@@ -143,9 +146,9 @@ public class BusinessExExcel extends BusinessExcel {
 				export.setTitleCell(0, getNumberName());
 			}
 			
-			columes = getColume(list.get(0).getClass());
-			for (Colume colume : columes) {
-				export.setTitleCell(colume.getNumber() - position , colume.getName());
+			columns = getColume(list.get(0).getClass());
+			for (Column column : columns) {
+				export.setTitleCell(column.getNumber() - position , column.getName());
 			}
 			
 			titleRows = new XSSFRow[1];
@@ -155,12 +158,12 @@ public class BusinessExExcel extends BusinessExcel {
 		
 		export.setTitleRow(titleRows);
 		
-		return columes;
+		return columns;
 	}
 
 
 	protected static void exprotContent(XlsExport export, List<?> list,
-			 int rowIndex, List<Colume> columes, boolean addNumber ) {		
+                                        int rowIndex, List<Column> columns, boolean addNumber ) {
 
 		int position = addNumber ? 0 : 1;
 		
@@ -168,8 +171,8 @@ public class BusinessExExcel extends BusinessExcel {
 			return ;
 		}
 		
-		if(columes == null) {
-			columes = getColume(list.get(0).getClass());
+		if(columns == null) {
+			columns = getColume(list.get(0).getClass());
 		}
 		
 		int index = 1;
@@ -180,7 +183,7 @@ public class BusinessExExcel extends BusinessExcel {
 			}
 			export.createRow(export.getCurrXSSFSheet(),rowIndex++);
 			
-			if(export.specialHand(t, columes, addNumber)) {
+			if(export.specialHand(t, columns, addNumber)) {
 				continue;
 			}
 			
@@ -190,16 +193,16 @@ public class BusinessExExcel extends BusinessExcel {
 			
 			index ++;
 			
-			for (Colume colume : columes) {
-				colume.getField().setAccessible(true);
+			for (Column column : columns) {
+				column.getField().setAccessible(true);
 				try {
-					Object value = colume.getField().get(t);
+					Object value = column.getField().get(t);
 					if(value == null) {
-						export.setCell(colume.getNumber()- position , "");
+						export.setCell(column.getNumber()- position , "");
 						continue;
 					}
 					
-					setCellValue(export, position, colume, value);					
+					setCellValue(export, position, column, value);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}	

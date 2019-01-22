@@ -115,7 +115,6 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 	/**
 	 * 获取入职人员信息
 	 * @param personnelMonthlyBase
-	 * @param res
 	 * @param request
 	 */
 	public List<PersonnelMonthlyStaffCost> getJoinStaff(PersonnelMonthlyBase personnelMonthlyBase,HttpServletRequest request){
@@ -163,7 +162,9 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 				scs.add(sc);
 			}			
 			
-			if(!scs.isEmpty()) request.setAttribute("joinStaffCosts", scs);				
+			if(!scs.isEmpty()) {
+				request.setAttribute("joinStaffCosts", scs);
+			}
 		}	
 		
 		return scs;
@@ -175,7 +176,6 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 	/**
 	 * 获取离职人员信息
 	 * @param personnelMonthlyBase
-	 * @param res
 	 * @param request
 	 */
 	public List<PersonnelMonthlyStaffCost> getLeaveStaff(PersonnelMonthlyBase personnelMonthlyBase,HttpServletRequest request){
@@ -222,7 +222,9 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 				sc.getMonthly_type_name();
 				scs.add(sc);
 			}			
-			if(!scs.isEmpty()) request.setAttribute("leaveStaffCosts", scs);				
+			if(!scs.isEmpty()) {
+				request.setAttribute("leaveStaffCosts", scs);
+			}
 		}		
 		
 		return scs;
@@ -272,12 +274,16 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 			
 			if(StringUtils.isEmpty(monthly_type) || monthly_type.equals(EnumPersonnelMonthlyType.JoinStaff.getId())){
 				List<PersonnelMonthlyStaffCost> list = this.getJoinStaff(personnelMonthlyBase,  request);
-				if(list != null && list.size() > 0) lists.add(list);
+				if(list != null && list.size() > 0) {
+					lists.add(list);
+				}
 			}
 			
 			if(StringUtils.isEmpty(monthly_type) || monthly_type.equals(EnumPersonnelMonthlyType.LeaveStaff.getId())){
 				List<PersonnelMonthlyStaffCost> list = this.getLeaveStaff(personnelMonthlyBase,  request);
-				if(list != null && list.size() > 0) lists.add(list);
+				if(list != null && list.size() > 0) {
+					lists.add(list);
+				}
 			}
 			
 			if(StringUtils.isEmpty(monthly_type) || monthly_type.equals(EnumPersonnelMonthlyType.Official.getId())){
@@ -652,10 +658,9 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 
 	@SuppressWarnings("static-access")
 	@RequestMapping(params = "method=downloadtemplet")
-	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/personnelmonthlybase.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "人事月报模板.xlsx" ,response,false); 
+	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception {
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/personnelmonthlybase.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "人事月报模板.xlsx" ,response,false);
 		return null;  
 	}  	
 
@@ -791,7 +796,9 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 		count += decrReserveFunds.size();
 		count += bonuss.size();
 		count += salarySupplys.size();
-		if(count == 0)  return this.ajaxForwardError(request, "导入的信息中没有正式数据！ ");
+		if(count == 0)  {
+			return this.ajaxForwardError(request, "导入的信息中没有正式数据！ ");
+		}
 		
 		
 		if(ajaxJson.isOk()){
@@ -823,8 +830,9 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 			List list = (List)request.getSession().getAttribute(sessionAttr+i);
 			request.getSession().removeAttribute(sessionAttr+i);
 			
-			if(list != null && list.size() >0)
-			request.setAttribute("list"+i,list);
+			if(list != null && list.size() >0) {
+				request.setAttribute("list" + i, list);
+			}
 		}
 		
 		return "personnelmonthly/personnelmonthlybase_excel_list";

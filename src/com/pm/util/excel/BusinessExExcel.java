@@ -146,7 +146,7 @@ public class BusinessExExcel extends BusinessExcel {
 				export.setTitleCell(0, getNumberName());
 			}
 			
-			columns = getColume(list.get(0).getClass());
+			columns = getColumn(list.get(0).getClass());
 			for (Column column : columns) {
 				export.setTitleCell(column.getNumber() - position , column.getName());
 			}
@@ -172,7 +172,7 @@ public class BusinessExExcel extends BusinessExcel {
 		}
 		
 		if(columns == null) {
-			columns = getColume(list.get(0).getClass());
+			columns = getColumn(list.get(0).getClass());
 		}
 		
 		int index = 1;

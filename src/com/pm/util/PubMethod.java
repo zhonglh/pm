@@ -36,6 +36,9 @@ import com.pm.util.excel.Column;
 import com.pm.util.log.EntityAnnotation;
 import com.pm.vo.DepartStatisticsItem;
 
+/**
+ * @author Administrator
+ */
 public class PubMethod {
 	
 	
@@ -100,13 +103,19 @@ public class PubMethod {
 			}else if(f.getType().equals(java.sql.Date.class)){
 				return dateFormat.format((java.sql.Date)value);
 			}else if(f.getType().equals(int.class)){
-				if(((int)value) == 0) return "";
+				if(((int)value) == 0) {
+					return "";
+				}
 				return String.valueOf((int)value);
 			}else if(f.getType().equals(double.class)){
-				if(((double)value) == 0) return "";
+				if(((double)value) == 0) {
+					return "";
+				}
 				return decimalFormat.format(value);					
 			}else if(f.getType().equals(long.class)){
-				if(((long)value) == 0) return "";
+				if(((long)value) == 0) {
+					return "";
+				}
 				return String.valueOf( (long)value);						
 			}else {						
 				return value.toString();		
@@ -126,10 +135,16 @@ public class PubMethod {
 	 * @return
 	 */
 	public static String fromatExcelDecimal(String values){
-		if(values == null || values.isEmpty()) return "";
+		if(values == null || values.isEmpty()) {
+			return "";
+		}
 		String temp[] = values.trim().split("\\.");
-		if(temp.length>1) return temp[0];
-		else return values.trim();
+		if(temp.length>1) {
+			return temp[0];
+		}
+		else {
+			return values.trim();
+		}
 	}
 	
 	public static String getSalaryMailTemplate(){
@@ -145,16 +160,23 @@ public class PubMethod {
 
 	public static String getCookieValue(HttpServletRequest request, String name) {
 		Cookie cookie = getCookie(request,name);
-		if(cookie != null) return cookie.getValue();
-		else return null;
+		if(cookie != null) {
+			return cookie.getValue();
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public static Cookie getCookie(HttpServletRequest request, String name) {
 		Cookie[] cookies = request.getCookies();
-		if(cookies == null) return null;
+		if(cookies == null) {
+			return null;
+		}
 		for(Cookie cookie : cookies){
-			if(cookie.getName().equals(name))
+			if(cookie.getName().equals(name)) {
 				return cookie;
+			}
 		}		
 		return null;		
 	}
@@ -176,8 +198,12 @@ public class PubMethod {
 	}
 	
 	public static boolean isDelete(String delete_flag){
-		if(BusinessUtil.DELETEED.equals(delete_flag)) return true;
-		else return false;
+		if(BusinessUtil.DELETEED.equals(delete_flag)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public static String getAllWord(){
@@ -234,7 +260,9 @@ public class PubMethod {
 	*/	
 	
 	public static <T> List<T> getList( T[] arrays, Class<T> clazz){
-		if(arrays == null || arrays.length == 0) return null;
+		if(arrays == null || arrays.length == 0) {
+			return null;
+		}
 		List<T> list = new ArrayList<T>();
 		for(T t : arrays){
 			list.add(t);
@@ -252,10 +280,16 @@ public class PubMethod {
 	
 	
 	public static String letterToUpper(String str){
-		if(str == null) return null;
+		if(str == null) {
+			return null;
+		}
 	      Character c = Character.toUpperCase(str.charAt(0));
-	      if(str.length()>1)  return c.toString().concat(str.substring(1));
-	      else return c.toString();
+	      if(str.length()>1)  {
+	      	return c.toString().concat(str.substring(1));
+		  }
+	      else {
+	      	return c.toString();
+		  }
 	}
 	
 	
@@ -266,7 +300,9 @@ public class PubMethod {
 	 * @return
 	 */
 	public static String entity2String(Object obj , String sign){
-		if(obj == null) return null;
+		if(obj == null) {
+			return null;
+		}
 		
 		StringBuilder sb = new StringBuilder();
 		Field[] fs = getFields(obj.getClass());
@@ -284,7 +320,9 @@ public class PubMethod {
 	}
 	
 	public static String obj2String(Object obj){
-		if(obj == null) return null;
+		if(obj == null) {
+			return null;
+		}
 		if(obj instanceof java.sql.Timestamp){
 			java.sql.Timestamp date = (java.sql.Timestamp)obj;
 			return DateKit.fmtDateToYMDHM(date);
@@ -301,7 +339,9 @@ public class PubMethod {
 	
 
 	public static double obj2Double(Object obj){
-		if(obj == null) return 0;
+		if(obj == null) {
+			return 0;
+		}
 		if(obj instanceof java.math.BigDecimal){
 			return ((BigDecimal)obj).doubleValue();
 		}else if(obj instanceof Double){			
@@ -317,7 +357,9 @@ public class PubMethod {
 	
 	public static <T> List<LogDetail> getLogDetails(Log log, Class<T> clz,Object object1,Object object2){
 		List<LogDetail> list = new ArrayList<LogDetail>();
-		if(object1 == null && object2 == null) return list;
+		if(object1 == null && object2 == null) {
+			return list;
+		}
 		Field[] fs = getFields(clz);
 		
 		for(Field f : fs){
@@ -335,20 +377,32 @@ public class PubMethod {
 					
 					if(preValue != null){
 						if(preValue.getClass() == double.class || preValue.getClass() == Double.class){
-							if(Double.parseDouble(preValue.toString()) == 0) preValue = null;
+							if(Double.parseDouble(preValue.toString()) == 0) {
+								preValue = null;
+							}
 						}else if(preValue.getClass() == int.class || preValue.getClass() == Integer.class){
-							if(Integer.parseInt(preValue.toString()) == 0) preValue = null;
+							if(Integer.parseInt(preValue.toString()) == 0) {
+								preValue = null;
+							}
 						}else if(preValue.getClass() == String.class){
-							if(preValue.toString().isEmpty()) preValue = null;
+							if(preValue.toString().isEmpty()) {
+								preValue = null;
+							}
 						}
 					}
 					if(nextValue != null){
 						if(nextValue.getClass() == double.class || nextValue.getClass() == Double.class){
-							if(Double.parseDouble(nextValue.toString()) == 0) nextValue = null;
+							if(Double.parseDouble(nextValue.toString()) == 0) {
+								nextValue = null;
+							}
 						}else if(nextValue.getClass() == int.class || nextValue.getClass() == Integer.class){
-							if(Integer.parseInt(nextValue.toString()) == 0) nextValue = null;
+							if(Integer.parseInt(nextValue.toString()) == 0) {
+								nextValue = null;
+							}
 						}else if(nextValue.getClass() == String.class){
-							if(nextValue.toString().isEmpty()) nextValue = null;
+							if(nextValue.toString().isEmpty()) {
+								nextValue = null;
+							}
 						}
 					}
 					
@@ -388,19 +442,30 @@ public class PubMethod {
 	 * @return
 	 */
 	public static List<String> getDifferenceSets(List<String> firSets, List<String> secSets){
-		if(firSets == null && secSets == null) return null;
-		if(firSets == null) return secSets;
-		if(secSets == null) return null;
+		if(firSets == null && secSets == null) {
+			return null;
+		}
+		if(firSets == null) {
+			return secSets;
+		}
+		if(secSets == null) {
+			return null;
+		}
 		HashSet<String> hs = new HashSet<String>();
-		for(String sec : secSets) hs.add(sec);
+		for(String sec : secSets) {
+			hs.add(sec);
+		}
 		for(String fir : firSets){
 			hs.remove(fir);
 		}
-		if(hs.size() ==0 )return null;		
+		if(hs.size() ==0 ) {
+			return null;
+		}
 		else {
 			List<String> array1 = new ArrayList<String>();
-			for(String diff : hs)
-				array1.add(diff);			
+			for(String diff : hs) {
+				array1.add(diff);
+			}
 			return array1; 
 		}
 	}
@@ -408,13 +473,16 @@ public class PubMethod {
 	public static boolean isAjax(HttpServletRequest request) {
 		if (request != null
 				&& "XMLHttpRequest".equalsIgnoreCase(request
-						.getHeader("X-Requested-With")))
+						.getHeader("X-Requested-With"))) {
 			return true;
+		}
 		return false;
 	}
 	
 	public static Permit getPermit(List<Permit> list, String permit_id){
-		if(list == null) return null;
+		if(list == null) {
+			return null;
+		}
 		for(Permit permit : list){
 			if(permit.getPermit_id().equals(permit_id)){
 				return permit;
@@ -451,10 +519,10 @@ public class PubMethod {
 
 
 		List<T> ts = new ArrayList<T>();
-		List<Column> columns = BusinessExcel.getImportColume(clz);
+		List<Column> columns = BusinessExcel.getImportColumn(clz);
 
 		int position = 0;
-		//position = list.get(0).length - columes.size();
+		//position = list.get(0).length - columns.size();
 		//if( position < 0) position = 0;
 
 		
@@ -486,8 +554,8 @@ public class PubMethod {
 				}
 				
 				if(strArray[index]!=null &&strArray[index].length()>0){
-					int columeLength = column.getLength();
-					if(columeLength >0 && columeLength < strArray[index].length()){
+					int columnLength = column.getLength();
+					if(columnLength >0 && columnLength < strArray[index].length()){
 						String errorInfo = (String)clz.getMethod("getErrorInfo").invoke(t);
 						if(errorInfo == null) {
 							errorInfo = "";
@@ -651,11 +719,17 @@ public class PubMethod {
 	 * @return
 	 */
 	public static String twoDate2Str(java.util.Date date1, java.util.Date date2){
-		if(date1 == null && date2 == null) return null;
+		if(date1 == null && date2 == null) {
+			return null;
+		}
 		StringBuffer sb = new StringBuffer("");
-		if(date1 != null) sb = sb.append(DateKit.fmtDateToYMD(date1));
+		if(date1 != null) {
+			sb = sb.append(DateKit.fmtDateToYMD(date1));
+		}
 		sb.append(BusinessUtil.SPLIT_DATE);
-		if(date2 != null) sb = sb.append(DateKit.fmtDateToYMD(date2));				
+		if(date2 != null) {
+			sb = sb.append(DateKit.fmtDateToYMD(date2));
+		}
 		return sb.toString();
 	}
 	
@@ -666,14 +740,20 @@ public class PubMethod {
 	 */
 	public static java.util.Date[] str2TtwoDate(String str){
 		java.util.Date[] ds = new java.util.Date[2]; 
-		if(str == null || str.isEmpty()) return  ds;
+		if(str == null || str.isEmpty()) {
+			return  ds;
+		}
 		
 		String[] dateStr = str.split(BusinessUtil.SPLIT_DATE);
-		if(dateStr.length > 2) throw new RuntimeException("数据错误");
+		if(dateStr.length > 2) {
+			throw new RuntimeException("数据错误");
+		}
 		
 		if(dateStr != null){
 			for(int i=0;i<dateStr.length;i++){
-				if(dateStr[i] == null || dateStr[i].isEmpty()) continue;
+				if(dateStr[i] == null || dateStr[i].isEmpty()) {
+					continue;
+				}
 				java.util.Date date1 = DateKit.fmtStrToDate(dateStr[i], "yyyy-MM-dd");
 				ds[i] = date1;
 			}
@@ -683,9 +763,13 @@ public class PubMethod {
 	}
 	
 	public static String twoNumber2Str(Double d1, Double d2){
-		if(d1 == null && d2 == null) return null;
+		if(d1 == null && d2 == null) {
+			return null;
+		}
 		StringBuffer sb = new StringBuffer("");
-		if(d1 != null) sb = sb.append(d1.toString());
+		if(d1 != null) {
+			sb = sb.append(d1.toString());
+		}
 		if(d2 != null){
 			sb = sb.append(BusinessUtil.SPLIT_DATE);
 			sb = sb.append(d2.toString());		
@@ -697,7 +781,9 @@ public class PubMethod {
 		
 		str = str.replaceAll(",", "");
 		String[] numberStr = str.split(BusinessUtil.SPLIT_DATE);
-		if(numberStr.length != 2 && numberStr.length != 1) throw new RuntimeException("数据错误");
+		if(numberStr.length != 2 && numberStr.length != 1) {
+			throw new RuntimeException("数据错误");
+		}
 		
 		Double[] ds = new Double[2];
 		
@@ -713,10 +799,14 @@ public class PubMethod {
 	
 	
 	public static <T> T getObj4Map(String type,String name,Map<String, Map<String, T>> map){
-		if(map == null || map.isEmpty()) return null;
+		if(map == null || map.isEmpty()) {
+			return null;
+		}
 		
 		Map<String, T> temp = map.get(type);
-		if(temp == null || temp.isEmpty()) return null;
+		if(temp == null || temp.isEmpty()) {
+			return null;
+		}
 		
 		return temp.get(name);
 	}
@@ -731,7 +821,9 @@ public class PubMethod {
 	 */
 	public static Map<String, DepartStatisticsItem> list2Map(List<DepartStatisticsItem> list){
 		Map<String, DepartStatisticsItem> map = new HashMap<String, DepartStatisticsItem>();
-		if(list == null || list.isEmpty()) return map;
+		if(list == null || list.isEmpty()) {
+			return map;
+		}
 		for(DepartStatisticsItem departStatisticsItem : list){
 			map.put(departStatisticsItem.getDeptId(),departStatisticsItem);
 		}
@@ -739,7 +831,9 @@ public class PubMethod {
 	}
 	public static Map<String, Map<String, DepartStatisticsItem>> list2Map2(List<DepartStatisticsItem> list){
 		Map<String, Map<String, DepartStatisticsItem>> map = new HashMap<String, Map<String, DepartStatisticsItem>>();
-		if(list == null || list.isEmpty()) return map;
+		if(list == null || list.isEmpty()) {
+			return map;
+		}
 		for(DepartStatisticsItem departStatisticsItem : list){
 			Map<String, DepartStatisticsItem> temp = map.get(departStatisticsItem.getItemId());
 			if(temp == null ) {

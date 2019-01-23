@@ -161,7 +161,7 @@ public class ExcelRead  {
 		List<String[]> formulasList = new ArrayList<String[]>();
 		
 
-		int columeLength = 0;
+		int columnLength = 0;
 		int rowIndex = 0;
 		
 		while (rows.hasNext()) {
@@ -187,10 +187,10 @@ public class ExcelRead  {
 					}
 					valuesList.add( 	PubMethod.List2Array(valueList));
 					formulasList.add(	PubMethod.List2Array(formulaList));
-					columeLength = valueList.size();
+					columnLength = valueList.size();
 				}else {
 					//计算内容数据
-					for(int i=0; i < columeLength ; i++ ){
+					for(int i=0; i < columnLength ; i++ ){
 						Cell cell = row.getCell(i);
 						String cellValueFormula[] = getCellContent(cell);
 						if(cellValueFormula!=null && cellValueFormula.length==2){								

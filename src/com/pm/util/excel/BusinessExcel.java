@@ -1,7 +1,7 @@
 package com.pm.util.excel;
 
 import com.pm.domain.business.Salary;
-import com.pm.util.ColumeComparator;
+import com.pm.util.ColumnComparator;
 import com.pm.util.PubMethod;
 import com.pm.util.ThreadLocalBusinessNameHolder;
 import com.pm.util.log.EntityAnnotation;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class BusinessExcel {
 	
-	//private static Map<String,List<Colume>> clzColumeMap = new HashMap<String,List<Colume>>();
+	//private static Map<String,List<Column>> clzColumnMap = new HashMap<String,List<Column>>();
 	
 	//protected static SimpleDateFormat dateFormat = new SimpleDateFormat ("yyyy-MM-dd");
 	
@@ -100,8 +100,8 @@ public class BusinessExcel {
 	
 
 	
-	public static   <T> List<Column> getColume(Class<T> clz) {
-		return getColume(clz, false,false);
+	public static   <T> List<Column> getColumn(Class<T> clz) {
+		return getColumn(clz, false,false);
 	}
 	
 	/**
@@ -109,11 +109,11 @@ public class BusinessExcel {
 	 * @param clz
 	 * @return
 	 */
-	public static   <T> List<Column> getImportColume(Class<T> clz) {
-		return getColume(clz, false,true);
+	public static   <T> List<Column> getImportColumn(Class<T> clz) {
+		return getColumn(clz, false,true);
 	}
 	
-	public static   <T> List<Column> getColume(final Class<T> clz, boolean isAll, boolean isImport) {
+	public static   <T> List<Column> getColumn(final Class<T> clz, boolean isAll, boolean isImport) {
 		
 		synchronized(clz){
 			Field[] fs =  PubMethod.getFields(clz);
@@ -157,7 +157,7 @@ public class BusinessExcel {
 				}
 			}
 			if(list != null && list.size()>0){
-				Collections.sort(list,new ColumeComparator());
+				Collections.sort(list,new ColumnComparator());
 			}
 			
 			int index = 1;
@@ -220,7 +220,7 @@ public class BusinessExcel {
 					export.setTitleCell(0, getNumberName());
 				}
 				
-				columns = getColume(clz);
+				columns = getColumn(clz);
 				for (Column column : columns) {
 					export.setTitleCell(column.getNumber() - position , column.getName());
 				}
@@ -373,7 +373,7 @@ public class BusinessExcel {
 		}
 		
 		if(columns == null) {
-			columns = getColume(clz);
+			columns = getColumn(clz);
 		}
 		
 		int index = 1;

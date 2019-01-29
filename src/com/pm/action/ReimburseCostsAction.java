@@ -136,20 +136,23 @@ public class ReimburseCostsAction extends BaseAction {
 		reimburseCosts.setStaff_name(request.getParameter("staff.staff_name"));		
 		reimburseCosts.setStaff_no(request.getParameter("staff.staff_no"));
 		
-		if(reimburseCosts.getStaff_id() != null && reimburseCosts.getStaff_id().length()>0){
+		if(reimburseCosts.getStaff_id() != null && reimburseCosts.getStaff_id().length()>0) {
 			StaffCost staffCost = staffCostService.getStaffCost(reimburseCosts.getStaff_id());
-			
-			if(staffCost.getStaff_name().equals(reimburseCosts.getStaff_name())){
-				reimburseCosts.setStaff_no(staffCost.getStaff_no());
-			}else {
-				StaffCost staffCost1 = staffCostService.getStaffCostByName(reimburseCosts.getStaff_name());
-				if(staffCost1 == null) {
-					reimburseCosts.setStaff_id(reimburseCosts.getStaff_name());	
-					reimburseCosts.setStaff_no(null);
-				}else {
-					reimburseCosts.setStaff_id(staffCost1.getStaff_id());	
-					reimburseCosts.setStaff_no(staffCost1.getStaff_no());
+			if (staffCost != null){
+				if (staffCost.getStaff_name().equals(reimburseCosts.getStaff_name())) {
+					reimburseCosts.setStaff_no(staffCost.getStaff_no());
+				} else {
+					StaffCost staffCost1 = staffCostService.getStaffCostByName(reimburseCosts.getStaff_name());
+					if (staffCost1 == null) {
+						reimburseCosts.setStaff_id(reimburseCosts.getStaff_name());
+						reimburseCosts.setStaff_no(null);
+					} else {
+						reimburseCosts.setStaff_id(staffCost1.getStaff_id());
+						reimburseCosts.setStaff_no(staffCost1.getStaff_no());
+					}
 				}
+			}else {
+
 			}
 		
 		}else {
@@ -182,9 +185,9 @@ public class ReimburseCostsAction extends BaseAction {
 
 	@RequestMapping(params = "method=downloadtemplet")
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/reimbursecost.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "报销模板.xlsx" ,response,false);  		
+
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/reimbursecost.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "报销模板.xlsx" ,response,false);
 		return null;  
 	}  	
 	

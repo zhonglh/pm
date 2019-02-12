@@ -48,7 +48,7 @@ public class SalaryDaoImpl extends BatisDao implements ISalaryDao {
 	@Override
 	public int unVerifySalary(Salary salary) {
 		String sql = "SalaryMapping.unVerifySalary";
-		return this.update(sql, salary);	
+		return this.update(sql, salary);
 	}
 
 	@Override
@@ -66,7 +66,19 @@ public class SalaryDaoImpl extends BatisDao implements ISalaryDao {
 	public List<Salary> getSalaryByProjectMonth(Salary salary) {
 		String sql = "SalaryMapping.getSalaryByProjectMonth";
 		return this.query(sql, Salary.class, salary);
-	}	
+	}
+
+
+
+	@Override
+	public List<Salary> getAccumulatedSalary(int startSalaryMonth , int endSalaryMonth , List<String> staffCostIds){
+		String sql = "SalaryMapping.getAccumulatedSalary";
+		Salary salary = new Salary();
+		salary.setStartSalaryMonth(startSalaryMonth);
+		salary.setEndSalaryMonth(endSalaryMonth);
+		salary.setStaffCostIds(staffCostIds);
+		return this.query(sql, Salary.class, salary);
+	}
 
 	@Override
 	public Pager<Salary> querySalary(

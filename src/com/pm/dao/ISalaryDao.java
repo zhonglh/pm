@@ -32,6 +32,9 @@ public interface ISalaryDao {
 	public List<Salary> getSalaryByProjectMonth(Salary salary) ;
 
 
+	public List<Salary> getAccumulatedSalary(int startSalaryMonth , int endSalaryMonth , List<String> staffCostIds);
+
+
 	public Pager<Salary> querySalary(Salary salary, UserPermit userPermit,Pager<Salary> pager);	
 	
 	

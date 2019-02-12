@@ -300,6 +300,15 @@ public class DateKit extends DateUtils{
         return "周" + toChNumber (cl.get (Calendar.DAY_OF_WEEK) - 1);
     }
 
+    public static int getMonth(Date date){
+        Calendar cl = Calendar.getInstance ();
+        cl.setTime (date);
+        return cl.get(Calendar.MONTH)+1;
+    }
+
+
+
+
     /**
      * 将数字转为中文。 "0123456789"->"〇一二三四五六七八九"
      * 
@@ -470,6 +479,9 @@ public class DateKit extends DateUtils{
         return toShortDate (cdate.getTime ());
     }
 
+
+
+
     /**
      * 指定日期所在上月的第一天
      * 
@@ -482,6 +494,7 @@ public class DateKit extends DateUtils{
         cdate.add (Calendar.MONTH, -1);
         return toShortDate (cdate.getTime ());
     }
+
 
     /**
      * 指定日期所在旬的第一天
@@ -698,6 +711,11 @@ public class DateKit extends DateUtils{
         return rightNow.getTime ();
     }
     public static void main(String[] args){
-        System.out.println (getLastDayOfMonth(new Date()));
+
+        Date startDate = DateKit.getLastMonthStart(DateKit.getYearStart(new Date()));
+        Date endDate = DateKit.getLastMonthStart(new Date());
+
+
+        System.out.println (getMonth(new Date()));
     }
 }

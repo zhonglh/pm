@@ -39,6 +39,15 @@ public interface  ISalaryService extends IBaseService{
 	 * @return
 	 */
 	public List<Salary> getSalaryByProjectMonth(Salary salary) ;
+
+	/**
+	 * 获取本年（发工资时间的当年，工资时间是从上年12月份到本年11月份）累计记录
+	 * @param startSalaryMonth
+	 * @param endSalaryMonth
+	 * @param staffCostIds
+	 * @return
+	 */
+	public List<Salary> getAccumulatedSalary(int startSalaryMonth , int endSalaryMonth , List<String> staffCostIds);
 	
 
 	/**

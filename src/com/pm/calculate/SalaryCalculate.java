@@ -4,23 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.pm.calculate.salary.Actual_computer_allowance;
-import com.pm.calculate.salary.Actual_salary;
-import com.pm.calculate.salary.Actual_tax_bonus;
-import com.pm.calculate.salary.Actual_travel_allowance;
-import com.pm.calculate.salary.Deductions_cost;
-import com.pm.calculate.salary.Late_salary;
-import com.pm.calculate.salary.Meals_allowance;
-import com.pm.calculate.salary.Neglect_work_salary;
-import com.pm.calculate.salary.Overtime_allowance;
-import com.pm.calculate.salary.Personal_income_tax;
-import com.pm.calculate.salary.Should_salary;
-import com.pm.calculate.salary.Sick_leave_salary;
-import com.pm.calculate.salary.Taxable_income;
+import com.pm.calculate.salary.*;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
 import com.pm.domain.business.Salary;
 
+/**
+ * @author Administrator
+ */
 public class SalaryCalculate {
 
 	private static class LazyHolder {
@@ -42,6 +33,21 @@ public class SalaryCalculate {
 		calculates.add(new Should_salary());
 		calculates.add(new Deductions_cost());
 		calculates.add(new Taxable_income());
+
+		calculates.add(new Accumulated_pretax_income());
+		calculates.add(new Accumulated_tax_deduction());
+		calculates.add(new Accumulated_children_education());
+		calculates.add(new Accumulated_continuing_education());
+		calculates.add(new Accumulated_housing_loans());
+		calculates.add(new Accumulated_housing_rent());
+		calculates.add(new Accumulated_support_elderly());
+		calculates.add(new Accumulated_deductions_cost());
+		calculates.add(new Accumulated_taxable_income());
+		calculates.add(new Accumulated_deductible_taxpaid());
+
+		calculates.add(new Accumulated_replenishment_tax());
+
+
 		calculates.add(new Personal_income_tax());
 		calculates.add(new Actual_salary());
 	}

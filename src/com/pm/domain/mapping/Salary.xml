@@ -138,7 +138,10 @@
 		  	late_days, weekend_overtime_days, sick_leave_salary, neglect_work_salary,late_salary,
 		  	actual_travel_allowance, actual_computer_allowance, actual_extra_allowance, overtime_allowance,meals_allowance,
 		  	actual_tax_bonus, should_salary, pension_insurance, unemployment_insurance,medical_Insurance,
-		  	accumulation_fund, deductions_cost, taxable_income, personal_income_tax,actual_bonus,
+		  	accumulation_fund, deductions_cost, taxable_income,    accumulated_pretax_income,accumulated_tax_deduction,
+		  	accumulated_children_education,accumulated_continuing_education,accumulated_housing_loans,accumulated_housing_rent,accumulated_support_elderly,
+		  	accumulated_deductions_cost,accumulated_taxable_income,accumulated_deductible_taxpaid,accumulated_prepaid_tax,accumulated_replenishment_tax,
+		  	personal_income_tax,actual_bonus,
 		  	endowment_insurance_bycompany,medical_insurance_bycompany,losejob_insurance_bycompany,maternity_insurance_bycompany,
 		  	jobharm_insurance_bycompany,reservefund_bypcompany,overdue_tax_salary, actual_salary,extra_expend,description,
 			children_education,continuing_education,housing_loans,housing_rent,support_elderly,
@@ -150,7 +153,10 @@
 			#{late_days}, #{weekend_overtime_days},#{sick_leave_salary}, #{neglect_work_salary}, #{late_salary},			
 			#{actual_travel_allowance}, #{actual_computer_allowance},#{actual_extra_allowance}, #{overtime_allowance}, #{meals_allowance},			
 			#{actual_tax_bonus}, #{should_salary},#{pension_insurance}, #{unemployment_insurance}, #{medical_Insurance},			
-			#{accumulation_fund}, #{deductions_cost},#{taxable_income}, #{personal_income_tax}, #{actual_bonus},
+			#{accumulation_fund}, #{deductions_cost},#{taxable_income},#{accumulated_pretax_income},#{accumulated_tax_deduction},
+		  	#{accumulated_children_education},#{accumulated_continuing_education},#{accumulated_housing_loans},#{accumulated_housing_rent},#{accumulated_support_elderly},
+		  	#{accumulated_deductions_cost},#{accumulated_taxable_income},#{accumulated_deductible_taxpaid},#{accumulated_prepaid_tax},#{accumulated_replenishment_tax},
+			#{personal_income_tax}, #{actual_bonus},
 			#{endowment_insurance_bycompany},#{medical_insurance_bycompany},#{losejob_insurance_bycompany},#{maternity_insurance_bycompany},
 			#{jobharm_insurance_bycompany},#{reservefund_bypcompany},#{overdue_tax_salary}, #{actual_salary},#{extra_expend},#{description},
 			#{children_education},#{continuing_education},#{housing_loans},#{housing_rent},#{support_elderly},
@@ -208,6 +214,24 @@
 		accumulation_fund =#{accumulation_fund} ,
 		deductions_cost =#{deductions_cost} ,
 		taxable_income =#{taxable_income} ,
+
+
+		accumulated_pretax_income =#{accumulated_pretax_income} ,
+		accumulated_tax_deduction =#{accumulated_tax_deduction} ,
+		accumulated_children_education =#{accumulated_children_education} ,
+		accumulated_continuing_education =#{accumulated_continuing_education} ,
+		accumulated_housing_loans =#{accumulated_housing_loans} ,
+		accumulated_housing_rent =#{accumulated_housing_rent} ,
+		accumulated_support_elderly =#{accumulated_support_elderly} ,
+		accumulated_deductions_cost =#{accumulated_deductions_cost} ,
+		accumulated_taxable_income =#{accumulated_taxable_income} ,
+		accumulated_deductible_taxpaid =#{accumulated_deductible_taxpaid} ,
+		accumulated_prepaid_tax =#{accumulated_prepaid_tax} ,
+		accumulated_replenishment_tax =#{accumulated_replenishment_tax} ,
+
+
+
+
 		personal_income_tax =#{personal_income_tax} ,
 		actual_bonus =#{actual_bonus} ,
 		overdue_tax_salary =#{overdue_tax_salary} ,
@@ -268,6 +292,29 @@
 		where salary_id = #{salary_id} 
 		and verify_userid is not null
 	</update>
+
+
+
+	<select id="getAccumulatedSalary" parameterType="com.pm.domain.business.Salary" resultMap="salaryMap">
+
+		<![CDATA[
+		select staff_id ,
+		sum(should_salary) as before_accumulated_pretax_income,
+		(count(*) * 5000 )as before_accumulated_tax_deduction,
+		sum(children_education) as before_accumulated_children_education,
+		sum(continuing_education) as before_accumulated_continuing_education,
+		sum(housing_loans) as before_accumulated_housing_loans,
+		sum(CASE   WHEN housing_loans>0 THEN 0 ELSE housing_rent END) as before_accumulated_housing_rent,
+		sum(support_elderly) as before_accumulated_support_elderly ,
+		sum(deductions_cost) as before_accumulated_deductions_cost,
+		sum(personal_income_tax) as accumulated_prepaid_tax
+		from tb_salary
+		where  salary_month >= #{startSalaryMonth} and salary_month <= #{endSalaryMonth}
+		and staff_id in <foreach collection="staffCostIds" index="index" item="staffCostId" open="(" separator="," close=")">#{staffCostId}</foreach>
+		group by staff_id
+		]]>
+
+	</select>
 	
 	
 		

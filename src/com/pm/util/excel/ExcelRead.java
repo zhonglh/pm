@@ -6,12 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.common.utils.DateKit;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -118,7 +115,10 @@ public class ExcelRead  {
 		if (cell != null) {
 			if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){ //数值类型,日期类型在上面,可以在这处理
 				if(HSSFDateUtil.isCellDateFormatted(cell)){
-					cellValue = cell.getDateCellValue().toString();
+					Date d1 = cell.getDateCellValue();
+					if(d1 != null) {
+						cellValue = DateKit.fmtDateToYMD(d1);
+					}
 				}else{  					
 					cellValue = String.valueOf(df.format(cell.getNumericCellValue()));					
 				}

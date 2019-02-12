@@ -3,6 +3,7 @@ package com.pm.domain.business;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import com.pm.util.log.EntityAnnotation;
 
@@ -156,37 +157,89 @@ public class Salary implements Serializable {
 
 
 	
-	@EntityAnnotation(item_name="准许扣除的费用",item_sort=41)
+	@EntityAnnotation(item_name="当月五险一金代扣款",item_sort=41)
 	private double deductions_cost;
 	
-	@EntityAnnotation(item_name="应纳税所得额",item_sort=42)
+	@EntityAnnotation(item_name="当月应纳税所得额",item_sort=42)
 	private double taxable_income;
+
+
+
+
+
+
+	@EntityAnnotation(item_name="累计税前收入额",item_sort=43)
+	private double accumulated_pretax_income;
+
+	@EntityAnnotation(item_name="个税累计减除费用",item_sort=44)
+	private double accumulated_tax_deduction;
+
+	@EntityAnnotation(item_name="累计子女教育",item_sort=45)
+	private double accumulated_children_education;
+
+	@EntityAnnotation(item_name="累计继续教育",item_sort=46)
+	private double accumulated_continuing_education;
+
+	@EntityAnnotation(item_name="累计住房贷款利息",item_sort=47)
+	private double accumulated_housing_loans;
+
+	@EntityAnnotation(item_name="累计住房租金",item_sort=48)
+	private double accumulated_housing_rent;
+
+	@EntityAnnotation(item_name="累计赡养老人",item_sort=49)
+	private double accumulated_support_elderly;
+
+	@EntityAnnotation(item_name="累计五险一金代扣款",item_sort=50)
+	private double accumulated_deductions_cost;
+
+	@EntityAnnotation(item_name="累计应纳税所得额",item_sort=51)
+	private double accumulated_taxable_income;
+
+	@EntityAnnotation(item_name="累计应扣缴税额",item_sort=52)
+	private double accumulated_deductible_taxpaid;
+
+	@EntityAnnotation(item_name="累计已预缴税额",item_sort=53)
+	private double accumulated_prepaid_tax;
+
+	@EntityAnnotation(item_name="累计应补（退）税额",item_sort=54)
+	private double accumulated_replenishment_tax;
+
+
+
+
+
+
+
+
+
+
+
 	
-	@EntityAnnotation(item_name="个人所得税",item_sort=43)
+	@EntityAnnotation(item_name="个人所得税",item_sort=55)
 	private double personal_income_tax;
 	
-	@EntityAnnotation(item_name="奖金(后)",item_sort=44)
+	@EntityAnnotation(item_name="奖金(后)",item_sort=56)
 	private double actual_bonus;
 	
-	@EntityAnnotation(item_name="补税工资",item_sort=45)
+	@EntityAnnotation(item_name="补税工资",item_sort=57)
 	private double overdue_tax_salary;
 	
-	@EntityAnnotation(item_name="实发工资",item_sort=46)
+	@EntityAnnotation(item_name="实发工资",item_sort=58)
 	private double actual_salary;	
 	
 	
 
-	@EntityAnnotation(item_name="社保缴纳单位", item_sort=47)
+	@EntityAnnotation(item_name="社保缴纳单位", item_sort=59)
 	private String securty_unit;	
 
 
-	@EntityAnnotation(item_name="身份证号", item_sort=48)
+	@EntityAnnotation(item_name="身份证号", item_sort=60)
 	private String identity_card_number;	
 
-	@EntityAnnotation(item_name="开户行", item_sort=49)
+	@EntityAnnotation(item_name="开户行", item_sort=61)
 	private String open_account;
 
-	@EntityAnnotation(item_name="银行卡号", item_sort=50)
+	@EntityAnnotation(item_name="银行卡号", item_sort=62)
 	private String bank_card_number;
 	
 	
@@ -196,7 +249,7 @@ public class Salary implements Serializable {
 	
 	
 
-	@EntityAnnotation(item_name="说明",item_sort=53)
+	@EntityAnnotation(item_name="说明",item_sort=65)
 	private String description;
 	
 	
@@ -215,6 +268,32 @@ public class Salary implements Serializable {
 	////////////////////////扩展////////////////////////
 	////////////////////////////////////////////////////
 
+	//之前  累计税前收入额
+	private double before_accumulated_pretax_income;
+
+	//之前  个税累计减除费用
+	private double before_accumulated_tax_deduction;
+
+	//之前  累计子女教育
+	private double before_accumulated_children_education;
+
+	//之前  累计继续教育
+	private double before_accumulated_continuing_education;
+
+	//之前  累计住房贷款利息
+	private double before_accumulated_housing_loans;
+
+	//之前  累计住房租金
+	private double before_accumulated_housing_rent;
+
+	//之前  累计赡养老人
+	private double before_accumulated_support_elderly;
+
+	//之前  累计五险一金代扣款
+	private double before_accumulated_deductions_cost;
+
+
+
 	@EntityAnnotation(item_name="项目名称")
 	private String project_name;
 	
@@ -229,23 +308,35 @@ public class Salary implements Serializable {
 	
 	
 
-	@EntityAnnotation(item_name="合同种类", item_sort=51)
+	@EntityAnnotation(item_name="合同种类", item_sort=63)
 	private String contract_type_name;	
 
-	@EntityAnnotation(item_name="合同归属", item_sort=52)
+	@EntityAnnotation(item_name="合同归属", item_sort=64)
 	private String contract_attach_name;
 
 
-	@EntityAnnotation(item_name="入职时间", item_sort=54)
+	@EntityAnnotation(item_name="入职时间", item_sort=66)
 	private Timestamp join_datetime;
+
+
+
+
 	
 	
 	//转正日期,从人员成本里获取
 	private Date confirmation_date;
 	
-	
+	//用于查询
+
 	private Date date1 ;
 	private Date date2 ;
+
+	private int startSalaryMonth ;
+	private int endSalaryMonth ;
+	private List<String> staffCostIds ;
+
+
+
 	
 	//高亮显示， 1：高亮 表示与试用期工资和正式工资; 0:正常
 	private int showhl;
@@ -1003,5 +1094,189 @@ public class Salary implements Serializable {
 
 	public void setJoin_datetime(Timestamp join_datetime) {
 		this.join_datetime = join_datetime;
+	}
+
+	public double getAccumulated_pretax_income() {
+		return accumulated_pretax_income;
+	}
+
+	public void setAccumulated_pretax_income(double accumulated_pretax_income) {
+		this.accumulated_pretax_income = accumulated_pretax_income;
+	}
+
+	public double getAccumulated_tax_deduction() {
+		return accumulated_tax_deduction;
+	}
+
+	public void setAccumulated_tax_deduction(double accumulated_tax_deduction) {
+		this.accumulated_tax_deduction = accumulated_tax_deduction;
+	}
+
+	public double getAccumulated_children_education() {
+		return accumulated_children_education;
+	}
+
+	public void setAccumulated_children_education(double accumulated_children_education) {
+		this.accumulated_children_education = accumulated_children_education;
+	}
+
+	public double getAccumulated_continuing_education() {
+		return accumulated_continuing_education;
+	}
+
+	public void setAccumulated_continuing_education(double accumulated_continuing_education) {
+		this.accumulated_continuing_education = accumulated_continuing_education;
+	}
+
+	public double getAccumulated_housing_loans() {
+		return accumulated_housing_loans;
+	}
+
+	public void setAccumulated_housing_loans(double accumulated_housing_loans) {
+		this.accumulated_housing_loans = accumulated_housing_loans;
+	}
+
+	public double getAccumulated_housing_rent() {
+		return accumulated_housing_rent;
+	}
+
+	public void setAccumulated_housing_rent(double accumulated_housing_rent) {
+		this.accumulated_housing_rent = accumulated_housing_rent;
+	}
+
+	public double getAccumulated_support_elderly() {
+		return accumulated_support_elderly;
+	}
+
+	public void setAccumulated_support_elderly(double accumulated_support_elderly) {
+		this.accumulated_support_elderly = accumulated_support_elderly;
+	}
+
+	public double getAccumulated_deductions_cost() {
+		return accumulated_deductions_cost;
+	}
+
+	public void setAccumulated_deductions_cost(double accumulated_deductions_cost) {
+		this.accumulated_deductions_cost = accumulated_deductions_cost;
+	}
+
+	public double getAccumulated_taxable_income() {
+		return accumulated_taxable_income;
+	}
+
+	public void setAccumulated_taxable_income(double accumulated_taxable_income) {
+		this.accumulated_taxable_income = accumulated_taxable_income;
+	}
+
+	public double getAccumulated_deductible_taxpaid() {
+		return accumulated_deductible_taxpaid;
+	}
+
+	public void setAccumulated_deductible_taxpaid(double accumulated_deductible_taxpaid) {
+		this.accumulated_deductible_taxpaid = accumulated_deductible_taxpaid;
+	}
+
+	public double getAccumulated_prepaid_tax() {
+		return accumulated_prepaid_tax;
+	}
+
+	public void setAccumulated_prepaid_tax(double accumulated_prepaid_tax) {
+		this.accumulated_prepaid_tax = accumulated_prepaid_tax;
+	}
+
+	public double getAccumulated_replenishment_tax() {
+		return accumulated_replenishment_tax;
+	}
+
+	public void setAccumulated_replenishment_tax(double accumulated_replenishment_tax) {
+		this.accumulated_replenishment_tax = accumulated_replenishment_tax;
+	}
+
+	public double getBefore_accumulated_pretax_income() {
+		return before_accumulated_pretax_income;
+	}
+
+	public void setBefore_accumulated_pretax_income(double before_accumulated_pretax_income) {
+		this.before_accumulated_pretax_income = before_accumulated_pretax_income;
+	}
+
+	public double getBefore_accumulated_tax_deduction() {
+		return before_accumulated_tax_deduction;
+	}
+
+	public void setBefore_accumulated_tax_deduction(double before_accumulated_tax_deduction) {
+		this.before_accumulated_tax_deduction = before_accumulated_tax_deduction;
+	}
+
+	public double getBefore_accumulated_children_education() {
+		return before_accumulated_children_education;
+	}
+
+	public void setBefore_accumulated_children_education(double before_accumulated_children_education) {
+		this.before_accumulated_children_education = before_accumulated_children_education;
+	}
+
+	public double getBefore_accumulated_continuing_education() {
+		return before_accumulated_continuing_education;
+	}
+
+	public void setBefore_accumulated_continuing_education(double before_accumulated_continuing_education) {
+		this.before_accumulated_continuing_education = before_accumulated_continuing_education;
+	}
+
+	public double getBefore_accumulated_housing_loans() {
+		return before_accumulated_housing_loans;
+	}
+
+	public void setBefore_accumulated_housing_loans(double before_accumulated_housing_loans) {
+		this.before_accumulated_housing_loans = before_accumulated_housing_loans;
+	}
+
+	public double getBefore_accumulated_housing_rent() {
+		return before_accumulated_housing_rent;
+	}
+
+	public void setBefore_accumulated_housing_rent(double before_accumulated_housing_rent) {
+		this.before_accumulated_housing_rent = before_accumulated_housing_rent;
+	}
+
+	public double getBefore_accumulated_support_elderly() {
+		return before_accumulated_support_elderly;
+	}
+
+	public void setBefore_accumulated_support_elderly(double before_accumulated_support_elderly) {
+		this.before_accumulated_support_elderly = before_accumulated_support_elderly;
+	}
+
+	public double getBefore_accumulated_deductions_cost() {
+		return before_accumulated_deductions_cost;
+	}
+
+	public void setBefore_accumulated_deductions_cost(double before_accumulated_deductions_cost) {
+		this.before_accumulated_deductions_cost = before_accumulated_deductions_cost;
+	}
+
+	public int getStartSalaryMonth() {
+		return startSalaryMonth;
+	}
+
+	public void setStartSalaryMonth(int startSalaryMonth) {
+		this.startSalaryMonth = startSalaryMonth;
+	}
+
+	public int getEndSalaryMonth() {
+		return endSalaryMonth;
+	}
+
+	public void setEndSalaryMonth(int endSalaryMonth) {
+		this.endSalaryMonth = endSalaryMonth;
+	}
+
+	public List<String> getStaffCostIds() {
+		return staffCostIds;
+	}
+
+	public void setStaffCostIds(List<String> staffCostIds) {
+		this.staffCostIds = staffCostIds;
 	}
 }

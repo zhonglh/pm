@@ -600,7 +600,7 @@ public class SalaryGroupAction extends BaseAction {
 
 		List<Salary> list = getSalarysByWorkAttendance(salary1);
 		
-		for(Salary temp : list){			
+		for(Salary temp : list){
 			SalaryCalculate.getInstance().calculate(temp, null, paramExtMap);					
 		}
 
@@ -629,7 +629,7 @@ public class SalaryGroupAction extends BaseAction {
 		
 		List<Salary> list = salaryService.getSalaryByProjectMonth(salary1);
 		if(list == null) {
-			list = new ArrayList<Salary>();
+			return new ArrayList<Salary>();
 		}
 		
 		Insurance searchInsurance = new Insurance();
@@ -698,8 +698,39 @@ public class SalaryGroupAction extends BaseAction {
 			}
 		}
 	
-		
-		
+
+
+		int month = DateKit.getMonth(date1);
+		if(month != 12) {
+			//计算之前的累计
+			Date startDate = DateKit.getLastMonthStart(DateKit.getYearStart(date1));
+			Date endDate = DateKit.getLastMonthStart(date1);
+			int startSalaryMonth = Integer.parseInt(DateKit.fmtDateToYM(startDate));
+			int endSalaryMonth = Integer.parseInt(DateKit.fmtDateToYM(endDate));
+			List<String> staffCostIds = new ArrayList<String>();
+			for (Salary salary : list) {
+				staffCostIds.add(salary.getStaff_id());
+			}
+			List<Salary> accumulatedSalaryInfos = salaryService.getAccumulatedSalary(startSalaryMonth, endSalaryMonth, staffCostIds);
+			Map<String, Salary> accumulatedSalaryMap = new HashMap<String, Salary>();
+			for (Salary salary : accumulatedSalaryInfos) {
+				accumulatedSalaryMap.put(salary.getStaff_id(), salary);
+			}
+			for (Salary salary : list) {
+				Salary accumulatedSalary = accumulatedSalaryMap.get(salary.getStaff_id());
+				if (accumulatedSalary != null) {
+					salary.setBefore_accumulated_pretax_income(accumulatedSalary.getBefore_accumulated_pretax_income());
+					salary.setBefore_accumulated_tax_deduction(accumulatedSalary.getBefore_accumulated_tax_deduction());
+					salary.setBefore_accumulated_children_education(accumulatedSalary.getBefore_accumulated_children_education());
+					salary.setBefore_accumulated_continuing_education(accumulatedSalary.getBefore_accumulated_continuing_education());
+					salary.setBefore_accumulated_housing_loans(accumulatedSalary.getBefore_accumulated_housing_loans());
+					salary.setBefore_accumulated_housing_rent(accumulatedSalary.getBefore_accumulated_housing_rent());
+					salary.setBefore_accumulated_support_elderly(accumulatedSalary.getBefore_accumulated_support_elderly());
+					salary.setBefore_accumulated_deductions_cost(accumulatedSalary.getBefore_accumulated_deductions_cost());
+				}
+
+			}
+		}
 		
 		
 		return list;

@@ -160,6 +160,12 @@ public class SalaryServiceImpl implements ISalaryService{
 		
 	}
 
+
+	@Override
+	public List<Salary> getAccumulatedSalary(int startSalaryMonth , int endSalaryMonth , List<String> staffCostIds){
+		return salaryDao.getAccumulatedSalary(startSalaryMonth,endSalaryMonth,staffCostIds);
+	}
+
 	@Override
 	public List<PersonnelMonthlySalary> getCurrSalaryByWorkAttendance(Salary search){
 		return personnelMonthlyCalculationDao.getCurrSalaryByWorkAttendance(search);

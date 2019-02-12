@@ -158,29 +158,75 @@ public class SalaryMail implements Serializable {
 	@EntityAnnotation(item_name="赡养老人", item_sort=40,length=8)
 	private double support_elderly;
 
-	@EntityAnnotation(item_name="准许扣除的费用",item_sort=41)
+	@EntityAnnotation(item_name="当月五险一金代扣款",item_sort=41)
 	private double deductions_cost;
-	
-	@EntityAnnotation(item_name="应纳税所得额",item_sort=42)
+
+	@EntityAnnotation(item_name="当月应纳税所得额",item_sort=42)
 	private double taxable_income;
-	
-	@EntityAnnotation(item_name="个人所得税",item_sort=43)
+
+
+
+
+
+	@EntityAnnotation(item_name="累计税前收入额",item_sort=43)
+	private double accumulated_pretax_income;
+
+	@EntityAnnotation(item_name="个税累计减除费用",item_sort=44)
+	private double accumulated_tax_deduction;
+
+	@EntityAnnotation(item_name="累计子女教育",item_sort=45)
+	private double accumulated_children_education;
+
+	@EntityAnnotation(item_name="累计继续教育",item_sort=46)
+	private double accumulated_continuing_education;
+
+	@EntityAnnotation(item_name="累计住房贷款利息",item_sort=47)
+	private double accumulated_housing_loans;
+
+	@EntityAnnotation(item_name="累计住房租金",item_sort=48)
+	private double accumulated_housing_rent;
+
+	@EntityAnnotation(item_name="累计赡养老人",item_sort=49)
+	private double accumulated_support_elderly;
+
+	@EntityAnnotation(item_name="累计五险一金代扣款",item_sort=50)
+	private double accumulated_deductions_cost;
+
+	@EntityAnnotation(item_name="累计应纳税所得额",item_sort=51)
+	private double accumulated_taxable_income;
+
+	@EntityAnnotation(item_name="累计应扣缴税额",item_sort=52)
+	private double accumulated_deductible_taxpaid;
+
+	@EntityAnnotation(item_name="累计已预缴税额",item_sort=53)
+	private double accumulated_prepaid_tax;
+
+	@EntityAnnotation(item_name="累计应补（退）税额",item_sort=54)
+	private double accumulated_replenishment_tax;
+
+
+
+
+
+
+
+	@EntityAnnotation(item_name="个人所得税",item_sort=55)
 	private double personal_income_tax;
 	
-	@EntityAnnotation(item_name="奖金(后)",item_sort=44)
+	@EntityAnnotation(item_name="奖金(后)",item_sort=56)
 	private double actual_bonus;
 	
-	@EntityAnnotation(item_name="补税工资",item_sort=45)
+	@EntityAnnotation(item_name="补税工资",item_sort=57)
 	private double overdue_tax_salary;
 	
-	@EntityAnnotation(item_name="实发工资",item_sort=46)
+	@EntityAnnotation(item_name="实发工资",item_sort=58)
 	private double actual_salary;
 
 
 
 
 
-	@EntityAnnotation(item_name="说明",item_sort=42)
+	@EntityAnnotation(item_name="说明",item_sort=59)
 	private String description;
 	
 	
@@ -923,5 +969,101 @@ public class SalaryMail implements Serializable {
 
 	public void setSupport_elderly(double support_elderly) {
 		this.support_elderly = support_elderly;
+	}
+
+	public double getAccumulated_pretax_income() {
+		return accumulated_pretax_income;
+	}
+
+	public void setAccumulated_pretax_income(double accumulated_pretax_income) {
+		this.accumulated_pretax_income = accumulated_pretax_income;
+	}
+
+	public double getAccumulated_tax_deduction() {
+		return accumulated_tax_deduction;
+	}
+
+	public void setAccumulated_tax_deduction(double accumulated_tax_deduction) {
+		this.accumulated_tax_deduction = accumulated_tax_deduction;
+	}
+
+	public double getAccumulated_children_education() {
+		return accumulated_children_education;
+	}
+
+	public void setAccumulated_children_education(double accumulated_children_education) {
+		this.accumulated_children_education = accumulated_children_education;
+	}
+
+	public double getAccumulated_continuing_education() {
+		return accumulated_continuing_education;
+	}
+
+	public void setAccumulated_continuing_education(double accumulated_continuing_education) {
+		this.accumulated_continuing_education = accumulated_continuing_education;
+	}
+
+	public double getAccumulated_housing_loans() {
+		return accumulated_housing_loans;
+	}
+
+	public void setAccumulated_housing_loans(double accumulated_housing_loans) {
+		this.accumulated_housing_loans = accumulated_housing_loans;
+	}
+
+	public double getAccumulated_housing_rent() {
+		return accumulated_housing_rent;
+	}
+
+	public void setAccumulated_housing_rent(double accumulated_housing_rent) {
+		this.accumulated_housing_rent = accumulated_housing_rent;
+	}
+
+	public double getAccumulated_support_elderly() {
+		return accumulated_support_elderly;
+	}
+
+	public void setAccumulated_support_elderly(double accumulated_support_elderly) {
+		this.accumulated_support_elderly = accumulated_support_elderly;
+	}
+
+	public double getAccumulated_deductions_cost() {
+		return accumulated_deductions_cost;
+	}
+
+	public void setAccumulated_deductions_cost(double accumulated_deductions_cost) {
+		this.accumulated_deductions_cost = accumulated_deductions_cost;
+	}
+
+	public double getAccumulated_taxable_income() {
+		return accumulated_taxable_income;
+	}
+
+	public void setAccumulated_taxable_income(double accumulated_taxable_income) {
+		this.accumulated_taxable_income = accumulated_taxable_income;
+	}
+
+	public double getAccumulated_deductible_taxpaid() {
+		return accumulated_deductible_taxpaid;
+	}
+
+	public void setAccumulated_deductible_taxpaid(double accumulated_deductible_taxpaid) {
+		this.accumulated_deductible_taxpaid = accumulated_deductible_taxpaid;
+	}
+
+	public double getAccumulated_prepaid_tax() {
+		return accumulated_prepaid_tax;
+	}
+
+	public void setAccumulated_prepaid_tax(double accumulated_prepaid_tax) {
+		this.accumulated_prepaid_tax = accumulated_prepaid_tax;
+	}
+
+	public double getAccumulated_replenishment_tax() {
+		return accumulated_replenishment_tax;
+	}
+
+	public void setAccumulated_replenishment_tax(double accumulated_replenishment_tax) {
+		this.accumulated_replenishment_tax = accumulated_replenishment_tax;
 	}
 }

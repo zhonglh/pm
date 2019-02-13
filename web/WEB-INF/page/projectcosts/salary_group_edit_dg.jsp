@@ -259,14 +259,30 @@
 
 
 				<th data-options="field:'children_education',width:160">子女教育</th>
-				<th data-options="field:'continuing_education',width:160">继续教育</th>
 				<th data-options="field:'housing_loans',width:160">住房贷款利息</th>
 				<th data-options="field:'housing_rent',width:160">住房租金</th>
 				<th data-options="field:'support_elderly',width:160">赡养老人</th>
+				<th data-options="field:'continuing_education',width:160">继续教育</th>
 
-				<th data-options="field:'deductions_cost',width:160">准许扣除的费用</th>
-				<th data-options="field:'taxable_income',width:160">应纳税所得额</th>
-				<th data-options="field:'personal_income_tax',width:80">所得税</th>
+				<th data-options="field:'deductions_cost',width:160">当月五险一金代扣款</th>
+				<th data-options="field:'taxable_income',width:160">当月应纳税所得额</th>
+
+
+				<th data-options="field:'accumulated_pretax_income',width:160">累计税前收入额</th>
+				<th data-options="field:'accumulated_tax_deduction',width:160">个税累计减除费用</th>
+				<th data-options="field:'accumulated_children_education',width:160">累计子女教育</th>
+				<th data-options="field:'accumulated_housing_loans',width:160">累计住房贷款利息</th>
+				<th data-options="field:'accumulated_housing_rent',width:160">累计住房租金</th>
+				<th data-options="field:'accumulated_support_elderly',width:160">累计赡养老人</th>
+				<th data-options="field:'accumulated_continuing_education',width:160">累计继续教育</th>
+				<th data-options="field:'accumulated_deductions_cost',width:160">累计五险一金代扣款</th>
+				<th data-options="field:'accumulated_taxable_income',width:160">累计应纳税所得额</th>
+				<th data-options="field:'accumulated_deductible_taxpaid',width:160">累计应扣缴税额</th>
+				<th data-options="field:'accumulated_prepaid_tax',width:160">累计已预缴税额</th>
+				<th data-options="field:'accumulated_replenishment_tax',width:160">累计应补（退）税额</th>
+
+
+				<th data-options="field:'personal_income_tax',width:80">当月应扣所得税</th>
 				<th data-options="field:'actual_bonus',width:80,editor:{type:'numberbox',options:{precision:2,required:true}}">奖金（后）</th>
 				<th data-options="field:'overdue_tax_salary',width:80,editor:{type:'numberbox',options:{precision:2,required:true}}">补税工资</th>
 				<th data-options="field:'actual_salary',width:80"><b>实发工资</b></th>
@@ -275,6 +291,15 @@
 				<th data-options="field:'id',width:18,hidden:true"><b>标记</b></th>		
 				<th data-options="field:'computer_allowance',width:18,hidden:true"><b>电脑补助</b></th>				
 				<th data-options="field:'meal_allowance',width:18,hidden:true"><b>餐补</b></th>
+
+				<th data-options="field:'before_accumulated_pretax_income',width:18,hidden:true"><b>之前  累计税前收入额</b></th>
+				<th data-options="field:'before_accumulated_tax_deduction',width:18,hidden:true"><b>之前  个税累计减除费用</b></th>
+				<th data-options="field:'before_accumulated_children_education',width:18,hidden:true"><b>之前  累计子女教育</b></th>
+				<th data-options="field:'before_accumulated_housing_loans',width:18,hidden:true"><b>之前  累计住房贷款利息</b></th>
+				<th data-options="field:'before_accumulated_housing_rent',width:18,hidden:true"><b>之前  累计住房租金</b></th>
+				<th data-options="field:'before_accumulated_support_elderly',width:18,hidden:true"><b>之前  累计赡养老人</b></th>
+				<th data-options="field:'before_accumulated_continuing_education',width:18,hidden:true"><b>之前  累计继续教育</b></th>
+				<th data-options="field:'before_accumulated_deductions_cost',width:18,hidden:true"><b>之前  累计五险一金代扣款</b></th>
 			</tr>
 		</thead>
 

@@ -137,6 +137,24 @@
 
 			deductions_cost: parseFloat($("#deductions_cost",$tr).val()),
 			taxable_income: parseFloat($("#taxable_income",$tr).val()),
+
+
+
+            accumulated_pretax_income: parseFloat($("#accumulated_pretax_income",$tr).val()),
+            accumulated_tax_deduction: parseFloat($("#accumulated_tax_deduction",$tr).val()),
+            accumulated_children_education: parseFloat($("#accumulated_children_education",$tr).val()),
+            accumulated_continuing_education: parseFloat($("#accumulated_continuing_education",$tr).val()),
+            accumulated_housing_loans: parseFloat($("#accumulated_housing_loans",$tr).val()),
+            accumulated_housing_rent: parseFloat($("#accumulated_housing_rent",$tr).val()),
+            accumulated_support_elderly: parseFloat($("#accumulated_support_elderly",$tr).val()),
+            accumulated_deductions_cost: parseFloat($("#accumulated_deductions_cost",$tr).val()),
+            accumulated_taxable_income: parseFloat($("#accumulated_taxable_income",$tr).val()),
+            accumulated_deductible_taxpaid: parseFloat($("#accumulated_deductible_taxpaid",$tr).val()),
+            accumulated_prepaid_tax: parseFloat($("#accumulated_prepaid_tax",$tr).val()),
+            accumulated_replenishment_tax: parseFloat($("#accumulated_replenishment_tax",$tr).val()),
+
+
+
 			personal_income_tax: parseFloat($("#personal_income_tax",$tr).val()),
 			actual_bonus: parseFloat($("#actual_bonus",$tr).val()),
 			overdue_tax_salary: parseFloat($("#overdue_tax_salary",$tr).val()),
@@ -144,6 +162,18 @@
 			
 			computer_allowance: parseFloat($("#computer_allowance",$tr).val()),
 			meal_allowance: parseFloat($("#meal_allowance",$tr).val()),
+
+            before_accumulated_pretax_income: parseFloat($("#before_accumulated_pretax_income",$tr).val()),
+            before_accumulated_tax_deduction: parseFloat($("#before_accumulated_tax_deduction",$tr).val()),
+            before_accumulated_children_education: parseFloat($("#before_accumulated_children_education",$tr).val()),
+            before_accumulated_continuing_education: parseFloat($("#before_accumulated_continuing_education",$tr).val()),
+            before_accumulated_housing_loans: parseFloat($("#before_accumulated_housing_loans",$tr).val()),
+            before_accumulated_housing_rent: parseFloat($("#before_accumulated_housing_rent",$tr).val()),
+            before_accumulated_support_elderly: parseFloat($("#before_accumulated_support_elderly",$tr).val()),
+            before_accumulated_deductions_cost: parseFloat($("#before_accumulated_deductions_cost",$tr).val()),
+
+
+
 			tr:$tr 
 		};
 		return field;
@@ -385,7 +415,7 @@
 	
 
 	/**
-	 * 应纳税所得额
+	 * 当月应纳税所得额
 	 * @param field
 	 * @param key
 	 * @param val
@@ -405,42 +435,229 @@
         }
 
 		result = fixed(result);		
-		//if(result < 0) result = 0;
+		if(result < 0) result = 0;
 		backFill(field,key,result);
-	}	
+	}
+
+
+    /**
+	 * 累计税前收入额
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_pretax_income(field,key,val){
+        var result = 0.0;
+        result = field.before_accumulated_pretax_income + field.should_salary;
+        result = fixed(result);
+        //if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+
+    /**
+     * 个税累计减除费用
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_tax_deduction(field,key,val){
+        var result = 0.0;
+        result = field.before_accumulated_tax_deduction + 5000;
+        result = fixed(result);
+        //if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+
+
+    /**
+     * 累计子女教育
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_children_education(field,key,val){
+        var result = 0.0;
+        result = field.before_accumulated_children_education + field.children_education;
+        result = fixed(result);
+        //if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+
+    /**
+     * 累计继续教育
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_continuing_education(field,key,val){
+        var result = 0.0;
+        result = field.before_accumulated_continuing_education + field.continuing_education;
+        result = fixed(result);
+        //if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+    /**
+     * 累计住房贷款利息
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_housing_loans(field,key,val){
+        var result = 0.0;
+        result = field.before_accumulated_housing_loans + field.housing_loans;
+        result = fixed(result);
+        //if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+    /**
+     * 累计住房租金
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_housing_rent(field,key,val){
+        var result = 0.0;
+        if(field.housing_loans > 0){
+            result = field.before_accumulated_housing_rent ;
+        }else {
+            result = field.before_accumulated_housing_rent + field.housing_rent;
+        }
+        result = fixed(result);
+        //if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+    /**
+     * 累计赡养老人
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_support_elderly(field,key,val){
+        var result = 0.0;
+        result = field.before_accumulated_support_elderly + field.support_elderly;
+        result = fixed(result);
+        //if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+
+    /**
+     * 累计五险一金代扣款
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_deductions_cost(field,key,val){
+        var result = 0.0;
+        result = field.before_accumulated_deductions_cost + field.deductions_cost;
+        result = fixed(result);
+        //if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+
+    /**
+     * 累计应纳税所得额
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_taxable_income(field,key,val){
+        var result = 0.0;
+        result = field.accumulated_pretax_income - field.accumulated_tax_deduction -
+        		field.accumulated_children_education - field.accumulated_continuing_education -
+        		field.accumulated_housing_loans - field.accumulated_housing_rent -
+        		field.accumulated_support_elderly - field.accumulated_deductions_cost ;
+
+        result = fixed(result);
+        if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+
+    /**
+     * 累计应扣缴税额
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_deductible_taxpaid(field,key,val){
+        var result = 0.0;
+
+
+        var accumulated_taxable_income = field.accumulated_taxable_income;
+        var paySalary = accumulated_taxable_income ;
+
+
+        if(paySalary > 960000){
+            result = accumulated_taxable_income * 0.45 - 181920;
+        }else if(paySalary > 660000){
+            result = accumulated_taxable_income * 0.35 - 85920;
+        }else if(paySalary > 420000){
+            result = accumulated_taxable_income * 0.30 - 52920;
+        }else if(paySalary > 300000){
+            result = accumulated_taxable_income * 0.25 - 31920;
+        }else if(paySalary > 144000){
+            result = accumulated_taxable_income * 0.20 - 16920;
+        }else if(paySalary > 36000){
+            result = accumulated_taxable_income * 0.10 - 2520;
+        }else if(paySalary > 0){
+            result = accumulated_taxable_income * 0.03;
+        }else {
+            result = 0;
+        }
+
+        result = fixed(result);
+        if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+
+    /**
+     * 累计已预缴税额
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_prepaid_tax(field,key,val){
+    	//不用计算，仅仅是要只读
+        var result = val;
+        $("#"+key,field.tr).attr("readonly",true);
+    }
+
+
+    /**
+     * 累计应补（退）税额
+     * @param field
+     * @param key
+     * @param val
+     */
+    function accumulated_replenishment_tax(field,key,val){
+        var result = field.accumulated_deductible_taxpaid - field.accumulated_prepaid_tax;
+        result = fixed(result);
+        if(result < 0) result = 0;
+        backFill(field,key,result);
+    }
+
+
+
 	
 
 	/**
-	 * 个人所得税
+	 * 当月个人所得税
 	 * @param field
 	 * @param key
 	 * @param val
 	 */
 	function personal_income_tax(field,key,val){
-		var result = 0;
+		var result = field.accumulated_replenishment_tax;
 
-        var taxableIncome = field.taxable_income;
-		var paySalary = taxableIncome ;
-		//field.should_salary - field.deductions_cost;
-
-
-        if(paySalary > 80000){
-            result = taxableIncome * 0.45 - 15160;
-        }else if(paySalary > 55000){
-            result = taxableIncome * 0.35 - 7160;
-        }else if(paySalary > 35000){
-            result = taxableIncome * 0.30 - 4410;
-        }else if(paySalary > 25000){
-            result = taxableIncome * 0.25 - 2660;
-        }else if(paySalary > 12000){
-            result = taxableIncome * 0.20 - 1410;
-        }else if(paySalary > 3000){
-            result = taxableIncome * 0.10 - 210;
-        }else if(paySalary > 0){
-            result = taxableIncome * 0.03;
-        }else {
-            result = 0;
-        }
 		result = fixed(result);	
 		if(result < 0) result = 0;
 		backFill(field,key,result);

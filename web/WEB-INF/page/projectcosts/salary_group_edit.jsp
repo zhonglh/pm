@@ -24,7 +24,7 @@
 			
 			<div class="divider"></div>
 			
-			<table class="list nowrap itemUpdate salaryChangeComputer" id="salaryChangeComputer" width="4400" layoutH="165">
+			<table class="list nowrap itemUpdate salaryChangeComputer" id="salaryChangeComputer" width="5800" layoutH="165">
 				<thead>
 					<tr>
 						<th width="50" nowrap align="center"><nobr>
@@ -74,14 +74,28 @@
 
 
 						<th width="80" nowrap>子女教育</th>
-						<th width="80" nowrap>继续教育</th>
 						<th width="120" nowrap>住房贷款利息</th>
 						<th width="80" nowrap>住房租金</th>
 						<th width="80" nowrap>赡养老人</th>
+						<th width="80" nowrap>继续教育</th>
 
-						<th width="120" nowrap>准许扣除的费用</th>
-						<th width="120" nowrap>应纳税所得额</th>
-						<th width="80" nowrap>所得税</th>
+						<th width="120" nowrap>当月五险一金代扣款</th>
+						<th width="100" nowrap>当月应纳税所得额</th>
+
+						<th width="90" nowrap>累计税前收入额</th>
+						<th width="130" nowrap>累计个税累计减除费用</th>
+						<th width="80" nowrap>累计子女教育</th>
+						<th width="100" nowrap>累计住房贷款利息</th>
+						<th width="80" nowrap>累计住房租金</th>
+						<th width="80" nowrap>累计赡养老人</th>
+						<th width="80" nowrap>累计继续教育</th>
+						<th width="120" nowrap>累计五险一金代扣款</th>
+						<th width="110" nowrap>累计应纳税所得额</th>
+						<th width="100" nowrap>累计应扣缴税额</th>
+						<th width="100" nowrap>累计已预缴税额</th>
+						<th width="120" nowrap>累计应补（退）税额</th>
+
+						<th width="90" nowrap>当月应扣所得税</th>
 						<th width="80" nowrap>奖金（后）</th>
 						<th width="80" nowrap>补税工资</th>
 						<th width="80" nowrap><b>实发工资</b></th>
@@ -158,15 +172,31 @@
 
 
 						<td><input type="text" size="7" maxlength="10"  id="children_education" name="children_education${status1.index + 1 }" class="number required" value="${salary.children_education }" /></td>
-						<td><input type="text" size="7" maxlength="10"  id="continuing_education" name="continuing_education${status1.index + 1 }" class="number required" value="${salary.continuing_education }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="housing_loans" name="housing_loans${status1.index + 1 }" class="number required" value="${salary.housing_loans }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="housing_rent" name="housing_rent${status1.index + 1 }" class="number required" value="${salary.housing_rent }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="support_elderly" name="support_elderly${status1.index + 1 }" class="number required" value="${salary.support_elderly }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="continuing_education" name="continuing_education${status1.index + 1 }" class="number required" value="${salary.continuing_education }" /></td>
 
 
 
 						<td><input type="text" size="7" maxlength="10"  id="deductions_cost" name="deductions_cost${status1.index + 1 }" class="number required" value="${salary.deductions_cost }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="taxable_income" name="taxable_income${status1.index + 1 }" class="number required" value="${salary.taxable_income }" /></td>
+
+
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_pretax_income" name="accumulated_pretax_income${status1.index + 1 }" class="number required" value="${salary.accumulated_pretax_income }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_tax_deduction" name="accumulated_tax_deduction${status1.index + 1 }" class="number required" value="${salary.accumulated_tax_deduction }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_children_education" name="accumulated_children_education${status1.index + 1 }" class="number required" value="${salary.accumulated_children_education }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_housing_loans" name="accumulated_housing_loans${status1.index + 1 }" class="number required" value="${salary.accumulated_housing_loans }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_housing_rent" name="accumulated_housing_rent${status1.index + 1 }" class="number required" value="${salary.accumulated_housing_rent }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_support_elderly" name="accumulated_support_elderly${status1.index + 1 }" class="number required" value="${salary.accumulated_support_elderly }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_continuing_education" name="accumulated_continuing_education${status1.index + 1 }" class="number required" value="${salary.accumulated_continuing_education }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_deductions_cost" name="accumulated_deductions_cost${status1.index + 1 }" class="number required" value="${salary.accumulated_deductions_cost }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_taxable_income" name="accumulated_taxable_income${status1.index + 1 }" class="number required" value="${salary.accumulated_taxable_income }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_deductible_taxpaid" name="accumulated_deductible_taxpaid${status1.index + 1 }" class="number required" value="${salary.accumulated_deductible_taxpaid }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_prepaid_tax" name="accumulated_prepaid_tax${status1.index + 1 }" class="number required" value="${salary.accumulated_prepaid_tax }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="accumulated_replenishment_tax" name="accumulated_replenishment_tax${status1.index + 1 }" class="number required" value="${salary.accumulated_replenishment_tax }" /></td>
+
+
 						<td><input type="text" size="7" maxlength="10"  id="personal_income_tax" name="personal_income_tax${status1.index + 1 }" class="number required" value="${salary.personal_income_tax }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="actual_bonus" name="actual_bonus${status1.index + 1 }" class="number required" value="${salary.actual_bonus }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="overdue_tax_salary" name="overdue_tax_salary${status1.index + 1 }" class="number required" value="${salary.overdue_tax_salary }" /></td>
@@ -175,7 +205,17 @@
 							<input type="text" size="35" maxlength="150"  id="description" name="description${status1.index + 1 }" class="text" value="${salary.description }" />
 							<input type="hidden" id="computer_allowance" name="computer_allowance${status1.index + 1 }" class="text" value="${salary.computer_allowance }" />
 							<input type="hidden" id="meal_allowance" name="meal_allowance${status1.index + 1 }" class="text" value="${salary.meal_allowance }" />
-						</td>						
+
+							<input type="hidden" id="before_accumulated_pretax_income" 			name="before_accumulated_pretax_income${status1.index + 1 }" 		class="text" value="${salary.before_accumulated_pretax_income }" />
+							<input type="hidden" id="before_accumulated_tax_deduction" 			name="before_accumulated_tax_deduction${status1.index + 1 }" 		class="text" value="${salary.before_accumulated_tax_deduction }" />
+							<input type="hidden" id="before_accumulated_children_education" 	name="before_accumulated_children_education${status1.index + 1 }" 	class="text" value="${salary.before_accumulated_children_education }" />
+							<input type="hidden" id="before_accumulated_continuing_education" 	name="before_accumulated_continuing_education${status1.index + 1 }" class="text" value="${salary.before_accumulated_continuing_education }" />
+							<input type="hidden" id="before_accumulated_housing_loans" 			name="before_accumulated_housing_loans${status1.index + 1 }" 		class="text" value="${salary.before_accumulated_housing_loans }" />
+							<input type="hidden" id="before_accumulated_housing_rent" 			name="before_accumulated_housing_rent${status1.index + 1 }" 		class="text" value="${salary.before_accumulated_housing_rent }" />
+							<input type="hidden" id="before_accumulated_support_elderly" 		name="before_accumulated_support_elderly${status1.index + 1 }" 		class="text" value="${salary.before_accumulated_support_elderly }" />
+							<input type="hidden" id="before_accumulated_deductions_cost" 		name="before_accumulated_deductions_cost${status1.index + 1 }" 		class="text" value="${salary.before_accumulated_deductions_cost }" />
+
+						</td>
 						
 					</tr>
 					</c:forEach>

@@ -35,7 +35,9 @@ public class Taxable_income extends AbstractSalaryClculate implements ISalaryCal
 			result -= salary.getHousing_rent();
 		}
 
-		//if(result < 0) result = 0;
+		if(result < 0) {
+			result = 0;
+		}
 		result = NumberKit.getNumberFormatByDouble(result);	
 		salary.setTaxable_income(result);
 

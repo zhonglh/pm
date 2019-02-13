@@ -142,17 +142,17 @@ public class Salary implements Serializable {
 	@EntityAnnotation(item_name="子女教育", item_sort=36,length=8)
 	private double children_education;
 
-	@EntityAnnotation(item_name="继续教育", item_sort=37,length=8)
-	private double continuing_education;
-
-	@EntityAnnotation(item_name="住房贷款利息", item_sort=38,length=8)
+	@EntityAnnotation(item_name="住房贷款利息", item_sort=37,length=8)
 	private double housing_loans;
 
-	@EntityAnnotation(item_name="住房租金", item_sort=39,length=8)
+	@EntityAnnotation(item_name="住房租金", item_sort=38,length=8)
 	private double housing_rent;
 
-	@EntityAnnotation(item_name="赡养老人", item_sort=40,length=8)
+	@EntityAnnotation(item_name="赡养老人", item_sort=39,length=8)
 	private double support_elderly;
+
+	@EntityAnnotation(item_name="继续教育", item_sort=40,length=8)
+	private double continuing_education;
 
 
 
@@ -177,17 +177,17 @@ public class Salary implements Serializable {
 	@EntityAnnotation(item_name="累计子女教育",item_sort=45)
 	private double accumulated_children_education;
 
-	@EntityAnnotation(item_name="累计继续教育",item_sort=46)
-	private double accumulated_continuing_education;
-
-	@EntityAnnotation(item_name="累计住房贷款利息",item_sort=47)
+	@EntityAnnotation(item_name="累计住房贷款利息",item_sort=46)
 	private double accumulated_housing_loans;
 
-	@EntityAnnotation(item_name="累计住房租金",item_sort=48)
+	@EntityAnnotation(item_name="累计住房租金",item_sort=47)
 	private double accumulated_housing_rent;
 
-	@EntityAnnotation(item_name="累计赡养老人",item_sort=49)
+	@EntityAnnotation(item_name="累计赡养老人",item_sort=48)
 	private double accumulated_support_elderly;
+
+	@EntityAnnotation(item_name="累计继续教育",item_sort=49)
+	private double accumulated_continuing_education;
 
 	@EntityAnnotation(item_name="累计五险一金代扣款",item_sort=50)
 	private double accumulated_deductions_cost;
@@ -277,9 +277,6 @@ public class Salary implements Serializable {
 	//之前  累计子女教育
 	private double before_accumulated_children_education;
 
-	//之前  累计继续教育
-	private double before_accumulated_continuing_education;
-
 	//之前  累计住房贷款利息
 	private double before_accumulated_housing_loans;
 
@@ -288,6 +285,9 @@ public class Salary implements Serializable {
 
 	//之前  累计赡养老人
 	private double before_accumulated_support_elderly;
+
+	//之前  累计继续教育
+	private double before_accumulated_continuing_education;
 
 	//之前  累计五险一金代扣款
 	private double before_accumulated_deductions_cost;

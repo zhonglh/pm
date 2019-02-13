@@ -18,6 +18,9 @@ public class Accumulated_taxable_income extends AbstractSalaryClculate implement
                 salary.getAccumulated_children_education() - salary.getAccumulated_continuing_education() -
                 salary.getAccumulated_housing_loans()  - salary.getAccumulated_housing_rent() -
                 salary.getAccumulated_support_elderly() - salary.getAccumulated_deductions_cost();
+        if(result < 0){
+            result = 0;
+        }
         salary.setAccumulated_taxable_income(result);
     }
 }

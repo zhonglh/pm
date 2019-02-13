@@ -297,7 +297,6 @@
 
 	<select id="getAccumulatedSalary" parameterType="com.pm.domain.business.Salary" resultMap="salaryMap">
 
-		<![CDATA[
 		select staff_id ,
 		sum(should_salary) as before_accumulated_pretax_income,
 		(count(*) * 5000 )as before_accumulated_tax_deduction,
@@ -309,10 +308,12 @@
 		sum(deductions_cost) as before_accumulated_deductions_cost,
 		sum(personal_income_tax) as accumulated_prepaid_tax
 		from tb_salary
-		where  salary_month >= #{startSalaryMonth} and salary_month <= #{endSalaryMonth}
-		and staff_id in <foreach collection="staffCostIds" index="index" item="staffCostId" open="(" separator="," close=")">#{staffCostId}</foreach>
-		group by staff_id
+
+		<![CDATA[
+		where verify_userid is not null and  salary_month >= #{startSalaryMonth} and salary_month <= #{endSalaryMonth}
 		]]>
+		and staff_id in <foreach collection="staffCostIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+		group by staff_id
 
 	</select>
 	

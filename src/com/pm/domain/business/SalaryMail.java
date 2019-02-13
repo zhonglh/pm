@@ -143,20 +143,26 @@ public class SalaryMail implements Serializable {
 	@EntityAnnotation(item_name="公司缴纳公积金",item_sort=35)
 	private double reservefund_bypcompany;
 
+
+
 	@EntityAnnotation(item_name="子女教育", item_sort=36,length=8)
 	private double children_education;
 
-	@EntityAnnotation(item_name="继续教育", item_sort=37,length=8)
-	private double continuing_education;
-
-	@EntityAnnotation(item_name="住房贷款利息", item_sort=38,length=8)
+	@EntityAnnotation(item_name="住房贷款利息", item_sort=37,length=8)
 	private double housing_loans;
 
-	@EntityAnnotation(item_name="住房租金", item_sort=39,length=8)
+	@EntityAnnotation(item_name="住房租金", item_sort=38,length=8)
 	private double housing_rent;
 
-	@EntityAnnotation(item_name="赡养老人", item_sort=40,length=8)
+	@EntityAnnotation(item_name="赡养老人", item_sort=39,length=8)
 	private double support_elderly;
+
+	@EntityAnnotation(item_name="继续教育", item_sort=40,length=8)
+	private double continuing_education;
+
+
+
+
 
 	@EntityAnnotation(item_name="当月五险一金代扣款",item_sort=41)
 	private double deductions_cost;

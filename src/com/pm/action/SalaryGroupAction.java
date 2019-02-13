@@ -378,9 +378,15 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setDelete_flag(BusinessUtil.NOT_DELETEED);
 
 
-			SalaryCalculate.getInstance().calculate(salary, null, paramExtMap);
-
 			list.add(salary);
+		}
+
+
+
+		Date date1 = DateKit.fmtStrToDate(String.valueOf(addSalary.getSalary_month()*100+1),"yyyyMMdd");
+		computeBeforeInfo(date1 ,list);
+		for(Salary temp : list){
+			SalaryCalculate.getInstance().calculate(temp, null, paramExtMap);
 		}
 		
 		
@@ -430,9 +436,11 @@ public class SalaryGroupAction extends BaseAction {
 			
 			if(updateSalarys != null && !updateSalarys.isEmpty()) {
 
+				Date date1 = DateKit.fmtStrToDate(String.valueOf(updateSalarys.get(0).getSalary_month()*100+1),"yyyyMMdd");
+				computeBeforeInfo(date1 ,updateSalarys);
 				Map<String, ParamExtend> paramExtMap = getParamExtendMap();
-				for(Salary salary : updateSalarys){
-					SalaryCalculate.getInstance().calculate(salary, null, paramExtMap);
+				for(Salary temp : updateSalarys){
+					SalaryCalculate.getInstance().calculate(temp, null, paramExtMap);
 				}
 				salaryService.updateSalary(updateSalarys);
 			}
@@ -485,7 +493,8 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setProject_id(updateSalary.getProject_id());
 			salary.setProject_no(updateSalary.getProject_no());
 			salary.setProject_name(updateSalary.getProject_name());
-			
+
+			salary.setStaff_id(request.getParameter("staff_id"+index));
 			salary.setStaff_name(request.getParameter("staff_name"+index));
 			
 			salary.setBasic_salary(Double.parseDouble(request.getParameter("basic_salary"+index)));
@@ -540,10 +549,18 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setComputer_allowance(Double.parseDouble(request.getParameter("computer_allowance"+index)));
 			salary.setMeal_allowance(Double.parseDouble(request.getParameter("meal_allowance"+index)));
 
-			SalaryCalculate.getInstance().calculate(salary, null, paramExtMap);
 
 			list.add(salary);
 		}
+
+
+
+		Date date1 = DateKit.fmtStrToDate(String.valueOf(updateSalary.getSalary_month()*100+1),"yyyyMMdd");
+		computeBeforeInfo(date1 ,list);
+		for(Salary temp : list){
+			SalaryCalculate.getInstance().calculate(temp, null, paramExtMap);
+		}
+
 		
 		if(!list.isEmpty()) {
 			salaryService.updateSalary(list);
@@ -697,16 +714,22 @@ public class SalaryGroupAction extends BaseAction {
 				tempSalary.setReservefund_bypcompany(0);
 			}
 		}
-	
 
 
+		computeBeforeInfo(date1, list);
+		
+		
+		return list;
+	}
+
+	private void computeBeforeInfo(Date date1, List<Salary> list) {
 		int month = DateKit.getMonth(date1);
 		if(month != 12) {
 			//计算之前的累计
 			Date startDate = DateKit.getLastMonthStart(DateKit.getYearStart(date1));
 			Date endDate = DateKit.getLastMonthStart(date1);
-			int startSalaryMonth = Integer.parseInt(DateKit.fmtDateToYM(startDate));
-			int endSalaryMonth = Integer.parseInt(DateKit.fmtDateToYM(endDate));
+			int startSalaryMonth = Integer.parseInt(DateKit.fmtDateToStr(startDate,"yyyyMM"));
+			int endSalaryMonth = Integer.parseInt(DateKit.fmtDateToStr(endDate,"yyyyMM"));
 			List<String> staffCostIds = new ArrayList<String>();
 			for (Salary salary : list) {
 				staffCostIds.add(salary.getStaff_id());
@@ -727,16 +750,13 @@ public class SalaryGroupAction extends BaseAction {
 					salary.setBefore_accumulated_housing_rent(accumulatedSalary.getBefore_accumulated_housing_rent());
 					salary.setBefore_accumulated_support_elderly(accumulatedSalary.getBefore_accumulated_support_elderly());
 					salary.setBefore_accumulated_deductions_cost(accumulatedSalary.getBefore_accumulated_deductions_cost());
+					salary.setAccumulated_prepaid_tax(accumulatedSalary.getAccumulated_prepaid_tax());
 				}
 
 			}
 		}
-		
-		
-		return list;
 	}
-	
-	
+
 
 	@RequestMapping(params = "method=toEdit")
 	public String toEdit(HttpServletResponse res,HttpServletRequest request){
@@ -761,6 +781,8 @@ public class SalaryGroupAction extends BaseAction {
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "没有任何工资记录！",true);
 		}
+
+		this.computeBeforeInfo(date1 , pager.getResultList());
 
 		request.setAttribute("list", pager.getResultList());
 		request.setAttribute("salary1", pager.getResultList().get(0));
@@ -795,6 +817,8 @@ public class SalaryGroupAction extends BaseAction {
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "没有任何工资记录！",true);
 		}
+
+		this.computeBeforeInfo(date1 , pager.getResultList());
 
 		request.setAttribute("id", id);
 		//request.setAttribute("list", pager.getResultList());
@@ -835,7 +859,8 @@ public class SalaryGroupAction extends BaseAction {
 			request.setAttribute("salary1", pager.getResultList().get(0));				
 		}
 
-			
+
+		this.computeBeforeInfo(date1 , pager.getResultList());
 		
 		
 
@@ -873,6 +898,8 @@ public class SalaryGroupAction extends BaseAction {
 		if(pager.getResultList() == null) {
 			pager.setResultList(new ArrayList());
 		}
+
+		this.computeBeforeInfo(date1 , pager.getResultList());
 		
 		EasyUIDatagrid datagrid = new EasyUIDatagrid(pager.getResultList().size(),pager.getResultList());
 		

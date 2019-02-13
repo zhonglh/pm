@@ -23,7 +23,7 @@
 			
 			<div class="divider"></div>
 			
-			<table class="list nowrap" width="3860" >
+			<table class="list nowrap" width="6000" >
 				<thead>
 					<tr>
 						
@@ -66,9 +66,32 @@
 						<th width="80" nowrap>工伤单位</th>
 						<th width="100" nowrap>公积金个人</th>
 						<th width="100" nowrap>公积金单位</th>
-						<th width="120" nowrap>准许扣除的费用</th>
-						<th width="120" nowrap>应纳税所得额</th>
-						<th width="80" nowrap>所得税</th>
+
+
+
+						<th width="80" nowrap>子女教育</th>
+						<th width="120" nowrap>住房贷款利息</th>
+						<th width="80" nowrap>住房租金</th>
+						<th width="80" nowrap>赡养老人</th>
+						<th width="80" nowrap>继续教育</th>
+
+						<th width="150" nowrap>当月五险一金代扣款</th>
+						<th width="120" nowrap>当月应纳税所得额</th>
+
+						<th width="120" nowrap>累计税前收入额</th>
+						<th width="170" nowrap>累计个税累计减除费用</th>
+						<th width="120" nowrap>累计子女教育</th>
+						<th width="140" nowrap>累计住房贷款利息</th>
+						<th width="120" nowrap>累计住房租金</th>
+						<th width="120" nowrap>累计赡养老人</th>
+						<th width="120" nowrap>累计继续教育</th>
+						<th width="150" nowrap>累计五险一金代扣款</th>
+						<th width="150" nowrap>累计应纳税所得额</th>
+						<th width="120" nowrap>累计应扣缴税额</th>
+						<th width="120" nowrap>累计已预缴税额</th>
+						<th width="120" nowrap>累计应补（退）税额</th>
+
+						<th width="130" nowrap>当月应扣所得税</th>
 						<th width="80" nowrap>奖金（后）</th>
 						<th width="80" nowrap>补税工资</th>
 						<th width="80" nowrap><b>实发工资</b></th>
@@ -136,8 +159,32 @@
 						<td>${salary.jobharm_insurance_bycompany }</td>
 						<td>${salary.accumulation_fund }</td>
 						<td>${salary.reservefund_bypcompany }</td>
+
+
+						<td>${salary.children_education }</td>
+						<td>${salary.housing_loans }</td>
+						<td>${salary.housing_rent }</td>
+						<td>${salary.support_elderly }</td>
+						<td>${salary.continuing_education }</td>
+
 						<td>${salary.deductions_cost }</td>
 						<td>${salary.taxable_income }</td>
+
+						<td>${salary.accumulated_pretax_income }</td>
+						<td>${salary.accumulated_tax_deduction }</td>
+						<td>${salary.accumulated_children_education }</td>
+						<td>${salary.accumulated_housing_loans }</td>
+						<td>${salary.accumulated_housing_rent }</td>
+						<td>${salary.accumulated_support_elderly }</td>
+						<td>${salary.accumulated_continuing_education }</td>
+						<td>${salary.accumulated_deductions_cost }</td>
+						<td>${salary.accumulated_taxable_income }</td>
+						<td>${salary.accumulated_deductible_taxpaid }</td>
+						<td>${salary.accumulated_prepaid_tax }</td>
+						<td>${salary.accumulated_replenishment_tax }</td>
+
+
+
 						<td>${salary.personal_income_tax }</td>
 						<td>${salary.actual_bonus }</td>
 						<td>${salary.overdue_tax_salary }</td>

@@ -34,6 +34,7 @@ public class SalaryCalculate {
 		calculates.add(new Deductions_cost());
 		calculates.add(new Taxable_income());
 
+
 		calculates.add(new Accumulated_pretax_income());
 		calculates.add(new Accumulated_tax_deduction());
 		calculates.add(new Accumulated_children_education());

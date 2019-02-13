@@ -14,7 +14,11 @@ import java.util.Map;
 public class Accumulated_housing_rent  extends AbstractSalaryClculate implements ISalaryCalculate {
     @Override
     public void calculate(Salary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
-        double result = salary.getBefore_accumulated_housing_rent() + salary.getHousing_rent();
+
+        double result = salary.getBefore_accumulated_housing_rent() ;
+        if(salary.getHousing_loans() <=0 ){
+            result += salary.getHousing_rent();
+        }
         salary.setAccumulated_housing_rent(result);
     }
 }

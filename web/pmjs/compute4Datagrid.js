@@ -308,7 +308,7 @@
         }
 
 		result = fixed(result);		
-		//if(result < 0) result = 0;
+		if(result < 0) result = 0;
 		backFill(field,key,result);
 	}
 

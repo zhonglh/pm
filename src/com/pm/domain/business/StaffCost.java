@@ -396,6 +396,15 @@ public class StaffCost implements Serializable {
 	private Timestamp join_datetime2;
 	private Timestamp leave_job_datetime1;
 	private Timestamp leave_job_datetime2;
+
+	//合同到期时间段
+	private Timestamp contrct_expiration_date1;
+	private Timestamp contrct_expiration_date2;
+
+	//试用期时间段
+	private Timestamp tryoutDate1;
+	private Timestamp tryoutDate2;
+
 	
 	//入职人数
 	private int joinnum;
@@ -1158,5 +1167,37 @@ public class StaffCost implements Serializable {
 
 	public void setSupport_elderly(double support_elderly) {
 		this.support_elderly = support_elderly;
+	}
+
+	public Timestamp getContrct_expiration_date1() {
+		return contrct_expiration_date1;
+	}
+
+	public void setContrct_expiration_date1(Timestamp contrct_expiration_date1) {
+		this.contrct_expiration_date1 = contrct_expiration_date1;
+	}
+
+	public Timestamp getContrct_expiration_date2() {
+		return contrct_expiration_date2;
+	}
+
+	public void setContrct_expiration_date2(Timestamp contrct_expiration_date2) {
+		this.contrct_expiration_date2 = contrct_expiration_date2;
+	}
+
+	public Timestamp getTryoutDate1() {
+		return tryoutDate1;
+	}
+
+	public void setTryoutDate1(Timestamp tryoutDate1) {
+		this.tryoutDate1 = tryoutDate1;
+	}
+
+	public Timestamp getTryoutDate2() {
+		return tryoutDate2;
+	}
+
+	public void setTryoutDate2(Timestamp tryoutDate2) {
+		this.tryoutDate2 = tryoutDate2;
 	}
 }

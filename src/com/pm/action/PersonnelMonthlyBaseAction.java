@@ -151,14 +151,10 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 			}	
 			request.setAttribute("staff_costs_threshold", staff_costs_threshold);
 			for(StaffCost staffCost : pager.getResultList()){
-				staffCost.setDifference(staffCost.getQustomerquotes() * (1-tax_rate) - staffCost.getTotalcost());
-				staffCost.setCan_send_info(this.getMsg("boolean." + (staffCost.getCan_send_info()==null?"":staffCost.getCan_send_info()), request));
-				staffCost.setOutsource_staff(this.getMsg("boolean." + (staffCost.getOutsource_staff()==null?"":staffCost.getOutsource_staff()), request));
-				PersonnelMonthlyStaffCost sc = new PersonnelMonthlyStaffCost();
-				BeanUtils.copyProperties(staffCost, sc);
-				sc.setThe_month(Integer.parseInt(DateKit.fmtDateToStr(staffCost.getJoin_datetime(),"yyyyMM")));
-				sc.setMonthly_type(EnumPersonnelMonthlyType.JoinStaff.getId());
-				sc.getMonthly_type_name();
+
+				PersonnelMonthlyStaffCost sc = buildPersonnelMonthlyStaffCost(
+						request, EnumPersonnelMonthlyType.JoinStaff.getId() ,personnelMonthlyBase.getThe_month(), tax_rate, staffCost);
+
 				scs.add(sc);
 			}			
 			
@@ -212,14 +208,9 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 			}	
 			request.setAttribute("staff_costs_threshold", staff_costs_threshold);
 			for(StaffCost staffCost : pager.getResultList()){
-				staffCost.setDifference(staffCost.getQustomerquotes() * (1-tax_rate) - staffCost.getTotalcost());
-				staffCost.setCan_send_info(this.getMsg("boolean." + (staffCost.getCan_send_info()==null?"":staffCost.getCan_send_info()), request));
-				staffCost.setOutsource_staff(this.getMsg("boolean." + (staffCost.getOutsource_staff()==null?"":staffCost.getOutsource_staff()), request));
-				PersonnelMonthlyStaffCost sc = new PersonnelMonthlyStaffCost();
-				BeanUtils.copyProperties(staffCost, sc);
-				sc.setThe_month(Integer.parseInt(DateKit.fmtDateToStr(staffCost.getLeave_job_datetime(),"yyyyMM")));
-				sc.setMonthly_type(EnumPersonnelMonthlyType.LeaveStaff.getId());
-				sc.getMonthly_type_name();
+				PersonnelMonthlyStaffCost sc = buildPersonnelMonthlyStaffCost(
+						request, EnumPersonnelMonthlyType.LeaveStaff.getId() ,personnelMonthlyBase.getThe_month(), tax_rate, staffCost);
+
 				scs.add(sc);
 			}			
 			if(!scs.isEmpty()) {
@@ -230,6 +221,127 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 		return scs;
 		
 	}
+
+	private PersonnelMonthlyStaffCost buildPersonnelMonthlyStaffCost(HttpServletRequest request,String type,int the_month,  double tax_rate, StaffCost staffCost) {
+		staffCost.setDifference(staffCost.getQustomerquotes() * (1-tax_rate) - staffCost.getTotalcost());
+		staffCost.setCan_send_info(this.getMsg("boolean." + (staffCost.getCan_send_info()==null?"":staffCost.getCan_send_info()), request));
+		staffCost.setOutsource_staff(this.getMsg("boolean." + (staffCost.getOutsource_staff()==null?"":staffCost.getOutsource_staff()), request));
+		PersonnelMonthlyStaffCost sc = new PersonnelMonthlyStaffCost();
+		BeanUtils.copyProperties(staffCost, sc);
+		sc.setThe_month(the_month);
+		sc.setMonthly_type(type);
+		sc.getMonthly_type_name();
+		return sc;
+	}
+
+
+	/**
+	 * 获取合同到期人员信息
+	 * @param personnelMonthlyBase
+	 * @param request
+	 */
+	public List<PersonnelMonthlyStaffCost> getContrctExpirationStaff(PersonnelMonthlyBase personnelMonthlyBase,HttpServletRequest request){
+
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());
+
+		StaffCost searchStaffCost = new StaffCost();
+		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
+		if(personnelMonthlyBase.getThe_month() != 0){
+			Date d1 = DateKit.fmtStrToDate(String.valueOf(personnelMonthlyBase.getThe_month()+"01"),"yyyyMMdd");
+			Date d2 = DateKit.getLastDayOfMonth(d1);
+			searchStaffCost.setContrct_expiration_date1(new java.sql.Timestamp(d1.getTime()));
+			searchStaffCost.setContrct_expiration_date2(new java.sql.Timestamp(d2.getTime()));
+		}
+
+		List<PersonnelMonthlyStaffCost> scs = new ArrayList<PersonnelMonthlyStaffCost>();
+		Pager<StaffCost> pager = staffCostService.queryStaffCost(searchStaffCost, null,userPermit, PubMethod.getPagerByAll(request, StaffCost.class));
+
+		if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
+			double tax_rate = 0;
+			double staff_costs_threshold = 0;
+
+			Params params = new Params();
+			params.setParam_key("tax.rate");
+			List<Params> paramList = paramsService.queryAllParams(params);
+			if(paramList != null && paramList.size() > 0){
+				tax_rate = Double.parseDouble(paramList.get(0).getParam_value());
+			}
+
+			params.setParam_key("staff.costs.threshold");
+			paramList = paramsService.queryAllParams(params);
+			if(paramList != null && paramList.size() > 0){
+				staff_costs_threshold = Double.parseDouble(paramList.get(0).getParam_value());
+			}
+			request.setAttribute("staff_costs_threshold", staff_costs_threshold);
+			for(StaffCost staffCost : pager.getResultList()){
+				PersonnelMonthlyStaffCost sc = buildPersonnelMonthlyStaffCost(
+						request, EnumPersonnelMonthlyType.ContrctExpiration.getId() ,personnelMonthlyBase.getThe_month(), tax_rate, staffCost);
+
+				scs.add(sc);
+			}
+			if(!scs.isEmpty()) {
+				request.setAttribute("contrctExpirationStaffCosts", scs);
+			}
+		}
+
+		return scs;
+
+	}
+
+
+	/**
+	 * 获取试用期到期人员信息
+	 * @param personnelMonthlyBase
+	 * @param request
+	 */
+	public List<PersonnelMonthlyStaffCost> getTryoutStaff(PersonnelMonthlyBase personnelMonthlyBase,HttpServletRequest request){
+
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());
+
+		StaffCost searchStaffCost = new StaffCost();
+		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
+		if(personnelMonthlyBase.getThe_month() != 0){
+			Date d1 = DateKit.fmtStrToDate(String.valueOf(personnelMonthlyBase.getThe_month()+"01"),"yyyyMMdd");
+			Date d2 = DateKit.getLastDayOfMonth(d1);
+			searchStaffCost.setTryoutDate1(new java.sql.Timestamp(d1.getTime()));
+			searchStaffCost.setTryoutDate2(new java.sql.Timestamp(d2.getTime()));
+		}
+
+		List<PersonnelMonthlyStaffCost> scs = new ArrayList<PersonnelMonthlyStaffCost>();
+		Pager<StaffCost> pager = staffCostService.queryStaffCost(searchStaffCost, null,userPermit, PubMethod.getPagerByAll(request, StaffCost.class));
+
+		if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
+			double tax_rate = 0;
+			double staff_costs_threshold = 0;
+
+			Params params = new Params();
+			params.setParam_key("tax.rate");
+			List<Params> paramList = paramsService.queryAllParams(params);
+			if(paramList != null && paramList.size() > 0){
+				tax_rate = Double.parseDouble(paramList.get(0).getParam_value());
+			}
+
+			params.setParam_key("staff.costs.threshold");
+			paramList = paramsService.queryAllParams(params);
+			if(paramList != null && paramList.size() > 0){
+				staff_costs_threshold = Double.parseDouble(paramList.get(0).getParam_value());
+			}
+			request.setAttribute("staff_costs_threshold", staff_costs_threshold);
+			for(StaffCost staffCost : pager.getResultList()){
+				PersonnelMonthlyStaffCost sc = buildPersonnelMonthlyStaffCost(
+						request, EnumPersonnelMonthlyType.Tryout.getId() ,personnelMonthlyBase.getThe_month(), tax_rate, staffCost);
+
+				scs.add(sc);
+			}
+			if(!scs.isEmpty()) {
+				request.setAttribute("tryoutStaffCosts", scs);
+			}
+		}
+
+		return scs;
+
+	}
+
 
 
 	@RequestMapping(params = "method=list")
@@ -285,7 +397,24 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 					lists.add(list);
 				}
 			}
-			
+
+			if(StringUtils.isEmpty(monthly_type) || monthly_type.equals(EnumPersonnelMonthlyType.ContrctExpiration.getId())){
+				List<PersonnelMonthlyStaffCost> list = this.getContrctExpirationStaff(personnelMonthlyBase,  request);
+				if(list != null && list.size() > 0) {
+					lists.add(list);
+				}
+			}
+			if(StringUtils.isEmpty(monthly_type) || monthly_type.equals(EnumPersonnelMonthlyType.Tryout.getId())){
+				List<PersonnelMonthlyStaffCost> list = this.getTryoutStaff(personnelMonthlyBase,  request);
+				if(list != null && list.size() > 0) {
+					lists.add(list);
+				}
+			}
+
+
+
+
+
 			if(StringUtils.isEmpty(monthly_type) || monthly_type.equals(EnumPersonnelMonthlyType.Official.getId())){
 				//转正类型
 				PersonnelMonthlyOfficial official = new PersonnelMonthlyOfficial();

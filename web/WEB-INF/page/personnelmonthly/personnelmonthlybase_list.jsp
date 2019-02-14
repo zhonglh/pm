@@ -30,6 +30,8 @@
 				<option value="" <c:if test="${'' == param.monthly_type }">selected</c:if>><spring:message code="personnel.monthly."/></option>
 				<option value="A" <c:if test="${'A' == param.monthly_type }">selected</c:if>><spring:message code="personnel.monthly.A"/></option>
 				<option value="B" <c:if test="${'B' == param.monthly_type }">selected</c:if>><spring:message code="personnel.monthly.B"/></option>
+				<option value="C" <c:if test="${'C' == param.monthly_type }">selected</c:if>><spring:message code="personnel.monthly.C"/></option>
+				<option value="D" <c:if test="${'D' == param.monthly_type }">selected</c:if>><spring:message code="personnel.monthly.D"/></option>
 				<option value="1" <c:if test="${'1' == param.monthly_type }">selected</c:if>><spring:message code="personnel.monthly.1"/></option>
 				<option value="2" <c:if test="${'2' == param.monthly_type }">selected</c:if>><spring:message code="personnel.monthly.2"/></option>
 				<option value="3" <c:if test="${'3' == param.monthly_type }">selected</c:if>><spring:message code="personnel.monthly.3"/></option>
@@ -139,7 +141,7 @@
 		</tbody>
 		</c:if>
 	
-	
+
 		<c:if test="${ not empty leaveStaffCosts}">
 		<thead>
 			<tr>
@@ -169,18 +171,108 @@
 				<td>${leaveStaffCost.project_name }</td>
 				<td>${leaveStaffCost.staff_no }</td>
 				<td>${leaveStaffCost.staff_name }</td>
-				<td><fmt:formatDate value="${leaveStaffCost.join_datetime }" pattern="yyyy-MM-dd"/></td>				
-				<td><b><fmt:formatDate value="${leaveStaffCost.leave_job_datetime }" pattern="yyyy-MM-dd"/></b></td>				
+				<td><fmt:formatDate value="${leaveStaffCost.join_datetime }" pattern="yyyy-MM-dd"/></td>
+				<td><b><fmt:formatDate value="${leaveStaffCost.leave_job_datetime }" pattern="yyyy-MM-dd"/></b></td>
 				<td align="right"><b><fmt:formatNumber value="${leaveStaffCost.tryout_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td align="right"><b><fmt:formatNumber value="${leaveStaffCost.official_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td align="right"><b><fmt:formatNumber value="${leaveStaffCost.meal_allowance }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td align="right"><b><fmt:formatNumber value="${leaveStaffCost.computer_allowance }" type="currency" pattern="###,###,##0.00"/></b></td>
-				<td>${leaveStaffCost.identity_card_number }</td>	
+				<td>${leaveStaffCost.identity_card_number }</td>
 			</tr>
-			</c:forEach>			
+			</c:forEach>
 		</tbody>
 		</c:if>
-	
+
+
+
+
+		<c:if test="${ not empty contrctExpirationStaffCosts}">
+			<thead>
+			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
+				<th width="60">月份</th>
+				<th width="120">状态</th>
+				<th width="50">序号</th>
+				<th width="200">项目名称</th>
+				<th width="60">工号</th>
+				<th width="80">姓名</th>
+				<th width="100">合同开始时间</th>
+				<th width="100">合同结束时间</th>
+				<th width="100">试用期工资</th>
+				<th width="100">正式工资</th>
+				<th width="80">餐补</th>
+				<th width="80">电脑补助</th>
+				<th width="180">身份证</th>
+			</tr>
+			</thead>
+			<tbody>
+			<c:forEach var="joinStaffCost"  varStatus="status1" items="${contrctExpirationStaffCosts}">
+				<tr target="sid" rel="${joinStaffCost.staff_id }">
+					<td></td>
+					<td>${joinStaffCost.the_month }</td>
+					<td><spring:message code="personnel.monthly.${joinStaffCost.monthly_type }"></spring:message></td>
+					<td>${status1.index+1 }</td>
+					<td>${joinStaffCost.project_name }</td>
+					<td>${joinStaffCost.staff_no }</td>
+					<td>${joinStaffCost.staff_name }</td>
+					<td><b><fmt:formatDate value="${joinStaffCost.contract_start_date }" pattern="yyyy-MM-dd"/></b></td>
+					<td><fmt:formatDate value="${joinStaffCost.contract_end_date }" pattern="yyyy-MM-dd"/></td>
+					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.tryout_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.official_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.meal_allowance }" type="currency" pattern="###,###,##0.00"/></b></td>
+					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.computer_allowance }" type="currency" pattern="###,###,##0.00"/></b></td>
+					<td>${joinStaffCost.identity_card_number }</td>
+				</tr>
+			</c:forEach>
+			</tbody>
+		</c:if>
+
+
+		<c:if test="${ not empty tryoutStaffCosts}">
+			<thead>
+			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
+				<th width="60">月份</th>
+				<th width="120">状态</th>
+				<th width="50">序号</th>
+				<th width="200">项目名称</th>
+				<th width="60">工号</th>
+				<th width="80">姓名</th>
+				<th width="100">入职时间</th>
+				<th width="100">转正时间</th>
+				<th width="100">试用期工资</th>
+				<th width="100">正式工资</th>
+				<th width="80">餐补</th>
+				<th width="80">电脑补助</th>
+				<th width="180">身份证</th>
+			</tr>
+			</thead>
+			<tbody>
+			<c:forEach var="joinStaffCost"  varStatus="status1" items="${tryoutStaffCosts}">
+				<tr target="sid" rel="${joinStaffCost.staff_id }">
+					<td></td>
+					<td>${joinStaffCost.the_month }</td>
+					<td><spring:message code="personnel.monthly.${joinStaffCost.monthly_type }"></spring:message></td>
+					<td>${status1.index+1 }</td>
+					<td>${joinStaffCost.project_name }</td>
+					<td>${joinStaffCost.staff_no }</td>
+					<td>${joinStaffCost.staff_name }</td>
+					<td><b><fmt:formatDate value="${joinStaffCost.join_datetime }" pattern="yyyy-MM-dd"/></b></td>
+					<td><fmt:formatDate value="${joinStaffCost.confirmation_date }" pattern="yyyy-MM-dd"/></td>
+					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.tryout_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.official_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.meal_allowance }" type="currency" pattern="###,###,##0.00"/></b></td>
+					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.computer_allowance }" type="currency" pattern="###,###,##0.00"/></b></td>
+					<td>${joinStaffCost.identity_card_number }</td>
+				</tr>
+			</c:forEach>
+			</tbody>
+		</c:if>
+
+
+
+
+
 		<c:if test="${ not empty officials}">
 		<thead>
 			<tr>

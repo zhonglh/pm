@@ -4,6 +4,10 @@ public enum EnumPersonnelMonthlyType {
 	
 	JoinStaff("A","personnel.monthly.A","入职"),
 	LeaveStaff("B","personnel.monthly.B","离职"),
+
+	ContrctExpiration("C","personnel.monthly.C","合同到期"),
+	Tryout("D","personnel.monthly.D","试用期到期"),
+
 	
 	Official("1","personnel.monthly.1","转正"),
 	AddSalary("2","personnel.monthly.2","加薪"),

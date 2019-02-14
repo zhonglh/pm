@@ -607,6 +607,36 @@
 			AND (staff.leave_job_datetime is not null and staff.leave_job_datetime <= #{StaffCost.leave_job_datetime2} )
 		]]>
 		</if>
+
+
+
+
+
+
+
+
+		<if test="StaffCost.contrct_expiration_date1 != null">
+			<![CDATA[
+			AND  (staff.contract_end_date is not null and staff.contract_end_date >= #{StaffCost.contrct_expiration_date1}	)
+		]]>
+		</if>
+		<if test="StaffCost.contrct_expiration_date2 != null">
+			<![CDATA[
+			AND (staff.contract_end_date is not null and staff.contract_end_date <= #{StaffCost.contrct_expiration_date2} )
+		]]>
+		</if>
+
+
+		<if test="StaffCost.tryoutDate1 != null">
+			<![CDATA[
+			AND  (staff.confirmation_date is not null and date_sub(staff.confirmation_date, interval 1 day) >= #{StaffCost.tryoutDate1}	)
+			]]>
+		</if>
+		<if test="StaffCost.tryoutDate2 != null">
+			<![CDATA[
+			AND (staff.confirmation_date is not null and date_sub(staff.confirmation_date, interval 1 day) <= #{StaffCost.tryoutDate2} )
+		]]>
+		</if>
 		
 
 		<if test="ConditionStaffCost != null and ConditionStaffCost.ex_staff_id != null and ConditionStaffCost.ex_staff_id != '' ">

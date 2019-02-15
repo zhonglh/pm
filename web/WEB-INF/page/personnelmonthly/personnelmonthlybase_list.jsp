@@ -283,10 +283,16 @@
 				<th width="200">项目名称</th>
 				<th width="60">工号</th>
 				<th width="80">姓名</th>
-				<th width="100">入职时间</th>
-				<th width="100">转正时间</th>
+				<th width="100">入职日期</th>
+				<th width="100">转正日期</th>
+
+				<th width="120">当月工作日天数</th>
 				<th width="100">试用期工资</th>
+
+				<th width="130">当月试用工作日天数</th>
 				<th width="100">正式工资</th>
+
+				<th width="130">当月转正工作日天数</th>
 				<th width="100">当月转正工资</th>
 				<th width="80">制表人</th>
 				<th width="80">核单人</th>
@@ -309,9 +315,12 @@
 				<td>${official.staff_no }</td>
 				<td>${official.staff_name }</td>
 				<td><fmt:formatDate value="${official.join_datetime }" pattern="yyyy-MM-dd"/></td>				
-				<td><fmt:formatDate value="${official.confirmation_date }" pattern="yyyy-MM-dd"/></td>				
+				<td><fmt:formatDate value="${official.confirmation_date }" pattern="yyyy-MM-dd"/></td>
+				<td>${official.work_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${official.tryout_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td>${official.tryout_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${official.official_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td>${official.official_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${official.curr_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td>${official.build_username }</td>
 				<td>${official.verify_username }</td>
@@ -338,8 +347,11 @@
 				<th width="80">姓名</th>
 				<th width="100">入职时间</th>
 				<th width="100">调薪时间</th>
-				<th width="100">原薪资</th>
+				<th width="120">当月工作日天数</th>
+				<th width="100">调薪前薪资</th>
+				<th width="130">当月调薪前工作日天数</th>
 				<th width="100">调薪后薪资</th>
+				<th width="130">当月调薪后工作日天数</th>
 				<th width="100">当月工资</th>
 				<th width="180">备注</th>
 				<th width="80">制表人</th>
@@ -363,9 +375,12 @@
 				<td>${salary.staff_no }</td>
 				<td>${salary.staff_name }</td>
 				<td><fmt:formatDate value="${salary.join_datetime }" pattern="yyyy-MM-dd"/></td>				
-				<td><fmt:formatDate value="${salary.change_time }" pattern="yyyy-MM-dd"/></td>				
+				<td><fmt:formatDate value="${salary.change_time }" pattern="yyyy-MM-dd"/></td>
+				<td>${salary.work_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${salary.old_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td>${official.old_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${salary.new_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td>${official.new_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${salary.curr_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td>${salary.description }</td>
 				<td>${salary.build_username }</td>
@@ -393,8 +408,11 @@
 				<th width="80">姓名</th>
 				<th width="100">入职时间</th>
 				<th width="100">调薪时间</th>
-				<th width="100">原薪资</th>
+				<th width="120">当月工作日天数</th>
+				<th width="100">调薪前薪资</th>
+				<th width="130">当月调薪前工作日天数</th>
 				<th width="100">调薪后薪资</th>
+				<th width="130">当月调薪后工作日天数</th>
 				<th width="100">当月工资</th>
 				<th width="180">备注</th>
 				<th width="80">制表人</th>
@@ -418,9 +436,12 @@
 				<td>${salary.staff_no }</td>
 				<td>${salary.staff_name }</td>
 				<td><fmt:formatDate value="${salary.join_datetime }" pattern="yyyy-MM-dd"/></td>				
-				<td><fmt:formatDate value="${salary.change_time }" pattern="yyyy-MM-dd"/></td>				
+				<td><fmt:formatDate value="${salary.change_time }" pattern="yyyy-MM-dd"/></td>
+				<td>${salary.work_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${salary.old_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td>${salary.old_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${salary.new_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td>${salary.new_days }</td>
 				<td align="right"><b><fmt:formatNumber value="${salary.curr_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td>${salary.description }</td>
 				<td>${salary.build_username }</td>

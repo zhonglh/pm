@@ -62,7 +62,7 @@
 			</p>
 
 			<p>
-				<label>当月调薪前工作日天数：</label>
+				<label>调薪前工作日天数：</label>
 				${personnelMonthlySalary1.old_days }
 			</p>
 
@@ -73,7 +73,7 @@
 			</p>
 
 			<p>
-				<label>当月调薪后工作日天数：</label>
+				<label>调薪后工作日天数：</label>
 				${personnelMonthlySalary1.new_days }
 			</p>
 			

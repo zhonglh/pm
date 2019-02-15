@@ -14,7 +14,8 @@
 
 	<select id="getPersonnelMonthlySalary" parameterType="com.pm.domain.business.PersonnelMonthlySalary" resultMap="personnelMonthlySalaryMap">
 		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,
-		pms.join_datetime,pms.change_time,pms.old_salary,pms.new_salary,pms.curr_salary,pms.description
+		pms.join_datetime,pms.change_time,pms.old_salary,pms.new_salary,pms.curr_salary,pms.description,
+		pms.work_days,pms.old_days,pms.new_days
 		from personnel_monthly_base pmb  
 		inner join personnel_monthly_salary pms  
 		on pmb.id = pms.id
@@ -27,10 +28,14 @@
 
 	<insert id="addPersonnelMonthlySalary" parameterType="com.pm.domain.business.PersonnelMonthlySalary" >
 		insert into  personnel_monthly_salary(
-			id,join_datetime,change_time,old_salary,
+			id,join_datetime,
+			work_days,old_days,new_days,
+			change_time,old_salary,
 			new_salary,curr_salary,description
 		)values  (
-			#{id},#{join_datetime},#{change_time},#{old_salary},
+			#{id},#{join_datetime},
+			#{work_days},#{old_days},#{new_days},
+			#{change_time},#{old_salary},
 			#{new_salary},#{curr_salary},#{description}
 		)
 	</insert>
@@ -38,6 +43,9 @@
 	<update id="updatePersonnelMonthlySalary" parameterType="com.pm.domain.business.PersonnelMonthlySalary" >
 		update  personnel_monthly_salary set 
 		join_datetime=#{join_datetime},
+		work_days=#{work_days},
+		old_days=#{old_days},
+		new_days=#{new_days},
 		change_time=#{change_time},
 		old_salary=#{old_salary},
 		new_salary=#{new_salary},
@@ -68,7 +76,8 @@
 
 	<sql id="personnelMonthlySalaryPagerSql">		
 		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,aa.need_approve,
-		pms.join_datetime,pms.change_time,pms.old_salary,pms.new_salary,pms.curr_salary,pms.description
+		pms.join_datetime,pms.change_time,pms.old_salary,pms.new_salary,pms.curr_salary,pms.description,
+		pms.work_days,pms.old_days,pms.new_days
 		from personnel_monthly_base pmb  
 		inner join personnel_monthly_salary pms  
 		on pmb.id = pms.id

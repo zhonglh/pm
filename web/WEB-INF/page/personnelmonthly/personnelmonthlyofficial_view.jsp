@@ -50,7 +50,7 @@
 
 			<p>
 				<label>当月工作日天数：</label>
-				<fmt:formatDate value="${personnelMonthlyOfficial1.work_days }" />
+				${personnelMonthlyOfficial1.work_days }
 			</p>
 
 			<p>
@@ -60,7 +60,7 @@
 
 			<p>
 				<label>当月试用期工作日天数：</label>
-				<fmt:formatDate value="${personnelMonthlyOfficial1.tryout_days }" />
+				${personnelMonthlyOfficial1.tryout_days }
 			</p>
 
 			<p>
@@ -70,7 +70,7 @@
 
 			<p>
 				<label>当月转正工作日天数：</label>
-				<fmt:formatDate value="${personnelMonthlyOfficial1.official_days }" />
+				${personnelMonthlyOfficial1.official_days }
 			</p>
 
 			<p>

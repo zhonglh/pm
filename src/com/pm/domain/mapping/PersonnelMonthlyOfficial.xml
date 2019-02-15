@@ -12,7 +12,8 @@
 
 	<select id="getPersonnelMonthlyOfficial" parameterType="com.pm.domain.business.PersonnelMonthlyOfficial" resultMap="personnelMonthlyOfficialMap">
 		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name,
-		pmo.join_datetime,pmo.confirmation_date,pmo.tryout_salary,pmo.official_salary,pmo.curr_salary
+		pmo.join_datetime,pmo.confirmation_date,pmo.tryout_salary,pmo.official_salary,pmo.curr_salary,
+		pmo.work_days,pmo.tryout_days,pmo.official_days
 		from personnel_monthly_base pmb  
 		inner join personnel_monthly_official pmo  
 		on pmb.id = pmo.id
@@ -25,10 +26,14 @@
 
 	<insert id="addPersonnelMonthlyOfficial" parameterType="com.pm.domain.business.PersonnelMonthlyOfficial" >
 		insert into  personnel_monthly_official(
-			id,join_datetime,confirmation_date,tryout_salary,
+			id,join_datetime,
+			work_days,tryout_days,official_days,
+			confirmation_date,tryout_salary,
 			official_salary,curr_salary
 		)values  (
-			#{id},#{join_datetime},#{confirmation_date},#{tryout_salary},
+			#{id},#{join_datetime},
+			#{work_days},#{tryout_days},#{official_days},
+			#{confirmation_date},#{tryout_salary},
 			#{official_salary},#{curr_salary}
 		)
 	</insert>
@@ -36,6 +41,11 @@
 	<update id="updatePersonnelMonthlyOfficial" parameterType="com.pm.domain.business.PersonnelMonthlyOfficial" >
 		update  personnel_monthly_official set 
 		join_datetime=#{join_datetime},
+
+		work_days=#{work_days},
+		tryout_days=#{tryout_days},
+		official_days=#{official_days},
+
 		confirmation_date=#{confirmation_date},
 		tryout_salary=#{tryout_salary},
 		official_salary=#{official_salary},
@@ -65,7 +75,8 @@
 
 	<sql id="personnelMonthlyOfficialPagerSql">
 		select pmb.* ,project.project_name,project.project_no ,sc.staff_no,sc.staff_name, aa.need_approve,
-		pmo.join_datetime,pmo.confirmation_date,pmo.tryout_salary,pmo.official_salary,pmo.curr_salary
+		pmo.join_datetime,pmo.confirmation_date,pmo.tryout_salary,pmo.official_salary,pmo.curr_salary,
+		pmo.work_days,pmo.tryout_days,pmo.official_days
 		from personnel_monthly_base pmb  
 		inner join personnel_monthly_official pmo  
 		on pmb.id = pmo.id

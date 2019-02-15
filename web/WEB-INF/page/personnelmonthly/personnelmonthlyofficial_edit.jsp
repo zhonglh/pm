@@ -50,20 +50,20 @@
 
 			<p>
 				<label>转正日期：</label>
-				<input name="confirmation_date" class="required" type="text" size="30" readonly maxlength="30" value="<fmt:formatDate value="${personnelMonthlyOfficial1.confirmation_date }" pattern="yyyy-MM-dd"/>" />
+				<input name="confirmation_date" class="required date" type="text" size="30"  maxlength="30" value="<fmt:formatDate value="${personnelMonthlyOfficial1.confirmation_date }" pattern="yyyy-MM-dd"/>" />
 			</p>
 
 
 
 			<p>
 				<label>当月工作日天数：</label>
-				<input name="work_days" class="number required" maxlength="2" type="text"  maxlength="30" value="${personnelMonthlyOfficial1.work_days}" />
+				<input name="work_days" class="number required" maxlength="2" type="text"  size="30" value="${personnelMonthlyOfficial1.work_days}" />
 			</p>
 
 
 			<p>
 				<label>试用期工资：</label>
-				<input name="tryout_salary" class="number required" type="text" size="30" readonly min="0.01" value="<fmt:formatNumber value="${personnelMonthlyOfficial1.tryout_salary }" type="number" pattern="####0.00#"/>" />
+				<input name="tryout_salary" class="number required" type="text" size="30"  min="0.01" value="<fmt:formatNumber value="${personnelMonthlyOfficial1.tryout_salary }" type="number" pattern="####0.00#"/>" />
 			</p>
 
 
@@ -75,7 +75,7 @@
 
 			<p>
 				<label>正式工资：</label>
-				<input name="official_salary" class="number required" type="text" size="30" readonly min="0.01" value="<fmt:formatNumber value="${personnelMonthlyOfficial1.official_salary }" type="number" pattern="####0.00#"/>" />
+				<input name="official_salary" class="number required" type="text" size="30"  min="0.01" value="<fmt:formatNumber value="${personnelMonthlyOfficial1.official_salary }" type="number" pattern="####0.00#"/>" />
 			</p>
 
 

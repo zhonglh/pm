@@ -53,7 +53,7 @@
 
 			<p>
 				<label>当月工作日天数：</label>
-				<input name="work_days" class="number required" maxlength="2" type="text"  maxlength="30" value="${personnelMonthlySalary1.work_days}" />
+				<input name="work_days" class="number required" maxlength="2" type="text"  size="30" value="${personnelMonthlySalary1.work_days}" />
 			</p>
 			
 			<p>
@@ -63,8 +63,8 @@
 
 
 			<p>
-				<label>当月调薪前工作日天数：</label>
-				<input name="old_days" class="number required" maxlength="2" type="text"  maxlength="30" value="${personnelMonthlySalary1.old_days}" />
+				<label>调薪前工作日天数：</label>
+				<input name="old_days" class="number required" maxlength="2" type="text"  size="30" value="${personnelMonthlySalary1.old_days}" />
 			</p>
 			
 			<p>
@@ -74,8 +74,8 @@
 
 
 			<p>
-				<label>当月调薪后工作日天数：</label>
-				<input name="new_days" class="number required" maxlength="2" type="text"  maxlength="30" value="${personnelMonthlySalary1.new_days}" />
+				<label>调薪后工作日天数：</label>
+				<input name="new_days" class="number required" maxlength="2" type="text"  size="30"  value="${personnelMonthlySalary1.new_days}" />
 			</p>
 			
 			<p>

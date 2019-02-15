@@ -58,7 +58,7 @@
 			
 			<p>
 				<label>调薪前薪资：</label>
-				<input name="old_salary" class="number" readonly type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${personnelMonthlySalary1.old_salary }" type="number" pattern="####0.00#"/>" />
+				<input name="old_salary" class="number required" type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${personnelMonthlySalary1.old_salary }" type="number" pattern="####0.00#"/>" />
 			</p>
 
 

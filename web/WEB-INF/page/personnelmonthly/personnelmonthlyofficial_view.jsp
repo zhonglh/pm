@@ -44,17 +44,35 @@
 				<fmt:formatDate value="${personnelMonthlyOfficial1.join_datetime }" pattern="yyyy-MM-dd"/>
 			</p>
 			<p>
-				<label>转正时间：</label>
+				<label>转正日期：</label>
 				<fmt:formatDate value="${personnelMonthlyOfficial1.confirmation_date }" pattern="yyyy-MM-dd"/>
 			</p>
+
+			<p>
+				<label>当月工作日天数：</label>
+				<fmt:formatDate value="${personnelMonthlyOfficial1.work_days }" />
+			</p>
+
 			<p>
 				<label>试用期工资：</label>
 				<fmt:formatNumber value="${personnelMonthlyOfficial1.tryout_salary }" type="number" pattern="##,##0.00#"/>
 			</p>
+
+			<p>
+				<label>当月试用期工作日天数：</label>
+				<fmt:formatDate value="${personnelMonthlyOfficial1.tryout_days }" />
+			</p>
+
 			<p>
 				<label>正式工资：</label>
 				<fmt:formatNumber value="${personnelMonthlyOfficial1.official_salary }" type="number" pattern="##,##0.00#"/>
 			</p>
+
+			<p>
+				<label>当月转正工作日天数：</label>
+				<fmt:formatDate value="${personnelMonthlyOfficial1.official_days }" />
+			</p>
+
 			<p>
 				<label>转正当月工资：</label>
 				<fmt:formatNumber value="${personnelMonthlyOfficial1.curr_salary }" type="number" pattern="##,##0.00#"/>

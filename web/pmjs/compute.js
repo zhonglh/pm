@@ -243,6 +243,7 @@
 	
 	/**
 	 * 病假工资
+	 * exp_sick_leave_salary 在head.inc.jsp中定义了
 	 * @param field
 	 * @param key
 	 * @param val

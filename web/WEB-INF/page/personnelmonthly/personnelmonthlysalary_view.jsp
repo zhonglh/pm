@@ -48,16 +48,33 @@
 				<label>调薪时间：</label>
 				<fmt:formatDate value="${personnelMonthlySalary1.change_time }" pattern="yyyy-MM-dd"/>
 			</p>
+
+
+			<p>
+				<label>当月工作日天数：</label>
+				${personnelMonthlySalary1.work_days }
+			</p>
 			
 			
 			<p>
-				<label>原薪资：</label>
+				<label>调薪前薪资：</label>
 				<fmt:formatNumber value="${personnelMonthlySalary1.old_salary }" type="number" pattern="##,##0.00#"/>
 			</p>
+
+			<p>
+				<label>当月调薪前工作日天数：</label>
+				${personnelMonthlySalary1.old_days }
+			</p>
+
 			
 			<p>
 				<label>调薪后薪资：</label>
 				<fmt:formatNumber value="${personnelMonthlySalary1.new_salary }" type="number" pattern="##,##0.00#"/>
+			</p>
+
+			<p>
+				<label>当月调薪后工作日天数：</label>
+				${personnelMonthlySalary1.new_days }
 			</p>
 			
 			<p>

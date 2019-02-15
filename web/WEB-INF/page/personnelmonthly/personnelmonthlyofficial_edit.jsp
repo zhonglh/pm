@@ -45,18 +45,47 @@
 				<label>入职时间：</label>
 				<input name="join_datetime" class="required" type="text" size="30" readonly maxlength="30" value="<fmt:formatDate value="${personnelMonthlyOfficial1.join_datetime }" pattern="yyyy-MM-dd"/>"  />
 			</p>
+
+
+
 			<p>
-				<label>转正时间：</label>
+				<label>转正日期：</label>
 				<input name="confirmation_date" class="required" type="text" size="30" readonly maxlength="30" value="<fmt:formatDate value="${personnelMonthlyOfficial1.confirmation_date }" pattern="yyyy-MM-dd"/>" />
 			</p>
+
+
+
+			<p>
+				<label>当月工作日天数：</label>
+				<input name="work_days" class="number required" maxlength="2" type="text"  maxlength="30" value="${personnelMonthlyOfficial1.work_days}" />
+			</p>
+
+
 			<p>
 				<label>试用期工资：</label>
 				<input name="tryout_salary" class="number required" type="text" size="30" readonly min="0.01" value="<fmt:formatNumber value="${personnelMonthlyOfficial1.tryout_salary }" type="number" pattern="####0.00#"/>" />
 			</p>
+
+
+
+			<p>
+				<label>当月试用工作日天数：</label>
+				<input name="tryout_days" class="number required" maxlength="2" type="text" size="30"  value="${personnelMonthlyOfficial1.tryout_days}" />
+			</p>
+
 			<p>
 				<label>正式工资：</label>
 				<input name="official_salary" class="number required" type="text" size="30" readonly min="0.01" value="<fmt:formatNumber value="${personnelMonthlyOfficial1.official_salary }" type="number" pattern="####0.00#"/>" />
 			</p>
+
+
+
+			<p>
+				<label>当月转正工作日天数：</label>
+				<input name="official_days" class="number required" maxlength="2" type="text" size="30"   value="${personnelMonthlyOfficial1.official_days}" />
+			</p>
+
+
 			<p>
 				<label>转正当月工资：</label>
 				<input name="curr_salary" class="number required" type="text" size="30" min="<fmt:formatNumber value="${personnelMonthlyOfficial1.tryout_salary }" type="number" pattern="####0.00#"/>" max="<fmt:formatNumber value="${personnelMonthlyOfficial1.official_salary }" type="number" pattern="####0.00#"/>" value="<fmt:formatNumber value="${personnelMonthlyOfficial1.curr_salary }" type="number" pattern="####0.00#"/>" />

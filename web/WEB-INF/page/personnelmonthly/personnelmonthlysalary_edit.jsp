@@ -49,15 +49,33 @@
 				<label>调薪时间：</label>
 				<input name="change_time" class="date required" type="text" size="30" maxlength="30" value="<fmt:formatDate value="${personnelMonthlySalary1.change_time }" pattern="yyyy-MM-dd"/>" />
 			</p>
+
+
+			<p>
+				<label>当月工作日天数：</label>
+				<input name="work_days" class="number required" maxlength="2" type="text"  maxlength="30" value="${personnelMonthlySalary1.work_days}" />
+			</p>
 			
 			<p>
-				<label>原薪资：</label>
+				<label>调薪前薪资：</label>
 				<input name="old_salary" class="number" readonly type="text" size="30" maxlength="10" value="<fmt:formatNumber value="${personnelMonthlySalary1.old_salary }" type="number" pattern="####0.00#"/>" />
+			</p>
+
+
+			<p>
+				<label>当月调薪前工作日天数：</label>
+				<input name="old_days" class="number required" maxlength="2" type="text"  maxlength="30" value="${personnelMonthlySalary1.old_days}" />
 			</p>
 			
 			<p>
 				<label>调薪后薪资：</label>
 				<input name="new_salary" class="number" type="text" size="30" maxlength="10" min="0.01" value="<fmt:formatNumber value="${personnelMonthlySalary1.new_salary }" type="number" pattern="####0.00#"/>" />
+			</p>
+
+
+			<p>
+				<label>当月调薪后工作日天数：</label>
+				<input name="new_days" class="number required" maxlength="2" type="text"  maxlength="30" value="${personnelMonthlySalary1.new_days}" />
 			</p>
 			
 			<p>

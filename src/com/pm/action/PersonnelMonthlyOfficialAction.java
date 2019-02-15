@@ -95,9 +95,9 @@ public class PersonnelMonthlyOfficialAction extends PersonnelMonthlyBaseAction {
 
 		StaffCost staffCost = processExist(personnelMonthlyOfficial,request);
 		personnelMonthlyOfficial.setJoin_datetime(staffCost.getJoin_datetime());
-		personnelMonthlyOfficial.setConfirmation_date(staffCost.getConfirmation_date());
-		personnelMonthlyOfficial.setTryout_salary(staffCost.getTryout_salary());
-		personnelMonthlyOfficial.setOfficial_salary(staffCost.getOfficial_salary());
+		//personnelMonthlyOfficial.setConfirmation_date(staffCost.getConfirmation_date());
+		//personnelMonthlyOfficial.setTryout_salary(staffCost.getTryout_salary());
+		//personnelMonthlyOfficial.setOfficial_salary(staffCost.getOfficial_salary());
 		
 		User sessionUser = PubMethod.getUser(request);
 		personnelMonthlyOfficial.setId(IDKit.generateId());
@@ -125,9 +125,9 @@ public class PersonnelMonthlyOfficialAction extends PersonnelMonthlyBaseAction {
 
 		StaffCost staffCost = processExist(personnelMonthlyOfficial,request);
 		personnelMonthlyOfficial.setJoin_datetime(staffCost.getJoin_datetime());
-		personnelMonthlyOfficial.setConfirmation_date(staffCost.getConfirmation_date());
-		personnelMonthlyOfficial.setTryout_salary(staffCost.getTryout_salary());
-		personnelMonthlyOfficial.setOfficial_salary(staffCost.getOfficial_salary());
+		//personnelMonthlyOfficial.setConfirmation_date(staffCost.getConfirmation_date());
+		//personnelMonthlyOfficial.setTryout_salary(staffCost.getTryout_salary());
+		//personnelMonthlyOfficial.setOfficial_salary(staffCost.getOfficial_salary());
 		
 		int count = 0;
 		try{

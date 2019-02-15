@@ -723,6 +723,10 @@ public class SalaryGroupAction extends BaseAction {
 	}
 
 	private void computeBeforeInfo(Date date1, List<Salary> list) {
+		if(list == null || list.isEmpty()){
+			return ;
+		}
+
 		int month = DateKit.getMonth(date1);
 		if(month != 12) {
 			//计算之前的累计

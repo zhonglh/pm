@@ -33,7 +33,7 @@ public class PersonnelMonthlyBase extends IdEntity implements Serializable {
 	private String build_userid;
 	@EntityAnnotation(item_name="制表人" ,item_sort=200) 
 	private String build_username;	
-	@EntityAnnotation(item_name="核单人" ,item_sort=200) 	
+	@EntityAnnotation(item_name="核单人" ,item_sort=201)
 	private String verify_username;		
 	private String verify_userid;		
 	private Timestamp verify_datetime;

@@ -44,16 +44,16 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<c:if test="${operation_insert != null && operation_insert != '' }">
-				<li><a class="add" href="${webroot}/ContractAction.do?method=toEdit" mask="true" width="900" height="400" rel="add_contract"  target="dialog"><span>添加合同</span></a></li>
+				<li><a class="add" href="${webroot}/ContractAction.do?method=toEdit" mask="true" width="900" height="400" rel="add_contract" title="添加收款合同" target="dialog"><span>添加合同</span></a></li>
 			</c:if>
 			<c:if test="${operation_delete != null && operation_delete != '' }">
 				<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${webroot}/ContractAction.do?method=deleteContract" class="delete"><span>删除</span></a></li> 
 		</c:if>
 			<c:if test="${operation_update != null && operation_update != '' }">
-				<li><a class="edit" href="${webroot}/ContractAction.do?method=toEdit&id={sid}" mask="true" width="900"  height="400" rel="update_contract" target="dialog" warn="请选择一条数据"><span>修改合同</span></a></li>
+				<li><a class="edit" href="${webroot}/ContractAction.do?method=toEdit&id={sid}" mask="true" width="900"  height="400" rel="update_contract" target="dialog" title="修改收款合同" warn="请选择一条数据"><span>修改合同</span></a></li>
 			</c:if>
 			<c:if test="${operation_read != null && operation_read != '' }">
-				<li><a class="edit" href="${webroot}/ContractAction.do?method=toView&id={sid}" mask="true" width="900"  height="480" rel="view_contract" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
+				<li><a class="edit" href="${webroot}/ContractAction.do?method=toView&id={sid}" mask="true" width="900"  height="480" rel="view_contract" target="dialog" title="查看收款合同明细" warn="请选择一条数据"><span>查看明细</span></a></li>
 			</c:if>	
 			<li class="line">line</li>
 			<c:if test="${operation_read != null && operation_read != '' }">

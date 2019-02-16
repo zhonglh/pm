@@ -9,7 +9,6 @@ public class Error {
     private String result;
 
     public Error() {
-        // TODO Auto-generated constructor stub
     }
 
     public Error(int code) {

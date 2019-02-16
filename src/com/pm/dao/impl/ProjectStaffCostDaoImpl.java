@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.pm.domain.business.MonthlyStatement;
 import org.springframework.stereotype.Component;
 
 import com.common.beans.Pager;
@@ -42,6 +43,21 @@ public class ProjectStaffCostDaoImpl extends BatisDao implements	IProjectStaffCo
 		return pager1;
 		
 		
+	}
+
+
+	@Override
+	public ProjectStaffCost queryProjectStaffCostSum(ProjectStaffCost projectStaffCost, UserPermit userPermit ){
+		String sql = "ProjectStaffCostMapping.queryProjectStaffCostSum";
+		Map  map = new HashMap();
+		if(projectStaffCost !=null) {
+			map.put(projectStaffCost.getClass().getSimpleName(), projectStaffCost);
+		}
+		if(userPermit !=null) {
+			map.put(userPermit.getClass().getSimpleName(), userPermit);
+		}
+
+		return this.query(sql,ProjectStaffCost.class, map).get(0);
 	}
 
 	@Override

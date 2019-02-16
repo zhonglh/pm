@@ -25,6 +25,9 @@ import com.pm.service.IStaffCostExService;
 import com.pm.util.constant.EnumPersonnelMonthlyType;
 import com.pm.vo.UserPermit;
 
+/**
+ * @author Administrator
+ */
 @Component
 public class PersonnelMonthlyBaseServiceImpl implements  IPersonnelMonthlyBaseService {
 
@@ -44,7 +47,9 @@ public class PersonnelMonthlyBaseServiceImpl implements  IPersonnelMonthlyBaseSe
 	@Override
 	public void verifyPersonnelMonthlyBase(PersonnelMonthlyBase personnelMonthlyBase) {
 		PersonnelMonthlyBase base = personnelMonthlyBaseDao.getPersonnelMonthlyBase(personnelMonthlyBase.getId());
-		if(!StringUtils.isEmpty(base.getVerify_userid()))  throw new PMException (CommonErrorConstants.e029901); 
+		if(!StringUtils.isEmpty(base.getVerify_userid()))  {
+			throw new PMException (CommonErrorConstants.e029901);
+		}
 		int size = personnelMonthlyBaseDao.verifyPersonnelMonthlyBase(personnelMonthlyBase);
 		if(size == 1){
 			if(EnumPersonnelMonthlyType.Bonus.getId().equals(base.getMonthly_type())){
@@ -63,13 +68,16 @@ public class PersonnelMonthlyBaseServiceImpl implements  IPersonnelMonthlyBaseSe
 				PersonnelMonthlyReserveFund reservefund = personnelMonthlyReserveFundService.getPersonnelMonthlyReserveFund(base.getId());
 				staffCostExService.checkReserveFund(reservefund);
 			}else if(EnumPersonnelMonthlyType.Official.getId().equals(base.getMonthly_type())){
+				//todo 将转正日期 正式工资赋值到人员成本表中
 				;
 			}else if(EnumPersonnelMonthlyType.AddSalary.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlySalary salary = personnelMonthlySalaryService.getPersonnelMonthlySalary(base.getId());
 				staffCostExService.checkAddSalary(salary);
+				//todo 将加薪后的工资赋值到人员成本表中
 			}else if(EnumPersonnelMonthlyType.DecrSalary.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlySalary salary = personnelMonthlySalaryService.getPersonnelMonthlySalary(base.getId());
 				staffCostExService.checkDecrSalary(salary);
+				//todo 将减薪后的工资赋值到人员成本表中
 			}else if(EnumPersonnelMonthlyType.SalarySupply.getId().equals(base.getMonthly_type())){
 				;
 			}

@@ -118,6 +118,13 @@
 
 
 
+	<select id="queryProjectStaffCostSum" parameterType="map"  resultMap="projectStaffCostMap">
+		SELECT sum(amount) as amount,sum(insurance_amount) as insurance_amount,sum(pub_funds_amount) as pub_funds_amount,
+		sum(personal_income_tax) as personal_income_tax,sum(other_amount) as other_amount,
+		sum(all_amount) as all_amount FROM (
+		<include refid="projectStaffCostPagerSql"/>
+		) c
+	</select>
 
 
 	<select id="queryProjectStaffCostByPager_mysql" parameterType="map"

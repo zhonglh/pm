@@ -9,7 +9,7 @@ import com.pm.domain.business.Params;
 import com.pm.domain.business.Salary;
 
 /**
- * 准许扣除的费用
+ * 当月五险一金代扣款(准许扣除的费用)
  * @author zhonglihong
  * @date 2016年4月10日 下午7:47:15
  */

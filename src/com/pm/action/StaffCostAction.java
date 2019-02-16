@@ -1609,7 +1609,7 @@ public class StaffCostAction extends BaseAction {
 				staffCostService.deleteStaffCost(staffCosts);
 			}
 			
-			//todo
+			//发送事件
 			//if(staffCost_ids.length == 1) BusinessSend.send(StaffCost.class.getSimpleName() , staffCost_ids [0]);
 			//else BusinessSend.send(StaffCost.class.getSimpleName());
 			

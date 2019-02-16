@@ -49,33 +49,47 @@ public class StaffCostExServiceImpl implements IStaffCostExService{
 		return raiserecord;
 	}
 
+	@Override
 	public void checkAddSalary(PersonnelMonthlySalary personnelMonthlySalary) {
 		int size= staffCostExDao.checkAddSalary1(personnelMonthlySalary);
-		if(size == 0) size = staffCostExDao.checkAddSalary2(personnelMonthlySalary);
+		if(size == 0) {
+			size = staffCostExDao.checkAddSalary2(personnelMonthlySalary);
+		}
 		if(size == 1){
 			StaffRaiseRecord raiserecord = buildStaffRaiseRecord(personnelMonthlySalary);
 			raiserecordDao.addRaiseRecord(raiserecord);
 		}
 	}
+	@Override
 	public void unCheckAddSalary(PersonnelMonthlySalary personnelMonthlySalary) {
 		int size= staffCostExDao.unCheckAddSalary1(personnelMonthlySalary);
-		if(size == 0) size = staffCostExDao.unCheckAddSalary2(personnelMonthlySalary);
+		if(size == 0) {
+			size = staffCostExDao.unCheckAddSalary2(personnelMonthlySalary);
+		}
 		if(size == 1){
 			StaffRaiseRecord raiserecord = buildStaffRaiseRecord(personnelMonthlySalary);
 			raiserecordDao.deleteRaiseRecord(raiserecord);
 		}
 	}
+	@Override
 	public void checkDecrSalary(PersonnelMonthlySalary personnelMonthlySalary) {
 		int size= staffCostExDao.checkDecrSalary1(personnelMonthlySalary);
-		if(size == 0) size = staffCostExDao.checkDecrSalary2(personnelMonthlySalary);
+		if(size == 0) {
+			size = staffCostExDao.checkDecrSalary2(personnelMonthlySalary);
+		}
+
 		if(size == 1){
 			StaffRaiseRecord raiserecord = buildStaffRaiseRecord(personnelMonthlySalary);
 			raiserecordDao.addRaiseRecord(raiserecord);
 		}
 	}
+	@Override
 	public void unCheckDecrSalary(PersonnelMonthlySalary personnelMonthlySalary) {
 		int size= staffCostExDao.unCheckDecrSalary1(personnelMonthlySalary);
-		if(size == 0) size = staffCostExDao.unCheckDecrSalary2(personnelMonthlySalary);
+		if(size == 0) {
+			size = staffCostExDao.unCheckDecrSalary2(personnelMonthlySalary);
+		}
+
 		if(size == 1){
 			StaffRaiseRecord raiserecord = buildStaffRaiseRecord(personnelMonthlySalary);
 			raiserecordDao.deleteRaiseRecord(raiserecord);
@@ -84,6 +98,7 @@ public class StaffCostExServiceImpl implements IStaffCostExService{
 	
 	
 
+	@Override
 	public void checkReserveFund(PersonnelMonthlyReserveFund personnelMonthlyReserveFund) {
 		staffCostExDao.checkReserveFund(personnelMonthlyReserveFund);
 		InsuranceGrade insuranceGrade =insuranceGradeService.getInsuranceGrade(personnelMonthlyReserveFund.getInsurance_grade_id());
@@ -119,6 +134,7 @@ public class StaffCostExServiceImpl implements IStaffCostExService{
 			}
 	}
 	
+	@Override
 	public void unCheckReserveFund(PersonnelMonthlyReserveFund personnelMonthlyReserveFund) {
 
 		staffCostExDao.unCheckReserveFund(personnelMonthlyReserveFund);
@@ -155,6 +171,7 @@ public class StaffCostExServiceImpl implements IStaffCostExService{
 	
 	}	
 	
+	@Override
 	public void checkInsurance(PersonnelMonthlyInsurance personnelMonthlyInsurance) {
 		staffCostExDao.checkInsurance(personnelMonthlyInsurance);
 		InsuranceGrade insuranceGrade =insuranceGradeService.getInsuranceGrade(personnelMonthlyInsurance.getInsurance_grade_id());
@@ -189,6 +206,7 @@ public class StaffCostExServiceImpl implements IStaffCostExService{
 			}
 		
 	}
+	@Override
 	public void unCheckInsurance(PersonnelMonthlyInsurance personnelMonthlyInsurance) {
 		staffCostExDao.unCheckInsurance(personnelMonthlyInsurance);
 		InsuranceGrade insuranceGrade =insuranceGradeService.getInsuranceGrade(personnelMonthlyInsurance.getOld_insurance_grade_id());
@@ -225,6 +243,7 @@ public class StaffCostExServiceImpl implements IStaffCostExService{
 	
 
 	
+	@Override
 	public void checkBonus(PersonnelMonthlyBonus personnelMonthlyBonus) {
 		int size = staffCostExDao.checkBonus(personnelMonthlyBonus);
 		
@@ -242,6 +261,7 @@ public class StaffCostExServiceImpl implements IStaffCostExService{
 		}
 		
 	}
+	@Override
 	public void unCheckBonus(PersonnelMonthlyBonus personnelMonthlyBonus) {
 		int size = staffCostExDao.unCheckBonus(personnelMonthlyBonus);
 		

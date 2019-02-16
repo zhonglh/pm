@@ -315,8 +315,8 @@
 			<if test="MonthlyStatement.verify_flag == 2">			
 					and ms.verify_userid is null
 			</if>			
-			<if test="MonthlyStatement.verify_flag == 3">			
-					and aa.need_approve='1'
+			<if test="MonthlyStatement.verify_flag == 3">
+				and ms.verify_userid is not null and aa.need_approve='1'
 			</if>
 		</if>		
 		

@@ -722,6 +722,11 @@ public class SalaryGroupAction extends BaseAction {
 		return list;
 	}
 
+	/**
+	 * 计算本年份之前的累计数据， 工资月份从12月到下一年的11月为一年
+	 * @param date1
+	 * @param list
+	 */
 	private void computeBeforeInfo(Date date1, List<Salary> list) {
 		if(list == null || list.isEmpty()){
 			return ;

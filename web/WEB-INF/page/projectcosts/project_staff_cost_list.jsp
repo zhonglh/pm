@@ -106,6 +106,6 @@
 	</table>	
 
 	<!-- 分页 -->
-	<c:import url="../_frag/pager/panelBar_totalAmount.jsp"></c:import>
+	<c:import url="../_frag/pager/panelBar_totalAmount_any.jsp"></c:import>
 	
 </div>

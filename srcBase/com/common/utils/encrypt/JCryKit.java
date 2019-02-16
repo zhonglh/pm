@@ -50,7 +50,7 @@ public class JCryKit {
              * System.out.println("Prime exponent p : " + byteArrayToHexString(pkSpec.getPrimeExponentP().toByteArray())); System.out.println("Prime exponent q : " +
              * byteArrayToHexString(pkSpec.getPrimeExponentQ().toByteArray())); System.out.println("Modulus : " + byteArrayToHexString(pkSpec.getModulus().toByteArray()));
              * System.out.println("Private exponent : " + byteArrayToHexString(pkSpec.getPrivateExponent().toByteArray())); System.out.println("Public exponent : " +
-             * byteArrayToHexString(pkSpec.getPublicExponent().toByteArray())); } catch (InvalidKeySpecException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+             * byteArrayToHexString(pkSpec.getPublicExponent().toByteArray())); } catch (InvalidKeySpecException e) {  }
              */
 
             return keyPair;
@@ -305,7 +305,7 @@ public class JCryKit {
     }
 
     /**
-     * Parse url string (Todo - better parsing algorithm)
+     * Parse url string
      * 
      * @param url
      *            value to parse

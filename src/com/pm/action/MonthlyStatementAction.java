@@ -145,7 +145,7 @@ public class MonthlyStatementAction extends BaseAction {
 
 	/**
 	 * 导出Excel
-	 * @param searchStaffCost
+	 * @param searchMonthlyStatement
 	 * @param res
 	 * @param request
 	 */
@@ -190,7 +190,7 @@ public class MonthlyStatementAction extends BaseAction {
 
 	/**
 	 * 导出明细Excel
-	 * @param searchStaffCost
+	 * @param searchMonthlyStatement
 	 * @param res
 	 * @param request
 	 */

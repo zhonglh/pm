@@ -245,8 +245,8 @@
 			<if test="Invoice.verify_flag == 2">			
 					and invoice.verify_userid is null
 			</if>
-			<if test="Invoice.verify_flag == 3">			
-					and aa.need_approve='1'
+			<if test="Invoice.verify_flag == 3">
+				and (invoice.verify_userid is not null and aa.need_approve='1')
 			</if>
 		</if>				
 		

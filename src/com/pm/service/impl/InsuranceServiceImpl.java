@@ -63,6 +63,7 @@ public class InsuranceServiceImpl implements  IInsuranceService {
 	
 	
 
+	@Override
 	public List<Insurance> queryInsuranceByWorkAttendance(Insurance insurance){
 		return insuranceDao.queryInsuranceByWorkAttendance(insurance);
 	}

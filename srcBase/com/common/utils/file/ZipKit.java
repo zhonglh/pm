@@ -305,7 +305,7 @@ public class ZipKit {
 		try {
 			zipOutputStream = new ZipOutputStream(new FileOutputStream(file));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}		
 		boolean b = ZipKit.compressFloderChangeToZip(new File("/temp"),zipOutputStream,"");	*/

@@ -183,6 +183,9 @@
 			<if test="ProjectExpend.verify_flag == 2">			
 					and pe.verify_userid is null
 			</if>
+			<if test="ProjectExpend.verify_flag == 3">
+				and (pe.verify_userid is not null and aa.need_approve = '1')
+			</if>
 		</if>				
 		
 		<include refid="ProjectAuthMapping.permission"/>

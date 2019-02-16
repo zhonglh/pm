@@ -40,7 +40,10 @@ public class ProjectStaffCostServiceImpl implements IProjectStaffCostService {
 	public Pager<ProjectStaffCost> queryProjectStaffCost(
 			ProjectStaffCost projectStaffCost, UserPermit userPermit,
 			Pager<ProjectStaffCost> pager) {
-		return projectStaffCostDao.queryProjectStaffCost(projectStaffCost, userPermit, pager);
+		Pager<ProjectStaffCost> projectStaffCostPage =  projectStaffCostDao.queryProjectStaffCost(projectStaffCost, userPermit, pager);
+		ProjectStaffCost projectStaffCostSum = projectStaffCostDao.queryProjectStaffCostSum(projectStaffCost, userPermit);
+		projectStaffCostPage.setResultObj(projectStaffCostSum);
+		return projectStaffCostPage;
 	}
 
 	@Override

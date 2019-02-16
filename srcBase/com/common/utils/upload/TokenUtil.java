@@ -20,7 +20,7 @@ public class TokenUtil {
         int code = name.hashCode ();
         try {
             String token = (code > 0 ? "A" : "B") + Math.abs (code) + "_" + size.trim ();
-            /** TODO: store your token, here just create a file */
+
             IoUtil.storeToken (token);
 
             return token;

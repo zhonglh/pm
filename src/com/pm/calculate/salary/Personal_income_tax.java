@@ -17,8 +17,11 @@ public class Personal_income_tax extends AbstractSalaryClculate implements ISala
 
 	@Override
 	public void calculate(Salary salary,Map<String, Params> paramMap, Map<String,ParamExtend> paramExtMap) {
-
-		salary.setPersonal_income_tax(salary.getAccumulated_replenishment_tax());
+		double result = salary.getAccumulated_replenishment_tax();
+		if(result < 0){
+			result = 0;
+		}
+		salary.setPersonal_income_tax(result);
 
 	}
 

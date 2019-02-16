@@ -27,7 +27,7 @@
 
 			<p>
 				<label>客户名称：</label>
-				<input name="project.project_client_name" class="text" type="text" size="30" maxlength="30" value="${contract1.project_client_name}" readonly="true"/>
+				<input name="project.project_client_name" class="text" type="text" size="30" maxlength="50" value="${contract1.project_client_name}" readonly="true"/>
 			</p>
 			
 			<p>
@@ -36,7 +36,7 @@
 			</p>
 			<p>
 				<label>执行合同：</label>
-				<input name="exec_contract" class="text" type="text" size="30" maxlength="30" value="${contract1.exec_contract }" />
+				<input name="exec_contract" class="text" type="text" size="30" maxlength="300" value="${contract1.exec_contract }" />
 			</p>
 			<p>
 				<label>人月费用：</label>

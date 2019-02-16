@@ -642,7 +642,7 @@
     function accumulated_replenishment_tax(field,key,val){
         var result = field.accumulated_deductible_taxpaid - field.accumulated_prepaid_tax;
         result = fixed(result);
-        if(result < 0) result = 0;
+        //if(result < 0) result = 0;
         backFill(field,key,result);
     }
 
@@ -658,7 +658,6 @@
 	 */
 	function personal_income_tax(field,key,val){
 		var result = field.accumulated_replenishment_tax;
-
 		result = fixed(result);	
 		if(result < 0) result = 0;
 		backFill(field,key,result);

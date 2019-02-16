@@ -18,6 +18,8 @@ public interface IProjectStaffCostDao {
 	public void deleteProjectStaffCost(Salary salary) ;
 	
 	public Pager<ProjectStaffCost> queryProjectStaffCost(ProjectStaffCost projectStaffCost, UserPermit userPermit,Pager<ProjectStaffCost> pager);
+
+	public ProjectStaffCost queryProjectStaffCostSum(ProjectStaffCost projectStaffCost, UserPermit userPermit );
 	
 	public ProjectStaffCost getProjectStaffCost(ProjectStaffCost projectStaffCost) ;
 

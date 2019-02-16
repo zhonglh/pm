@@ -442,6 +442,9 @@
 			<if test="Salary.verify_flag == 2">			
 					and salary.verify_userid is null
 			</if>
+			<if test="Salary.verify_flag == 3">
+				and (salary.verify_userid is not null and aa.need_approve = '1')
+			</if>
 		</if>
 		
 		

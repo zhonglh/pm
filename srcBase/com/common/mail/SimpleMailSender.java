@@ -163,7 +163,7 @@ public class SimpleMailSender {
 				try {
 					transport.close();
 				} catch (MessagingException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 		}

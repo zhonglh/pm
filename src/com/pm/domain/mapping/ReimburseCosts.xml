@@ -190,6 +190,9 @@
 			<if test="ReimburseCosts.verify_flag == 2">			
 					and rc.verify_userid is null
 			</if>
+			<if test="ReimburseCosts.verify_flag == 3">
+				and (rc.verify_userid is not null and aa.need_approve = '1')
+			</if>
 		</if>						
 		
 		<include refid="ProjectAuthMapping.permission"/>		

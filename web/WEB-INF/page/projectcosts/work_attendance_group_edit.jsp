@@ -26,7 +26,7 @@
 			
 			<div class="divider"></div>
 			
-			<table class="list nowrap itemUpdate" width="1500" >
+			<table class="list nowrap itemUpdate" width="1750" >
 				<thead>
 					<tr>
 					
@@ -40,6 +40,11 @@
 						<th width="80" >出差天数</th>
 						<th width="80" >事假天数</th>
 						<th width="80" >病假天数</th>
+
+						<th width="80" >待岗天数</th>
+						<th width="80" >产假天数</th>
+						<th width="90" >医疗假天数</th>
+
 						<th width="80" >旷工天数</th>
 						<th width="80" >迟到天数</th>
 						<th width="120" >周末加班天数</th>
@@ -69,6 +74,12 @@
 						<td><input type="text" size="5" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="business_trip_days${status1.index + 1 }" class="number required" value="${workAttendance.business_trip_days }" /></td>
 						<td><input type="text" size="5" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="personal_leave_days${status1.index + 1 }" class="number required" value="${workAttendance.personal_leave_days }" /></td>
 						<td><input type="text" size="5" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="sick_leave_days${status1.index + 1 }" class="number required" value="${workAttendance.sick_leave_days }" /></td>
+
+						<td><input type="text" size="5" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="waiting_post_days${status1.index + 1 }" class="number required" value="${workAttendance.waiting_post_days }" /></td>
+						<td><input type="text" size="5" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="maternity_leave_days${status1.index + 1 }" class="number required" value="${workAttendance.maternity_leave_days }" /></td>
+						<td><input type="text" size="5" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="medical_days${status1.index + 1 }" class="number required" value="${workAttendance.medical_days }" /></td>
+
+
 						<td><input type="text" size="5" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="neglect_work_days${status1.index + 1 }" class="number required" value="${workAttendance.neglect_work_days }" /></td>
 						<td><input type="text" size="5" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="late_days${status1.index + 1 }" class="number required" value="${workAttendance.late_days }" /></td>
 						<td><input type="text" size="6" <c:if test="${workAttendance.operationType=='1' }">style="background:#86B300"</c:if><c:if test="${workAttendance.operationType=='3' }">style="background:red" readonly="true"</c:if> name="weekend_overtime_days${status1.index + 1 }" class="number required" value="${workAttendance.weekend_overtime_days }" /></td>

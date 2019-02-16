@@ -230,7 +230,7 @@ public class WorkAttendanceGroupAction extends BaseAction {
 		
 		int index = 0;
 		for(String[] row : list){
-			if(row.length<15) {
+			if(row.length<19) {
 				return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
 			}
 			index ++;
@@ -598,6 +598,12 @@ public class WorkAttendanceGroupAction extends BaseAction {
 			workAttendance.setBusiness_trip_days(Double.parseDouble(request.getParameter("business_trip_days"+index)));
 			workAttendance.setPersonal_leave_days(Double.parseDouble(request.getParameter("personal_leave_days"+index)));
 			workAttendance.setSick_leave_days(Double.parseDouble(request.getParameter("sick_leave_days"+index)));
+
+			workAttendance.setWaiting_post_days(Double.parseDouble(request.getParameter("waiting_post_days"+index)));
+			workAttendance.setMaternity_leave_days(Double.parseDouble(request.getParameter("maternity_leave_days"+index)));
+			workAttendance.setMedical_days(Double.parseDouble(request.getParameter("medical_days"+index)));
+
+
 			workAttendance.setNeglect_work_days(Double.parseDouble(request.getParameter("neglect_work_days"+index)));
 			workAttendance.setLate_days(Double.parseDouble(request.getParameter("late_days"+index)));
 			workAttendance.setWeekend_overtime_days(Double.parseDouble(request.getParameter("weekend_overtime_days"+index)));
@@ -678,6 +684,11 @@ public class WorkAttendanceGroupAction extends BaseAction {
 			workAttendance.setBusiness_trip_days(Double.parseDouble(request.getParameter("business_trip_days"+index)));
 			workAttendance.setPersonal_leave_days(Double.parseDouble(request.getParameter("personal_leave_days"+index)));
 			workAttendance.setSick_leave_days(Double.parseDouble(request.getParameter("sick_leave_days"+index)));
+
+			workAttendance.setWaiting_post_days(Double.parseDouble(request.getParameter("waiting_post_days"+index)));
+			workAttendance.setMaternity_leave_days(Double.parseDouble(request.getParameter("maternity_leave_days"+index)));
+			workAttendance.setMedical_days(Double.parseDouble(request.getParameter("medical_days"+index)));
+
 			workAttendance.setNeglect_work_days(Double.parseDouble(request.getParameter("neglect_work_days"+index)));
 			workAttendance.setLate_days(Double.parseDouble(request.getParameter("late_days"+index)));
 			workAttendance.setWeekend_overtime_days(Double.parseDouble(request.getParameter("weekend_overtime_days"+index)));

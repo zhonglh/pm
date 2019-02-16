@@ -272,8 +272,8 @@ public class StaffCost implements Serializable {
 	@EntityAnnotation(item_name="继续教育", item_sort=73,length=8)
 	private double continuing_education;
 
-
-
+	//工作状态
+	private String work_status;
 
 
     @EntityAnnotation(item_name="备注" , item_sort=74,length=300)

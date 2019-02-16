@@ -27,7 +27,9 @@ public class Sick_leave_salary extends AbstractSalaryClculate implements ISalary
 		if(should_work_days != 0){
 			try{
 				ParamExtend paramExtend = null;
-				if(paramExtMap != null) paramExtend = paramExtMap.get("sick_leave_salary");
+				if(paramExtMap != null) {
+					paramExtend = paramExtMap.get("sick_leave_salary");
+				}
 				if(paramExtend != null && StringUtils.isNotEmpty(paramExtend.getExpression()) ){
 					result = Double.parseDouble(paramExtend.getRealVal())/should_work_days*sick_leave_days*Double.parseDouble(paramExtend.getProcessor());
 				}else {

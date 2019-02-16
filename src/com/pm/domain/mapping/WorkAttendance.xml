@@ -60,12 +60,14 @@
 		insert into tb_work_attendance(
 		  	attendance_id, staff_id, project_id, attendance_month,should_work_days,
 			work_days,legal_holidays,swopped_holidays,business_trip_days,personal_leave_days,annual_leave_days,
-		  	sick_leave_days, neglect_work_days, late_days, weekend_overtime_days,technical_cost,client_dept,every_overtime,remark,
+		  	sick_leave_days, waiting_post_days,maternity_leave_days,medical_days,
+		  	neglect_work_days, late_days, weekend_overtime_days,technical_cost,client_dept,every_overtime,remark,
 		  	build_username,build_userid,build_datetime,delete_flag
 		)values(
 			#{attendance_id}, #{staff_id},#{project_id}, #{attendance_month}, #{should_work_days},
 			#{work_days}, #{legal_holidays},#{swopped_holidays}, #{business_trip_days}, #{personal_leave_days},#{annual_leave_days},
-			#{sick_leave_days}, #{neglect_work_days},#{late_days}, #{weekend_overtime_days}, #{technical_cost}, #{client_dept}, #{every_overtime}, #{remark},
+			#{sick_leave_days}, #{waiting_post_days}, #{maternity_leave_days}, #{medical_days},
+			#{neglect_work_days},#{late_days}, #{weekend_overtime_days}, #{technical_cost}, #{client_dept}, #{every_overtime}, #{remark},
 			#{build_username},#{build_userid},#{build_datetime},#{delete_flag} 
 		)
 	</insert>
@@ -81,6 +83,11 @@
 		personal_leave_days =#{personal_leave_days} ,
 		annual_leave_days =#{annual_leave_days} ,
 		sick_leave_days =#{sick_leave_days} ,
+
+		waiting_post_days =#{waiting_post_days} ,
+		maternity_leave_days =#{maternity_leave_days} ,
+		medical_days =#{medical_days} ,
+
 		neglect_work_days =#{neglect_work_days} ,
 		late_days =#{late_days} ,
 		weekend_overtime_days =#{weekend_overtime_days} ,

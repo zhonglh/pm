@@ -25,7 +25,7 @@
 			
 			<div class="divider"></div>
 			
-			<table class="list nowrap" width=1550 >
+			<table class="list nowrap" width=1800 >
 				<thead>
 					<tr>
 					
@@ -39,6 +39,11 @@
 						<th width="80" >出差天数</th>
 						<th width="80" >事假天数</th>
 						<th width="80" >病假天数</th>
+
+						<th width="80" >待岗天数</th>
+						<th width="80" >产假天数</th>
+						<th width="90" >医疗假天数</th>
+
 						<th width="80" >旷工天数</th>
 						<th width="80" >迟到天数</th>
 						<th width="120" >周末加班天数</th>
@@ -69,6 +74,11 @@
 						<td>${workAttendance.business_trip_days }</td>
 						<td>${workAttendance.personal_leave_days }</td>
 						<td>${workAttendance.sick_leave_days }</td>
+
+						<td>${workAttendance.waiting_post_days }</td>
+						<td>${workAttendance.maternity_leave_days }</td>
+						<td>${workAttendance.medical_days }</td>
+
 						<td>${workAttendance.neglect_work_days }</td>
 						<td>${workAttendance.late_days }</td>
 						<td>${workAttendance.weekend_overtime_days }</td>

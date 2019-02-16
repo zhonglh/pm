@@ -46,23 +46,37 @@ public class WorkAttendance implements Serializable , ISort{
 	private double personal_leave_days;	
 
 	@EntityAnnotation(item_name="病假天数" , item_sort=12,length=5) 
-	private double sick_leave_days;	
+	private double sick_leave_days;
 
-	@EntityAnnotation(item_name="旷工天数" , item_sort=13,length=5) 
+
+	@EntityAnnotation(item_name="待岗天数" , item_sort=13,length=5)
+	private double waiting_post_days;
+	@EntityAnnotation(item_name="产假天数" , item_sort=14,length=5)
+	private double maternity_leave_days;
+	@EntityAnnotation(item_name="医疗假天数" , item_sort=15,length=5)
+	private double medical_days;
+
+
+
+
+
+
+
+	@EntityAnnotation(item_name="旷工天数" , item_sort=16,length=5)
 	private double neglect_work_days;	
 
-	@EntityAnnotation(item_name="迟到天数" , item_sort=14,length=5) 
+	@EntityAnnotation(item_name="迟到天数" , item_sort=17,length=5)
 	private double late_days;		
 
-	@EntityAnnotation(item_name="周末加班" , item_sort=15,length=5) 
+	@EntityAnnotation(item_name="周末加班" , item_sort=18,length=5)
 	private double weekend_overtime_days;	
 	
 
-	@EntityAnnotation(item_name="日常加班(小时)" , item_sort=16,length=5) 
+	@EntityAnnotation(item_name="日常加班(小时)" , item_sort=19,length=5)
 	private double every_overtime;	
 	
 
-	@EntityAnnotation(item_name="备注" , item_sort=17,length=150) 
+	@EntityAnnotation(item_name="备注" , item_sort=20,length=150)
 	private String remark;	
 	
 
@@ -364,7 +378,34 @@ public class WorkAttendance implements Serializable , ISort{
 	public void setErrorInfo(String errorInfo) {
 		this.errorInfo = errorInfo;
 	}
-	
+
+	public double getWaiting_post_days() {
+		return waiting_post_days;
+	}
+
+	public void setWaiting_post_days(double waiting_post_days) {
+		this.waiting_post_days = waiting_post_days;
+	}
+
+	public double getMaternity_leave_days() {
+		return maternity_leave_days;
+	}
+
+	public void setMaternity_leave_days(double maternity_leave_days) {
+		this.maternity_leave_days = maternity_leave_days;
+	}
+
+	public double getMedical_days() {
+		return medical_days;
+	}
+
+	public void setMedical_days(double medical_days) {
+		this.medical_days = medical_days;
+	}
+
+
+
+
 	public String getStr_month() {
 		if(str_month == null && attendance_month != 0) {
 			return String.valueOf(attendance_month);

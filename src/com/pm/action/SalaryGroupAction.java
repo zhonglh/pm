@@ -745,8 +745,10 @@ public class SalaryGroupAction extends BaseAction {
 			}
 			List<Salary> accumulatedSalaryInfos = salaryService.getAccumulatedSalary(startSalaryMonth, endSalaryMonth, staffCostIds);
 			Map<String, Salary> accumulatedSalaryMap = new HashMap<String, Salary>();
-			for (Salary salary : accumulatedSalaryInfos) {
-				accumulatedSalaryMap.put(salary.getStaff_id(), salary);
+			if(accumulatedSalaryInfos!=null && !accumulatedSalaryInfos.isEmpty()) {
+				for (Salary salary : accumulatedSalaryInfos) {
+					accumulatedSalaryMap.put(salary.getStaff_id(), salary);
+				}
 			}
 			for (Salary salary : list) {
 				Salary accumulatedSalary = accumulatedSalaryMap.get(salary.getStaff_id());

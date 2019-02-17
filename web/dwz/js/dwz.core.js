@@ -104,7 +104,7 @@ var DWZ = {
 			type:'GET',
 			url:pageFrag,
 			dataType:'xml',
-			timeout: 50000,
+			timeout: 150000,
 			cache: false,
 			error: function(xhr){
 				alert('Error loading XML document: ' + pageFrag + "\nHttp status: " + xhr.status + " " + xhr.statusText);

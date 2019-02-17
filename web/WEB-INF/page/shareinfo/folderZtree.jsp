@@ -142,7 +142,7 @@ $(document).ready(function(){
 		type:'GET',
 		url:url,
 		dataType:'json',
-		timeout: 50000,
+		timeout: 150000,
 		cache: false,
 		error: function(xhr){
 			alert('Error loading XML document: ' + "\nHttp status: " + xhr.status + " " + xhr.statusText);

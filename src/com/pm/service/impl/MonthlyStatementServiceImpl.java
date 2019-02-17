@@ -140,6 +140,7 @@ public class MonthlyStatementServiceImpl implements IMonthlyStatementService {
 				if(StringUtils.isNotEmpty(monthlyStatementDetail.getMonthly_statement_detail_id())){
 					updateList.add(monthlyStatementDetail);
 				}else {
+					monthlyStatementDetail.setMonthly_statement_detail_id(IDKit.generateId());
 					insertList.add(monthlyStatementDetail);
 				}
 			}

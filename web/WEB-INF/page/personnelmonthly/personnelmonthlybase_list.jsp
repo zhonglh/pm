@@ -215,8 +215,8 @@
 					<td>${joinStaffCost.project_name }</td>
 					<td>${joinStaffCost.staff_no }</td>
 					<td>${joinStaffCost.staff_name }</td>
-					<td><b><fmt:formatDate value="${joinStaffCost.contract_start_date }" pattern="yyyy-MM-dd"/></b></td>
-					<td><fmt:formatDate value="${joinStaffCost.contract_end_date }" pattern="yyyy-MM-dd"/></td>
+					<td><fmt:formatDate value="${joinStaffCost.contract_start_date }" pattern="yyyy-MM-dd"/></td>
+					<td><b><fmt:formatDate value="${joinStaffCost.contract_end_date }" pattern="yyyy-MM-dd"/></b></td>
 					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.tryout_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.official_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.meal_allowance }" type="currency" pattern="###,###,##0.00"/></b></td>
@@ -257,8 +257,8 @@
 					<td>${joinStaffCost.project_name }</td>
 					<td>${joinStaffCost.staff_no }</td>
 					<td>${joinStaffCost.staff_name }</td>
-					<td><b><fmt:formatDate value="${joinStaffCost.join_datetime }" pattern="yyyy-MM-dd"/></b></td>
-					<td><fmt:formatDate value="${joinStaffCost.confirmation_date }" pattern="yyyy-MM-dd"/></td>
+					<td><fmt:formatDate value="${joinStaffCost.join_datetime }" pattern="yyyy-MM-dd"/></td>
+					<td><b><fmt:formatDate value="${joinStaffCost.confirmation_date }" pattern="yyyy-MM-dd"/></b></td>
 					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.tryout_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.official_salary }" type="currency" pattern="###,###,##0.00"/></b></td>
 					<td align="right"><b><fmt:formatNumber value="${joinStaffCost.meal_allowance }" type="currency" pattern="###,###,##0.00"/></b></td>

@@ -288,9 +288,15 @@ public class MonthlyStatementAction extends BaseAction {
 			for(String index : ids){
 				
 				MonthlyStatementDetail monthlyStatementDetail = new MonthlyStatementDetail();
-				
-				monthlyStatementDetail.setStaff_id(request.getParameter("staff_id"+index));
-				monthlyStatementDetail.setStaff_name(request.getParameter("staff_name"+index));
+
+				String staff_id = request.getParameter("staff_id"+index);
+				String staff_name = request.getParameter("staff_name"+index);
+				if(staff_id == null || staff_id.isEmpty()){
+					staff_id = request.getParameter("staff"+index+".staff_id");
+					staff_name = request.getParameter("staff"+index+".staff_name");
+				}
+				monthlyStatementDetail.setStaff_id(staff_id);
+				monthlyStatementDetail.setStaff_name(staff_name);
 	
 				monthlyStatementDetail.setTechnical_cost(Double.parseDouble(request.getParameter("technical_cost"+index)));
 				monthlyStatementDetail.setShould_work_days(Double.parseDouble(request.getParameter("should_work_days"+index)));
@@ -343,7 +349,8 @@ public class MonthlyStatementAction extends BaseAction {
 	public String updateMonthlyStatement(MonthlyStatement monthlyStatement,HttpServletResponse res,HttpServletRequest request){	
 
 		paramprocess(request,monthlyStatement);
-		
+		User sessionUser = PubMethod.getUser(request);
+
 		//判断项目是否更换了， 更换项目提示错误
 		MonthlyStatement old = monthlyStatementService.getMonthlyStatement(monthlyStatement);
 		if(old != null){
@@ -369,7 +376,6 @@ public class MonthlyStatementAction extends BaseAction {
 					staff_id = request.getParameter("staff"+index+".staff_id");
 					staff_name = request.getParameter("staff"+index+".staff_name");
 				}
-
 				monthlyStatementDetail.setStaff_id(staff_id);
 				monthlyStatementDetail.setStaff_name(staff_name);
 	
@@ -393,12 +399,17 @@ public class MonthlyStatementAction extends BaseAction {
 				monthlyStatementDetail.setMonthly_statement_id(monthlyStatement.getMonthly_statement_id());
 				monthlyStatementDetail.setMonthly_statement_detail_id(request.getParameter("monthly_statement_detail_id"+index));
 
+				if(StringUtils.isEmpty(monthlyStatementDetail.getMonthly_statement_detail_id())){
+					monthlyStatementDetail.setBuild_datetime(PubMethod.getCurrentDate());
+					monthlyStatementDetail.setBuild_userid(sessionUser.getUser_id());
+					monthlyStatementDetail.setBuild_username(sessionUser.getUser_name());
+				}
+
 				list.add(monthlyStatementDetail);
 			}
 		}
 		
 
-		User sessionUser = PubMethod.getUser(request);
 		try{
 			ThreadLocalUser.setUser(sessionUser);
 			monthlyStatementService.updateMonthlyStatement(monthlyStatement,list);

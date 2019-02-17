@@ -28,15 +28,20 @@
 			
 			<div class="divider"></div>
 
-			<button type="button" curr="${fn:length(list)}" onclick="addMSD(this , '${webroot }')">新建</button>
+
+			<%--<div class="buttonActive"><div class="buttonContent">
+				<button type="button" class="buttonActive" curr="${fn:length(list)}" onclick="addMSD(this , '${webroot }')">新建</button>
+			</div></div>--%>
+
+
 			
 			
 			
-			<table id="monthly_statement_detail_table" class="list nowrap  <c:if test="${monthlyStatement1.monthly_statement_id == null || monthlyStatement1.monthly_statement_id == ''}">monthlyStatementComputer</c:if><c:if test="${monthlyStatement1.monthly_statement_id != null && monthlyStatement1.monthly_statement_id != ''}">monthlyStatementUpdateComputer</c:if>" width="1500" >
+			<table addButton="增加" webroot="${webroot}" class="list nowrap  <c:if test="${monthlyStatement1.monthly_statement_id == null || monthlyStatement1.monthly_statement_id == ''}">monthlyStatementComputer</c:if><c:if test="${monthlyStatement1.monthly_statement_id != null && monthlyStatement1.monthly_statement_id != ''}">monthlyStatementUpdateComputer</c:if>" width="1500" >
 				<thead>
 					<tr>
 						<th width="40" nowrap>序号</th>						
-						<th width="80" nowrap>人员名称</th>
+						<th width="120" nowrap>人员名称</th>
 						<th width="160" >服务费用(人月)</th>	
 						<th width="100" >应出勤天数</th>	
 						<th width="100" >实出勤天数</th>	

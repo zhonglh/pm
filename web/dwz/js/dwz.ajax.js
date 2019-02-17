@@ -327,7 +327,7 @@ function ajaxTodo(url, callback){
 		type:'POST',
 		url:url,
 		dataType:"json",
-		timeout: 100000,
+		timeout: 150000,
 		cache: false,
 		success: $callback,
 		error: DWZ.ajaxError

@@ -90,6 +90,10 @@ public class ReceivedPayment implements Serializable {
 	//查询时间段
 	private Timestamp date1;	
 	private Timestamp date2;
+
+
+	//销售负责人
+	private String sales_username;
 	
 
 	private int receive_payment_month1;
@@ -265,8 +269,12 @@ public class ReceivedPayment implements Serializable {
 	}
 
 	public String getStr_month() {
-		if(str_month == null && receive_payment_month != 0) return String.valueOf(receive_payment_month);
-		else return PubMethod.fromatExcelDecimal(str_month);
+		if(str_month == null && receive_payment_month != 0) {
+			return String.valueOf(receive_payment_month);
+		}
+		else {
+			return PubMethod.fromatExcelDecimal(str_month);
+		}
 	}
 
 	public void setStr_month(String str_month) {
@@ -369,6 +377,11 @@ public class ReceivedPayment implements Serializable {
 		this.date2 = date2;
 	}
 
+	public String getSales_username() {
+		return sales_username;
+	}
 
-
+	public void setSales_username(String sales_username) {
+		this.sales_username = sales_username;
+	}
 }

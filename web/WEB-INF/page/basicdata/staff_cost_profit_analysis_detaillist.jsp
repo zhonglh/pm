@@ -38,7 +38,7 @@
 				<th width="60">月份</th>
 				<th width="140">实际(收支)日期</th>
 				<th width="80">名称</th>
-				<th width="100"">其他</th>
+				<th width="100">其他</th>
 				<th width="300">描述</th>
 			</tr>
 		</thead>

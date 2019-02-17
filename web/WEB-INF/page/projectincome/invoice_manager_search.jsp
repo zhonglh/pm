@@ -36,7 +36,7 @@
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
 				<th width="40" >选择</th>
 				<th width="200">项目名称</th>
-				<th width="80"">项目编号</th>
+				<th width="80">项目编号</th>
 				<th width="120">发票编号</th>
 				<th width="160">发票抬头</th>
 				<th width="120">发票类型</th>

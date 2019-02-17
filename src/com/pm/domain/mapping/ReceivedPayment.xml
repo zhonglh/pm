@@ -118,13 +118,19 @@
 
 	<sql id="receivedPaymentPagerSql">
 		
-		select receivedPayment.* ,project.project_name,project.project_no	, invoice.is_received_payment,
-		invoice.invoice_no, invoice.invoiceno_amount as invoice_amount,
+		select receivedPayment.* ,project.project_name,project.project_no, salesstaff.staff_name sales_username,
+		invoice.is_received_payment, invoice.invoice_no, invoice.invoiceno_amount as invoice_amount,
 		dd_rai.dic_data_name as  receivable_accounts_item_name ,invoice.contract_id,contract.contract_no ,aa.need_approve 		
 		from tb_received_payment receivedPayment 
 		INNER JOIN vb_project project 
-		on receivedPayment.project_id = project.project_id 		
-		INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id 
+		on receivedPayment.project_id = project.project_id
+
+
+		left join tb_other_staff salesstaff
+		on project.sales_userid = salesstaff.staff_id
+
+		INNER join ts_dic_data dd_rai
+		on receivedPayment.receivable_accounts_item_id = dd_rai.id
 		left join tb_invoice invoice
 		on receivedPayment.invoice_id = invoice.invoice_id
 		left join tb_contract contract
@@ -154,6 +160,11 @@
 		
 		<if test="ReceivedPayment.project_no != null and ReceivedPayment.project_no != ''">
 			AND project.project_no like concat('%',TRIM(#{ReceivedPayment.project_no}),'%')  
+		</if>
+
+
+		<if test="ReceivedPayment.sales_username != null and ReceivedPayment.sales_username != ''">
+			AND salesstaff.staff_name like concat('%',TRIM(#{ReceivedPayment.sales_username}),'%')
 		</if>
 		
 

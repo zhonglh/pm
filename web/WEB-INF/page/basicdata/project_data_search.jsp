@@ -71,7 +71,7 @@
 				<th width="120">项目编号</th>
 				<th width="80">项目金额</th>
 				<th width="150">客户名称</th>
-				<th width="80"">销售负责人</th>
+				<th width="80">销售负责人</th>
 				<th width="80">项目管理人</th>
 				<th width="60">项目类型</th>
 				<th width="80">信息来源</th>

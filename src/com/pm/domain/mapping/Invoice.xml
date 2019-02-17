@@ -158,7 +158,8 @@
    
 
 	<sql id="invoicePagerSql">
-		select invoice.* ,project.project_name,project.project_no	,otherstaff.staff_name as invoice_staff_name ,
+		select invoice.* ,project.project_name,project.project_no,salesstaff.staff_name sales_username,
+		otherstaff.staff_name as invoice_staff_name ,
 		case when receivestaff.staff_name is null then invoice.invoice_receive else receivestaff.staff_name end  as invoice_receive_name 	,
 		
 		content_dic.dic_data_name as invoice_content_name,
@@ -170,7 +171,11 @@
 		left join tb_other_staff otherstaff
 		on invoice.invoice_staff_id = otherstaff.staff_id 		
 		left join tb_other_staff receivestaff 
-		on invoice.invoice_receive = receivestaff.staff_id 		
+		on invoice.invoice_receive = receivestaff.staff_id
+
+		left join tb_other_staff salesstaff
+		on project.sales_userid = salesstaff.staff_id
+
 		left join ts_dic_data content_dic on invoice.invoice_content = content_dic.id
 		left join tb_contract contract 
 		on invoice.contract_id = contract.id 
@@ -231,6 +236,13 @@
 		<if test="Invoice.project_no != null and Invoice.project_no != ''">
 			AND project.project_no like concat('%',TRIM(#{Invoice.project_no}),'%')  
 		</if>
+
+
+		<if test="Invoice.sales_username != null and Invoice.sales_username != ''">
+			AND salesstaff.staff_name like concat('%',TRIM(#{Invoice.sales_username}),'%')
+		</if>
+
+
 		
 		
 		<if test="Invoice.invoice_no != null and Invoice.invoice_no != ''">

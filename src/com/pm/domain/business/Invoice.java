@@ -42,13 +42,13 @@ public class Invoice implements Serializable {
 
 	//@EntityAnnotation(item_name="是否到款")
 	//0:未到款， 1：已到款， 2：部分到款
-	@EntityAnnotation(item_name="是否到款"  ,item_sort=14) 
+	@EntityAnnotation(item_name="是否到款"  ,item_sort=15)
 	private String is_received_payment;
 	
-	@EntityAnnotation(item_name="到款金额"  ,item_sort=15) 
+	@EntityAnnotation(item_name="到款金额"  ,item_sort=16)
 	private double receive_payment_amount;
 
-	@EntityAnnotation(item_name="到款日期"  ,item_sort=16) 
+	@EntityAnnotation(item_name="到款日期"  ,item_sort=17)
 	private Timestamp received_payment_datetime;	
 
 	private String invoice_staff_id;
@@ -62,7 +62,7 @@ public class Invoice implements Serializable {
 	//合同ID
 	private String contract_id;
 
-	@EntityAnnotation(item_name="备注" ,item_sort=13,length=300) 
+	@EntityAnnotation(item_name="备注" ,item_sort=14,length=300)
 	private String description;	
 	
 	private Timestamp build_datetime;	
@@ -100,7 +100,7 @@ public class Invoice implements Serializable {
 	private String contract_no;	
 	
 
-	@EntityAnnotation(item_name="月度结算单" ) 
+	@EntityAnnotation(item_name="月度结算单" ,item_sort=13)
 	private String monthly_statement_name ;
 	
 
@@ -110,6 +110,9 @@ public class Invoice implements Serializable {
 	//查询条件
 	private Timestamp date1;
 	private Timestamp date2;
+
+	//销售负责人
+	private String sales_username;
 	
 	//结算单月份
 	private int statement_month1;
@@ -462,9 +465,11 @@ public class Invoice implements Serializable {
 		this.statement_month2 = statement_month2;
 	}
 
+	public String getSales_username() {
+		return sales_username;
+	}
 
-	
-	
-	
-
+	public void setSales_username(String sales_username) {
+		this.sales_username = sales_username;
+	}
 }

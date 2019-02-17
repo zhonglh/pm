@@ -52,12 +52,24 @@
 				<label>发票编号：</label>
 				<input type="text" name="invoice_no" value="${param.invoice_no}"/>
 			</li>
+
 			
+		</ul>
+
+
+
+
+		<ul class="searchContent">
+
+			<li>
+				<label>销售负责人：</label>
+				<input  type="text" class="text"  name="sales_username" value="${param.sales_username}"/>
+			</li>
+
+
 			<li style="width:40px">
 				<div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div>
 			</li>
-			
-			
 		</ul>
 
 
@@ -126,7 +138,7 @@
 						
 		</ul>
 	</div>
-	<table class="table" width="1380" layoutH="136">
+	<table class="table" width="1380" layoutH="162">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>

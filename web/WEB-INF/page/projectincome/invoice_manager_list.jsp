@@ -56,7 +56,19 @@
 				<input  type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="statement_month1" value="${param.statement_month1}"/>
 				<input  type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="statement_month2" value="${param.statement_month2}"/>
 			</li>
-			
+
+		</ul>
+
+
+
+		<ul class="searchContent">
+
+			<li>
+				<label>销售负责人：</label>
+				<input  type="text" class="text"  name="sales_username" value="${param.sales_username}"/>
+			</li>
+
+
 			<li style="width:40px">
 				<div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div>
 			</li>
@@ -119,13 +131,13 @@
 			</c:if>				
 		</ul>
 	</div>
-	<table class="table" width="2100" layoutH="136">
+	<table class="table" width="2100" layoutH="162">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
 				<th width="30" >序号</th>
 				<th width="200">项目名称</th>
-				<th width="80"">项目编号</th>
+				<th width="80">项目编号</th>
 				<th width="120">发票编号</th>
 				<th width="160">发票抬头</th>
 				<th width="120">发票类型</th>
@@ -169,7 +181,7 @@
 				<td>
 					<u>
 					<a class="edit" href="${webroot}/MonthlyStatementAction.do?method=toView&monthly_statement_id=${invoice.monthly_statement_id}" mask="true" width="1060"  height="550" rel="monthly_view" target="dialog" >
-					${invoice.monthly_statement_name }<spring:message code="statement.type.${invoice.statement_type }"/>
+					${invoice.monthly_statement_name }
 					</a>
 					</u>
 				</td>

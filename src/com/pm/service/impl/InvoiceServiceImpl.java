@@ -236,6 +236,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		return invoiceDao.getInvoice(invoice_id);
 	}
 	
+	@Override
 	public List<Invoice> getInvoiceByMonthly(String monthly_statement_id){
 		return invoiceDao.getInvoiceByMonthly(monthly_statement_id);
 	}

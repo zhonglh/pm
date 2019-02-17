@@ -477,7 +477,7 @@ public class BaseAction {
      * @Author: Hongli
      * @Since: 2014年3月18日下午5:31:54
      * @param key
-     * @param req
+     * @param request
      * @return
      */
 

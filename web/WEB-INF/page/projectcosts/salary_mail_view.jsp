@@ -3,7 +3,7 @@
 <%@ include file="/include.inc.jsp"%>
 
 <div class="pageContent">
-	<form method="post" id="form1" name="form1"  class="pageForm"">
+	<form method="post" id="form1" name="form1"  class="pageForm">
 		<div class="pageFormContent" layoutH="56">	
 			
 			<div class="divider"></div>

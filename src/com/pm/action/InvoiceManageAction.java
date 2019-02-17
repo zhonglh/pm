@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -130,7 +131,8 @@ public class InvoiceManageAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.INVOICEVIEW.getId());
 		
 		Pager<Invoice> pager = invoiceService.queryInvoice(invoice, userPermit, PubMethod.getPagerByAll(request, Invoice.class));
-		
+
+
 		for(Invoice tmp : pager.getResultList()){
 			String type = invoiceTypeMap.get(tmp.getInvoice_type());
 			if(type != null) tmp.setInvoice_type(type);
@@ -141,8 +143,11 @@ public class InvoiceManageAction extends BaseAction {
 			
 			
 			tmp.setIs_received_payment(isReceivedPaymentMap.get(tmp.getIs_received_payment()));
-			
-			
+
+			if(StringUtils.isNotEmpty(tmp.getStatement_type())){
+				String typeName = this.getMsg("statement.type."+tmp.getStatement_type() , request);
+				tmp.setMonthly_statement_name(tmp.getMonthly_statement_name() + typeName );
+			}
 		}
 		
 		try{
@@ -162,9 +167,9 @@ public class InvoiceManageAction extends BaseAction {
 
 	@RequestMapping(params = "method=downloadtemplet")
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/invoice.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "发票模板.xlsx" ,response,false);  		
+
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/invoice.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "发票模板.xlsx" ,response,false);
 		return null;  
 	}  	
 		
@@ -415,7 +420,16 @@ public class InvoiceManageAction extends BaseAction {
 		request.setAttribute("invoice", invoice);
 		
 		Pager<Invoice> pager = invoiceService.queryInvoice(invoice, userPermit, PubMethod.getPagerByAll(request, Invoice.class));
-		PubMethod.setRequestPager(request, pager,Invoice.class);	
+		/*if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
+			for(Invoice temp : pager.getResultList()){
+				if(StringUtils.isNotEmpty(temp.getStatement_type())){
+					String typeName = this.getMsg("statement.type."+temp.getStatement_type() , request);
+					temp.setMonthly_statement_name(temp.getMonthly_statement_name() + typeName );
+				}
+			}
+		}*/
+		PubMethod.setRequestPager(request, pager,Invoice.class);
+
 		if(pager.getResultList() == null) pager.setResultList(new ArrayList<Invoice>());		
 		this.writeResJson(res, pager.getResultList());
 	}	
@@ -428,7 +442,17 @@ public class InvoiceManageAction extends BaseAction {
 		paramprocess(request,invoice);
 		
 		Pager<Invoice> pager = invoiceService.queryInvoice(invoice, userPermit, PubMethod.getPager(request, Invoice.class));
-		PubMethod.setRequestPager(request, pager,Invoice.class);	
+		if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
+			for(Invoice temp : pager.getResultList()){
+				if(StringUtils.isNotEmpty(temp.getStatement_type())){
+					String typeName = this.getMsg("statement.type."+temp.getStatement_type() , request);
+					temp.setMonthly_statement_name(temp.getMonthly_statement_name() + typeName );
+				}
+			}
+		}
+
+		PubMethod.setRequestPager(request, pager,Invoice.class);
+
 		
 		request.setAttribute("invoice", invoice);
 
@@ -462,6 +486,14 @@ public class InvoiceManageAction extends BaseAction {
 		paramprocess(request,invoice);
 		
 		Pager<Invoice> pager = invoiceService.queryInvoice(invoice, userPermit, PubMethod.getPager(request, Invoice.class));
+		/*if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
+			for(Invoice temp : pager.getResultList()){
+				if(StringUtils.isNotEmpty(temp.getStatement_type())){
+					String typeName = this.getMsg("statement.type."+temp.getStatement_type() , request);
+					temp.setMonthly_statement_name(temp.getMonthly_statement_name() + typeName );
+				}
+			}
+		}*/
 		PubMethod.setRequestPager(request, pager,Invoice.class);	
 		
 		request.setAttribute("invoice", invoice);

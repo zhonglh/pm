@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,7 +57,8 @@ public class MonthlyStatementServiceImpl implements IMonthlyStatementService {
 	@Autowired private IVoucherInterimService voucherInterimService;
 	
 
-	public MonthlyStatement autoAddMonthlyStatement(String project_id, int use_month,User sessionUser){
+	@Override
+	public MonthlyStatement autoAddMonthlyStatement(String project_id, int use_month, User sessionUser){
 		MonthlyStatement monthlyStatement = new MonthlyStatement();
 		List<MonthlyStatementDetail> monthlyStatementDetails = null;		
 
@@ -94,17 +96,22 @@ public class MonthlyStatementServiceImpl implements IMonthlyStatementService {
 	@Override
 	public void addMonthlyStatement(MonthlyStatement monthlyStatement,List<MonthlyStatementDetail> monthlyStatementDetails) {
 		monthlyStatementDao.addMonthlyStatement(monthlyStatement);
+		insertMonthlyStatementDetail(monthlyStatement, monthlyStatementDetails);
+	}
+
+	private void insertMonthlyStatementDetail(MonthlyStatement monthlyStatement, List<MonthlyStatementDetail> monthlyStatementDetails) {
 		if(monthlyStatementDetails != null){
-			for(MonthlyStatementDetail monthlyStatementDetail :monthlyStatementDetails)
+			for(MonthlyStatementDetail monthlyStatementDetail :monthlyStatementDetails) {
 				monthlyStatementDao.addMonthlyStatementDetail(monthlyStatementDetail);
+			}
 		}
-		
+
 		try{
 			ThMonthlyStatement thMonthlyStatement = new ThMonthlyStatement();
 			BeanUtils.copyProperties(monthlyStatement, thMonthlyStatement);
 			thMonthlyStatement.setHis_operation_type(LogConstant.OPERATION_INSERT);
 			thMonthlyStatementDao.addThMonthlyStatement(thMonthlyStatement);
-			
+
 			if(monthlyStatementDetails != null){
 				for(MonthlyStatementDetail monthlyStatementDetail :monthlyStatementDetails){
 					ThMonthlyStatementDetail thMonthlyStatementDetail = new ThMonthlyStatementDetail();
@@ -120,26 +127,54 @@ public class MonthlyStatementServiceImpl implements IMonthlyStatementService {
 
 	@Override
 	public void updateMonthlyStatement(MonthlyStatement monthlyStatement,List<MonthlyStatementDetail> monthlyStatementDetails) {
+
 		monthlyStatementDao.updateMonthlyStatement(monthlyStatement);
+
+		List<MonthlyStatementDetail> insertList = new ArrayList<MonthlyStatementDetail>();
+		List<MonthlyStatementDetail> updateList = new ArrayList<MonthlyStatementDetail>();
+
+
+
 		if(monthlyStatementDetails != null){
-			for(MonthlyStatementDetail monthlyStatementDetail :monthlyStatementDetails)
-				monthlyStatementDao.updateMonthlyStatementDetail(monthlyStatementDetail);
+			for (MonthlyStatementDetail monthlyStatementDetail : monthlyStatementDetails) {
+				if(StringUtils.isNotEmpty(monthlyStatementDetail.getMonthly_statement_detail_id())){
+					updateList.add(monthlyStatementDetail);
+				}else {
+					insertList.add(monthlyStatementDetail);
+				}
+			}
 		}
-		
+
+		if(!insertList.isEmpty()){
+			insertMonthlyStatementDetail(monthlyStatement,insertList);
+		}
+
+
+		if(!updateList.isEmpty()) {
+			updateMonthlyStatementDetail(monthlyStatement, updateList);
+		}
+	}
+
+	private void updateMonthlyStatementDetail(MonthlyStatement monthlyStatement, List<MonthlyStatementDetail> updateList) {
+
+		for (MonthlyStatementDetail monthlyStatementDetail : updateList) {
+			monthlyStatementDao.updateMonthlyStatementDetail(monthlyStatementDetail);
+		}
+
 		try{
+
 			ThMonthlyStatement thMonthlyStatement = new ThMonthlyStatement();
 			BeanUtils.copyProperties(monthlyStatement, thMonthlyStatement);
 			thMonthlyStatement.setHis_operation_type(LogConstant.OPERATION_UPDATE);
 			thMonthlyStatementDao.addThMonthlyStatement(thMonthlyStatement);
-			
-			if(monthlyStatementDetails != null){
-				for(MonthlyStatementDetail monthlyStatementDetail :monthlyStatementDetails){
-					ThMonthlyStatementDetail thMonthlyStatementDetail = new ThMonthlyStatementDetail();
-					BeanUtils.copyProperties(monthlyStatementDetail, thMonthlyStatementDetail);
-					thMonthlyStatementDetail.setMonthly_statement_his_id(thMonthlyStatement.getId());
-					thMonthlyStatementDetailDao.addThMonthlyStatementDetail(thMonthlyStatementDetail);
-				}
+
+			for(MonthlyStatementDetail monthlyStatementDetail :updateList){
+				ThMonthlyStatementDetail thMonthlyStatementDetail = new ThMonthlyStatementDetail();
+				BeanUtils.copyProperties(monthlyStatementDetail, thMonthlyStatementDetail);
+				thMonthlyStatementDetail.setMonthly_statement_his_id(thMonthlyStatement.getId());
+				thMonthlyStatementDetailDao.addThMonthlyStatementDetail(thMonthlyStatementDetail);
 			}
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -154,7 +189,9 @@ public class MonthlyStatementServiceImpl implements IMonthlyStatementService {
 			monthlyStatementDao.deleteMonthlyStatement(monthlyStatement);
 			
 			List<Invoice>  temps = invoiceDao.getInvoiceByMonthly(monthlyStatement.getMonthly_statement_id());
-			if(temps != null && temps.size() > 0) list.addAll(temps);
+			if(temps != null && temps.size() > 0) {
+				list.addAll(temps);
+			}
 			
 			invoiceDao.deleteMonthlyStatement(monthlyStatement.getMonthly_statement_id());			
 			
@@ -181,7 +218,9 @@ public class MonthlyStatementServiceImpl implements IMonthlyStatementService {
 	@Override
 	public void verifyMonthlyStatement(MonthlyStatement monthlyStatement) {
 		int size = monthlyStatementDao.verifyMonthlyStatement(monthlyStatement);
-		if(size == 0) throw new PMException (CommonErrorConstants.e029901);
+		if(size == 0) {
+			throw new PMException (CommonErrorConstants.e029901);
+		}
 		
 		/**
 		try{
@@ -284,18 +323,36 @@ public class MonthlyStatementServiceImpl implements IMonthlyStatementService {
 		voucherInterim2.setProject_code("13");
 		
 		if(isnegative){
-			if(voucherInterim1.getTotal_money()!=0) voucherInterim1.setTotal_money(voucherInterim1.getTotal_money()*-1);
-			if(voucherInterim1.getDebit_amount()!=0) voucherInterim1.setDebit_amount(voucherInterim1.getDebit_amount()*-1);
-			if(voucherInterim1.getLoan_amount()!=0) voucherInterim1.setLoan_amount(voucherInterim1.getLoan_amount()*-1);
+			if(voucherInterim1.getTotal_money()!=0) {
+				voucherInterim1.setTotal_money(voucherInterim1.getTotal_money()*-1);
+			}
+			if(voucherInterim1.getDebit_amount()!=0) {
+				voucherInterim1.setDebit_amount(voucherInterim1.getDebit_amount()*-1);
+			}
+			if(voucherInterim1.getLoan_amount()!=0) {
+				voucherInterim1.setLoan_amount(voucherInterim1.getLoan_amount()*-1);
+			}
 
 
-			if(voucherInterim2.getTotal_money()!=0) voucherInterim2.setTotal_money(voucherInterim2.getTotal_money()*-1);
-			if(voucherInterim2.getDebit_amount()!=0) voucherInterim2.setDebit_amount(voucherInterim2.getDebit_amount()*-1);
-			if(voucherInterim2.getLoan_amount()!=0) voucherInterim2.setLoan_amount(voucherInterim2.getLoan_amount()*-1);
+			if(voucherInterim2.getTotal_money()!=0) {
+				voucherInterim2.setTotal_money(voucherInterim2.getTotal_money()*-1);
+			}
+			if(voucherInterim2.getDebit_amount()!=0) {
+				voucherInterim2.setDebit_amount(voucherInterim2.getDebit_amount()*-1);
+			}
+			if(voucherInterim2.getLoan_amount()!=0) {
+				voucherInterim2.setLoan_amount(voucherInterim2.getLoan_amount()*-1);
+			}
 
-			if(voucherInterim3.getTotal_money()!=0) voucherInterim3.setTotal_money(voucherInterim3.getTotal_money()*-1);
-			if(voucherInterim3.getDebit_amount()!=0) voucherInterim3.setDebit_amount(voucherInterim3.getDebit_amount()*-1);
-			if(voucherInterim3.getLoan_amount()!=0) voucherInterim3.setLoan_amount(voucherInterim3.getLoan_amount()*-1);
+			if(voucherInterim3.getTotal_money()!=0) {
+				voucherInterim3.setTotal_money(voucherInterim3.getTotal_money()*-1);
+			}
+			if(voucherInterim3.getDebit_amount()!=0) {
+				voucherInterim3.setDebit_amount(voucherInterim3.getDebit_amount()*-1);
+			}
+			if(voucherInterim3.getLoan_amount()!=0) {
+				voucherInterim3.setLoan_amount(voucherInterim3.getLoan_amount()*-1);
+			}
 
 			
 			
@@ -310,7 +367,9 @@ public class MonthlyStatementServiceImpl implements IMonthlyStatementService {
 		MonthlyStatement monthlyStatement = new MonthlyStatement();
 		monthlyStatement.setMonthly_statement_id(id);
 		int size = monthlyStatementDao.unVerifyMonthlyStatement(monthlyStatement);		
-		if(size == 0) throw new PMException (CommonErrorConstants.e029902);
+		if(size == 0) {
+			throw new PMException (CommonErrorConstants.e029902);
+		}
 		
 		monthlyStatement = this.monthlyStatementDao.getMonthlyStatement(monthlyStatement);
 		

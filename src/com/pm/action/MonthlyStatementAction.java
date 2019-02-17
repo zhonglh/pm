@@ -41,6 +41,9 @@ import com.pm.util.excel.BusinessExcel;
 import com.pm.vo.UserPermit;
 
 
+/**
+ * @author Administrator
+ */
 @Controller
 @RequestMapping(value = "MonthlyStatementAction.do")
 public class MonthlyStatementAction extends BaseAction {
@@ -352,6 +355,7 @@ public class MonthlyStatementAction extends BaseAction {
 		String[] ids = request.getParameterValues("id");
 		
 		List<MonthlyStatementDetail> list = new ArrayList<MonthlyStatementDetail>();
+
 		if(ids != null && ids.length >0) {
 			for(String index : ids){
 				
@@ -359,9 +363,15 @@ public class MonthlyStatementAction extends BaseAction {
 				
 				MonthlyStatementDetail monthlyStatementDetail = new MonthlyStatementDetail();
 				
-				
-				monthlyStatementDetail.setStaff_id(request.getParameter("staff_id"+index));
-				monthlyStatementDetail.setStaff_name(request.getParameter("staff_name"+index));
+				String staff_id = request.getParameter("staff_id"+index);
+				String staff_name = request.getParameter("staff_name"+index);
+				if(staff_id == null || staff_id.isEmpty()){
+					staff_id = request.getParameter("staff"+index+".staff_id");
+					staff_name = request.getParameter("staff"+index+".staff_name");
+				}
+
+				monthlyStatementDetail.setStaff_id(staff_id);
+				monthlyStatementDetail.setStaff_name(staff_name);
 	
 				monthlyStatementDetail.setTechnical_cost(Double.parseDouble(request.getParameter("technical_cost"+index)));
 				monthlyStatementDetail.setShould_work_days(Double.parseDouble(request.getParameter("should_work_days"+index)));
@@ -404,17 +414,21 @@ public class MonthlyStatementAction extends BaseAction {
 	
 
 	private void paramprocess(HttpServletRequest request,MonthlyStatement monthlyStatement){	
-		if(monthlyStatement.getProject_id() == null || monthlyStatement.getProject_id().isEmpty())
-		monthlyStatement.setProject_id(request.getParameter("project.project_id"));	
+		if(monthlyStatement.getProject_id() == null || monthlyStatement.getProject_id().isEmpty()){
+			monthlyStatement.setProject_id(request.getParameter("project.project_id"));
+		}
 
-		if(monthlyStatement.getProject_name() == null || monthlyStatement.getProject_name().isEmpty())
-		monthlyStatement.setProject_name(request.getParameter("project.project_name"));
+		if(monthlyStatement.getProject_name() == null || monthlyStatement.getProject_name().isEmpty()) {
+			monthlyStatement.setProject_name(request.getParameter("project.project_name"));
+		}
 
-		if(monthlyStatement.getProject_no() == null || monthlyStatement.getProject_no().isEmpty())
-		monthlyStatement.setProject_no(request.getParameter("project.project_no"));
+		if(monthlyStatement.getProject_no() == null || monthlyStatement.getProject_no().isEmpty()) {
+			monthlyStatement.setProject_no(request.getParameter("project.project_no"));
+		}
 		
-		if(monthlyStatement.getProject_type() == null || monthlyStatement.getProject_type().isEmpty())
-		monthlyStatement.setProject_type(request.getParameter("project.project_type"));
+		if(monthlyStatement.getProject_type() == null || monthlyStatement.getProject_type().isEmpty()) {
+			monthlyStatement.setProject_type(request.getParameter("project.project_type"));
+		}
 	}
 
 	
@@ -479,7 +493,9 @@ public class MonthlyStatementAction extends BaseAction {
 			}
 		}
 		
-		if(list == null) list = new ArrayList<MonthlyStatementDetail>();		
+		if(list == null) {
+			list = new ArrayList<MonthlyStatementDetail>();
+		}
 		
 		request.setAttribute("list", list);
 		request.setAttribute("monthlyStatement1", monthlyStatement1);
@@ -496,7 +512,9 @@ public class MonthlyStatementAction extends BaseAction {
 		
 		MonthlyStatement monthlyStatement1 = monthlyStatementService.getMonthlyStatement(monthlyStatement);
 		list = monthlyStatementService.getMonthlyStatementDetail(monthlyStatement1);
-		if(list == null) list = new ArrayList<MonthlyStatementDetail>();
+		if(list == null) {
+			list = new ArrayList<MonthlyStatementDetail>();
+		}
 		
 		
 		MonthlyStatementDetail totalMonthlyStatementDetail = new MonthlyStatementDetail();
@@ -636,8 +654,9 @@ public class MonthlyStatementAction extends BaseAction {
 			index ++ ;
 		}
 		
-		if(monthlyStatementArray != null && monthlyStatementArray.length > 0)
-		monthlyStatementService.deleteMonthlyStatement(monthlyStatementArray);
+		if(monthlyStatementArray != null && monthlyStatementArray.length > 0) {
+			monthlyStatementService.deleteMonthlyStatement(monthlyStatementArray);
+		}
 
 		return this.ajaxForwardSuccess(request, rel, false);		
 		

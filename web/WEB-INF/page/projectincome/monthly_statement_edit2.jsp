@@ -27,10 +27,12 @@
 						
 			
 			<div class="divider"></div>
+
+			<button type="button" curr="${fn:length(list)}" onclick="addMSD(this , '${webroot }')">新建</button>
 			
 			
 			
-			<table class="list nowrap itemUpdate <c:if test="${monthlyStatement1.monthly_statement_id == null || monthlyStatement1.monthly_statement_id == ''}">monthlyStatementComputer</c:if><c:if test="${monthlyStatement1.monthly_statement_id != null && monthlyStatement1.monthly_statement_id != ''}">monthlyStatementUpdateComputer</c:if>" width="1500" >
+			<table id="monthly_statement_detail_table" class="list nowrap  <c:if test="${monthlyStatement1.monthly_statement_id == null || monthlyStatement1.monthly_statement_id == ''}">monthlyStatementComputer</c:if><c:if test="${monthlyStatement1.monthly_statement_id != null && monthlyStatement1.monthly_statement_id != ''}">monthlyStatementUpdateComputer</c:if>" width="1500" >
 				<thead>
 					<tr>
 						<th width="40" nowrap>序号</th>						
@@ -84,8 +86,8 @@
 					</tr>
 					</c:forEach>
 				</tbody>
-				
-				<c:if test="${fn:length(list)>0 }">
+
+				<tfoot>
 					<tr id="monthly_statement_sumhr">
 						<td><b>合计</b></td>
 						<td align="right"></td>
@@ -101,7 +103,7 @@
 						<td align="right"></td>
 						<td><input type="text" size="7" maxlength="10" class="number required"  id="amount" 		name="amount" 			value="${monthlyStatement1.amount }" /></td>
 					</tr>
-					</c:if>
+				</tfoot>
 			</table>
 		
 						

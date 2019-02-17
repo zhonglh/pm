@@ -287,3 +287,59 @@ function edit_project_staff(this1,project_staff_id) {
 	dateProcess($tr);
 	
 }
+
+/**
+ * 增加月报明细记录
+ */
+function addMSD(btn , webroot ){
+    var $table ;
+    var $btn = $(btn);
+    var curr = $btn.attr("curr");
+    curr = parseInt(curr);
+    var $box = $btn.parents(".unitBox:first");
+    if($box == undefined || $box == null) {
+        $table = $("#monthly_statement_detail_table");
+    }else {
+        $table = $("#monthly_statement_detail_table" , $box);
+	}
+	var $tbody = $table.find("tbody");
+
+    var trTm = "<tr>";
+    trTm += '<td nowrap><a href="javascript:void(0)" class="btnDel ">删除</a></td>';
+
+    trTm += '<td nowrap>';
+    trTm += ' <input type="hidden" size="2" id="id" name="id" value="'+(curr+1)+'"/> <input type="hidden"   name="monthly_statement_detail_id'+(curr+1)+'"/>' ;
+
+    trTm += ' <input type="hidden" name="staff'+(curr+1)+'.staff_id">';
+    trTm += ' <input type="text" readonly name="staff'+(curr+1)+'.staff_name" lookuppk="staff_id" size="8" class="required textInput readonly valid">';
+    trTm += ' <a class="btnLook" width="950" href="'+webroot+'/StaffCostAction.do?method=lookup&delete_flag=0" lookupgroup="staff'+(curr+1)+'" lookuppk="staff_id" title="查找">查找</a>' ;
+
+
+    trTm += '</td>';
+
+
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="technical_cost" 	name="technical_cost'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="should_work_days" 	name="should_work_days'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="work_days" 	name="work_days'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="daily_overtime" 	name="daily_overtime'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="weekend_overtime" 	name="weekend_overtime'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="overtime_cost" 	name="overtime_cost'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="business_trip_days" 	name="business_trip_days'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="business_trip_cost" 	name="business_trip_cost'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="other_cost" 	name="other_cost'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="man_month" 	name="man_month'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="7" maxlength="10" class="number required"  id="total_cost" 	name="total_cost'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="16" maxlength="50" class="number required"  id="client_dept" 	name="client_dept'+(curr+1)+'"  /></td>';
+    trTm += '<td><input type="text" value="0.0" size="38" maxlength="150" class="number required"  id="description" 	name="description'+(curr+1)+'"  /></td>';
+    trTm += "</tr>";
+
+    var $tr = $(trTm);
+    $tr.appendTo($tbody).find("a.btnDel").click(function(){
+        $(this).parents("tr:first").remove();
+        return false;
+    });
+
+    $box.initUI();
+
+    $btn.attr("curr" , (curr+1));
+}

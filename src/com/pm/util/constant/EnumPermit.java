@@ -74,6 +74,17 @@ public enum EnumPermit {
 	PROJECTEXPENDDELETE("1003","permit.project.expend.delete"),	
 	PROJECTEXPENDCHECK("1004","permit.project.expend.check"),
 	PROJECTEXPENDUNCHECK("1005","permit.project.expend.uncheck"),
+
+
+	COMMONCOSTVIEW("1010","permit.common.cost.view"),
+	COMMONCOSTADD("1011","permit.common.cost.add"),
+	COMMONCOSTUPDATE("1012","permit.common.cost.update"),
+	COMMONCOSTDELETE("1013","permit.common.cost.delete"),
+	COMMONCOSTCHECK("1014","permit.common.cost.check"),
+	COMMONCOSTUNCHECK("1015","permit.common.cost.uncheck"),
+
+
+
 	
 	
 
@@ -133,6 +144,13 @@ public enum EnumPermit {
 	CONTRACTADD("20001","permit.contract.add"),
 	CONTRACTUPDATE("20002","permit.contract.update"),
 	CONTRACTDELETE("20003","permit.contract.delete"),
+
+
+
+	PAYCONTRACTVIEW("20010","permit.paycontract.view"),
+	PAYCONTRACTADD("20011","permit.paycontract.add"),
+	PAYCONTRACTUPDATE("20012","permit.paycontract.update"),
+	PAYCONTRACTDELETE("20013","permit.paycontract.delete"),
 	
 	
 	

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="PayContractMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PayContract" id="payContractMap" />
+
+
+	<select id="getPayContract" parameterType="com.pm.domain.business.PayContract" resultMap="payContractMap">
+		select pc.* ,project.project_name,project.project_no
+		from tb_pay_contract pc
+		INNER JOIN vb_project project 
+		on pc.project_id = project.project_id 
+		where pc.id = #{id}
+	</select>
+
+	<insert id="addPayContract" parameterType="com.pm.domain.business.PayContract" >
+		insert into  tb_pay_contract(
+			id,contract_no,company_name,exec_contract,amount,
+			signing_date,validity_date1,validity_date2,manager_userid,project_id,
+			submit_date,client_linkman,email_phone,contract_number,description,
+			build_datetime,build_username,build_userid
+		)values  (
+			#{id},#{contract_no},#{company_name},#{exec_contract},#{amount},
+			#{signing_date},#{validity_date1},#{validity_date2},#{manager_userid},#{project_id},
+			#{submit_date},#{client_linkman},#{email_phone},#{contract_number},#{description},
+			#{build_datetime},#{build_username},#{build_userid}
+		)
+	</insert>
+
+	<update id="updatePayContract" parameterType="com.pm.domain.business.PayContract" >
+		update  tb_pay_contract set 
+		contract_no=#{contract_no},
+		company_name=#{company_name},
+		exec_contract=#{exec_contract},
+		amount=#{amount},
+		signing_date=#{signing_date},
+		validity_date1=#{validity_date1},
+		validity_date2=#{validity_date2},
+		manager_userid=#{manager_userid},
+		project_id=#{project_id},
+		submit_date=#{submit_date},
+		client_linkman=#{client_linkman},
+		email_phone=#{email_phone},
+		contract_number=#{contract_number},
+		description=#{description},
+		build_datetime=#{build_datetime},
+		build_username=#{build_username},
+		build_userid=#{build_userid}
+		where id=#{id} 
+		and verify_userid is null 
+	</update>
+
+	<update id="verifyPayContract" parameterType="com.pm.domain.business.PayContract" >
+		update  tb_pay_contract set 
+		verify_userid = #{verify_userid}, 
+		verify_username =  #{verify_username}, 
+		verify_datetime = #{verify_datetime} 
+		where id=#{id}
+
+		and verify_userid is null
+	</update>
+
+	<update id="unVerifyPayContract" parameterType="com.pm.domain.business.PayContract" >
+		update  tb_pay_contract set 
+		verify_userid = null, 
+		verify_username = null, 
+		verify_datetime = null
+		where id=#{id}
+	</update>
+
+	<delete id="deletePayContract" parameterType="com.pm.domain.business.PayContract" >
+		delete from  tb_pay_contract
+		where id=#{id}
+		and verify_userid is null
+	</delete>
+
+	<select id="queryPayContractTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="payContractPagerSql"/>
+		) c
+	</select>
+
+	<select id="queryPayContractByPager_mysql" parameterType="map"  resultMap="payContractMap" >
+		<include refid="payContractPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPayContractByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="payContractPagerSql"/> )c
+	</select>
+
+	<sql id="payContractPagerSql">
+		select pc.* ,project.project_name,project.project_no 
+		from tb_pay_contract pc  
+		INNER JOIN vb_project project  
+		on pc.project_id = project.project_id 
+		WHERE 1=1 
+		<include refid="permission" /> 
+	</sql>
+
+</mapper>

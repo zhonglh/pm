@@ -22,6 +22,7 @@ public enum EnumEntityType {
 	STAFF_COST("staff.cost.entity","staff.cost"),
 	PROJECT("project.entity","project"),
 	CONTRACT("contract","contract"),
+	PAYCONTRACT("paycontract","paycontract"),
 	RECRUITINFO("recruitinfo","recruitinfo"),
 	POTENTIALCLIENT("potentialclient","potentialclient"),
 	POTENTIALCLIENT_FOLLWUP("potentialclient.followup","potentialclient.followup"),
@@ -32,6 +33,7 @@ public enum EnumEntityType {
 	PROJECT_STAFF_COST("project.staff.cost.entity","project.staff.cost"),
 	PROJECT_EXPEND("project.expend.entity","project.expend"),
 	REIMBURSE_COSTS("reimburse.costs.entity","reimburse.costs"),
+	COMMONCOST("common.cost.entity","common.cost"),
 
 
 	MONTHLY_STATEMENT("monthly.statement.entity","monthly.statement"),

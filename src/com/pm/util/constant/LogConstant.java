@@ -31,6 +31,7 @@ public class LogConstant {
 	public static final String INSURANCE_GRADE = "insurance.grade";
 	public static final String OTHER_STAFF = "other.staff";
 	public static final String ENTITY_CONTRACT = "contract";
+	public static final String ENTITY_PAYCONTRACT = "paycontract";
 	public static final String ENTITY_RECRUITINFO = "recruitinfo";
 
 	public static final String ENTITY_POTENTIALCLIENT = "potentialclient";
@@ -101,6 +102,9 @@ public class LogConstant {
 
 	//保险
 	public static final String ENTITY_INSURANCE = "insurance";
+
+
+	public static final String ENTITY_COMMONCOST = "commoncost";
 	
 	
 

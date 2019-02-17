@@ -8,7 +8,7 @@ import com.pm.util.log.LogAnnotation;
 import com.pm.service.IBaseService;
 
 /**
- * 合同处理服务类
+ * 收款合同处理服务类
  * @author zhonglihong
  * @date 2016年5月11日 下午6:40:41
  */

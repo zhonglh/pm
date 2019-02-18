@@ -50,6 +50,11 @@ public enum EnumDicType {
 	
 	//收款方式
 	PAYMENT_METHOD  ,
+
+	//公共费用类别
+	COMMON_COST_ITEM,
+
+
 	
 	//合同存放地址
 	CONTRACT_STORAGE_ADDR,

@@ -175,6 +175,7 @@
 		tax_bonus =#{tax_bonus} ,
 		should_work_days =#{should_work_days} ,
 		work_days =#{work_days} ,
+		paid_leave_days =#{paid_leave_days} ,
 		business_trip_days =#{business_trip_days} ,
 		personal_leave_days =#{personal_leave_days} ,
 		sick_leave_days =#{sick_leave_days} ,

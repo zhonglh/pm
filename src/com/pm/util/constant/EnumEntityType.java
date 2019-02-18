@@ -43,10 +43,15 @@ public enum EnumEntityType {
 	REIMBURSE_ITEM("reimburse.item.entity","reimburse.item"),
 	ACCOUNTS_TYPE("accounts.type.entity","accounts.type"),
 	DICDATA("dicdata","dicdata"),
+
+
+	COMMON_COST_ITEM("common.cost.item.entity","common.cost.item.item"),
 	
 	
 
 	DEPART_COSTS("depart.costs.entity","depart.costs"),
+
+
 	
 	PERSONNELMONTHLYBASE("personnel.monthly.entity","personnel.monthly"),
 

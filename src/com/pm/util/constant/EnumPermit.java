@@ -110,13 +110,22 @@ public enum EnumPermit {
 	RECEIVEDPAYMENTUNCHECK("1305","permit.received.payment.uncheck"),
 	
 	GROSSPROFITVIEW("1400","permit.gross.profit.view"),
+
+
+	GROSSPROFIT1VIEW("1401","permit.gross.profit2.view"),
+
+	GROSSPROFIT3VIEW("1402","permit.gross.profit3.view"),
+
 	
 	
 	SALESVIEW("1500","permit.sales.view"),
 	
 	
 	RECEIVABLESVIEW("1600","permit.receivables.view"),
-	
+
+
+	PERSONNELREPORTVIEW("1610","permit.personnel.report.view"),
+
 
 	STAFFPROFITVIEW("2001","permit.staffprofit.view"),
 	
@@ -144,8 +153,6 @@ public enum EnumPermit {
 	CONTRACTADD("20001","permit.contract.add"),
 	CONTRACTUPDATE("20002","permit.contract.update"),
 	CONTRACTDELETE("20003","permit.contract.delete"),
-
-
 
 	PAYCONTRACTVIEW("20010","permit.paycontract.view"),
 	PAYCONTRACTADD("20011","permit.paycontract.add"),
@@ -229,8 +236,36 @@ public enum EnumPermit {
 	INSURANCECHECK("51004","permit.insurance.check"),
 	INSURANCEUNCHECK("51005","permit.insurance.uncheck"),
 	
-	;
 
+
+
+
+	COMPANYFINANCIALANALYSISVIEW("61000","permit.company.financial.analysis.view"),
+	DEPARTMENTFINANCIALANALYSISVIEW("61001","permit.department.financial.analysis.view"),
+	SALESFINANCIALANALYSISVIEW("61002","permit.sales.financial.analysis.view"),
+
+
+
+	//总部信息
+
+
+
+	OTHERWORKATTENDANCEVIEW("10600","permit.other.work.attendance.view"),
+	OTHERWORKATTENDANCEADD("10601","permit.other.work.attendance.add"),
+	OTHERWORKATTENDANCEUPDATE("10602","permit.other.work.attendance.update"),
+	OTHERWORKATTENDANCEDELETE("10603","permit.other.work.attendance.delete"),
+	OTHERWORKATTENDANCECHECK("10604","permit.other.work.attendance.check"),
+
+	OTHERSALARYVIEW("10700","permit.other.salary.view"),
+	OTHERSALARYADD("10701","permit.other.salary.add"),
+	OTHERSALARYUPDATE("10702","permit.other.salary.update"),
+	OTHERSALARYDELETE("10703","permit.other.salary.delete"),
+	OTHERSALARYCHECK("10704","permit.other.salary.check"),
+	OTHERSALARYUNCHECK("10709","permit.other.salary.uncheck"),
+
+	OTHERSTAFFCOSTVIEW("10800","permit.other.staff.cost.view"),
+
+	;
 
 	private String id;
 

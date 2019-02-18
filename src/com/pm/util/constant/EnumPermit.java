@@ -247,9 +247,6 @@ public enum EnumPermit {
 
 
 	//总部信息
-
-
-
 	OTHERWORKATTENDANCEVIEW("10600","permit.other.work.attendance.view"),
 	OTHERWORKATTENDANCEADD("10601","permit.other.work.attendance.add"),
 	OTHERWORKATTENDANCEUPDATE("10602","permit.other.work.attendance.update"),
@@ -264,6 +261,9 @@ public enum EnumPermit {
 	OTHERSALARYUNCHECK("10709","permit.other.salary.uncheck"),
 
 	OTHERSTAFFCOSTVIEW("10800","permit.other.staff.cost.view"),
+
+
+
 
 	;
 

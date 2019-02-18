@@ -54,6 +54,9 @@ import com.pm.util.excel.ExcelRead;
 import com.pm.vo.UserPermit;
 
 
+/**
+ * @author Administrator
+ */
 @Controller
 @RequestMapping(value = "WorkAttendanceGroupAction.do")
 public class WorkAttendanceGroupAction extends BaseAction {
@@ -230,7 +233,7 @@ public class WorkAttendanceGroupAction extends BaseAction {
 		
 		int index = 0;
 		for(String[] row : list){
-			if(row.length<19) {
+			if(row.length<18) {
 				return this.ajaxForwardError(request, "第"+(index+Config.startRow)+"行数据不全",true);
 			}
 			index ++;
@@ -601,7 +604,7 @@ public class WorkAttendanceGroupAction extends BaseAction {
 
 			workAttendance.setWaiting_post_days(Double.parseDouble(request.getParameter("waiting_post_days"+index)));
 			workAttendance.setMaternity_leave_days(Double.parseDouble(request.getParameter("maternity_leave_days"+index)));
-			workAttendance.setMedical_days(Double.parseDouble(request.getParameter("medical_days"+index)));
+			//workAttendance.setMedical_days(Double.parseDouble(request.getParameter("medical_days"+index)));
 
 
 			workAttendance.setNeglect_work_days(Double.parseDouble(request.getParameter("neglect_work_days"+index)));
@@ -687,7 +690,7 @@ public class WorkAttendanceGroupAction extends BaseAction {
 
 			workAttendance.setWaiting_post_days(Double.parseDouble(request.getParameter("waiting_post_days"+index)));
 			workAttendance.setMaternity_leave_days(Double.parseDouble(request.getParameter("maternity_leave_days"+index)));
-			workAttendance.setMedical_days(Double.parseDouble(request.getParameter("medical_days"+index)));
+			//workAttendance.setMedical_days(Double.parseDouble(request.getParameter("medical_days"+index)));
 
 			workAttendance.setNeglect_work_days(Double.parseDouble(request.getParameter("neglect_work_days"+index)));
 			workAttendance.setLate_days(Double.parseDouble(request.getParameter("late_days"+index)));
@@ -778,8 +781,9 @@ public class WorkAttendanceGroupAction extends BaseAction {
 	private void paramprocess(HttpServletRequest request,WorkAttendance workAttendance){	
 		workAttendance.setProject_id(request.getParameter("project.project_id"));	
 		
-		if(workAttendance.getProject_name() == null || workAttendance.getProject_name().isEmpty())
-		workAttendance.setProject_name(request.getParameter("project.project_name"));
+		if(workAttendance.getProject_name() == null || workAttendance.getProject_name().isEmpty()) {
+			workAttendance.setProject_name(request.getParameter("project.project_name"));
+		}
 	}
 
 	

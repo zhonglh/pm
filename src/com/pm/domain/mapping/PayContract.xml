@@ -99,7 +99,7 @@
 		INNER JOIN vb_project project  
 		on pc.project_id = project.project_id 
 		WHERE 1=1 
-		<include refid="permission" /> 
+		<include refid="ProjectAuthMapping.permission" />
 	</sql>
 
 </mapper>

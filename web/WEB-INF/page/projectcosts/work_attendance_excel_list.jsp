@@ -5,7 +5,7 @@
 <div class="pageContent">		
 			
 		<div class="pageFormContent" layoutH="56">	
-			<table class="list nowrap" width="1900" >
+			<table class="list nowrap" width="1800" >
 				<thead>
 					<tr>
 						<th width="200">导入说明</th>	
@@ -27,7 +27,7 @@
 
 						<th width="80" >待岗天数</th>
 						<th width="80" >产假天数</th>
-						<th width="90" >医疗假天数</th>
+						<%--<th width="90" >医疗假天数</th>--%>
 
 						<th width="80">旷工天数</th>
 						<th width="80">迟到天数</th>
@@ -65,7 +65,7 @@
 
 						<td>${workAttendance.waiting_post_days }</td>
 						<td>${workAttendance.maternity_leave_days }</td>
-						<td>${workAttendance.medical_days }</td>
+						<%--<td>${workAttendance.medical_days }</td>--%>
 
 						<td>${workAttendance.neglect_work_days }</td>
 						<td>${workAttendance.late_days }</td>

@@ -10,7 +10,6 @@
 
 			<p>
 				<label>考勤月份：</label>
-				
 				<label>${workAttendance1.attendance_month } <input type="hidden" name="attendance_month" value="${workAttendance1.attendance_month }" /></label>
 			</p>	
 			
@@ -42,7 +41,7 @@
 
 						<th width="80" >待岗天数</th>
 						<th width="80" >产假天数</th>
-						<th width="90" >医疗假天数</th>
+						<%--<th width="90" >医疗假天数</th>--%>
 
 						<th width="80" >旷工天数</th>
 						<th width="80" >迟到天数</th>
@@ -77,7 +76,7 @@
 
 						<td>${workAttendance.waiting_post_days }</td>
 						<td>${workAttendance.maternity_leave_days }</td>
-						<td>${workAttendance.medical_days }</td>
+						<%--<td>${workAttendance.medical_days }</td>--%>
 
 						<td>${workAttendance.neglect_work_days }</td>
 						<td>${workAttendance.late_days }</td>

@@ -93,7 +93,24 @@
 		INNER JOIN vb_project project  
 		on cc.project_id = project.project_id 
 		WHERE 1=1 
-		<include refid="permission" /> 
+		<include refid="permission" />
 	</sql>
+
+
+
+
+	<sql id="permission">
+
+	<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
+
+		<if test="UserPermit.range == 1">
+
+		</if>
+
+	</if>
+
+	</sql>
+
+
 
 </mapper>

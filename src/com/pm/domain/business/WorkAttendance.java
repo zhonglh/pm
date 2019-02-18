@@ -53,7 +53,8 @@ public class WorkAttendance implements Serializable , ISort{
 	private double waiting_post_days;
 	@EntityAnnotation(item_name="产假天数" , item_sort=14,length=5)
 	private double maternity_leave_days;
-	@EntityAnnotation(item_name="医疗假天数" , item_sort=15,length=5)
+
+	//@EntityAnnotation(item_name="医疗假天数" , item_sort=15,length=5)
 	private double medical_days;
 
 

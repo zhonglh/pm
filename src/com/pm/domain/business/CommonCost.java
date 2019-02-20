@@ -69,6 +69,21 @@ public class CommonCost extends IdEntity implements  Serializable {
     private String need_approve;
 
 
+    //////////查询条件////
+
+
+
+    //核单标记， 用于查询
+    //1: 已核单，  2:未核单
+    private String verify_flag;
+
+
+    private int use_month1;
+    private int use_month2;
+    private Timestamp pay_date1;
+    private Timestamp pay_date2;
+
+
     @Override
     public String toString() {
         return pay_item_name+"("+amount+")" ;
@@ -224,5 +239,46 @@ public class CommonCost extends IdEntity implements  Serializable {
 
     public void setNeed_approve(String need_approve) {
         this.need_approve = need_approve;
+    }
+
+
+    public String getVerify_flag() {
+        return verify_flag;
+    }
+
+    public void setVerify_flag(String verify_flag) {
+        this.verify_flag = verify_flag;
+    }
+
+    public int getUse_month1() {
+        return use_month1;
+    }
+
+    public void setUse_month1(int use_month1) {
+        this.use_month1 = use_month1;
+    }
+
+    public int getUse_month2() {
+        return use_month2;
+    }
+
+    public void setUse_month2(int use_month2) {
+        this.use_month2 = use_month2;
+    }
+
+    public Timestamp getPay_date1() {
+        return pay_date1;
+    }
+
+    public void setPay_date1(Timestamp pay_date1) {
+        this.pay_date1 = pay_date1;
+    }
+
+    public Timestamp getPay_date2() {
+        return pay_date2;
+    }
+
+    public void setPay_date2(Timestamp pay_date2) {
+        this.pay_date2 = pay_date2;
     }
 }

@@ -83,11 +83,66 @@
 
 	<sql id="commoncostPagerSql">
 		select cc.* , convert(use_month,char)   as str_month ,
-		dd_pii.dic_data_name as pay_item_name , staff.staff_name , staff.staff_no
+		dd_pii.dic_data_name as pay_item_name , staff.staff_name , staff.staff_no,
+		aa.need_approve
 		from tb_common_cost cc
 		join ts_dic_data dd_pii on cc.pay_item_id  = dd_pii.id
 		left join tb_other_staff staff on cc.staff_id = staff.staff_id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'COMMONCOST' group by data_id) aa
+		on rc.reimburse_id = aa.data_id
 		WHERE 1=1
+
+
+		<if test="CommonCost.pay_item_id != null and CommonCost.pay_item_id != ''">
+			AND cc.pay_item_id = #{CommonCost.pay_item_id}
+		</if>
+
+
+		<if test="CommonCost.staff_name != null and CommonCost.staff_name != ''">
+			AND  staff.staff_name like concat('%',TRIM(#{CommonCost.staff_name}),'%') 			
+		</if>
+
+
+
+		<if test="CommonCost.use_month1 != 0 ">
+			<![CDATA[	
+			AND cc.use_month >= #{CommonCost.use_month1}
+			]]>
+		</if>
+		<if test="CommonCost.use_month2 != 0 ">
+			<![CDATA[	
+			AND cc.use_month <= #{CommonCost.use_month2}
+			]]>
+		</if>
+
+
+		<if test="CommonCost.pay_date1 != null ">
+			<![CDATA[	
+			AND cc.pay_date >= #{CommonCost.pay_date1}
+			]]>
+		</if>
+		<if test="CommonCost.pay_date2 != null ">
+			<![CDATA[	
+			AND cc.pay_date <= #{CommonCost.pay_date2}
+			]]>
+		</if>
+
+
+		<if test="CommonCost.verify_flag != null and CommonCost.verify_flag != ''">
+			<if test="CommonCost.verify_flag == 1">
+				and cc.verify_userid is not null
+			</if>
+			<if test="CommonCost.verify_flag == 2">
+				and cc.verify_userid is null
+			</if>
+			<if test="CommonCost.verify_flag == 3">
+				and (cc.verify_userid is not null and aa.need_approve = '1')
+			</if>
+		</if>
+
+
+
+		order by cc.use_month  desc,  cc.build_datetime desc, cc.import_order
 	</sql>
 
 </mapper>

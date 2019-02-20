@@ -55,6 +55,7 @@ public class CommonCostAction extends BaseAction {
 	private IApplyApproveService applyApproveService;
 
 
+	@Autowired
 	private IOtherStaffService otherStaffService;
 
 
@@ -272,9 +273,10 @@ public class CommonCostAction extends BaseAction {
 	}	
 
 
+
 	@RequestMapping(params = "method=toExcel")
 	public String toExcel(HttpServletResponse res,HttpServletRequest request){
-		return "commonCost/commoncost_upload";		
+		return "projectcosts/commoncost_upload";
 	}	
 
 
@@ -306,10 +308,12 @@ public class CommonCostAction extends BaseAction {
 		}
 		User sessionUser = PubMethod.getUser(request);
 		boolean isAllOK = true;
+		int index = 1;
 		for(CommonCost commoncost : commoncosts){
 			if(commoncost.getErrorInfo()==null || commoncost.getErrorInfo().length() <= 0){
 				try{
 					commoncost.setId(IDKit.generateId());
+					commoncost.setImport_order(index++);
 					commoncost.setBuild_datetime(PubMethod.getCurrentDate());
 					commoncost.setBuild_userid(sessionUser.getUser_id());
 					commoncost.setBuild_username(sessionUser.getUser_name());

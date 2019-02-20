@@ -9,11 +9,55 @@
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/CommonCostAction.do?method=list" method="post">
 	<div class="searchBar">
-		<div class="subBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
-			</ul>
-		</div>
+
+		<ul class="searchContent">
+			<li>
+				<label>费用类别：</label>
+				<input type="hidden" name="rai.id" value="${commoncost.pay_item_id }"/>
+				<input name="rai.dic_data_name" class="text" type="text" value="${commoncost.pay_item_name }"
+					   readonly="readonly" lookupPk="id" suggestFields="dic_data_name" lookupGroup="rai"
+					   suggestUrl="${webroot }/DicDataAction.do?method=lookup&dic_type_id=COMMON_COST_ITEM" />
+
+
+			</li>
+
+			<li>
+				<label>核单情况：</label>
+				<select name="verify_flag" style="width:133px">
+					<option value="" <c:if test="${'' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag."/></option>
+					<option value="1" <c:if test="${'1' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.1"/></option>
+					<option value="2" <c:if test="${'2' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.2"/></option>
+					<option value="3" <c:if test="${'3' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.3"/></option>
+				</select>
+			</li>
+
+
+			<li>
+				<label>报销月份：</label>
+				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="use_month1" value="${param.use_month1}"/>
+				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="use_month2" value="${param.use_month2}"/>
+			</li>
+
+
+
+		</ul>
+
+		<ul class="searchContent">
+
+
+			<li>
+				<label>报销人：</label>
+				<input type="text" class="text" name="staff_name" value="${param.staff_name}"/>
+			</li>
+
+			<li>
+				<label>支付日期：</label>
+				<input type="text" class="date" maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date1" value="${param.pay_date1}"/>
+				<input type="text" class="date" maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date2" value="${param.pay_date2}"/>
+			</li>
+			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+		</ul>
+
 	</div>
 	</form>
 </div>
@@ -48,16 +92,16 @@
 			</c:if>		
 		</ul>
 	</div>
-	<table class="table" width="1600" layoutH="135">
+	<table class="table" width="1100" layoutH="135">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
 
-				<th width="150">备注</th>
-				<th width="40">报销人</th>
-				<th width="80">费用类别</th>
-				<th width="80">金额</th>
 				<th width="80">月份</th>
+				<th width="250">备注</th>
+				<th width="80">金额</th>
+				<th width="120">费用类别</th>
+				<th width="100">报销人</th>
 				<th width="120">支付日期</th>
 
 				<th width="80">制表人</th>
@@ -73,12 +117,15 @@
 						<input name="ids" value="${commoncost.id }" type="checkbox" />
 					</c:if>
 				</td>
+
+
+				<td align="center"><b>${commoncost.use_month }</b></td>
 				<td>${commoncost.description }</td>
-				<td>${commoncost.staff_name }</td>
-				<td>${commoncost.pay_item_name }</td>
 				<td align="right"><b><fmt:formatNumber value="${commoncost.amount }" type="currency" pattern="###,###,##0.00"/></b></td>
-				<td align="right"><b>${commoncost.use_month }</b></td>
-				<td><fmt:formatDate value="${commoncost.pay_date }" pattern="yyyy-MM-dd"/></td>
+				<td align="center">${commoncost.pay_item_name }</td>
+				<td align="center">${commoncost.staff_name }</td>
+				<td align="center"><fmt:formatDate value="${commoncost.pay_date }" pattern="yyyy-MM-dd"/></td>
+
 				<td>${commoncost.build_username }</td>
 				<td>${commoncost.verify_username }</td>
 				<td>

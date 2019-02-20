@@ -33,7 +33,7 @@
 
 
 			<li>
-				<label>报销月份：</label>
+				<label>月份：</label>
 				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="use_month1" value="${param.use_month1}"/>
 				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="use_month2" value="${param.use_month2}"/>
 			</li>
@@ -106,7 +106,7 @@
 
 				<th width="80">制表人</th>
 				<th width="80">核单人</th>
-				<th width="120" >申请状态</th>
+				<th width="140" >申请状态</th>
 			</tr>
 		</thead>
 		<tbody>

@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+import com.common.exceptions.BaseException;
 import com.pm.domain.business.*;
 import com.pm.service.*;
 import com.pm.util.constant.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -104,6 +106,11 @@ public class CommonCostAction extends BaseAction {
 		commoncost.setStaff_id(staff_id);
 		commoncost.setStaff_no(staff_no);
 		commoncost.setStaff_name(staff_name);
+
+		if(StringUtils.isEmpty(staff_name)){
+            staff_name = request.getParameter("staff_name");
+            commoncost.setStaff_name(staff_name);
+        }
 	}
 
 
@@ -282,7 +289,18 @@ public class CommonCostAction extends BaseAction {
 
 	@RequestMapping(params = "method=doExcel")
 	public String doExcel(@RequestParam("image") MultipartFile file,HttpServletResponse res,HttpServletRequest request) throws  Exception{
-		List<String[]> list = getExcel(file,10,res,request);
+
+		List<String[]> list = null;
+
+		try {
+			list = getExcel(file, 6, res, request);
+		}catch(BaseException be){
+			return be.getErrcode();
+		}catch(Exception e){
+			return this.ajaxForwardError(request, e.getMessage(),true);
+		}
+
+
 		List<CommonCost> commoncosts = PubMethod.stringArray2List(list, CommonCost.class);
 
 
@@ -423,7 +441,7 @@ public class CommonCostAction extends BaseAction {
 		List<CommonCost> list = (List<CommonCost>)request.getSession().getAttribute(sessionAttr);
 		request.getSession().removeAttribute(sessionAttr);
 		request.setAttribute("list", list);
-		return "commonCost/commoncost_excel_list";
+		return "projectcosts/commoncost_excel_list";
 	}
 
 

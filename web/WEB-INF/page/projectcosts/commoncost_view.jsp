@@ -5,18 +5,36 @@
 	<form method="post" action="${webroot}/CommonCostAction.do?method=verifyCommonCost" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<div class="pageFormContent" layoutH="56">
 			<input type="hidden" name="id" value="${commoncost1.id }"/>
-			<p>
-				<label>支付月份：</label>
-				<fmt:formatDate value="${commoncost1.pay_date }" pattern="yyyy-MM-dd"/>
-			</p>
+
 			<p>
 				<label>月份：</label>
-				<fmt:formatNumber value="${commoncost1.use_month }" type="number" pattern="###,###,##0"/>
+				${commoncost1.use_month }
 			</p>
+
+			<p>
+				<label>费用类别：</label>
+				${commoncost1.pay_item_name }
+			</p>
+
+
+
 			<p>
 				<label>金额：</label>
 				<fmt:formatNumber value="${commoncost1.amount }" type="currency" pattern="###,###,##0.00"/>
 			</p>
+
+			<p>
+				<label>支付日期：</label>
+				<fmt:formatDate value="${commoncost1.pay_date }" pattern="yyyy-MM-dd"/>
+			</p>
+
+
+
+			<p>
+				<label>报销人：</label>
+				${commoncost1.staff_name }
+			</p>
+
 			<p>
 				<label>备注：</label>
 				${commoncost1.description }

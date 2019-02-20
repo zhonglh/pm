@@ -95,6 +95,12 @@ public class Contract extends IdEntity implements Serializable {
 	//查询条件
 	private Timestamp date1;
 	private Timestamp date2;
+
+
+	@Override
+	public String toString() {
+		return contract_no==null?"":contract_no ;
+	}
 	
 	
 	public String getStorage_addr() {
@@ -217,11 +223,7 @@ public class Contract extends IdEntity implements Serializable {
 	public void setSales_username(String sales_username) {
 		this.sales_username = sales_username;
 	}
-	
-	@Override
-	public String toString() {
-		return contract_no==null?"":contract_no ;
-	}
+
 	public String getProject_client_name() {
 		return project_client_name;
 	}

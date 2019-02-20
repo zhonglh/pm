@@ -7,7 +7,7 @@ public interface ITaskService {
     /**
      * @Title: initTask
      * @Description: 任务初始化
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月30日下午1:39:57
      */
     void initTask();
@@ -15,7 +15,7 @@ public interface ITaskService {
     /**
      * @Title: mutualExclusionTaskVerification
      * @Description: 互斥任务验证
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月30日下午1:41:06
      * @throws IllegalStateException
      */
@@ -24,7 +24,7 @@ public interface ITaskService {
     /**
      * @Title: exclusiveTaskVerification
      * @Description: 排他任务验证
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月30日下午1:42:37
      * @return
      */
@@ -33,7 +33,7 @@ public interface ITaskService {
     /**
      * @Title: equalsTask
      * @Description: 验证是否相同任务
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日上午11:17:01
      * @param task
      * @return

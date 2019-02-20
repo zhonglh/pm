@@ -70,7 +70,7 @@ public interface IBatisDao {
     /**
      * @Title: execSqlFile
      * @Description:执行sql文件
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年4月1日上午10:21:38
      * @param sqlPath
      */

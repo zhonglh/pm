@@ -541,7 +541,7 @@ public class FileKit {
 	/**
 	 * @Title: getFileName
 	 * @Description: 在文件路径中截取文件名
-	 * @Author: Hongli
+	 * @Author: ZhongLiHong
 	 * @Since: 2014年4月2日下午1:05:29
 	 * @param filePath
 	 * @return
@@ -575,7 +575,7 @@ public class FileKit {
 	/**
 	 * @Title: formetFileSize
 	 * @Description: T转换文件大小
-	 * @Author: Hongli
+	 * @Author: ZhongLiHong
 	 * @Since: 2014年5月19日下午4:15:07
 	 * @param fileS
 	 * @return
@@ -695,7 +695,7 @@ public class FileKit {
 	/**
 	 * @Title: isExist
 	 * @Description: 判断文件夹是否存在)
-	 * @Author: Hongli
+	 * @Author: ZhongLiHong
 	 * @Since: 2014年4月1日上午9:50:36
 	 * @param path
 	 * @param create
@@ -835,7 +835,7 @@ public class FileKit {
 	/**
 	 * @Title: getString4File
 	 * @Description: 读取文件内容
-	 * @Author: Hongli
+	 * @Author: ZhongLiHong
 	 * @Since: 2014年3月24日下午3:06:38
 	 * @param filePath
 	 * @param charset
@@ -873,7 +873,7 @@ public class FileKit {
 	/**
 	 * @Title: getString4File
 	 * @Description: 读取流文件
-	 * @Author: Hongli
+	 * @Author: ZhongLiHong
 	 * @Since: 2014年4月8日下午4:47:44
 	 * @param in
 	 * @param charset
@@ -907,7 +907,7 @@ public class FileKit {
 	/**
 	 * @Title: getFolderAllFile
 	 * @Description: 返回某个目录下所有文件
-	 * @Author: Hongli
+	 * @Author: ZhongLiHong
 	 * @Since: 2014年4月18日上午10:05:51
 	 * @param file
 	 * @return
@@ -936,7 +936,7 @@ public class FileKit {
 	/**
 	 * @Title: getFolderAllFile
 	 * @Description: 返回某个目录下所有文件
-	 * @Author: Hongli
+	 * @Author: ZhongLiHong
 	 * @Since: 2014年4月18日上午10:08:25
 	 * @param folderPath
 	 * @return
@@ -948,7 +948,7 @@ public class FileKit {
 	/**
 	 * @Title: getLastFolderOrSuffix
 	 * @Description: 取路径最后文件夹或后缀
-	 * @Author: Hongli
+	 * @Author: ZhongLiHong
 	 * @Since: 2014年5月15日下午5:51:43
 	 * @param path
 	 * @return

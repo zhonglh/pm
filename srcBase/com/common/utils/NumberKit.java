@@ -148,7 +148,7 @@ public class NumberKit {
     /**
      * @Title: random
      * @Description: 生成几位随机数 1-10位
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月22日下午4:35:04
      * @param n
      * @return

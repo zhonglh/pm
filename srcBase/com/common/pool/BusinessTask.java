@@ -66,7 +66,7 @@ public class BusinessTask extends Thread implements ITaskService, Serializable {
     /**
      * @Title: getExclusiveTask
      * @Description: 取排它任务
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日上午10:27:10
      * @return
      */
@@ -77,7 +77,7 @@ public class BusinessTask extends Thread implements ITaskService, Serializable {
     /**
      * @Title: getMutualExclusionTask
      * @Description: 取互斥任务
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日上午10:26:50
      * @return
      */
@@ -88,7 +88,7 @@ public class BusinessTask extends Thread implements ITaskService, Serializable {
     /**
      * @Title: getTaskPriority
      * @Description: 取任务优先级
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日上午10:29:52
      * @return
      */
@@ -99,7 +99,7 @@ public class BusinessTask extends Thread implements ITaskService, Serializable {
     /**
      * @Title: getParallel
      * @Description: 取任务可同时运行个数
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日上午10:36:59
      * @return
      */
@@ -110,7 +110,7 @@ public class BusinessTask extends Thread implements ITaskService, Serializable {
     /**
      * @Title: getCoerce
      * @Description: 是否立即执行，默认false
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日上午10:30:36
      * @return
      */

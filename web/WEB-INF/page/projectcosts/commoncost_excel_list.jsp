@@ -6,9 +6,14 @@
 			<table class="list nowrap" width="1200" >
 				<thead>
 					<tr>
-						<th width="200">导入说明</th>	
-						<th width="100">金额</th>	
-						<th width="100">备注</th>	
+						<th width="200">导入说明</th>
+						<th width="100">月份</th>
+						<th width="180">备注</th>
+						<th width="100">金额</th>
+						<th width="120">费用类别</th>
+						<th width="100">报销人姓名</th>
+						<th width="100">支付日期</th>
+
 					</tr>
 				</thead>
 				<tbody>
@@ -22,8 +27,12 @@
 								<font color="green">成功</font>
 							</c:if>
 						</td>
-						<td>${commoncost.amount }</td>	
-						<td>${commoncost.description }</td>	
+						<td>${commoncost.str_month }</td>
+						<td>${commoncost.description }</td>
+						<td>${commoncost.amount }</td>
+						<td>${commoncost.pay_item_name }</td>
+						<td>${commoncost.staff_name }</td>
+						<td><fmt:formatDate value="${commoncost.pay_date }" pattern="yyyy-MM-dd"/></td>
 					</tr>
 					</c:forEach>
 				</tbody>

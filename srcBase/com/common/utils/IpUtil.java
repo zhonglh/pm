@@ -91,7 +91,7 @@ public class IpUtil {
     /**
      * @Title: IP2Long
      * @Description:将127.0.0.1形式的IP地址转换成十进制整数，这里没有进行任何错误处理
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年7月2日上午11:39:34
      * @param IPStr
      * @return
@@ -120,7 +120,7 @@ public class IpUtil {
     /**
      * @Title: Long2Binary
      * @Description: 将IP地址十进制整数转化成二进制，这里没有进行任何错误处理
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年7月2日上午11:39:28
      * @param longIP
      * @return
@@ -132,7 +132,7 @@ public class IpUtil {
     /**
      * @Title: Long2IP
      * @Description:将十进制整数形式转换成127.0.0.1形式的ip地址
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年7月2日上午11:39:16
      * @param longIP
      * @return

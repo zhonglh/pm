@@ -350,7 +350,7 @@ public class BaseAction {
     /**
      * @Title: getDataflow
      * @Description: 取Rquest中的数据流
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月18日下午2:34:22
      * @param req
      * @return
@@ -387,7 +387,7 @@ public class BaseAction {
     /**
      * @Title: writeResJson
      * @Description: 写入JSON到HttpServletResponse
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月18日下午2:35:54
      * @param req
      * @param res
@@ -433,7 +433,7 @@ public class BaseAction {
     /**
      * @Title: getJson
      * @Description: 取JOSN 默认参数名为json
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月18日下午3:29:07
      * @param req
      * @return
@@ -445,7 +445,7 @@ public class BaseAction {
     /**
      * @Title: getJson
      * @Description: 取JOSN
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月18日下午3:29:20
      * @param req
      * @param dataName
@@ -461,7 +461,7 @@ public class BaseAction {
     /**
      * @Title: getLocale
      * @Description: 取国际化语言
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月18日下午5:29:21
      * @param req
      * @return
@@ -474,7 +474,7 @@ public class BaseAction {
     /**
      * @Title: getMsg
      * @Description: 取国际化
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月18日下午5:31:54
      * @param key
      * @param request
@@ -488,7 +488,7 @@ public class BaseAction {
     /**
      * @Title: converCondition2Bean
      * @Description: 转换前台条件到相应的java bean中
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年5月7日上午11:10:50
      * @param condition
      * @param obj
@@ -576,7 +576,7 @@ public class BaseAction {
     /**
      * @Title: setMessageJson
      * @Description: 异常时设置 json
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年7月1日下午5:57:52
      * @param mJson
      * @param e
@@ -611,7 +611,7 @@ public class BaseAction {
     /**
      * @Title: verifyRequestData
      * @Description: 当返回不为NULL时需要 return
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年7月2日上午10:26:20
      * @return
      */
@@ -627,7 +627,7 @@ public class BaseAction {
     /**
      * @Title: verifyOperationObject
      * @Description: 当返回不为NULL时需要 return
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年7月2日上午10:26:20
      * @return
      */

@@ -66,7 +66,7 @@ public class RestClient extends Client {
     /**
      * @Title: rest
      * @Description: rest 请求
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:48:34
      * @param parameter
      * @param restMethod

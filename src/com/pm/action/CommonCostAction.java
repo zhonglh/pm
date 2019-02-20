@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+import com.pm.domain.business.*;
+import com.pm.service.*;
+import com.pm.util.constant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,26 +28,12 @@ import com.common.utils.DateKit;
 import com.common.utils.IDKit;
 import com.common.utils.file.FileKit;
 import com.common.utils.file.download.DownloadBaseUtil;
-import com.pm.domain.business.ApplyApprove;
-import com.pm.domain.business.Project;
 import com.pm.domain.system.User;
-import com.pm.service.IApplyApproveService;
-import com.pm.service.IProjectService;
-import com.pm.service.IRoleService;
 import com.pm.util.Config;
 import com.pm.util.PubMethod;
-import com.pm.util.constant.BusinessUtil;
-import com.pm.util.constant.EnumApplyApproveType;
-import com.pm.util.constant.EnumEntityType;
-import com.pm.util.constant.EnumOperationType;
-import com.pm.util.constant.EnumPermit;
 import com.pm.util.excel.BusinessExcel;
 import com.pm.util.excel.ExcelRead;
 import com.pm.vo.UserPermit;
-
-
-import com.pm.domain.business.CommonCost;
-import com.pm.service.ICommonCostService;
 
 
 /**
@@ -59,13 +48,18 @@ public class CommonCostAction extends BaseAction {
 	private static final String rel = "rel26";
 
 	@Autowired
-	private IProjectService projectService;
-	@Autowired
 	private ICommonCostService commoncostService;
 
 
 	@Autowired
-	private IApplyApproveService applyApproveService;	
+	private IApplyApproveService applyApproveService;
+
+
+	private IOtherStaffService otherStaffService;
+
+
+	@Autowired
+	private IDicDataService dicDataService;
 
 
 	@Autowired
@@ -98,7 +92,17 @@ public class CommonCostAction extends BaseAction {
 
 
 	private void paramprocess(HttpServletRequest request,CommonCost commoncost){
+		String pay_item_id = request.getParameter("rai.id");
+		String pay_item_name = request.getParameter("rai.dic_data_name");
+		commoncost.setPay_item_id(pay_item_id);
+		commoncost.setPay_item_name(pay_item_name);
 
+		String staff_id = request.getParameter("staff.staff_id");
+		String staff_no = request.getParameter("staff.staff_no");
+		String staff_name = request.getParameter("staff.staff_name");
+		commoncost.setStaff_id(staff_id);
+		commoncost.setStaff_no(staff_no);
+		commoncost.setStaff_name(staff_name);
 	}
 
 
@@ -152,6 +156,7 @@ public class CommonCostAction extends BaseAction {
 		CommonCost commoncost = addCommonCost;	
 		paramprocess(request,commoncost);
 		User sessionUser = PubMethod.getUser(request);
+		commoncost.setStr_month(String.valueOf(addCommonCost.getUse_month()));
 		commoncost.setId(IDKit.generateId());
 		commoncost.setBuild_datetime(PubMethod.getCurrentDate());
 		commoncost.setBuild_userid(sessionUser.getUser_id());
@@ -178,6 +183,7 @@ public class CommonCostAction extends BaseAction {
 		paramprocess(request,commoncost);	
 		int count = 0;
 		try{
+			commoncost.setStr_month(String.valueOf(updateCommonCost.getUse_month()));
 			count = commoncostService.updateCommonCost(commoncost);	
 		}catch(Exception e){
 		}
@@ -276,19 +282,27 @@ public class CommonCostAction extends BaseAction {
 	public String doExcel(@RequestParam("image") MultipartFile file,HttpServletResponse res,HttpServletRequest request) throws  Exception{
 		List<String[]> list = getExcel(file,10,res,request);
 		List<CommonCost> commoncosts = PubMethod.stringArray2List(list, CommonCost.class);
+
+
+
 		UserPermit userPermit = new UserPermit();
-		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);	
-		Project searchProject = new Project();
-		searchProject.setDelete_flag(BusinessUtil.NOT_DELETEED);
-		Pager<Project> projects = projectService.queryProject(searchProject, userPermit, PubMethod.getPagerByAll(request, Project.class));
-		Map<String,Project>  projectMap = new HashMap<String,Project>();
-		if(projects.getResultList() != null) {
-			for(Project project : projects.getResultList()){
-				projectMap.put(project.getProject_name(), project);		
+		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
+
+
+		Pager<OtherStaff> otherStaffs = otherStaffService.queryOtherStaff(new OtherStaff(),  userPermit, PubMethod.getPagerByAll(OtherStaff.class));
+		Map<String,OtherStaff>  otherStaffMap = new HashMap<String,OtherStaff>();
+		if(otherStaffs.getResultList() != null) {
+			for(OtherStaff otherStaff : otherStaffs.getResultList()){
+				otherStaffMap.put(otherStaff.getStaff_name(), otherStaff);
+				otherStaffMap.put(otherStaff.getStaff_no(), otherStaff);
 			}
 		}
+
+		//查找公共费用类别
+		Map<String, Map<String, DicData>> allDicData = dicDataService.queryAllDicData();
+
 		for(CommonCost commoncost : commoncosts){
-			 checkCommonCost(commoncost,projectMap);
+			 checkCommonCost(commoncost , allDicData , otherStaffMap );
 		}
 		User sessionUser = PubMethod.getUser(request);
 		boolean isAllOK = true;
@@ -327,8 +341,72 @@ public class CommonCostAction extends BaseAction {
 	}	
 
 
-	private boolean checkCommonCost(CommonCost commoncost,	Map<String,Project>  projectMap){
+	private boolean checkCommonCost(CommonCost commoncost , Map<String, Map<String, DicData>> allDicData ,Map<String,OtherStaff>  otherStaffMap){
 		boolean b = true;
+
+		Date date1 = null;
+		if(commoncost.getStr_month() == null ||  commoncost.getStr_month().isEmpty()){
+			commoncost.setErrorInfo(commoncost.getErrorInfo() + "月份不能为空;");
+			b = false;
+		}else {
+			if(commoncost.getStr_month().length() != 6) {
+				commoncost.setErrorInfo(commoncost.getErrorInfo() + "月份格式错误;");
+				b = false;
+			}else{
+				date1 = DateKit.fmtStrToDate(commoncost.getStr_month()+"01","yyyyMMdd");
+				if(date1 == null){
+					commoncost.setErrorInfo(commoncost.getErrorInfo() + "月份格式错误;");
+					b = false;
+				}else {
+					commoncost.setUse_month(Integer.parseInt(commoncost.getStr_month()));
+				}
+			}
+		}
+
+
+		if(commoncost.getPay_date() == null){
+			commoncost.setPay_date(new Timestamp(date1.getTime()));
+		}
+
+		if(commoncost.getAmount() <= 0){
+			commoncost.setErrorInfo(commoncost.getErrorInfo() + "金额数据错误;");
+			b = false;
+		}
+
+
+
+
+		if(commoncost.getPay_item_name() == null ||  commoncost.getPay_item_name().isEmpty()){
+			commoncost.setErrorInfo(commoncost.getErrorInfo() + "费用类别不能为空;");
+			b = false;
+		}else {
+			DicData dicData = PubMethod.getObj4Map(EnumDicType.COMMON_COST_ITEM.name(),commoncost.getPay_item_name() ,allDicData);
+			if(dicData != null){
+				commoncost.setPay_item_id(dicData.getId());
+				commoncost.setPay_item_name(dicData.getDic_data_name());
+			}else {
+				commoncost.setErrorInfo(commoncost.getErrorInfo() + "费用类别错误;");
+				b = false;
+			}
+		}
+
+
+
+		if(commoncost.getStaff_name() != null && commoncost.getStaff_name().length() > 0){
+			OtherStaff otherStaff = otherStaffMap.get(commoncost.getStaff_name());
+			if(otherStaff == null){
+				commoncost.setErrorInfo(commoncost.getErrorInfo() + "报销人姓名错误;");
+				b = false;
+			}else {
+				commoncost.setStaff_id(otherStaff.getStaff_id());
+				commoncost.setStaff_name(otherStaff.getStaff_name());
+				commoncost.setStaff_no(otherStaff.getStaff_no());
+			}
+		}
+
+
+
+
 		if(commoncost.getErrorInfo() != null && !commoncost.getErrorInfo().isEmpty()) {
 			b = false;
 		}

@@ -105,7 +105,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 可以过滤不需要的属性
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年5月6日下午2:47:50
      * @param object
      * @param propertyFilter
@@ -119,7 +119,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 可以重命名某些元素
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:06:21
      * @param object
      * @param nameFilter
@@ -133,7 +133,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description:转json时下划线可以转驼峰
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:07:56
      * @param object
      * @param isToCamelCase
@@ -147,7 +147,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 可以过滤不需要的属性，并重命名某些属性
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:11:33
      * @param object
      * @param propertyFilter
@@ -163,7 +163,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 可以过滤不需要的属性,下划线可以转驼峰
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:13:05
      * @param object
      * @param propertyFilter
@@ -179,7 +179,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 支持重命名某些属性，支持下划线可以转驼峰
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:14:39
      * @param object
      * @param nameFilter
@@ -195,7 +195,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 支持下划线转驼峰，支持boolean 转true=1，false=0
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:20:17
      * @param object
      * @param isToCamelCase
@@ -211,7 +211,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 支持下划线转驼峰，支持属性过滤，支持重命名
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:23:59
      * @param object
      * @param propertyFilter
@@ -229,7 +229,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 支持下划线转驼峰， 支持重命名,支持boolean 转true=1，false=0
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:23:59
      * @param object
      * @param propertyFilter
@@ -247,7 +247,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: 支持下划线转驼峰， 支持属性过滤,支持boolean 转true=1，false=0
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:23:59
      * @param object
      * @param nameFilter
@@ -265,7 +265,7 @@ public class Jsonkit {
     /**
      * @Title: object2JsonString
      * @Description: Object 转json
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:33:44
      * @param object
      * @return
@@ -277,7 +277,7 @@ public class Jsonkit {
     /**
      * @Title: jsonString2Object
      * @Description: josn 转OBject
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:34:03
      * @param jsonString
      * @param classes
@@ -290,7 +290,7 @@ public class Jsonkit {
     /**
      * @Title: jsonString2Object
      * @Description: 支持验证JSON格式
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年7月2日上午9:35:09
      * @param jsonString
      * @param classes
@@ -310,7 +310,7 @@ public class Jsonkit {
     /**
      * @Title: jsonString2Array
      * @Description: josn 转List
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:34:21
      * @param jsonString
      * @param classes
@@ -323,7 +323,7 @@ public class Jsonkit {
     /**
      * @Title: jsonString2Array
      * @Description: (这里用一句话描述这个方法的作用)
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年7月2日上午9:49:06
      * @param jsonString
      * @param classes
@@ -343,7 +343,7 @@ public class Jsonkit {
     /**
      * @Title: json2Object
      * @Description:JSONObject 转javaObject
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月27日下午9:34:43
      * @param json
      * @param classes
@@ -367,7 +367,7 @@ public class Jsonkit {
     /**
      * @Title: String2JSON
      * @Description: String 转json对像JSONObject ,JSONArray,Integer,String
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月30日下午9:17:45
      * @param json
      * @return

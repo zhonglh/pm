@@ -4,7 +4,6 @@
 <form id="pagerForm" method="post" action="${webroot }/CommonCostAction.do?method=list">
 	<input type="hidden" name="pageNum" value="${pageNum}" />
 	<input type="hidden" name="numPerPage" value="${pageSize}" />
-	<input type="hidden" name="project_name" value="${param.project_name}" />
 	<input type="hidden" name="verify_flag" value="${param.verify_flag}" />
 </form>
 <div class="pageHeader">
@@ -53,12 +52,14 @@
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
-				<th width="200">项目名称</th>
-				<th width="100">项目编号</th>	
-				<th width="100">支付月份</th>	
-				<th width="100">月份</th>	
-				<th width="100">金额</th>	
-				<th width="100">备注</th>	
+
+				<th width="150">备注</th>
+				<th width="40">报销人</th>
+				<th width="80">费用类别</th>
+				<th width="80">金额</th>
+				<th width="80">月份</th>
+				<th width="120">支付日期</th>
+
 				<th width="80">制表人</th>
 				<th width="80">核单人</th>
 				<th width="120" >申请状态</th>
@@ -72,12 +73,12 @@
 						<input name="ids" value="${commoncost.id }" type="checkbox" />
 					</c:if>
 				</td>
-				<td>${commoncost.project_name }</td>
-				<td>${commoncost.project_no }</td>
-				<td><fmt:formatDate value="${commoncost.pay_date }" pattern="yyyy-MM-dd"/></td>
-				<td align="right"><b><fmt:formatNumber value="${commoncost.use_month }" type="number" pattern="###,###,##0"/></b></td>
-				<td align="right"><b><fmt:formatNumber value="${commoncost.amount }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td>${commoncost.description }</td>
+				<td>${commoncost.staff_name }</td>
+				<td>${commoncost.pay_item_name }</td>
+				<td align="right"><b><fmt:formatNumber value="${commoncost.amount }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td align="right"><b>${commoncost.use_month }</b></td>
+				<td><fmt:formatDate value="${commoncost.pay_date }" pattern="yyyy-MM-dd"/></td>
 				<td>${commoncost.build_username }</td>
 				<td>${commoncost.verify_username }</td>
 				<td>

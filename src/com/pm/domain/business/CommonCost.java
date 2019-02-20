@@ -10,10 +10,9 @@ import java.util.Date;
  * 公共费用
  * @author Administrator
  */
-public class CommonCost implements Serializable {
+public class CommonCost extends IdEntity implements  Serializable {
 
 
-    private String id;
 
 
 
@@ -50,7 +49,7 @@ public class CommonCost implements Serializable {
 
     //////////////////////////////////////
 
-    @EntityAnnotation(item_name="报销人工号", item_sort=5,length=30)
+    @EntityAnnotation(item_name="报销人工号", item_sort=5)
     private String staff_no;
     @EntityAnnotation(item_name="报销人姓名", item_sort=6,length=60)
     private String staff_name;
@@ -66,15 +65,13 @@ public class CommonCost implements Serializable {
 
     private String errorInfo = "";
 
+    //是否申请 取消核单状态 1:已申请取消核单  其他:正常
+    private String need_approve;
 
 
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return pay_item_name+"("+amount+")" ;
     }
 
     public String getStaff_id() {
@@ -219,5 +216,13 @@ public class CommonCost implements Serializable {
 
     public void setErrorInfo(String errorInfo) {
         this.errorInfo = errorInfo;
+    }
+
+    public String getNeed_approve() {
+        return need_approve;
+    }
+
+    public void setNeed_approve(String need_approve) {
+        this.need_approve = need_approve;
     }
 }

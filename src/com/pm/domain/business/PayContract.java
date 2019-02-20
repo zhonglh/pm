@@ -10,9 +10,8 @@ import java.util.Date;
  * 付款合同
  * @author Administrator
  */
-public class PayContract implements Serializable {
+public class PayContract extends IdEntity implements Serializable {
 
-    private String id;
 
 
     @EntityAnnotation(item_name="合同编号" ,item_sort=1,length=50)
@@ -79,13 +78,13 @@ public class PayContract implements Serializable {
 
     private String errorInfo;
 
-    public String getId() {
-        return id;
+
+
+    @Override
+    public String toString() {
+        return contract_no ;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getContract_no() {
         return contract_no;

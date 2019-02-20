@@ -302,7 +302,7 @@ public final class BusinessPool {
     /**
      * @Title: distributeExclusiveTaskWorkIngThread
      * @Description:分配排他任务到工作线程队列中
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日上午10:43:14
      * @param tasks
      *            待分配的任务
@@ -324,7 +324,7 @@ public final class BusinessPool {
     /**
      * @Title: distributeSameTask
      * @Description: 分配同任务
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日下午1:18:28
      * @param tasks
      * @param workTask
@@ -350,7 +350,7 @@ public final class BusinessPool {
     /**
      * @Title: setExclusiveTaskToWorkIngThread
      * @Description: 分配排它任务到相应的工作线程队列中
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月31日上午10:33:16
      * @param task
      *            为空时分配线程池工作队列中的任务，不为空时，分配传入的任务

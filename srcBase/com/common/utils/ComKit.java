@@ -21,7 +21,7 @@ public class ComKit {
     /**
      * @Title: isNull
      * @Description: 判断是否为空 ,支持Object ,String
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-14上午9:28:20
      * @param obj
      * @return true 为空
@@ -74,7 +74,7 @@ public class ComKit {
     /**
      * @Title: stringSort
      * @Description: 排序
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-14上午9:27:41
      * @param str
      * @return
@@ -100,7 +100,7 @@ public class ComKit {
     /**
      * @Title: isChinese
      * @Description: 判断是否为中文字符
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-14上午9:34:02
      * @param c
      * @return
@@ -115,7 +115,7 @@ public class ComKit {
     /**
      * @Title: getIso2Utf8
      * @Description: ISO转UTF-8
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-17下午1:13:27
      * @param message
      * @return
@@ -132,7 +132,7 @@ public class ComKit {
     /**
      * @Title: getUtf82Iso
      * @Description: UTF-8转ISO
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-17下午1:13:45
      * @param message
      * @return
@@ -149,7 +149,7 @@ public class ComKit {
     /**
      * @Title: listTOMap
      * @Description: "="号分隔的List字符转成Map
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-17下午1:17:48
      * @param list
      * @return
@@ -203,7 +203,7 @@ public class ComKit {
     /**
      * @Title: getUUID
      * @Description:生成UUID
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月17日下午6:06:13
      * @return
      */
@@ -214,7 +214,7 @@ public class ComKit {
     /**
      * @Title: getUUIDNoMidline
      * @Description: 生成没有“-”的uuid
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月17日下午6:05:16
      * @return
      */
@@ -225,7 +225,7 @@ public class ComKit {
     /**
      * @Title: getRandom
      * @Description: 随机生成区间数
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年3月17日下午6:04:48
      * @param min
      * @param max
@@ -239,7 +239,7 @@ public class ComKit {
     /**
      * @Title: replaceBlank
      * @Description: 去除字符串中的空格、回车、换行符、制表符
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年4月23日上午10:31:10
      * @param str
      * @return

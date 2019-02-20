@@ -22,7 +22,7 @@ public class ErrorDeal {
     /**
      * @Title: getErrorMessage
      * @Description: 取异常描述
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:52:25
      * @param e
      * @return
@@ -40,7 +40,7 @@ public class ErrorDeal {
     /**
      * @Title: getErrorClassName
      * @Description: 取异常class name
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年6月30日下午10:36:22
      * @param e
      * @return
@@ -59,7 +59,7 @@ public class ErrorDeal {
     /**
      * @Title: getStack
      * @Description: 取异常堆栈
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:52:41
      * @param e
      * @return

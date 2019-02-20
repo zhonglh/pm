@@ -15,7 +15,7 @@ public class SystemKit {
     /**
      * @Title: getVendor
      * @Description: 取JDK作者
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月16日下午4:12:10
      * @return
      */
@@ -26,7 +26,7 @@ public class SystemKit {
     /**
      * @Title: isIBMJDKVendor
      * @Description: 是否IBMjdk
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年10月16日下午4:14:21
      * @return
      */

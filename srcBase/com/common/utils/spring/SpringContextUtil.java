@@ -88,7 +88,7 @@ public class SpringContextUtil {
     /**
      * @Title: getMessage
      * @Description: 取国际化
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年11月4日上午10:27:08
      * @param key
      * @param locale
@@ -113,7 +113,7 @@ public class SpringContextUtil {
     /**
      * @Title: getMessage
      * @Description: 取国际化
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2014年11月4日上午10:27:20
      * @param key
      * @param locale

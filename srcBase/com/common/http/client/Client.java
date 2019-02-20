@@ -45,7 +45,7 @@ abstract public class Client {
      * 
      * @Title: get
      * @Description: REST GET
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:41:33
      * @return String
      */
@@ -56,7 +56,7 @@ abstract public class Client {
      * 
      * @Title: delete
      * @Description: REST DELETE
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:41:46
      * @return String
      */
@@ -67,7 +67,7 @@ abstract public class Client {
      * 
      * @Title: put
      * @Description: REST PUT
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:42:01
      * @param obj
      * @return String
@@ -79,7 +79,7 @@ abstract public class Client {
      * 
      * @Title: post
      * @Description: REST POST
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:42:13
      * @param obj
      * @return String
@@ -91,7 +91,7 @@ abstract public class Client {
      * 
      * @Title: responseCode
      * @Description: HTTP 请求返回码
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:42:48
      * @return
      */
@@ -158,7 +158,7 @@ abstract public class Client {
     /**
      * @Title: setHeader
      * @Description:设置 请求头
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-14下午5:07:16
      * @param header
      */
@@ -205,7 +205,7 @@ abstract public class Client {
     /**
      * @Title: close
      * @Description: 关闭连接
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:46:42
      */
     public void close(){
@@ -217,7 +217,7 @@ abstract public class Client {
     /**
      * @Title: setTimeout
      * @Description:设置超时
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午11:11:20
      */
     public void setTimeout(int timeout){
@@ -230,7 +230,7 @@ abstract public class Client {
     /**
      * @Title: getStatus
      * @Description: 取执行状态
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:46:49
      * @return
      */

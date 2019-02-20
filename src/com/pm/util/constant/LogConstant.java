@@ -104,7 +104,7 @@ public class LogConstant {
 	public static final String ENTITY_INSURANCE = "insurance";
 
 
-	public static final String ENTITY_COMMONCOST = "commoncost";
+	public static final String ENTITY_COMMONCOST = "common.cost";
 	
 	
 

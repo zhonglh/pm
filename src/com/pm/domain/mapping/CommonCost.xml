@@ -11,8 +11,11 @@
 
 
 	<select id="getCommonCost" parameterType="com.pm.domain.business.CommonCost" resultMap="commoncostMap">
-		select cc.*
+		select cc.* , convert(use_month,char)   as str_month ,
+		dd_pii.dic_data_name as pay_item_name , staff.staff_name , staff.staff_no
 		from tb_common_cost cc
+		join ts_dic_data dd_pii on cc.pay_item_id  = dd_pii.id
+		left join tb_other_staff staff on cc.staff_id = staff.staff_id
 		where cc.id = #{id}
 	</select>
 
@@ -35,14 +38,7 @@
 		use_month=#{use_month},
 		pay_date=#{pay_date},
 		amount=#{amount},
-		description=#{description},
-		import_order=#{import_order},
-		build_datetime=#{build_datetime},
-		build_username=#{build_username},
-		build_userid=#{build_userid},
-		verify_username=#{verify_username},
-		verify_userid=#{verify_userid},
-		verify_datetime=#{verify_datetime}
+		description=#{description}
 		where id=#{id} 
 		and verify_userid is null 
 	</update>
@@ -86,10 +82,11 @@
 	</select>
 
 	<sql id="commoncostPagerSql">
-		select cc.* ,project.project_name,project.project_no 
-		from tb_common_cost cc  
-		INNER JOIN vb_project project  
-		on cc.project_id = project.project_id 
+		select cc.* , convert(use_month,char)   as str_month ,
+		dd_pii.dic_data_name as pay_item_name , staff.staff_name , staff.staff_no
+		from tb_common_cost cc
+		join ts_dic_data dd_pii on cc.pay_item_id  = dd_pii.id
+		left join tb_other_staff staff on cc.staff_id = staff.staff_id
 		WHERE 1=1
 	</sql>
 

@@ -407,8 +407,9 @@ public class ReimburseCostsAction extends BaseAction {
 		
 		
 		
-		if(reimburseCosts.getErrorInfo() != null && !reimburseCosts.getErrorInfo().isEmpty())
+		if(reimburseCosts.getErrorInfo() != null && !reimburseCosts.getErrorInfo().isEmpty()) {
 			b = false;
+		}
 		
 		return b;
 	}

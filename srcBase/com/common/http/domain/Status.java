@@ -1497,7 +1497,7 @@ public final class Status {
     /**
      * @Title: isPDException
      * @Description: 判断是否是PD异常
-     * @Author: Hongli
+     * @Author: ZhongLiHong
      * @Since: 2013-6-15上午10:49:32
      * @param code
      * @return

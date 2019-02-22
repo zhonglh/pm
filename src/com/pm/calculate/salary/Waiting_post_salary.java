@@ -5,6 +5,7 @@ import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
 import com.pm.domain.business.Salary;
+import com.pm.util.constant.EnumSalary;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
@@ -26,7 +27,7 @@ public class Waiting_post_salary extends AbstractSalaryClculate implements ISala
             try{
                 ParamExtend paramExtend = null;
                 if(paramExtMap != null) {
-                    paramExtend = paramExtMap.get("waiting_post_salary");
+                    paramExtend = paramExtMap.get(EnumSalary.waiting_post_salary.getId());
                 }
                 if(paramExtend != null && "1".equals(paramExtend.getType1()) && StringUtils.isNotEmpty(paramExtend.getExpression()) ){
                     result = this.getCountSalary(salary)/should_work_days*waiting_post_days*Double.parseDouble(paramExtend.getProcessor());

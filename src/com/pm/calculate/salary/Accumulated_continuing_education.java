@@ -1,5 +1,6 @@
 package com.pm.calculate.salary;
 
+import com.common.utils.NumberKit;
 import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
@@ -15,6 +16,8 @@ public class Accumulated_continuing_education  extends AbstractSalaryClculate im
     @Override
     public void calculate(Salary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
         double result = salary.getBefore_accumulated_continuing_education() + salary.getContinuing_education();
+
+        result = NumberKit.getNumberFormatByDouble(result);
         salary.setAccumulated_continuing_education(result);
     }
 }

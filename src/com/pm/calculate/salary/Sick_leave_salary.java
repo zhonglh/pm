@@ -3,6 +3,7 @@ package com.pm.calculate.salary;
 
 import java.util.Map;
 
+import com.pm.util.constant.EnumSalary;
 import org.apache.commons.lang.StringUtils;
 
 import com.common.utils.NumberKit;
@@ -28,7 +29,7 @@ public class Sick_leave_salary extends AbstractSalaryClculate implements ISalary
 			try{
 				ParamExtend paramExtend = null;
 				if(paramExtMap != null) {
-					paramExtend = paramExtMap.get("sick_leave_salary");
+					paramExtend = paramExtMap.get(EnumSalary.sick_leave_salary.getId());
 				}
 				if(paramExtend != null && "1".equals(paramExtend.getType1()) && StringUtils.isNotEmpty(paramExtend.getExpression()) ){
 					result = this.getCountSalary(salary)/should_work_days*sick_leave_days*Double.parseDouble(paramExtend.getProcessor());

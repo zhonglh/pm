@@ -17,6 +17,8 @@ public class Accumulated_pretax_income extends AbstractSalaryClculate implements
     @Override
     public void calculate(Salary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
         double result = salary.getBefore_accumulated_pretax_income() + salary.getShould_salary();
+
+        result = NumberKit.getNumberFormatByDouble(result);
         salary.setAccumulated_pretax_income(result);
     }
 }

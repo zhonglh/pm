@@ -19,7 +19,8 @@ public class Late_salary extends AbstractSalaryClculate implements ISalaryCalcul
 	public void calculate(Salary salary,Map<String, Params> paramMap, Map<String,ParamExtend> paramExtMap) {
 		
 		double result = salary.getLate_days() * 50;
-		result = NumberKit.getNumberFormatByDouble(result);		
+		result = NumberKit.getNumberFormatByDouble(result);
+
 		salary.setLate_salary(result);
 
 	}

@@ -1,5 +1,6 @@
 package com.pm.calculate.salary;
 
+import com.common.utils.NumberKit;
 import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
@@ -15,6 +16,8 @@ public class Accumulated_support_elderly extends AbstractSalaryClculate implemen
     @Override
     public void calculate(Salary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
         double result = salary.getBefore_accumulated_support_elderly() + salary.getSupport_elderly();
+
+        result = NumberKit.getNumberFormatByDouble(result);
         salary.setAccumulated_support_elderly(result);
     }
 }

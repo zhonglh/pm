@@ -5,6 +5,7 @@ import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
 import com.pm.domain.business.Salary;
+import com.pm.util.constant.EnumSalary;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
@@ -25,7 +26,7 @@ public class Maternity_leave_salary extends AbstractSalaryClculate implements IS
             try {
                 ParamExtend paramExtend = null;
                 if (paramExtMap != null) {
-                    paramExtend = paramExtMap.get("maternity_leave_days");
+                    paramExtend = paramExtMap.get(EnumSalary.maternity_leave_salary.getId());
                 }
                 if (paramExtend != null && "1".equals(paramExtend.getType1()) && StringUtils.isNotEmpty(paramExtend.getExpression())) {
                     result = this.getCountSalary(salary) / should_work_days * maternity_leave_days * Double.parseDouble(paramExtend.getProcessor());

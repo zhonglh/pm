@@ -27,6 +27,8 @@ public class Actual_computer_allowance  extends AbstractSalaryClculate implement
 			result = computer_allowance/should_work_days*work_days;
 			result = NumberKit.getNumberFormatByDouble(result);					
 		}
+
+		result = NumberKit.getNumberFormatByDouble(result);
 		salary.setActual_computer_allowance(result);
 	}
 

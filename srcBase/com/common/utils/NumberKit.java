@@ -98,6 +98,9 @@ public class NumberKit {
      * @return
      */
     public static double getNumberFormatByDouble(double s){
+        if(s == 0) {
+            return 0;
+        }
         BigDecimal number = new BigDecimal (String.valueOf(s));
         number = number.setScale (DECIMAL_POINT, BIGDECIMAL_ROUND);
         return number.doubleValue ();

@@ -1,5 +1,6 @@
 package com.pm.calculate.salary;
 
+import com.common.utils.NumberKit;
 import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
@@ -19,6 +20,8 @@ public class Accumulated_housing_rent  extends AbstractSalaryClculate implements
         if(salary.getHousing_loans() <=0 ){
             result += salary.getHousing_rent();
         }
+
+        result = NumberKit.getNumberFormatByDouble(result);
         salary.setAccumulated_housing_rent(result);
     }
 }

@@ -95,7 +95,7 @@ public class OtherStaffAction extends BaseAction{
 
 	/**
 	 * 导出Excel(普通方式导出)
-	 * @param searchStaffCost
+	 * @param searchOtherStaff
 	 * @param res
 	 * @param request
 	 */
@@ -109,13 +109,14 @@ public class OtherStaffAction extends BaseAction{
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSTAFFVIEW.getId());			
 		Pager<OtherStaff> pager = otherStaffService.queryOtherStaff(searchOtherStaff, userPermit, PubMethod.getPagerByAll(OtherStaff.class));
 		PubMethod.setRequestPager(request, pager, OtherStaff.class);
+
+		for(OtherStaff  otherStaff : pager.getResultList()){
+			otherStaff.setPosition_type_temp(this.getMsg("position.type." + (otherStaff.getPosition_type()==null?"":otherStaff.getPosition_type()), request));
+		}
 		
 		try{
 			
-			for(OtherStaff  otherStaff : pager.getResultList()){
-				otherStaff.setPosition_type_temp(this.getMsg("position.type." + (otherStaff.getPosition_type()==null?"":otherStaff.getPosition_type()), request));
-								
-			}
+
 			BusinessExcel.export(res, null, pager.getResultList(), OtherStaff.class);
 		}catch(Exception e){
 			

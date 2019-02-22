@@ -5,6 +5,9 @@ import com.pm.domain.business.StaffRaiseRecord;
 import com.pm.util.constant.LogConstant;
 import com.pm.util.log.LogAnnotation;
 
+/**
+ * @author Administrator
+ */
 public interface IStaffRaiseRecordService extends IGeneralLogService{
 
 

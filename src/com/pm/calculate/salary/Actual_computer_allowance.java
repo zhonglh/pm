@@ -23,7 +23,7 @@ public class Actual_computer_allowance  extends AbstractSalaryClculate implement
 		double should_work_days = salary.getShould_work_days();
 		double computer_allowance = salary.getComputer_allowance();
 		double work_days = salary.getWork_days();
-		if(should_work_days != 0){
+		if(should_work_days != 0 && work_days != 0){
 			result = computer_allowance/should_work_days*work_days;
 			result = NumberKit.getNumberFormatByDouble(result);					
 		}

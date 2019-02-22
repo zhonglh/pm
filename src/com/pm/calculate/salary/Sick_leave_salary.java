@@ -24,7 +24,7 @@ public class Sick_leave_salary extends AbstractSalaryClculate implements ISalary
 		double should_work_days = salary.getShould_work_days();
 		double sick_leave_days = salary.getSick_leave_days();
 		
-		if(should_work_days != 0){
+		if(should_work_days != 0 && sick_leave_days != 0){
 			try{
 				ParamExtend paramExtend = null;
 				if(paramExtMap != null) {
@@ -40,9 +40,12 @@ public class Sick_leave_salary extends AbstractSalaryClculate implements ISalary
 			}catch(Exception e){
 				result = this.getCountSalary(salary)/should_work_days*sick_leave_days*0.5;
 			}
-			result = NumberKit.getNumberFormatByDouble(result);		
-			salary.setSick_leave_salary(result);
+			result = NumberKit.getNumberFormatByDouble(result);
 		}
+
+		salary.setSick_leave_salary(result);
 	}
+
+
 
 }

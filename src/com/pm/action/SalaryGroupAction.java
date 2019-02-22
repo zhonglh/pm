@@ -329,7 +329,7 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setPersonal_leave_days(Double.parseDouble(request.getParameter("personal_leave_days"+index)));
 			salary.setSick_leave_days(Double.parseDouble(request.getParameter("sick_leave_days"+index)));
 			salary.setWaiting_post_days(Double.parseDouble(request.getParameter("waiting_post_days"+index)));
-			salary.setMaternity_leave_days(Double.parseDouble(request.getParameter("tMaternity_leave_days"+index)));
+			salary.setMaternity_leave_days(Double.parseDouble(request.getParameter("maternity_leave_days"+index)));
 
 
 			salary.setNeglect_work_days(Double.parseDouble(request.getParameter("neglect_work_days"+index)));
@@ -516,7 +516,7 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setPersonal_leave_days(Double.parseDouble(request.getParameter("personal_leave_days"+index)));
 			salary.setSick_leave_days(Double.parseDouble(request.getParameter("sick_leave_days"+index)));
 			salary.setWaiting_post_days(Double.parseDouble(request.getParameter("waiting_post_days"+index)));
-			salary.setMaternity_leave_days(Double.parseDouble(request.getParameter("tMaternity_leave_days"+index)));
+			salary.setMaternity_leave_days(Double.parseDouble(request.getParameter("maternity_leave_days"+index)));
 
 			salary.setNeglect_work_days(Double.parseDouble(request.getParameter("neglect_work_days"+index)));
 			salary.setLate_days(Double.parseDouble(request.getParameter("late_days"+index)));

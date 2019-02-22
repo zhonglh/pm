@@ -21,7 +21,7 @@ public class Maternity_leave_salary extends AbstractSalaryClculate implements IS
         double should_work_days = salary.getShould_work_days();
         double maternity_leave_days = salary.getMaternity_leave_days();
 
-        if (should_work_days != 0) {
+        if (should_work_days != 0 && maternity_leave_days != 0) {
             try {
                 ParamExtend paramExtend = null;
                 if (paramExtMap != null) {
@@ -38,8 +38,9 @@ public class Maternity_leave_salary extends AbstractSalaryClculate implements IS
                 result = this.getCountSalary(salary) / should_work_days * maternity_leave_days;
             }
             result = NumberKit.getNumberFormatByDouble(result);
-            salary.setSick_leave_salary(result);
         }
+
+        salary.setMaternity_leave_salary(result);
 
     }
 

@@ -22,7 +22,7 @@ public class Waiting_post_salary extends AbstractSalaryClculate implements ISala
         double should_work_days = salary.getShould_work_days();
         double waiting_post_days = salary.getWaiting_post_days();
 
-        if(should_work_days != 0){
+        if(should_work_days != 0 && waiting_post_days != 0){
             try{
                 ParamExtend paramExtend = null;
                 if(paramExtMap != null) {
@@ -39,10 +39,12 @@ public class Waiting_post_salary extends AbstractSalaryClculate implements ISala
                 result = this.getCountSalary(salary)/should_work_days*waiting_post_days;
             }
             result = NumberKit.getNumberFormatByDouble(result);
-            salary.setSick_leave_salary(result);
         }
 
+        salary.setWaiting_post_salary(result);
 
     }
+
+
 
 }

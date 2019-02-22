@@ -111,7 +111,7 @@
 			personal_leave_days: parseFloat($("#personal_leave_days",$tr).val()),
 			sick_leave_days: parseFloat($("#sick_leave_days",$tr).val()),
             waiting_post_days: parseFloat($("#waiting_post_days",$tr).val()),
-            sick_leave_days: parseFloat($("#maternity_leave_days",$tr).val()),
+            maternity_leave_days: parseFloat($("#maternity_leave_days",$tr).val()),
 
 			neglect_work_days: parseFloat($("#neglect_work_days",$tr).val()),
 			late_days: parseFloat($("#late_days",$tr).val()),

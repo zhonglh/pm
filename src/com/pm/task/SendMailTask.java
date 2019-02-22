@@ -163,7 +163,7 @@ public class SendMailTask implements Runnable{
 			
 			htmml.append("</table>");
 
-			htmml.append(" <br><br><h4><b>注: </b><span margin-left='160px'><font color='red'>准许扣除的费用是指社保公积金个人扣除数</font></span></h4><br>");
+			//htmml.append(" <br><br><h4><b>注: </b><span margin-left='160px'><font color='red'>准许扣除的费用是指社保公积金个人扣除数</font></span></h4><br>");
 			htmml.append(" <h4><b>专项附加扣除:</b><span margin-left='160px'><font color='red'>子女教育 继续教育  住房贷款利息  住房租金 赡养老人</font></span></h4><br>");
 			htmml.append(" </body>");
 			htmml.append("</html>");

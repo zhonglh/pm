@@ -216,7 +216,7 @@
 
 
 		order by psc.work_month desc,project.build_datetime desc,
-		staff.build_datetime desc, staff.import_order
+		staff.build_datetime , staff.import_order
 
 	</sql>
 

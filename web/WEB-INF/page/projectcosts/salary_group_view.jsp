@@ -23,7 +23,7 @@
 			
 			<div class="divider"></div>
 			
-			<table class="list nowrap" width="6000" >
+			<table class="list nowrap" width="6300" >
 				<thead>
 					<tr>
 						
@@ -40,10 +40,18 @@
 						<th width="60" nowrap>出差</th>						
 						<th width="80" nowrap>事假天数</th>
 						<th width="80" nowrap>病假天数</th>
+
+						<th width="80" nowrap>待岗天数</th>
+						<th width="80" nowrap>产假天数</th>
+
 						<th width="80" nowrap>旷工天数</th>
 						<th width="80" nowrap>迟到天数</th>
 						<th width="80" nowrap>加班天数</th>
 						<th width="80" nowrap>病假工资</th>
+
+						<th width="80" nowrap>待岗工资</th>
+						<th width="80" nowrap>产假工资</th>
+
 						<th width="80" nowrap>旷工工资</th>
 						<th width="80" nowrap>迟到工资</th>
 						<th width="80" nowrap>出差补贴</th>
@@ -132,10 +140,14 @@
 						<td>${salary.business_trip_days }</td>
 						<td>${salary.personal_leave_days }</td>
 						<td>${salary.sick_leave_days }</td>
+						<td>${salary.waiting_post_days }</td>
+						<td>${salary.maternity_leave_days }</td>
 						<td>${salary.neglect_work_days }</td>
 						<td>${salary.late_days }</td>
 						<td>${salary.weekend_overtime_days }</td>
 						<td>${salary.sick_leave_salary }</td>
+						<td>${salary.waiting_post_salary }</td>
+						<td>${salary.maternity_leave_salary }</td>
 						<td>${salary.neglect_work_salary }</td>
 						<td>${salary.late_salary }</td>
 						<td>${salary.actual_travel_allowance }</td>

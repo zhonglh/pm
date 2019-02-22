@@ -224,7 +224,7 @@
 		
 		<include refid="ProjectAuthMapping.permission"/>
 	
-		order by wa.attendance_month desc, project.build_datetime desc, sc.build_datetime desc, sc.import_order 
+		order by wa.attendance_month desc, project.build_datetime desc, sc.build_datetime , sc.import_order
 		
 	</sql>	
 	

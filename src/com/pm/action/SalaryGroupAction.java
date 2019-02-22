@@ -328,10 +328,17 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setBusiness_trip_days(Double.parseDouble(request.getParameter("business_trip_days"+index)));
 			salary.setPersonal_leave_days(Double.parseDouble(request.getParameter("personal_leave_days"+index)));
 			salary.setSick_leave_days(Double.parseDouble(request.getParameter("sick_leave_days"+index)));
+			salary.setWaiting_post_days(Double.parseDouble(request.getParameter("waiting_post_days"+index)));
+			salary.setMaternity_leave_days(Double.parseDouble(request.getParameter("tMaternity_leave_days"+index)));
+
+
 			salary.setNeglect_work_days(Double.parseDouble(request.getParameter("neglect_work_days"+index)));
 			salary.setLate_days(Double.parseDouble(request.getParameter("late_days"+index)));
 			salary.setWeekend_overtime_days(Double.parseDouble(request.getParameter("weekend_overtime_days"+index)));
 			salary.setSick_leave_salary(Double.parseDouble(request.getParameter("sick_leave_salary"+index)));
+			salary.setWaiting_post_salary(Double.parseDouble(request.getParameter("waiting_post_salary"+index)));
+			salary.setMaternity_leave_salary(Double.parseDouble(request.getParameter("maternity_leave_salary"+index)));
+
 			salary.setNeglect_work_salary(Double.parseDouble(request.getParameter("neglect_work_salary"+index)));
 			salary.setLate_salary(Double.parseDouble(request.getParameter("late_salary"+index)));
 			salary.setActual_travel_allowance(Double.parseDouble(request.getParameter("actual_travel_allowance"+index)));
@@ -508,10 +515,16 @@ public class SalaryGroupAction extends BaseAction {
 			salary.setBusiness_trip_days(Double.parseDouble(request.getParameter("business_trip_days"+index)));
 			salary.setPersonal_leave_days(Double.parseDouble(request.getParameter("personal_leave_days"+index)));
 			salary.setSick_leave_days(Double.parseDouble(request.getParameter("sick_leave_days"+index)));
+			salary.setWaiting_post_days(Double.parseDouble(request.getParameter("waiting_post_days"+index)));
+			salary.setMaternity_leave_days(Double.parseDouble(request.getParameter("tMaternity_leave_days"+index)));
+
 			salary.setNeglect_work_days(Double.parseDouble(request.getParameter("neglect_work_days"+index)));
 			salary.setLate_days(Double.parseDouble(request.getParameter("late_days"+index)));
 			salary.setWeekend_overtime_days(Double.parseDouble(request.getParameter("weekend_overtime_days"+index)));
 			salary.setSick_leave_salary(Double.parseDouble(request.getParameter("sick_leave_salary"+index)));
+			salary.setWaiting_post_salary(Double.parseDouble(request.getParameter("waiting_post_salary"+index)));
+			salary.setMaternity_leave_salary(Double.parseDouble(request.getParameter("maternity_leave_salary"+index)));
+
 			salary.setNeglect_work_salary(Double.parseDouble(request.getParameter("neglect_work_salary"+index)));
 			salary.setLate_salary(Double.parseDouble(request.getParameter("late_salary"+index)));
 			salary.setActual_travel_allowance(Double.parseDouble(request.getParameter("actual_travel_allowance"+index)));

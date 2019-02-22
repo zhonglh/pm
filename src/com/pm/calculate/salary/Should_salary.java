@@ -28,6 +28,11 @@ public class Should_salary extends AbstractSalaryClculate implements ISalaryCalc
 		}
 		
 		double sick_leave_salary = salary.getSick_leave_salary();
+
+
+		double waiting_post_salary = salary.getWaiting_post_salary();
+		double maternity_leave_salary = salary.getMaternity_leave_salary();
+
 		double neglect_work_salary = salary.getNeglect_work_salary();
 		double late_salary = salary.getLate_salary();
 		double actual_travel_allowance = salary.getActual_travel_allowance();
@@ -38,7 +43,7 @@ public class Should_salary extends AbstractSalaryClculate implements ISalaryCalc
 		double meals_allowance = salary.getMeals_allowance();
 		double actual_tax_bonus = salary.getActual_tax_bonus();
 
-		result = result + sick_leave_salary - neglect_work_salary - late_salary;
+		result = result + sick_leave_salary + waiting_post_salary + maternity_leave_salary - neglect_work_salary - late_salary;
 		result = result + actual_travel_allowance + actual_computer_allowance;
 		result = result + actual_extra_allowance + overtime_allowance;
 		result = result + meals_allowance + actual_tax_bonus;		

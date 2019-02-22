@@ -1,5 +1,6 @@
 package com.pm.calculate.salary;
 
+import com.common.utils.NumberKit;
 import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
@@ -21,6 +22,7 @@ public class Accumulated_taxable_income extends AbstractSalaryClculate implement
         if(result < 0){
             result = 0;
         }
+        result = NumberKit.getNumberFormatByDouble(result);
         salary.setAccumulated_taxable_income(result);
     }
 }

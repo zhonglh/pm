@@ -18,6 +18,9 @@ import com.pm.service.IParamExtendService;
 import com.pm.util.constant.EnumSalary;
 
 
+/**
+ * @author Administrator
+ */
 @Controller
 @RequestMapping(value = "ParamExtendAction.do")
 public class ParamExtendAction extends BaseAction {
@@ -38,7 +41,9 @@ public class ParamExtendAction extends BaseAction {
 	@RequestMapping(params = "method=paramExtendSets")
 	public String toParamExtend(ParamExtend paramExtend,HttpServletResponse res,HttpServletRequest request){		
 		List<ParamExtend> list = paramExtendService.queryAllParamExtend(paramExtend);
-		if(list == null || list.isEmpty()) throw new PMException(CommonErrorConstants.e999999);
+		if(list == null || list.isEmpty()) {
+			throw new PMException(CommonErrorConstants.e999999);
+		}
 		request.setAttribute("paramExtend1", list.get(0));
 		return "setting/paramExtendSets";
 	}
@@ -46,18 +51,16 @@ public class ParamExtendAction extends BaseAction {
 	
 	@RequestMapping(params = "method=save")
 	public String save(ParamExtend paramExtend, HttpServletResponse res,HttpServletRequest request){
-		
-		if(EnumSalary.sick_leave_salary.getId().equals(paramExtend.getGroup2())){
-			//处理病假工资
-			String exp = "";
-			paramExtend.setProcessor(String.valueOf((Double.parseDouble(paramExtend.getProcessor())/100)));
-			if("2".equals(paramExtend.getType1())){
-				exp = paramExtend.getRealVal()+"/field.should_work_days*field.sick_leave_days*"+paramExtend.getProcessor();
-			}else {
-				exp = "getCountSalary(field)/field.should_work_days*field.sick_leave_days*"+paramExtend.getProcessor();				
-			}			
-			paramExtend.setExpression(exp);	
+
+		String exp = "";
+		paramExtend.setProcessor(String.valueOf((Double.parseDouble(paramExtend.getProcessor())/100)));
+		if("2".equals(paramExtend.getType1())){
+			exp = paramExtend.getRealVal()+"/field.should_work_days*field."+paramExtend.getGroup2().replace("salary","days")+"*"+paramExtend.getProcessor();
+		}else {
+			exp = "getCountSalary(field)/field.should_work_days*field."+paramExtend.getGroup2().replace("salary","days")+"*"+paramExtend.getProcessor();
 		}
+		paramExtend.setExpression(exp);
+
 		
 		List<ParamExtend> list = new ArrayList<ParamExtend>();
 		list.add(paramExtend);		

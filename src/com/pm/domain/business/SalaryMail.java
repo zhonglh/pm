@@ -36,178 +36,196 @@ public class SalaryMail implements Serializable {
 	private int salary_month;
 	
 
-	@EntityAnnotation(item_name="基本工资",item_sort=2)
+	@EntityAnnotation(item_name="基本工资",item_sort=20)
 	private double basic_salary;
 	
 	
 
-	@EntityAnnotation(item_name="岗位工资", item_sort=3)
+	@EntityAnnotation(item_name="岗位工资", item_sort=30)
 	private double post_salary;
 
-	@EntityAnnotation(item_name="绩效津贴", item_sort=4)
+	@EntityAnnotation(item_name="绩效津贴", item_sort=40)
 	private double performance_allowances;	
 	
 	
 	
-	@EntityAnnotation(item_name="出差补助",item_sort=5)
+	@EntityAnnotation(item_name="出差补助",item_sort=50)
 	private double travel_allowance;
 	
-	@EntityAnnotation(item_name="含税奖金",item_sort=6)
+	@EntityAnnotation(item_name="含税奖金",item_sort=60)
 	private double tax_bonus;
 	
-	@EntityAnnotation(item_name="应出勤天数",item_sort=7)
+	@EntityAnnotation(item_name="应出勤天数",item_sort=70)
 	private double should_work_days;
 	
-	@EntityAnnotation(item_name="实际工作天数",item_sort=8)
+	@EntityAnnotation(item_name="实际工作天数",item_sort=80)
 	private double work_days;
 	
-	@EntityAnnotation(item_name="带薪假天数",item_sort=9)
+	@EntityAnnotation(item_name="带薪假天数",item_sort=90)
 	private double paid_leave_days;
 	
-	@EntityAnnotation(item_name="出差天数",item_sort=10)
+	@EntityAnnotation(item_name="出差天数",item_sort=100)
 	private double business_trip_days;
 	
-	@EntityAnnotation(item_name="事假天数",item_sort=11)
+	@EntityAnnotation(item_name="事假天数",item_sort=110)
 	private double personal_leave_days;
 	
-	@EntityAnnotation(item_name="病假天数",item_sort=12)
+	@EntityAnnotation(item_name="病假天数",item_sort=120)
 	private double sick_leave_days;
+
+
+	@EntityAnnotation(item_name="待岗天数",item_sort=123)
+	private double waiting_post_days;
+	@EntityAnnotation(item_name="产假天数",item_sort=125)
+	private double maternity_leave_days;
+	//@EntityAnnotation(item_name="医疗假天数",item_sort=128)
+	private double medical_days;
+
 	
-	@EntityAnnotation(item_name="旷工天数",item_sort=13)
+	@EntityAnnotation(item_name="旷工天数",item_sort=130)
 	private double neglect_work_days;
 	
-	@EntityAnnotation(item_name="迟到天数",item_sort=14)
+	@EntityAnnotation(item_name="迟到天数",item_sort=140)
 	private double late_days;
 	
-	@EntityAnnotation(item_name="加班天数",item_sort=15)
+	@EntityAnnotation(item_name="加班天数",item_sort=150)
 	private double weekend_overtime_days;
 	
-	@EntityAnnotation(item_name="病假工资",item_sort=16)
+	@EntityAnnotation(item_name="病假工资",item_sort=160)
 	private double sick_leave_salary;
+
+
+
+	@EntityAnnotation(item_name="待岗工资",item_sort=163)
+	private double waiting_post_salary;
+	@EntityAnnotation(item_name="产假工资",item_sort=165)
+	private double maternity_leave_salary;
+	//@EntityAnnotation(item_name="医疗假工资",item_sort=168)
+	private double medical_salary;
 	
-	@EntityAnnotation(item_name="旷工工资",item_sort=17)
+	@EntityAnnotation(item_name="旷工工资",item_sort=170)
 	private double neglect_work_salary;
 	
-	@EntityAnnotation(item_name="迟到工资",item_sort=18)
+	@EntityAnnotation(item_name="迟到工资",item_sort=180)
 	private double late_salary;
 	
-	@EntityAnnotation(item_name="出差补贴",item_sort=19)
+	@EntityAnnotation(item_name="出差补贴",item_sort=190)
 	private double actual_travel_allowance;
 	
-	@EntityAnnotation(item_name="电脑补贴",item_sort=20)
+	@EntityAnnotation(item_name="电脑补贴",item_sort=200)
 	private double actual_computer_allowance;
 	
-	@EntityAnnotation(item_name="额外补贴",item_sort=21)
+	@EntityAnnotation(item_name="额外补贴",item_sort=210)
 	private double actual_extra_allowance;
 	
-	@EntityAnnotation(item_name="加班补贴",item_sort=22)
+	@EntityAnnotation(item_name="加班补贴",item_sort=220)
 	private double overtime_allowance;
 	
-	@EntityAnnotation(item_name="餐补",item_sort=23)
+	@EntityAnnotation(item_name="餐补",item_sort=230)
 	private double meals_allowance;
 	
-	@EntityAnnotation(item_name="实发奖金（税前）",item_sort=24)
+	@EntityAnnotation(item_name="实发奖金（税前）",item_sort=240)
 	private double actual_tax_bonus;
 	
-	@EntityAnnotation(item_name="应发工资",item_sort=25)
+	@EntityAnnotation(item_name="应发工资",item_sort=250)
 	private double should_salary;
 	
-	@EntityAnnotation(item_name="养老保险",item_sort=26)
+	@EntityAnnotation(item_name="养老保险",item_sort=260)
 	private double pension_insurance;
 
-	@EntityAnnotation(item_name="公司缴纳养老保险",item_sort=27)
+	@EntityAnnotation(item_name="公司缴纳养老保险",item_sort=270)
 	private double endowment_insurance_bycompany;	
 	
-	@EntityAnnotation(item_name="医疗保险",item_sort=28)
+	@EntityAnnotation(item_name="医疗保险",item_sort=280)
 	private double medical_Insurance;
 	
-	@EntityAnnotation(item_name="公司缴纳医疗保险",item_sort=29)
+	@EntityAnnotation(item_name="公司缴纳医疗保险",item_sort=290)
 	private double medical_insurance_bycompany;
 
 	
-	@EntityAnnotation(item_name="失业保险",item_sort=30)
+	@EntityAnnotation(item_name="失业保险",item_sort=300)
 	private double unemployment_insurance;
 	
-	@EntityAnnotation(item_name="公司缴纳失业保险",item_sort=31)
+	@EntityAnnotation(item_name="公司缴纳失业保险",item_sort=310)
 	private double losejob_insurance_bycompany;
 
-	@EntityAnnotation(item_name="公司缴纳生育保险",item_sort=32)
+	@EntityAnnotation(item_name="公司缴纳生育保险",item_sort=320)
 	private double maternity_insurance_bycompany;
 
-	@EntityAnnotation(item_name="公司缴纳工伤保险",item_sort=33)
+	@EntityAnnotation(item_name="公司缴纳工伤保险",item_sort=330)
 	private double jobharm_insurance_bycompany;
 
-	@EntityAnnotation(item_name="公积金",item_sort=34)
+	@EntityAnnotation(item_name="公积金",item_sort=340)
 	private double accumulation_fund;
 
-	@EntityAnnotation(item_name="公司缴纳公积金",item_sort=35)
+	@EntityAnnotation(item_name="公司缴纳公积金",item_sort=350)
 	private double reservefund_bypcompany;
 
 
 
-	@EntityAnnotation(item_name="子女教育", item_sort=36,length=8)
+	@EntityAnnotation(item_name="子女教育", item_sort=360,length=8)
 	private double children_education;
 
-	@EntityAnnotation(item_name="住房贷款利息", item_sort=37,length=8)
+	@EntityAnnotation(item_name="住房贷款利息", item_sort=370,length=8)
 	private double housing_loans;
 
-	@EntityAnnotation(item_name="住房租金", item_sort=38,length=8)
+	@EntityAnnotation(item_name="住房租金", item_sort=380,length=8)
 	private double housing_rent;
 
-	@EntityAnnotation(item_name="赡养老人", item_sort=39,length=8)
+	@EntityAnnotation(item_name="赡养老人", item_sort=390,length=8)
 	private double support_elderly;
 
-	@EntityAnnotation(item_name="继续教育", item_sort=40,length=8)
+	@EntityAnnotation(item_name="继续教育", item_sort=400,length=8)
 	private double continuing_education;
 
 
 
 
 
-	@EntityAnnotation(item_name="当月五险一金代扣款",item_sort=41)
+	@EntityAnnotation(item_name="当月五险一金代扣款",item_sort=410)
 	private double deductions_cost;
 
-	@EntityAnnotation(item_name="当月应纳税所得额",item_sort=42)
+	@EntityAnnotation(item_name="当月应纳税所得额",item_sort=420)
 	private double taxable_income;
 
 
 
 
 
-	@EntityAnnotation(item_name="累计税前收入额",item_sort=43)
+	@EntityAnnotation(item_name="累计税前收入额",item_sort=430)
 	private double accumulated_pretax_income;
 
-	@EntityAnnotation(item_name="个税累计减除费用",item_sort=44)
+	@EntityAnnotation(item_name="个税累计减除费用",item_sort=440)
 	private double accumulated_tax_deduction;
 
-	@EntityAnnotation(item_name="累计子女教育",item_sort=45)
+	@EntityAnnotation(item_name="累计子女教育",item_sort=450)
 	private double accumulated_children_education;
 
-	@EntityAnnotation(item_name="累计继续教育",item_sort=46)
+	@EntityAnnotation(item_name="累计继续教育",item_sort=460)
 	private double accumulated_continuing_education;
 
-	@EntityAnnotation(item_name="累计住房贷款利息",item_sort=47)
+	@EntityAnnotation(item_name="累计住房贷款利息",item_sort=470)
 	private double accumulated_housing_loans;
 
-	@EntityAnnotation(item_name="累计住房租金",item_sort=48)
+	@EntityAnnotation(item_name="累计住房租金",item_sort=480)
 	private double accumulated_housing_rent;
 
-	@EntityAnnotation(item_name="累计赡养老人",item_sort=49)
+	@EntityAnnotation(item_name="累计赡养老人",item_sort=490)
 	private double accumulated_support_elderly;
 
-	@EntityAnnotation(item_name="累计五险一金代扣款",item_sort=50)
+	@EntityAnnotation(item_name="累计五险一金代扣款",item_sort=500)
 	private double accumulated_deductions_cost;
 
-	@EntityAnnotation(item_name="累计应纳税所得额",item_sort=51)
+	@EntityAnnotation(item_name="累计应纳税所得额",item_sort=510)
 	private double accumulated_taxable_income;
 
-	@EntityAnnotation(item_name="累计应扣缴税额",item_sort=52)
+	@EntityAnnotation(item_name="累计应扣缴税额",item_sort=520)
 	private double accumulated_deductible_taxpaid;
 
-	@EntityAnnotation(item_name="累计已预缴税额",item_sort=53)
+	@EntityAnnotation(item_name="累计已预缴税额",item_sort=530)
 	private double accumulated_prepaid_tax;
 
-	@EntityAnnotation(item_name="累计应补（退）税额",item_sort=54)
+	@EntityAnnotation(item_name="累计应补（退）税额",item_sort=540)
 	private double accumulated_replenishment_tax;
 
 
@@ -216,23 +234,23 @@ public class SalaryMail implements Serializable {
 
 
 
-	@EntityAnnotation(item_name="个人所得税",item_sort=55)
+	@EntityAnnotation(item_name="个人所得税",item_sort=550)
 	private double personal_income_tax;
 	
-	@EntityAnnotation(item_name="奖金(后)",item_sort=56)
+	@EntityAnnotation(item_name="奖金(后)",item_sort=560)
 	private double actual_bonus;
 	
-	@EntityAnnotation(item_name="补税工资",item_sort=57)
+	@EntityAnnotation(item_name="补税工资",item_sort=570)
 	private double overdue_tax_salary;
 	
-	@EntityAnnotation(item_name="实发工资",item_sort=58)
+	@EntityAnnotation(item_name="实发工资",item_sort=580)
 	private double actual_salary;
 
 
 
 
 
-	@EntityAnnotation(item_name="说明",item_sort=59)
+	@EntityAnnotation(item_name="说明",item_sort=590)
 	private String description;
 	
 	
@@ -260,7 +278,7 @@ public class SalaryMail implements Serializable {
 	private String project_no;
 	
 
-	@EntityAnnotation(item_name="姓名",item_sort=1)
+	@EntityAnnotation(item_name="姓名",item_sort=10)
 	private String staff_name;
 	
 	

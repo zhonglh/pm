@@ -15,6 +15,7 @@ public class Accumulated_children_education extends AbstractSalaryClculate imple
     @Override
     public void calculate(Salary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
         double result = salary.getBefore_accumulated_children_education() + salary.getChildren_education();
+
         salary.setAccumulated_children_education(result);
     }
 }

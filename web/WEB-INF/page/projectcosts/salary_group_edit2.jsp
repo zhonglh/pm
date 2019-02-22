@@ -26,7 +26,7 @@
 			
 			<div class="divider"></div>
 			
-			<table class="list nowrap salaryComputer" width="5800" layoutH="175">
+			<table class="list nowrap salaryComputer" width="6100" layoutH="175">
 				<thead>
 					<tr>
 					
@@ -44,10 +44,18 @@
 						<th width="60" nowrap>出差</th>						
 						<th width="80" nowrap>事假天数</th>
 						<th width="80" nowrap>病假天数</th>
+
+						<th width="80" nowrap>待岗天数</th>
+						<th width="80" nowrap>产假天数</th>
+
 						<th width="80" nowrap>旷工天数</th>
 						<th width="80" nowrap>迟到天数</th>
 						<th width="80" nowrap>加班天数</th>
 						<th width="80" nowrap>病假工资</th>
+
+						<th width="80" nowrap>待岗工资</th>
+						<th width="80" nowrap>产假工资</th>
+
 						<th width="80" nowrap>旷工工资</th>
 						<th width="80" nowrap>迟到工资</th>
 						<th width="80" nowrap>出差补贴</th>
@@ -126,10 +134,21 @@
 						<td><input type="text" size="7" maxlength="10"  id="business_trip_days" name="business_trip_days${status1.index + 1 }" class="number required" value="${salary.business_trip_days }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="personal_leave_days" name="personal_leave_days${status1.index + 1 }" class="number required" value="${salary.personal_leave_days }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="sick_leave_days" name="sick_leave_days${status1.index + 1 }" class="number required" value="${salary.sick_leave_days }" /></td>
+
+
+						<td><input type="text" size="7" maxlength="10"  id="waiting_post_days" name="waiting_post_days${status1.index + 1 }" class="number required" value="${salary.waiting_post_days }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="maternity_leave_days" name="maternity_leave_days${status1.index + 1 }" class="number required" value="${salary.maternity_leave_days }" /></td>
+
+
 						<td><input type="text" size="7" maxlength="10"  id="neglect_work_days" name="neglect_work_days${status1.index + 1 }" class="number required" value="${salary.neglect_work_days }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="late_days" name="late_days${status1.index + 1 }" class="number required" value="${salary.late_days }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="weekend_overtime_days" name="weekend_overtime_days${status1.index + 1 }" class="number required" value="${salary.weekend_overtime_days }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="sick_leave_salary" name="sick_leave_salary${status1.index + 1 }" class="number required" value="${salary.sick_leave_salary }" /></td>
+
+
+						<td><input type="text" size="7" maxlength="10"  id="waiting_post_salary" name="waiting_post_salary${status1.index + 1 }" class="number required" value="${salary.waiting_post_salary }" /></td>
+						<td><input type="text" size="7" maxlength="10"  id="maternity_leave_salary" name="maternity_leave_salary${status1.index + 1 }" class="number required" value="${salary.maternity_leave_salary }" /></td>
+
 						<td><input type="text" size="7" maxlength="10"  id="neglect_work_salary" name="neglect_work_salary${status1.index + 1 }" class="number required" value="${salary.neglect_work_salary }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="late_salary" name="late_salary${status1.index + 1 }" class="number required" value="${salary.late_salary }" /></td>
 						<td><input type="text" size="7" maxlength="10"  id="actual_travel_allowance" name="actual_travel_allowance${status1.index + 1 }" class="number required" value="${salary.actual_travel_allowance }" /></td>

@@ -110,10 +110,17 @@
 			business_trip_days: parseFloat($("#business_trip_days",$tr).val()),
 			personal_leave_days: parseFloat($("#personal_leave_days",$tr).val()),
 			sick_leave_days: parseFloat($("#sick_leave_days",$tr).val()),
+            waiting_post_days: parseFloat($("#waiting_post_days",$tr).val()),
+            sick_leave_days: parseFloat($("#maternity_leave_days",$tr).val()),
+
 			neglect_work_days: parseFloat($("#neglect_work_days",$tr).val()),
 			late_days: parseFloat($("#late_days",$tr).val()),
 			weekend_overtime_days: parseFloat($("#weekend_overtime_days",$tr).val()),
 			sick_leave_salary: parseFloat($("#sick_leave_salary",$tr).val()),
+            waiting_post_salary: parseFloat($("#waiting_post_salary",$tr).val()),
+            maternity_leave_salary: parseFloat($("#maternity_leave_salary",$tr).val()),
+
+
 			neglect_work_salary: parseFloat($("#neglect_work_salary",$tr).val()),
 			late_salary: parseFloat($("#late_salary",$tr).val()),
 			actual_travel_allowance: parseFloat($("#actual_travel_allowance",$tr).val()),
@@ -252,7 +259,6 @@
 		var result = 0.0;
 		if(field.should_work_days != 0){
 			try{
-				debugger
 				if(exp_sick_leave_salary!=undefined){
 					result = eval(exp_sick_leave_salary);
 				}else {
@@ -266,6 +272,58 @@
 		backFill(field,key,result);
 
 	}
+
+
+    /**
+     * 待岗工资
+     * exp_waiting_post_salary 在head.inc.jsp中定义了
+     * @param field
+     * @param key
+     * @param val
+     */
+    function waiting_post_salary(field,key,val){
+        var result = 0.0;
+        if(field.should_work_days != 0){
+            try{
+                if(exp_waiting_post_salary!=undefined){
+                    result = eval(exp_waiting_post_salary);
+                }else {
+                    result = getCountSalary(field)/field.should_work_days*field.waiting_post_days;
+                }
+            }catch(e){
+                result = getCountSalary(field)/field.should_work_days*field.waiting_post_days
+            }
+            result = fixed(result);
+        }
+        backFill(field,key,result);
+
+    }
+
+
+    /**
+     * 产假工资
+     * exp_maternity_leave_salary 在head.inc.jsp中定义了
+     * @param field
+     * @param key
+     * @param val
+     */
+    function maternity_leave_salary(field,key,val){
+        var result = 0.0;
+        if(field.should_work_days != 0){
+            try{
+                if(exp_maternity_leave_salary!=undefined){
+                    result = eval(exp_maternity_leave_salary);
+                }else {
+                    result = getCountSalary(field)/field.should_work_days*field.maternity_leave_days;
+                }
+            }catch(e){
+                result = getCountSalary(field)/field.should_work_days*field.maternity_leave_days;
+            }
+            result = fixed(result);
+        }
+        backFill(field,key,result);
+
+    }
 	
 
 	/**
@@ -387,7 +445,8 @@
 		if(field.should_work_days != 0){
 			result = getCountSalary(field)/field.should_work_days*(field.work_days+field.paid_leave_days);
 		}
-		result = result + field.sick_leave_salary - field.neglect_work_salary - field.late_salary;
+		result = result + field.sick_leave_salary + field.waiting_post_salary + field.maternity_leave_salary
+			- field.neglect_work_salary - field.late_salary;
 		result = result + field.actual_travel_allowance + field.actual_computer_allowance;
 		result = result + field.actual_extra_allowance + field.overtime_allowance;
 		result = result + field.meals_allowance + field.actual_tax_bonus;

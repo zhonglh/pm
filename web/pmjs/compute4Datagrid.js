@@ -65,6 +65,8 @@
 	function handleFormula(field,index){
 		
 		sick_leave_salary(field,'sick_leave_salary',field.sick_leave_salary);
+        waiting_post_salary(field,'waiting_post_salary',field.waiting_post_salary);
+        maternity_leave_salary(field,'maternity_leave_salary',field.maternity_leave_salary);
 		neglect_work_salary(field,'neglect_work_salary',field.neglect_work_salary);
 		late_salary(field,'late_salary',field.late_salary);
 		actual_travel_allowance(field,'actual_travel_allowance',field.actual_travel_allowance);
@@ -144,9 +146,63 @@
 		backFill(field,key,result);
 
 	}
-	
 
-	/**
+
+
+    /**
+     * 待岗工资
+     * exp_waiting_post_salary 在head.inc.jsp中定义了
+     * @param field
+     * @param key
+     * @param val
+     */
+    function waiting_post_salary(field,key,val){
+        var result = 0.0;
+        if(field.should_work_days != 0){
+            try{
+                if(exp_waiting_post_salary!=undefined){
+                    result = eval(exp_waiting_post_salary);
+                }else {
+                    result = getCountSalary(field)/field.should_work_days*field.waiting_post_days;
+                }
+            }catch(e){
+                result = getCountSalary(field)/field.should_work_days*field.waiting_post_days
+            }
+            result = fixed(result);
+        }
+        backFill(field,key,result);
+
+    }
+
+
+    /**
+     * 产假工资
+     * exp_maternity_leave_salary 在head.inc.jsp中定义了
+     * @param field
+     * @param key
+     * @param val
+     */
+    function maternity_leave_salary(field,key,val){
+        var result = 0.0;
+        if(field.should_work_days != 0){
+            try{
+                if(exp_maternity_leave_salary!=undefined){
+                    result = eval(exp_maternity_leave_salary);
+                }else {
+                    result = getCountSalary(field)/field.should_work_days*field.maternity_leave_days;
+                }
+            }catch(e){
+                result = getCountSalary(field)/field.should_work_days*field.maternity_leave_days;
+            }
+            result = fixed(result);
+        }
+        backFill(field,key,result);
+
+    }
+
+
+
+    /**
 	 * 旷工工资
 	 * @param field
 	 * @param key
@@ -260,7 +316,8 @@
 		if(fixed(field.should_work_days) != 0){
 			result = getCountSalary(field)/fixed(field.should_work_days)*(fixed(field.work_days)+fixed(field.paid_leave_days));
 		}
-		result = result + fixed(field.sick_leave_salary) - fixed(field.neglect_work_salary) - fixed(field.late_salary);
+		result = result + fixed(field.sick_leave_salary) + fixed(field.waiting_post_salary) + fixed(field.maternity_leave_salary)
+				- fixed(field.neglect_work_salary) - fixed(field.late_salary);
 		result = result + fixed(field.actual_travel_allowance) + fixed(field.actual_computer_allowance);
 		result = result + fixed(field.actual_extra_allowance) + fixed(field.overtime_allowance);
 		result = result + fixed(field.meals_allowance) + fixed(field.actual_tax_bonus);

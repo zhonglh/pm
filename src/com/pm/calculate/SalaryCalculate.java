@@ -23,6 +23,11 @@ public class SalaryCalculate {
 	private SalaryCalculate() {
 		calculates = new ArrayList<ISalaryCalculate>();
 		calculates.add(new Sick_leave_salary());
+
+		calculates.add(new Waiting_post_salary());
+		calculates.add(new Maternity_leave_salary());
+
+
 		calculates.add(new Neglect_work_salary());
 		calculates.add(new Late_salary());
 		calculates.add(new Actual_travel_allowance());

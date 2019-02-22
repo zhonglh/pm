@@ -41,8 +41,11 @@ public class Accumulated_deductible_taxpaid extends AbstractSalaryClculate imple
             result = 0;
         }
 
-        if(result < 0) {result = 0;}
-        result = NumberKit.getNumberFormatByDouble(result);
+        if(result < 0) {
+            result = 0;
+        }else {
+            result = NumberKit.getNumberFormatByDouble(result);
+        }
 
         salary.setAccumulated_deductible_taxpaid(result);
     }

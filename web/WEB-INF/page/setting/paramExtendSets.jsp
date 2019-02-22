@@ -11,7 +11,7 @@
 		<input type="hidden"   name="group1" id="group1" value="${paramExtend1.group1}" />
 		<input type="hidden"   name="group2" id="group2" value="${paramExtend1.group2}" />
 	
-		<c:if test="${paramExtend1.group1=='salary' &&  paramExtend1.group2=='sick_leave_salary'}">
+		<c:if test="${paramExtend1.group1=='salary' }">
 			<div class="pageFormContent" layoutH="56">
 				
 				<div class="sick_leave_salary">

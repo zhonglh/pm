@@ -229,10 +229,14 @@
 				<th data-options="field:'business_trip_days',width:60">出差</th>						
 				<th data-options="field:'personal_leave_days',width:80">事假天数</th>
 				<th data-options="field:'sick_leave_days',width:80">病假天数</th>
+				<th data-options="field:'waiting_post_days',width:80">待岗天数</th>
+				<th data-options="field:'maternity_leave_days',width:80">产假天数</th>
 				<th data-options="field:'neglect_work_days',width:80">旷工天数</th>
 				<th data-options="field:'late_days',width:80">迟到天数</th>
 				<th data-options="field:'weekend_overtime_days',width:80">加班天数</th>
 				<th data-options="field:'sick_leave_salary',width:80">病假工资</th>
+				<th data-options="field:'waiting_post_salary',width:80">待岗工资</th>
+				<th data-options="field:'maternity_leave_salary',width:80">产假工资</th>
 				<th data-options="field:'neglect_work_salary',width:80">旷工工资</th>
 				<th data-options="field:'late_salary',width:80">迟到工资</th>
 				<th data-options="field:'actual_travel_allowance',width:80">出差补贴</th>

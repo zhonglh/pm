@@ -16,14 +16,7 @@
 	
 	
 	<select id="isExist" parameterType="com.pm.domain.business.StaffCost" resultMap="staffCostMap">	
-		select * from vb_all_staff where (
-		staff_no = #{staff_no}
-
-		<if test="identity_card_number != null and identity_card_number != ''">
-		or identity_card_number = #{identity_card_number}
-		</if>
-
-		)
+		select * from vb_all_staff where staff_no = #{staff_no}
 
 		<if test="staff_id != null and staff_id != ''">
 		<![CDATA[

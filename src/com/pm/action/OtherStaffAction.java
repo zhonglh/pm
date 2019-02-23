@@ -99,7 +99,7 @@ public class OtherStaffAction extends BaseAction{
 		if(!b){
 			return null;
 		}else {
-			error = "该人员工号(身份证号码)已经存在";
+			error = "该人员工号已经存在";
 			return this.ajaxForwardError(request, error);
 		}		
 	}
@@ -179,8 +179,7 @@ public class OtherStaffAction extends BaseAction{
 		
 		
 		processparam(searchOtherStaff,request);
-		
-		searchOtherStaff.setDelete_flag(BusinessUtil.NOT_DELETEED);
+
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSTAFFVIEW.getId());			
 		Pager<OtherStaff> pager = otherStaffService.queryOtherStaff(searchOtherStaff, userPermit, PubMethod.getPagerByAll(OtherStaff.class));
 		PubMethod.setRequestPager(request, pager, OtherStaff.class);
@@ -274,7 +273,7 @@ public class OtherStaffAction extends BaseAction{
 		if(allStaffs!=null){
 			for(StaffCost staffCost : allStaffs){
 				staffMap.put(staffCost.getStaff_no(), staffCost.getStaff_no());
-                staffMap.put(staffCost.getIdentity_card_number(), staffCost.getIdentity_card_number());
+                //staffMap.put(staffCost.getIdentity_card_number(), staffCost.getIdentity_card_number());
 			}
 		}
 		
@@ -732,8 +731,7 @@ public class OtherStaffAction extends BaseAction{
 	public String list(OtherStaff searchOtherStaff,HttpServletResponse res,HttpServletRequest request){
 
 		processparam(searchOtherStaff,request);
-		
-		searchOtherStaff.setDelete_flag(BusinessUtil.NOT_DELETEED);
+
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSTAFFVIEW.getId());			
 		Pager<OtherStaff> pager = otherStaffService.queryOtherStaff(searchOtherStaff, userPermit, PubMethod.getPager(request, OtherStaff.class));
 

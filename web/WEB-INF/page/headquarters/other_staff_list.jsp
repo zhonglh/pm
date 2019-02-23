@@ -10,6 +10,30 @@
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/OtherStaffAction.do?method=list" method="post">
 	<div class="searchBar">
+
+
+
+		<ul class="searchContent">
+
+			<li>
+				<label>工号：</label>
+				<input type="text" name="staff_no" value="${param.staff_no }"/>
+			</li>
+			<li>
+				<label>名称：</label>
+				<input type="text" name="staff_name" value="${param.staff_name }"/>
+			</li>
+
+			<li>
+				<label>在职状态：</label>
+				<select name="delete_flag" style="width:133px">
+					<option value="">全部</option>
+					<option value="0" <c:if test="${param.delete_flag == '0' }">selected</c:if>>在职</option>
+					<option value="1" <c:if test="${param.delete_flag == '1' }">selected</c:if>>离职</option>
+				</select>
+			</li>
+		</ul>
+
 		<ul class="searchContent">
 		
 
@@ -20,17 +44,17 @@
 				<input name="dept.dept_id" class="text" type="hidden" size="2"  value="${staff.dept_id }" />
 				<input name="dept.dept_name" class="text" type="text" size="20"  value="${staff.dept_name }" readonly="readonly" lookupPk="dept_id"
 				suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup&use=search" lookupGroup="dept"/>				
-			</li>		
-			
-			
-			<li>
-				<label>姓名：</label>
-				<input type="text" name="staff_name" value="${param.staff_name}"/>
+			</li>
 
+
+			<li>
+				<label>时间段：</label>
+				<input name="date1" class="date" type="text" size="7" value="${param.date1 }" readonly="readonly" />
+				<input name="date2" class="date" type="text" size="7" value="${param.date2 }" readonly="readonly" />
 			</li>
 			<li>
 				<label>职位类型：</label>
-				<select name="position_type">
+				<select name="position_type" style="width:133px">
 					<option value="">全部</option>
 					<option value="1" <c:if test="${otherStaff.position_type == '1' }">selected</c:if>><spring:message code="position.type.1"/></option>
 					<option value="2" <c:if test="${otherStaff.position_type == '2' }">selected</c:if>><spring:message code="position.type.2"/></option>
@@ -92,7 +116,7 @@
 			
 		</ul>
 	</div>
-	<table class="table" width="6600" layoutH="112">
+	<table class="table" width="6600" layoutH="138">
 		<thead>
 			<tr>
 				<th width="25"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>

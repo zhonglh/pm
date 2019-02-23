@@ -122,7 +122,7 @@ public class StaffCostAction extends BaseAction {
 		String error = null;	
 		boolean b = staffCostService.isExist(staffCost);
 		if(b){
-			error = "该员工工号(身份证号码)已经存在";
+			error = "该员工工号已经存在";
 		}		
 		
 		if(!b){
@@ -202,7 +202,7 @@ public class StaffCostAction extends BaseAction {
 			for(StaffCost staffCost : allStaffs){
 				staffCostMap.put(staffCost.getStaff_no(), staffCost);
 				staffCostMap.put(staffCost.getStaff_name(), staffCost);
-				staffCostMap.put(staffCost.getIdentity_card_number(), staffCost);
+				//staffCostMap.put(staffCost.getIdentity_card_number(), staffCost);
 			}
 		}
 		

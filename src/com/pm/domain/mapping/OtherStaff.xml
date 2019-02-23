@@ -15,15 +15,7 @@
 	
 	<select id="isExist" parameterType="com.pm.domain.business.OtherStaff" resultMap="otherStaffMap">	
 		select * from vb_all_staff 
-		where (
-		staff_no = #{staff_no}
-
-		<if test="identity_card_number != null and identity_card_number != ''">
-			or identity_card_number = #{identity_card_number}
-		</if>
-
-		)
-		and 1=1 
+		where 		staff_no = #{staff_no}
 		<if test="staff_id != null and staff_id != ''">
 		<![CDATA[
 			and staff_id <> #{staff_id}
@@ -348,7 +340,7 @@
 		left join ts_dic_data dd_certificate on staff.certificate = dd_certificate.id
 
 
-		where staff.delete_flag = '0'
+		where 1=1
 
 
 		<if test="OtherStaff.delete_flag != null and OtherStaff.delete_flag != ''">

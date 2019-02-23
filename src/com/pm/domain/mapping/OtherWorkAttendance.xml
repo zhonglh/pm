@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OtherWorkAttendanceMapping">
+
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+	
+	<resultMap type="com.pm.domain.business.OtherWorkAttendance" id="workAttendanceMap" />
+	
+	
+	
+	<select id="getCheckedDeptMonth"  resultMap="workAttendanceMap">
+		SELECT dept_id, attendance_month
+		FROM tb_other_work_attendance 
+		where  verify_userid is not null
+		and delete_flag = '0' 
+		group by dept_id, attendance_month
+	</select>
+	
+	
+	<select id="getWorkAttendanceByDeptMonth" parameterType="com.pm.domain.business.OtherWorkAttendance" resultMap="workAttendanceMap">
+
+		<![CDATA[
+
+				select staff.staff_id,staff.staff_name,staff.staff_no,
+				dept.dept_id,dept.dept_name , ${attendance_month} as attendance_month
+
+				from tb_other_staff staff
+			   join ts_dept dept on staff.dept_id = dept.dept_id
+			   where staff.dept_id = #{dept_id}
+			   order by staff.build_datetime, staff.import_order
+
+		]]>		
+	</select>	
+	
+	<select id="getWorkAttendance" parameterType="com.pm.domain.business.OtherWorkAttendance" resultMap="workAttendanceMap">
+		SELECT wa.* ,dept.dept_name,  staff.staff_name ,staff.staff_no
+		FROM tb_other_work_attendance  wa
+		inner join ts_dept dept
+		on wa.dept_id = dept.dept_id
+		inner join tb_other_staff staff
+		on wa.staff_id = staff.staff_id
+		where wa.attendance_id = #{attendance_id}
+	</select>	
+		
+	<insert id="addWorkAttendance" parameterType="com.pm.domain.business.OtherWorkAttendance">
+		insert into tb_other_work_attendance(
+		  	attendance_id, staff_id, dept_id, attendance_month,should_work_days,
+			work_days,legal_holidays,swopped_holidays,business_trip_days,personal_leave_days,annual_leave_days,
+		  	sick_leave_days, waiting_post_days,maternity_leave_days,medical_days,
+		  	neglect_work_days, late_days, weekend_overtime_days,every_overtime,remark,
+		  	build_username,build_userid,build_datetime,delete_flag
+		)values(
+			#{attendance_id}, #{staff_id},#{dept_id}, #{attendance_month}, #{should_work_days},
+			#{work_days}, #{legal_holidays},#{swopped_holidays}, #{business_trip_days}, #{personal_leave_days},#{annual_leave_days},
+			#{sick_leave_days}, #{waiting_post_days}, #{maternity_leave_days}, #{medical_days},
+			#{neglect_work_days},#{late_days}, #{weekend_overtime_days}, #{every_overtime}, #{remark},
+			#{build_username},#{build_userid},#{build_datetime},#{delete_flag} 
+		)
+	</insert>
+	
+	
+	<update id="updateWorkAttendance" parameterType="com.pm.domain.business.OtherWorkAttendance">
+		update tb_other_work_attendance set  
+		should_work_days = #{should_work_days},
+		work_days =#{work_days} ,
+		legal_holidays =#{legal_holidays} ,
+		swopped_holidays =#{swopped_holidays} ,
+		business_trip_days =#{business_trip_days} ,
+		personal_leave_days =#{personal_leave_days} ,
+		annual_leave_days =#{annual_leave_days} ,
+		sick_leave_days =#{sick_leave_days} ,
+
+		waiting_post_days =#{waiting_post_days} ,
+		maternity_leave_days =#{maternity_leave_days} ,
+		medical_days =#{medical_days} ,
+
+		neglect_work_days =#{neglect_work_days} ,
+		late_days =#{late_days} ,
+		weekend_overtime_days =#{weekend_overtime_days} ,
+		every_overtime =#{every_overtime} ,
+		remark =#{remark} 
+		where attendance_id = #{attendance_id} 
+	</update>
+		
+		
+		
+	<update id="verifyWorkAttendance" parameterType="com.pm.domain.business.OtherWorkAttendance">
+		update tb_other_work_attendance set 
+		verify_userid = #{verify_userid},
+		verify_username = #{verify_username},
+		verify_datetime = #{verify_datetime}
+		where attendance_id = #{attendance_id} 
+		and delete_flag = '0' 
+	</update>
+		
+		
+	<delete id="deleteWorkAttendance" parameterType="com.pm.domain.business.OtherWorkAttendance">
+		delete from tb_other_work_attendance 
+		where  ( 1!=1 
+		<if test="attendance_id != null and attendance_id != ''">
+			or attendance_id = #{attendance_id} 
+		</if>
+
+		<if test="dept_id != null and dept_id != ''">
+			or (dept_id = #{dept_id} and attendance_month = #{attendance_month} )
+		</if>	
+		)	
+	</delete>
+	
+	
+	
+		
+	<select id="queryWorkAttendanceByPager_mysql" parameterType="map"   resultMap="workAttendanceMap">
+		<include refid="workAttendancePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryWorkAttendanceByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+			<include refid="workAttendancePagerSql"/>
+		) c
+		
+	</select>	
+	
+	
+	<select id="queryWorkAttendanceGroupByPager_mysql" parameterType="map"   resultMap="workAttendanceMap">		 
+	 	select dept_id, attendance_month ,count(*) as dept_attendance_number,min(dept_name) as dept_name,
+		count(verify_userid = '') as verify_number, min(build_datetime) as build_datetime,min(build_username) as build_username
+	 	from(
+			<include refid="workAttendancePagerSql"/>
+		) att group by dept_id, attendance_month		order by attendance_month desc ,dept_id
+		LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+	
+	<select id="queryWorkAttendanceGroupByCount_mysql" parameterType="map"  resultType="int" >
+		 SELECT COUNT(*) FROM (
+		 	select dept_id, attendance_month from(
+			<include refid="workAttendancePagerSql"/>
+			) att group by dept_id, attendance_month
+		) c
+		
+	</select>	
+	
+	
+   
+   
+
+	<sql id="workAttendancePagerSql">
+		SELECT wa.* ,dept.dept_name, staff.staff_name ,staff.staff_no
+		FROM tb_other_work_attendance  wa
+		inner join ts_dept dept
+		on wa.dept_id = dept.dept_id
+		inner join tb_other_staff staff
+		on wa.staff_id = staff.staff_id
+		WHERE wa.delete_flag = '0'	
+		
+		
+		<if test="OtherWorkAttendance.dept_id != null and OtherWorkAttendance.dept_id != ''">
+			AND wa.dept_id =  #{OtherWorkAttendance.dept_id}
+		</if>	
+
+		
+		<if test="OtherWorkAttendance.attendance_month != null and OtherWorkAttendance.attendance_month != 0 ">
+			AND wa.attendance_month =  #{OtherWorkAttendance.attendance_month}
+		</if>
+		
+		
+		
+		<if test="OtherWorkAttendance.attendance_month1 != null and OtherWorkAttendance.attendance_month1 != 0 ">
+			<![CDATA[	
+			AND wa.attendance_month >=  #{OtherWorkAttendance.attendance_month1}
+			]]>
+		</if>
+		
+		<if test="OtherWorkAttendance.attendance_month2 != null and OtherWorkAttendance.attendance_month2 != 0 ">
+			<![CDATA[	
+			AND wa.attendance_month <=  #{OtherWorkAttendance.attendance_month2}
+			]]>
+		</if>
+		
+		<if test="OtherWorkAttendance.staff_id != null and OtherWorkAttendance.staff_id != ''">
+			AND wa.staff_id =  #{OtherWorkAttendance.staff_id}
+		</if>		
+		
+		<if test="OtherWorkAttendance.staff_name != null and OtherWorkAttendance.staff_name != ''">
+			AND staff.staff_name like concat('%',TRIM(#{OtherWorkAttendance.staff_name}),'%')
+		</if>
+		
+		
+		
+		<if test="OtherWorkAttendance.verify_flag != null and OtherWorkAttendance.verify_flag != ''">
+			<if test="OtherWorkAttendance.verify_flag == 1">
+					and wa.verify_userid is not null 
+			</if>
+			<if test="OtherWorkAttendance.verify_flag == 2">
+					and wa.verify_userid is null
+			</if>
+		</if>
+		
+		
+		<include refid="permission"/>
+	
+		order by wa.attendance_month desc, dept.build_datetime , staff.build_datetime , staff.import_order
+		
+	</sql>
+
+
+
+	<sql id="permission">
+
+		<if test="UserPermit.range != null and UserPermit.range != ''">
+
+			<if test="UserPermit.range == 1">
+
+			</if>
+			<if test="UserPermit.range == 2">
+				<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+					and wa.dept_id =  #{UserPermit.user_deptid}
+				</if>
+				<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">
+					and wa.staff_id =  #{UserPermit.staff_id}
+				</if>
+			</if>
+			<if test="UserPermit.range == 3">
+				and wa.staff_id =   #{UserPermit.staff_id}
+			</if>
+
+		</if>
+
+		<if test="UserPermit.range == null or UserPermit.range == ''">
+			and 1 != 1
+		</if>
+
+
+	</sql>
+	
+
+</mapper>

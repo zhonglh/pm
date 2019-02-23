@@ -29,7 +29,6 @@ public class LogConstant {
 	public static final String ENTITY_STAFF_COST = "staff.cost";
 	public static final String ENTITY_PROJECT = "project";
 	public static final String INSURANCE_GRADE = "insurance.grade";
-	public static final String OTHER_STAFF = "other.staff";
 	public static final String ENTITY_CONTRACT = "contract";
 	public static final String ENTITY_PAYCONTRACT = "paycontract";
 	public static final String ENTITY_RECRUITINFO = "recruitinfo";
@@ -42,6 +41,10 @@ public class LogConstant {
 	public static final String ENTITY_PROJECT_STAFF_COST = "project.staff.cost";
 	public static final String ENTITY_REIMBURSE_COSTS = "reimburse.costs";
 	public static final String ENTITY_PROJECT_EXPEND = "project.expend";
+
+
+	public static final String OTHER_STAFF = "other.staff";
+	public static final String ENTITY_OTHER_WORK_ATTENDANCE = "other.work.attendance";
 	
 
 	public static final String ENTITY_MONTHLY_STATEMENT = "monthly.statement";

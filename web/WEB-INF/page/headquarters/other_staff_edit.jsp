@@ -44,10 +44,10 @@
 					<option value="4" <c:if test="${otherStaff1.position_type == '4' }">selected</c:if>><spring:message code="position.type.4"/></option>
 					<option value="5" <c:if test="${otherStaff1.position_type == '5' }">selected</c:if>><spring:message code="position.type.5"/></option>
 					<option value="6" <c:if test="${otherStaff1.position_type == '6' }">selected</c:if>><spring:message code="position.type.6"/></option>
-					<option value="7" <c:if test="${otherStaff.position_type == '7' }">selected</c:if>><spring:message code="position.type.7"/></option>
-					<option value="8" <c:if test="${otherStaff.position_type == '8' }">selected</c:if>><spring:message code="position.type.8"/></option>
-					<option value="9" <c:if test="${otherStaff.position_type == '9' }">selected</c:if>><spring:message code="position.type.9"/></option>
-					<option value="10" <c:if test="${otherStaff.position_type == '10' }">selected</c:if>><spring:message code="position.type.10"/></option>
+					<option value="7" <c:if test="${otherStaff1.position_type == '7' }">selected</c:if>><spring:message code="position.type.7"/></option>
+					<option value="8" <c:if test="${otherStaff1.position_type == '8' }">selected</c:if>><spring:message code="position.type.8"/></option>
+					<option value="9" <c:if test="${otherStaff1.position_type == '9' }">selected</c:if>><spring:message code="position.type.9"/></option>
+					<option value="10" <c:if test="${otherStaff1.position_type == '10' }">selected</c:if>><spring:message code="position.type.10"/></option>
 				</select>
 			</p>
 

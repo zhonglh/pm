@@ -575,6 +575,9 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 			return this.ajaxForwardSuccess(request);
 		}
 
+
+		//todo , 打开注释
+		/**
 		Salary searchSalary = new Salary();
 		searchSalary.setProject_id(updateWorkAttendance.getDept_id());
 		searchSalary.setSalary_month(updateWorkAttendance.getAttendance_month());
@@ -584,6 +587,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		if(salarys.getResultList() != null && !salarys.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "该考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
 		}
+		 */
 
 		List<OtherWorkAttendance> list = new ArrayList<OtherWorkAttendance>();
 
@@ -766,7 +770,10 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "没有任何考勤记录！",true);
 		}
-		
+
+
+		//todo , 打开注释
+		/**
 		Salary searchSalary = new Salary();
 		searchSalary.setProject_id(workAttendance.getProject_id());
 		searchSalary.setSalary_month(workAttendance.getAttendance_month());
@@ -774,6 +781,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		if(salarys.getResultList() != null && !salarys.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "该考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
 		}
+		 */
 
 		request.setAttribute("list", pager.getResultList());
 		request.setAttribute("workAttendance1", pager.getResultList().get(0));
@@ -811,7 +819,11 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 			return this.ajaxForwardError(request, "没有任何考勤记录！",true);
 		}
 		List<OtherWorkAttendance> list = pager.getResultList();
-		
+
+
+
+		//todo , 打开注释
+		/**
 		Salary searchSalary = new Salary();
 		searchSalary.setProject_id(workAttendance.getProject_id());
 		searchSalary.setSalary_month(workAttendance.getAttendance_month());
@@ -819,7 +831,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		if(salarys.getResultList() != null && !salarys.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "该考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
 		}
-		
+		*/
 		
 
 		List<OtherWorkAttendance> newlist = computeWorkAttendance(workAttendance);

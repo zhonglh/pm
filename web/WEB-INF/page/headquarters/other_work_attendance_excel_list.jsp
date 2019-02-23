@@ -50,7 +50,7 @@
 							
 						</td>						
 						<td>${otherWorkAttendance.str_month }</td>
-						<td>${otherWorkAttendance.project_name }</td>
+						<td>${otherWorkAttendance.dept_name }</td>
 						<td>${otherWorkAttendance.staff_name }</td>
 						<td>${otherWorkAttendance.staff_no }</td>
 						<td>${otherWorkAttendance.should_work_days }</td>

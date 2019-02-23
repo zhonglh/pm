@@ -12,10 +12,12 @@
 			</p>
 			
 			<p>
-				<label>项目名称：</label>
-					<input type="hidden"   name="project.project_id" value=""/>
-					<input name="project.project_name" class="text required" type="text" size="28"  value="" readonly="readonly" />
-					<a class="btnLook" href="${webroot }/ProjectAction.do?method=lookup" lookupGroup="project" lookupPk="project_id" width="950">选择项目</a>	
+				<label>部门：</label>
+
+				<input name="dept.dept_id" class="text" type="hidden" size="2"  value="${workAttendance1.dept_id }" />
+				<input name="dept.dept_name" class="text" type="text" size="20"  value="${workAttendance1.dept_name }" readonly="readonly" lookupPk="dept_id"
+					   suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup&use=search" lookupGroup="dept"/>
+
 			</p>
 			
 			<p>

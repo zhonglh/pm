@@ -15,10 +15,10 @@
 			</p>	
 			
 			<p>
-				<label>项目名称：</label>
-				<input type="hidden"   name="project_id" value="${otherWorkAttendance1.project_id }"/>
-				<input name="project_name" type="hidden" value="${otherWorkAttendance1.project_name }"  />
-				<label>${otherWorkAttendance1.project_name }</label>
+				<label>部门名称：</label>
+				<input type="hidden"   name="dept_id" value="${otherWorkAttendance1.dept_id }"/>
+				<input name="dept_name" type="hidden" value="${otherWorkAttendance1.dept_name }"  />
+				<label>${otherWorkAttendance1.dept_name }</label>
 			</p>
 			
 						

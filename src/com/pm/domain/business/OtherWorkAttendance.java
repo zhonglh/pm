@@ -121,7 +121,7 @@ public class OtherWorkAttendance implements Serializable , ISort{
 	/**
 	 * 考勤人数
 	 */
-	private int project_attendance_number;
+	private int dept_attendance_number;
 	
 	
 	//核单个数
@@ -282,12 +282,15 @@ public class OtherWorkAttendance implements Serializable , ISort{
 	public void setStaff_name(String staff_name) {
 		this.staff_name = staff_name;
 	}
-	public int getProject_attendance_number() {
-		return project_attendance_number;
+
+	public int getDept_attendance_number() {
+		return dept_attendance_number;
 	}
-	public void setProject_attendance_number(int project_attendance_number) {
-		this.project_attendance_number = project_attendance_number;
+
+	public void setDept_attendance_number(int dept_attendance_number) {
+		this.dept_attendance_number = dept_attendance_number;
 	}
+
 	public String getAttendance_day1() {
 		return attendance_day1;
 	}

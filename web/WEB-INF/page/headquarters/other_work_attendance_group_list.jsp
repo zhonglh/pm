@@ -22,10 +22,6 @@
 			
 			</li>
 		
-			<li>
-				<label>项目名称：</label>
-				<input type="text" name="project_name" value="${param.project_name}"/>
-			</li>
 
 			<li>
 				<label>考勤月份：</label>
@@ -124,8 +120,7 @@
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
-				<th width="200">项目名称</th>
-				<th width="150">项目编号</th>
+				<th width="200">部门名称</th>
 				<th width="80">考勤月份</th>
 				<th width="40">人数</th>
 				<th width="80">制表人</th>
@@ -136,25 +131,24 @@
 		<tbody>
 		
 			<c:forEach var="otherWorkAttendance"  varStatus="status1" items="${list}">
-			<tr target="sid_work_attendance" rel="${otherWorkAttendance.attendance_month }___${otherWorkAttendance.project_id }">
+			<tr target="sid_work_attendance" rel="${otherWorkAttendance.attendance_month }___${otherWorkAttendance.dept_id }">
 				<td>
 				
 				
-					<c:if test="${otherWorkAttendance.project_attendance_number > otherWorkAttendance.verify_number }">
+					<c:if test="${otherWorkAttendance.dept_attendance_number > otherWorkAttendance.verify_number }">
 						<c:if test="${ 0 == otherWorkAttendance.verify_number }">
-							<input name="ids" value="${otherWorkAttendance.attendance_month }___${otherWorkAttendance.project_id }" type="checkbox" />
+							<input name="ids" value="${otherWorkAttendance.attendance_month }___${otherWorkAttendance.dept_id }" type="checkbox" />
 						</c:if>
 					</c:if>
 				</td>
-				<td>${otherWorkAttendance.project_name }</td>
-				<td>${otherWorkAttendance.project_no }</td>
+				<td>${otherWorkAttendance.dept_name }</td>
 				<td>${otherWorkAttendance.attendance_month }</td>
-				<td>${otherWorkAttendance.project_attendance_number }</td>
+				<td>${otherWorkAttendance.dept_attendance_number }</td>
 				<td>${otherWorkAttendance.build_username }</td>
 				<td><fmt:formatDate value="${otherWorkAttendance.build_datetime }" pattern="yyyy-MM-dd" /></td>
 				<td>
-					<c:if test="${otherWorkAttendance.project_attendance_number == otherWorkAttendance.verify_number }"><font color="red">已核单</font></c:if>
-					<c:if test="${otherWorkAttendance.project_attendance_number > otherWorkAttendance.verify_number }">
+					<c:if test="${otherWorkAttendance.dept_attendance_number == otherWorkAttendance.verify_number }"><font color="red">已核单</font></c:if>
+					<c:if test="${otherWorkAttendance.dept_attendance_number > otherWorkAttendance.verify_number }">
 						<c:if test="${ 0 == otherWorkAttendance.verify_number }">
 							未核单
 						</c:if>

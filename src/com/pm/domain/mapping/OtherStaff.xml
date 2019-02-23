@@ -25,23 +25,117 @@
 	</select>
 	
 	<select id="getOtherStaff" parameterType="map" resultMap="otherStaffMap">		
-		select staff.*, dept.dept_name 
+		select staff.*, dept.dept_name ,
+
+		grade.insurance_radix , grade.base_cardinal ,dd_nati.dic_data_name as nationality_name,
+		dd_cp.dic_data_name as census_property_name, dd_edu.dic_data_name as educational_name ,
+		dd_ct.dic_data_name as contract_type_name,
+		dd_ca.dic_data_name as contract_attach_name,
+		dd_ss.dic_data_name as social_security_name ,
+		dd_specialty.dic_data_name as specialty_name ,
+		dd_ic.dic_data_name as insured_city_name ,
+		dd_wa.dic_data_name as working_address_name ,
+		dd_certificate.dic_data_name as certificate_name
+
 		from tb_other_staff staff left join ts_dept dept on staff.dept_id = dept.dept_id
+		left join tb_insurance_grade grade
+		on staff.insurance_grade_id = grade.insurance_grade_id
+		left join ts_dic_data dd_nati on staff.nationality = dd_nati.id
+		left join ts_dic_data dd_cp on staff.census_property = dd_cp.id
+		left join ts_dic_data dd_edu on staff.educational = dd_edu.id
+		left join ts_dic_data dd_ct on staff.contract_type = dd_ct.id
+		left join ts_dic_data dd_ca on staff.contract_attach = dd_ca.id
+		left join ts_dic_data dd_ss on staff.social_security = dd_ss.id
+
+
+		left join ts_dic_data dd_specialty on staff.specialty = dd_specialty.id
+		left join ts_dic_data dd_ic on staff.insured_city = dd_ic.id
+		left join ts_dic_data dd_wa on staff.working_address = dd_wa.id
+		left join ts_dic_data dd_certificate on staff.certificate = dd_certificate.id
 		where staff.staff_id = #{staff_id}	
-		and staff.delete_flag = '0' 
-		order by staff.build_datetime
+
 	</select>
-		
-	
+
+
+	<select id="getOtherStaffByInsurance" parameterType="map" resultMap="otherStaffMap">
+		select staff.*, dept.dept_name ,
+
+		grade.insurance_radix , grade.base_cardinal ,dd_nati.dic_data_name as nationality_name,
+		dd_cp.dic_data_name as census_property_name, dd_edu.dic_data_name as educational_name ,
+		dd_ct.dic_data_name as contract_type_name,
+		dd_ca.dic_data_name as contract_attach_name,
+		dd_ss.dic_data_name as social_security_name ,
+		dd_specialty.dic_data_name as specialty_name ,
+		dd_ic.dic_data_name as insured_city_name ,
+		dd_wa.dic_data_name as working_address_name ,
+		dd_certificate.dic_data_name as certificate_name
+
+		from tb_other_staff staff left join ts_dept dept on staff.dept_id = dept.dept_id
+		left join tb_insurance_grade grade
+		on staff.insurance_grade_id = grade.insurance_grade_id
+		left join ts_dic_data dd_nati on staff.nationality = dd_nati.id
+		left join ts_dic_data dd_cp on staff.census_property = dd_cp.id
+		left join ts_dic_data dd_edu on staff.educational = dd_edu.id
+		left join ts_dic_data dd_ct on staff.contract_type = dd_ct.id
+		left join ts_dic_data dd_ca on staff.contract_attach = dd_ca.id
+		left join ts_dic_data dd_ss on staff.social_security = dd_ss.id
+
+
+		left join ts_dic_data dd_specialty on staff.specialty = dd_specialty.id
+		left join ts_dic_data dd_ic on staff.insured_city = dd_ic.id
+		left join ts_dic_data dd_wa on staff.working_address = dd_wa.id
+		left join ts_dic_data dd_certificate on staff.certificate = dd_certificate.id
+		where staff.delete_flag = '0'
+		<if test="insurance_grade_id != null and insurance_grade_id != ''">
+			and staff.insurance_grade_id = #{insurance_grade_id}
+		</if>
+
+	</select>
+
+
+
+
+
+
+
+
 	<insert id="addOtherStaff" parameterType="com.pm.domain.business.OtherStaff">
 		insert into tb_other_staff(
-			staff_id,staff_no,staff_name, dept_id,position_type, position_type1, 
-			position_type2, position_type3,
+			staff_id,staff_no,staff_name, dept_id,position_type,
+			position_type1, position_type2, position_type3,	job_title,
+			sex,birthday,nationality,census_property,identity_card_number,
+			tel,pressing_tel,qq,contract_start_date,contract_end_date,
+			contract_number,graduate_school,educational,registered_residence,postal_address,
+			join_datetime,leave_job_datetime,
+			confirmation_date,tryout_salary,tryout_basic_salary,tryout_post_salary,tryout_performance_allowances,
+			official_salary,basic_salary,post_salary,performance_allowances,computer_allowance,
+			meal_allowance,project_allowance,travel_allowance,insurance_grade_id,securty_unit,
+			endowment_insurance_bypersonal,medical_insurance_bypersonal,losejob_insurance_bypersonal,reservefund_bypersonal,incometax_bypersonal,
+			endowment_insurance_bycompany,medical_insurance_bycompany,losejob_insurance_bycompany,maternity_insurance_bycompany,jobharm_insurance_bycompany,
+			reservefund_bypcompany,extra,email,open_account,
+			bank_card_number,extra_expend,can_send_info,
+			contract_type,contract_attach,social_security,description,
+			specialty,graduation_date,working_life,insured_city,working_address,certificate,
+			children_education,continuing_education,housing_loans,housing_rent,support_elderly,
 			build_datetime,build_userid,build_username,delete_flag
 		)
 		values(
-			#{staff_id},#{staff_no}, #{staff_name},#{dept_id}, #{position_type}, #{position_type1},
-			#{position_type2}, #{position_type3}, 
+			#{staff_id},#{staff_no}, #{staff_name},#{dept_id}, #{position_type},
+			 #{position_type1},	#{position_type2}, #{position_type3}, 	#{job_title},
+			#{sex},#{birthday},#{nationality},#{census_property},#{identity_card_number},
+			#{tel},#{pressing_tel},#{qq},#{contract_start_date},#{contract_end_date},
+			#{contract_number},#{graduate_school},#{educational},#{registered_residence},#{postal_address},
+			#{join_datetime},#{leave_job_datetime},
+			#{confirmation_date},#{tryout_salary},#{tryout_basic_salary},#{tryout_post_salary},#{tryout_performance_allowances},
+			#{official_salary},#{basic_salary},#{post_salary},#{performance_allowances},#{computer_allowance},
+			#{meal_allowance},#{project_allowance},#{travel_allowance},#{insurance_grade_id},#{securty_unit},
+			#{endowment_insurance_bypersonal},#{medical_insurance_bypersonal},#{losejob_insurance_bypersonal},#{reservefund_bypersonal},#{incometax_bypersonal},
+			#{endowment_insurance_bycompany},#{medical_insurance_bycompany},#{losejob_insurance_bycompany},#{maternity_insurance_bycompany},#{jobharm_insurance_bycompany},
+			#{reservefund_bypcompany},#{extra},#{email},#{open_account},
+			#{bank_card_number},#{extra_expend},#{can_send_info},
+			#{contract_type},#{contract_attach},#{social_security},#{description},
+			#{specialty},#{graduation_date},#{working_life},#{insured_city},#{working_address},#{certificate},
+			#{children_education},#{continuing_education},#{housing_loans},#{housing_rent},#{support_elderly},
 			#{build_datetime},#{build_userid},#{build_username},#{delete_flag}
 		)
 	</insert>	
@@ -55,8 +149,80 @@
 		position_type = #{position_type},
 		position_type1 = #{position_type1},
 		position_type2 = #{position_type2},
-		position_type3 =  #{position_type3}
-		where staff_id = #{staff_id}  
+		position_type3 =  #{position_type3},
+
+
+		job_title=#{job_title},
+		sex=#{sex},
+		birthday=#{birthday},
+		nationality=#{nationality},
+		census_property=#{census_property},
+		identity_card_number=#{identity_card_number},
+		tel=#{tel},
+		pressing_tel=#{pressing_tel},
+		qq=#{qq},
+		contract_start_date=#{contract_start_date},
+		contract_end_date=#{contract_end_date},
+		contract_number=#{contract_number},
+		graduate_school=#{graduate_school},
+		educational=#{educational},
+		registered_residence=#{registered_residence},
+		postal_address=#{postal_address},
+		join_datetime=#{join_datetime},
+		leave_job_datetime=#{leave_job_datetime},
+		confirmation_date=#{confirmation_date},
+		tryout_salary=#{tryout_salary},
+		tryout_basic_salary=#{tryout_basic_salary},
+		tryout_post_salary=#{tryout_post_salary},
+		tryout_performance_allowances=#{tryout_performance_allowances},
+		official_salary=#{official_salary},
+		basic_salary=#{basic_salary},
+		post_salary=#{post_salary},
+		performance_allowances=#{performance_allowances},
+		computer_allowance=#{computer_allowance},
+		meal_allowance=#{meal_allowance},
+		project_allowance=#{project_allowance},
+		travel_allowance=#{travel_allowance},
+		insurance_grade_id=#{insurance_grade_id},
+		securty_unit=#{securty_unit},
+		endowment_insurance_bypersonal=#{endowment_insurance_bypersonal},
+		medical_insurance_bypersonal=#{medical_insurance_bypersonal},
+		losejob_insurance_bypersonal=#{losejob_insurance_bypersonal},
+		reservefund_bypersonal=#{reservefund_bypersonal},
+		incometax_bypersonal=#{incometax_bypersonal},
+		endowment_insurance_bycompany=#{endowment_insurance_bycompany},
+		medical_insurance_bycompany=#{medical_insurance_bycompany},
+		losejob_insurance_bycompany=#{losejob_insurance_bycompany},
+		maternity_insurance_bycompany=#{maternity_insurance_bycompany},
+		jobharm_insurance_bycompany=#{jobharm_insurance_bycompany},
+		reservefund_bypcompany=#{reservefund_bypcompany},
+		extra=#{extra},
+		email=#{email},
+		open_account=#{open_account},
+		bank_card_number=#{bank_card_number},
+		extra_expend=#{extra_expend},
+		can_send_info=#{can_send_info},
+		contract_type=#{contract_type},
+		contract_attach=#{contract_attach},
+		social_security=#{social_security},
+
+		specialty=#{specialty},
+		graduation_date=#{graduation_date},
+		working_life=#{working_life},
+		insured_city=#{insured_city},
+		working_address=#{working_address},
+		certificate=#{certificate},
+
+		children_education=#{children_education},
+		continuing_education=#{continuing_education},
+		housing_loans=#{housing_loans},
+		housing_rent=#{housing_rent},
+		support_elderly=#{support_elderly},
+
+		description=#{description},
+		version_no = version_no + 1
+		where staff_id = #{staff_id}
+		and delete_flag = '0'  and version_no = #{version_no}
 	</update>
 		
 		
@@ -93,9 +259,96 @@
 	</select>	
 
 	<sql id="otherStaffPagerSql">
-		select staff.*, dept.dept_name 
+		select staff.*, dept.dept_name ,
+
+		grade.insurance_radix ,  grade.base_cardinal ,
+		dd_nati.dic_data_name as nationality_name,
+		dd_cp.dic_data_name as census_property_name,
+		dd_edu.dic_data_name as educational_name ,
+		dd_ct.dic_data_name as contract_type_name,
+		dd_ca.dic_data_name as contract_attach_name,
+		dd_ss.dic_data_name as social_security_name ,
+		dd_specialty.dic_data_name as specialty_name ,
+		dd_ic.dic_data_name as insured_city_name ,
+		dd_wa.dic_data_name as working_address_name ,
+		dd_certificate.dic_data_name as certificate_name ,
+
+
+		case when
+		<if test="OtherStaff.date1 != null and OtherStaff.date2 != nul ">
+			<![CDATA[
+				staff.join_datetime >= #{OtherStaff.date1} and staff.join_datetime <= #{OtherStaff.date2}
+				]]>
+		</if>
+
+		<if test="OtherStaff.date1 == null and OtherStaff.date2 == nul ">
+			staff.join_datetime
+		</if>
+
+
+		<if test="OtherStaff.date1 == null and OtherStaff.date2 != nul ">
+			<![CDATA[
+				staff.join_datetime <= #{OtherStaff.date2}
+			]]>
+		</if>
+
+		<if test="OtherStaff.date1 != null and OtherStaff.date2 == nul ">
+			<![CDATA[
+				staff.join_datetime >= #{OtherStaff.date1}
+			]]>
+		</if>
+		then 1 else 0 end as joinnum,
+		case when
+		<if test="OtherStaff.date1 != null and OtherStaff.date2 != nul ">
+			<![CDATA[
+				staff.leave_job_datetime >= #{OtherStaff.date1} and staff.leave_job_datetime <= #{OtherStaff.date2}
+			]]>
+		</if>
+
+		<if test="OtherStaff.date1 == null and OtherStaff.date2 == nul ">
+			staff.leave_job_datetime
+		</if>
+
+
+		<if test="OtherStaff.date1 == null and OtherStaff.date2 != nul ">
+			<![CDATA[
+				staff.leave_job_datetime <= #{OtherStaff.date2}
+			]]>
+		</if>
+
+		<if test="OtherStaff.date1 != null and OtherStaff.date2 == nul ">
+			<![CDATA[
+				staff.leave_job_datetime >= #{OtherStaff.date1}
+			]]>
+		</if>
+		then 1 else 0 end as leavenum
+
+
+
+
 		from tb_other_staff staff left join ts_dept dept on staff.dept_id = dept.dept_id
-		where staff.delete_flag = '0' 
+		left join tb_insurance_grade grade
+		on staff.insurance_grade_id = grade.insurance_grade_id
+		left join ts_dic_data dd_nati on staff.nationality = dd_nati.id
+		left join ts_dic_data dd_cp on staff.census_property = dd_cp.id
+		left join ts_dic_data dd_edu on staff.educational = dd_edu.id
+		left join ts_dic_data dd_ct on staff.contract_type = dd_ct.id
+		left join ts_dic_data dd_ca on staff.contract_attach = dd_ca.id
+		left join ts_dic_data dd_ss on staff.social_security = dd_ss.id
+		left join ts_dic_data dd_specialty on staff.specialty = dd_specialty.id
+		left join ts_dic_data dd_ic on staff.insured_city = dd_ic.id
+		left join ts_dic_data dd_wa on staff.working_address = dd_wa.id
+		left join ts_dic_data dd_certificate on staff.certificate = dd_certificate.id
+
+
+		where staff.delete_flag = '0'
+
+
+		<if test="OtherStaff.delete_flag != null and OtherStaff.delete_flag != ''">
+			AND staff.delete_flag = #{OtherStaff.delete_flag}
+		</if>
+
+
 		
 		<if test="OtherStaff.position_type != null and OtherStaff.position_type != ''">
 			and staff.position_type = #{OtherStaff.position_type}
@@ -108,6 +361,11 @@
 		<if test="OtherStaff.staff_name != null and OtherStaff.staff_name != ''">
 			and staff.staff_name like concat('%',TRIM(#{OtherStaff.staff_name}),'%') 
 		</if>
+
+
+		<if test="OtherStaff.staff_no != null and OtherStaff.staff_no != ''">
+			AND staff.staff_no like concat('%',TRIM(#{OtherStaff.staff_no}),'%')
+		</if>
 		
 		
 		
@@ -119,11 +377,79 @@
 				staff.position_type3 = #{OtherStaff.position_type}
 			)
 		</if>
-		
-		
+
+
+
+		<if test="OtherStaff.date1 != null">
+			<![CDATA[
+			AND ( staff.join_datetime >= #{OtherStaff.date1}	or staff.leave_job_datetime >= #{OtherStaff.date1} )
+		]]>
+		</if>
+		<if test="OtherStaff.date2 != null">
+			<![CDATA[
+			AND ( staff.join_datetime <= #{OtherStaff.date2}	or staff.leave_job_datetime <= #{OtherStaff.date2} )
+		]]>
+		</if>
+
+
+		<if test="OtherStaff.join_datetime1 != null">
+			<![CDATA[
+			AND  (staff.join_datetime is not null and staff.join_datetime >= #{OtherStaff.join_datetime1}	)
+		]]>
+		</if>
+		<if test="OtherStaff.join_datetime2 != null">
+			<![CDATA[
+			AND (staff.join_datetime is not null and staff.join_datetime <= #{OtherStaff.join_datetime2} )
+		]]>
+		</if>
+
+
+		<if test="OtherStaff.leave_job_datetime1 != null">
+			<![CDATA[
+			AND  (staff.leave_job_datetime is not null and staff.leave_job_datetime >= #{OtherStaff.leave_job_datetime1}	)
+		]]>
+		</if>
+		<if test="OtherStaff.leave_job_datetime2 != null">
+			<![CDATA[
+			AND (staff.leave_job_datetime is not null and staff.leave_job_datetime <= #{OtherStaff.leave_job_datetime2} )
+		]]>
+		</if>
+
+
+
+
+
+
+
+
+		<if test="OtherStaff.contrct_expiration_date1 != null">
+			<![CDATA[
+			AND  (staff.contract_end_date is not null and staff.contract_end_date >= #{OtherStaff.contrct_expiration_date1}	)
+		]]>
+		</if>
+		<if test="OtherStaff.contrct_expiration_date2 != null">
+			<![CDATA[
+			AND (staff.contract_end_date is not null and staff.contract_end_date <= #{OtherStaff.contrct_expiration_date2} )
+		]]>
+		</if>
+
+
+		<if test="OtherStaff.tryoutDate1 != null">
+			<![CDATA[
+			AND  (staff.confirmation_date is not null and date_sub(staff.confirmation_date, interval 1 day) >= #{OtherStaff.tryoutDate1}	)
+			]]>
+		</if>
+		<if test="OtherStaff.tryoutDate2 != null">
+			<![CDATA[
+			AND (staff.confirmation_date is not null and date_sub(staff.confirmation_date, interval 1 day) <= #{OtherStaff.tryoutDate2} )
+		]]>
+		</if>
+
+
+
 		<include refid="permission"/>
-		
-		order by staff.build_datetime asc 
+
+		order by staff.delete_flag , staff.build_datetime ,staff.import_order
 	
 	</sql>		
 	

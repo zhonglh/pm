@@ -27,11 +27,15 @@ public class StaffCostLog extends BasicLog {
 		if(methodAnnotation.operation_type().equals(LogConstant.OPERATION_DELETE)){
 			
 			StaffCost[] staffCosts = (StaffCost[])invocation.getArguments()[0];
-			if(staffCosts == null || staffCosts.length == 0) return null;
+			if(staffCosts == null || staffCosts.length == 0) {
+				return null;
+			}
 			for(StaffCost staffCost : staffCosts){
 				Log log = super.getLog(methodAnnotation, invocation,sessionUser );
 				StaffCost preStaffCost = staffCostService.getStaffCost(staffCost.getStaff_id());
-				if(preStaffCost == null) preStaffCost = new StaffCost();
+				if(preStaffCost == null) {
+					preStaffCost = new StaffCost();
+				}
 				log.setEntity_id(staffCost.getStaff_id());
 				log.setEntity_name(staffCost.getStaff_name()==null?preStaffCost.getStaff_name():staffCost.getStaff_name());
 				List<LogDetail>  details = PubMethod.getLogDetails(log,StaffCost.class, preStaffCost,staffCost);	
@@ -74,7 +78,9 @@ public class StaffCostLog extends BasicLog {
 	
 	
 	private void special(List<LogDetail> details){
-		if(details == null || details.isEmpty()) return ;
+		if(details == null || details.isEmpty()) {
+			return ;
+		}
 		for(LogDetail detail : details){
 			if(detail.getData_item_code().equals("outsource_staff") || detail.getData_item_code().equals("can_send_info")){
 				if(detail.getOperation_after() != null && !detail.getOperation_after().isEmpty()){

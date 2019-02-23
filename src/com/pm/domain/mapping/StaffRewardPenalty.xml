@@ -13,7 +13,7 @@
 	<select id="getStaffRewardPenalty" parameterType="com.pm.domain.business.StaffRewardPenalty" resultMap="staffRewardPenaltyMap">
 		select srp.* ,staff.staff_name
 		from tb_staff_reward_penalty srp  
-		join tb_staff_costs staff on srp.staff_id = staff.staff_id
+		join vb_all_staff staff on srp.staff_id = staff.staff_id
 		where srp.id = #{id}
 	</select>
 
@@ -54,7 +54,7 @@
 	<sql id="staffRewardPenaltyPagerSql">
 		select srp.*,staff.staff_name
 		from tb_staff_reward_penalty srp  
-		join tb_staff_costs staff on srp.staff_id = staff.staff_id
+		join vb_all_staff staff on srp.staff_id = staff.staff_id
 		WHERE srp.staff_id = #{StaffRewardPenalty.staff_id}
 		order by srp.rp_time desc,srp.build_datetime desc
 	</sql>

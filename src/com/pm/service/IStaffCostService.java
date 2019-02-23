@@ -53,7 +53,7 @@ public interface IStaffCostService {
 	public boolean isExist(StaffCost staffCost);
 	
 	/**
-	 * 查询所有人员， 包括人员成本和行政人员
+	 * 查询所有人员， 包括人员成本和总部人员
 	 * @return
 	 */
 	public List<StaffCost> getAllStaff();
@@ -72,7 +72,7 @@ public interface IStaffCostService {
 	public List<StaffCost> getAllStaffBySearch(StaffCost staffCost);
 	
 	/**
-	 *  查询所有人员， 包括人员成本和行政人员
+	 *  查询所有人员， 包括人员成本和总部人员
 	 * @param staffCost
 	 * @param staffCostCondition
 	 * @param userPermit

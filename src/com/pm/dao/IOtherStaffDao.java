@@ -19,6 +19,9 @@ public interface IOtherStaffDao {
 	
 	
 	public OtherStaff getOtherStaff(String staff_id) ;
+
+
+	public List<OtherStaff> getOtherStaffByInsurance(OtherStaff otherStaff);
 	
 	
 	public boolean isExist(OtherStaff otherStaff);

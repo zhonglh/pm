@@ -923,7 +923,7 @@ public class StaffCostAction extends BaseAction {
 	
 	
 	/**
-	 * 为查询上级主管, 要包括人员成本和行政人员
+	 * 为查询上级主管, 要包括人员成本和总部人员
 	 * @param searchStaffCost
 	 * @param staffCostCondition
 	 * @param res
@@ -954,7 +954,7 @@ public class StaffCostAction extends BaseAction {
 		
 		Pager<StaffCost> pager = staffCostService.queryStaffCost(searchStaffCost, null, userPermit, PubMethod.getPager(request, StaffCost.class));
 		
-		
+
 		if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
 
 			double tax_rate = 0;
@@ -1031,10 +1031,7 @@ public class StaffCostAction extends BaseAction {
 		if(StringUtils.isNotEmpty(base_cardinal)) {
 			staffCost.setBase_cardinal(Double.parseDouble(base_cardinal));
 		}
-		
 
-		staffCost.setRecruiter(request.getParameter("job.user_id"));
-		staffCost.setRecruiter_name(request.getParameter("job.user_name"));
 		
 
 		staffCost.setNationality(request.getParameter("nation.id"));

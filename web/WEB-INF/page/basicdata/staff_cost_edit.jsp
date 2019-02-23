@@ -39,7 +39,13 @@
 				<input type="hidden" size="2" name="job.user_id" value="${staffCost1.recruiter }"/>
 				<input name="job.user_name" class="text" type="text" size="28"  value="${staffCost1.recruiter_name }" readonly="readonly" />
 				<a class="btnLook" href="${webroot }/OtherStaffAction.do?method=lookup&position_type=1" lookupGroup="job" lookupPk="user_id" width="950">选择</a>
-			</p>	
+			</p>
+
+
+			<p>
+				<label>身份证号：</label>
+				<input name="identity_card_number" class="text idcard" type="text" size="30" maxlength="18" minlength="18" value="${staffCost1.identity_card_number}" onblur="javaScript:idCardProce(this);" style="text-transform:uppercase;" />
+			</p>
 			
 			<p>
 				<label>性别：</label>		
@@ -68,11 +74,7 @@
 					suggestUrl="${webroot }/DicDataAction.do?method=lookup&dic_type_id=HOUSEHOLDPROPERTY" />						
 				<a class="btnAdd" href="${webroot}/DicDataAction.do?method=toEdit&dic_type_id=HOUSEHOLDPROPERTY" mask="true" width="500" height="260" rel="add_HOUSEHOLDPROPERTY"  target="dialog"><span>添加</span></a>	
 			</p>
-			
-			<p>
-				<label>身份证号：</label>
-				<input name="identity_card_number" class="text idcard" type="text" size="30" maxlength="18" minlength="18" value="${staffCost1.identity_card_number}" onblur="javaScript:idCardProce(this);" style="text-transform:uppercase;" />
-			</p>
+
 			
 			<p>
 				<label>联系电话：</label>

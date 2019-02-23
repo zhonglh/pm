@@ -43,6 +43,14 @@ public class OtherStaffDaoImpl extends BatisDao implements IOtherStaffDao {
 		else return list.get(0);
 	}
 
+
+
+	@Override
+	public List<OtherStaff> getOtherStaffByInsurance(OtherStaff otherStaff){
+		String sql = "OtherStaffMapping.getOtherStaffByInsurance";
+		return this.query(sql, OtherStaff.class, otherStaff);
+	}
+
 	@Override
 	public boolean isExist(OtherStaff otherStaff) {
 		String sql = "OtherStaffMapping.isExist";

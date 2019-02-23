@@ -13,7 +13,7 @@
 	<select id="getStaffAssessment" parameterType="com.pm.domain.business.StaffAssessment" resultMap="staffAssessmentMap">
 		select sa.* ,staff.staff_name
 		from tb_staff_assessment sa
-		join tb_staff_costs staff on sa.staff_id = staff.staff_id
+		join vb_all_staff staff on sa.staff_id = staff.staff_id
 		where sa.id = #{id}
 	</select>
 
@@ -55,7 +55,7 @@
 	<sql id="staffAssessmentPagerSql">
 		select sa.* ,staff.staff_name
 		from tb_staff_assessment sa  
-		join tb_staff_costs staff on sa.staff_id = staff.staff_id
+		join vb_all_staff staff on sa.staff_id = staff.staff_id
 		WHERE sa.staff_id = #{StaffAssessment.staff_id} 
 		order by sa.assessment_time desc,sa.build_datetime desc
 	</sql>

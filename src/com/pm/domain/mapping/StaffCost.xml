@@ -464,8 +464,8 @@
 				staff.join_datetime >= #{StaffCost.date1}
 			]]>
 			</if>			   
-			then 1 else 0 end as joinnum,
-			case when 
+		then 1 else 0 end as joinnum,
+		case when
 			<if test="StaffCost.date1 != null and StaffCost.date2 != nul ">	
 			<![CDATA[
 				staff.leave_job_datetime >= #{StaffCost.date1} and staff.leave_job_datetime <= #{StaffCost.date2}
@@ -488,7 +488,7 @@
 				staff.leave_job_datetime >= #{StaffCost.date1}
 			]]>
 			</if>			   
-			then 1 else 0 end as leavenum			
+		then 1 else 0 end as leavenum
 		<include refid="staffCostFromSql"/>
 	</sql>
 		

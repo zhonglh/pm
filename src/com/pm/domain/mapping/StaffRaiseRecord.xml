@@ -13,7 +13,7 @@
 	<select id="getRaiseRecord" parameterType="com.pm.domain.business.StaffRaiseRecord" resultMap="raiserecordMap">
 		select rr.* ,staff.staff_name
 		from tb_staff_raise_record rr
-		join tb_staff_costs staff on rr.staff_id = staff.staff_id
+		join vb_all_staff staff on rr.staff_id = staff.staff_id
 		where rr.id = #{id}
 	</select>
 
@@ -54,7 +54,7 @@
 	<sql id="raiserecordPagerSql">
 		select rr.* ,staff.staff_name
 		from tb_staff_raise_record rr  
-		join tb_staff_costs staff on rr.staff_id = staff.staff_id
+		join vb_all_staff staff on rr.staff_id = staff.staff_id
 		WHERE rr.staff_id = #{StaffRaiseRecord.staff_id}
 		order by rr.raise_time desc,rr.build_datetime desc
 	</sql>

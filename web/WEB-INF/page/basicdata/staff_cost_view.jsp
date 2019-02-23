@@ -25,7 +25,14 @@
 			<p>
 				<label>招聘专员名称：</label>
 				${staffCost1.recruiter_name }
-			</p>	
+			</p>
+
+
+
+			<p>
+				<label>身份证号：</label>
+				${staffCost1.identity_card_number}
+			</p>
 			
 			<p>
 				<label>性别：</label>				
@@ -45,11 +52,6 @@
 			<p>
 				<label>户籍性质：</label>
 				${staffCost1.census_property_name }
-			</p>
-			
-			<p>
-				<label>身份证号：</label>
-				${staffCost1.identity_card_number}
 			</p>
 			
 			<p>

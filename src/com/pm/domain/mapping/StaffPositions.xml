@@ -13,7 +13,7 @@
 	<select id="getStaffPositions" parameterType="com.pm.domain.business.StaffPositions" resultMap="staffPositionsMap">
 		select sp.* ,staff.staff_name
 		from tb_staff_positions sp		
-		join tb_staff_costs staff on sp.staff_id = staff.staff_id
+		join vb_all_staff staff on sp.staff_id = staff.staff_id
 		where sp.id = #{id}
 	</select>
 
@@ -54,7 +54,7 @@
 	<sql id="StaffPositionsPagerSql">
 		select sp.*  ,staff.staff_name
 		from tb_staff_positions sp  		 
-		join tb_staff_costs staff on sp.staff_id = staff.staff_id
+		join vb_all_staff staff on sp.staff_id = staff.staff_id
 		WHERE sp.staff_id = #{StaffPositions.staff_id}
 		order by sp.positions_time desc,sp.build_datetime desc
 	</sql>

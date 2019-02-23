@@ -93,50 +93,63 @@ public class StaffCostServiceImpl implements IStaffCostService {
 
 		if(staffAssessments != null && staffAssessments.length >0){
 			for(StaffAssessment staffAssessment : staffAssessments){
-				if(StringUtils.isEmpty(staffAssessment.getId()))
+				if(StringUtils.isEmpty(staffAssessment.getId())) {
 					staffAssessmentService.addStaffAssessment(staffAssessment);
-				else staffAssessmentService.updateStaffAssessment(staffAssessment);
+				}else {
+					staffAssessmentService.updateStaffAssessment(staffAssessment);
+				}
 			}
 		}
 		
 		if(staffPositionss != null && staffPositionss.length >0){
 			for(StaffPositions staffPositions : staffPositionss){
-				if(StringUtils.isEmpty(staffPositions.getId()))
+				if(StringUtils.isEmpty(staffPositions.getId())) {
 					staffPositionsService.addStaffPositions(staffPositions);
-				else 
+				}else {
 					staffPositionsService.updateStaffPositions(staffPositions);
+				}
 			}
 		}
 		
 		if(staffRaiseRecords != null && staffRaiseRecords.length >0){
 			for(StaffRaiseRecord staffRaiseRecord : staffRaiseRecords){
-				if(StringUtils.isEmpty(staffRaiseRecord.getId()))
+				if(StringUtils.isEmpty(staffRaiseRecord.getId())) {
 					staffRaiseRecordService.addRaiseRecord(staffRaiseRecord);
-				else 
+				}else {
 					staffRaiseRecordService.updateRaiseRecord(staffRaiseRecord);
+				}
 			}
 		}
 		
 		if(staffRewardPenaltys != null && staffRewardPenaltys.length >0){
 			for(StaffRewardPenalty staffRewardPenalty : staffRewardPenaltys){
-				if(StringUtils.isEmpty(staffRewardPenalty.getId()))
+				if(StringUtils.isEmpty(staffRewardPenalty.getId())){
 					staffRewardPenaltyService.addStaffRewardPenalty(staffRewardPenalty);
-				else 
+				}else {
 					staffRewardPenaltyService.updateStaffRewardPenalty(staffRewardPenalty);
+				}
 			}
 		}
 		
 		
 		int size = staffCostDao.updateStaffCost(staffCost);
-		if(size == 0) throw new PMException("111111", "操作错误，已有其他人和你同时修改人员成本信息，请重新操作！");
-		else return size;
+		if(size == 0) {
+			throw new PMException("111111", "操作错误，已有其他人和你同时修改人员成本信息，请重新操作！");
+		}
+		else {
+			return size;
+		}
 	}
 
 	@Override
 	public int updateStaffCostAdditionalDeduction(StaffCost staffCost) {
 		int size = staffCostDao.updateStaffCostAdditionalDeduction(staffCost);
-		if(size == 0) throw new PMException("111111", "操作错误，已有其他人和你同时修改人员成本信息，请重新操作！");
-		else return size;
+		if(size == 0) {
+			throw new PMException("111111", "操作错误，已有其他人和你同时修改人员成本信息，请重新操作！");
+		}
+		else {
+			return size;
+		}
 	}
 
 	@Override
@@ -163,7 +176,9 @@ public class StaffCostServiceImpl implements IStaffCostService {
 
 	@Override
 	public StaffCost getStaffCostByName(String staff_name){
-		if(staff_name == null || staff_name.isEmpty()) return null;
+		if(staff_name == null || staff_name.isEmpty()) {
+			return null;
+		}
 		return staffCostDao.getStaffCostByName(staff_name);
 	}
 	
@@ -214,7 +229,8 @@ public class StaffCostServiceImpl implements IStaffCostService {
 	
 
 	
-	public Pager<StatisticsDetail> queryAnalysisDetails(Statistics statistics, UserPermit userPermit,Pager<StatisticsDetail> pager){
+	@Override
+	public Pager<StatisticsDetail> queryAnalysisDetails(Statistics statistics, UserPermit userPermit, Pager<StatisticsDetail> pager){
 		return staffCostDao.queryAnalysisDetails(statistics, userPermit, pager);
 	}
 	

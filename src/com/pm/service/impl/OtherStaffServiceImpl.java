@@ -2,14 +2,16 @@ package com.pm.service.impl;
 
 import java.util.List;
 
+import com.common.exceptions.PMException;
+import com.pm.domain.business.*;
+import com.pm.service.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.common.beans.Pager;
 import com.pm.dao.IOtherStaffDao;
 import com.pm.dao.IUserDao;
-import com.pm.domain.business.OtherStaff;
-import com.pm.service.IOtherStaffService;
 import com.pm.util.constant.EnumStaffType;
 import com.pm.vo.UserPermit;
 
@@ -17,17 +19,114 @@ import com.pm.vo.UserPermit;
 public class OtherStaffServiceImpl implements IOtherStaffService {
 
 	@Autowired IUserDao userDao;
-	@Autowired IOtherStaffDao otherStaffDao; 
+	@Autowired IOtherStaffDao otherStaffDao;
+
+
+	@Autowired
+	private IStaffRaiseRecordService staffRaiseRecordService;
+
+	@Autowired
+	private IStaffRewardPenaltyService staffRewardPenaltyService;
+
+	@Autowired
+	private IStaffAssessmentService staffAssessmentService;
+
+	@Autowired
+	private IStaffPositionsService staffPositionsService;
 	
 	@Override
-	public int addOtherStaff(OtherStaff otherStaff) {
+	public int addOtherStaff(OtherStaff otherStaff,
+							 StaffAssessment[] staffAssessments,
+							 StaffPositions[] staffPositionss,
+							 StaffRaiseRecord[] staffRaiseRecords,
+							 StaffRewardPenalty[] staffRewardPenaltys) {
+
+		if(staffAssessments != null && staffAssessments.length >0){
+			for(StaffAssessment staffAssessment : staffAssessments){
+				staffAssessmentService.addStaffAssessment(staffAssessment);
+			}
+		}
+
+		if(staffPositionss != null && staffPositionss.length >0){
+			for(StaffPositions staffPositions : staffPositionss){
+				staffPositionsService.addStaffPositions(staffPositions);
+			}
+		}
+
+		if(staffRaiseRecords != null && staffRaiseRecords.length >0){
+			for(StaffRaiseRecord staffRaiseRecord : staffRaiseRecords){
+				staffRaiseRecordService.addRaiseRecord(staffRaiseRecord);
+			}
+		}
+
+		if(staffRewardPenaltys != null && staffRewardPenaltys.length >0){
+			for(StaffRewardPenalty staffRewardPenalty : staffRewardPenaltys){
+				staffRewardPenaltyService.addStaffRewardPenalty(staffRewardPenalty);
+			}
+		}
 		return otherStaffDao.addOtherStaff(otherStaff);
 	}
 
 	@Override
-	public int updateOtherStaff(OtherStaff otherStaff) {
+	public int updateOtherStaff(OtherStaff otherStaff,
+								StaffAssessment[] staffAssessments,
+								StaffPositions[] staffPositionss,
+								StaffRaiseRecord[] staffRaiseRecords,
+								StaffRewardPenalty[] staffRewardPenaltys) {
+
+
+
+
+		if(staffAssessments != null && staffAssessments.length >0){
+			for(StaffAssessment staffAssessment : staffAssessments){
+				if(StringUtils.isEmpty(staffAssessment.getId())) {
+					staffAssessmentService.addStaffAssessment(staffAssessment);
+				}else {
+					staffAssessmentService.updateStaffAssessment(staffAssessment);
+				}
+			}
+		}
+
+		if(staffPositionss != null && staffPositionss.length >0){
+			for(StaffPositions staffPositions : staffPositionss){
+				if(StringUtils.isEmpty(staffPositions.getId())) {
+					staffPositionsService.addStaffPositions(staffPositions);
+				}else {
+					staffPositionsService.updateStaffPositions(staffPositions);
+				}
+			}
+		}
+
+		if(staffRaiseRecords != null && staffRaiseRecords.length >0){
+			for(StaffRaiseRecord staffRaiseRecord : staffRaiseRecords){
+				if(StringUtils.isEmpty(staffRaiseRecord.getId())) {
+					staffRaiseRecordService.addRaiseRecord(staffRaiseRecord);
+				}else {
+					staffRaiseRecordService.updateRaiseRecord(staffRaiseRecord);
+				}
+			}
+		}
+
+		if(staffRewardPenaltys != null && staffRewardPenaltys.length >0){
+			for(StaffRewardPenalty staffRewardPenalty : staffRewardPenaltys){
+				if(StringUtils.isEmpty(staffRewardPenalty.getId())){
+					staffRewardPenaltyService.addStaffRewardPenalty(staffRewardPenalty);
+				}else {
+					staffRewardPenaltyService.updateStaffRewardPenalty(staffRewardPenalty);
+				}
+			}
+		}
+
 		userDao.updateUser(otherStaff.getStaff_name(), otherStaff.getDept_id(), otherStaff.getStaff_id(), EnumStaffType.AdminStaff.name());
-		return otherStaffDao.updateOtherStaff(otherStaff);
+		int size = otherStaffDao.updateOtherStaff(otherStaff);
+
+
+		if(size == 0) {
+			throw new PMException("111111", "操作错误，已有其他人和你同时人员信息，请重新操作！");
+		}
+		else {
+			return size;
+		}
 	}
 
 	@Override
@@ -49,6 +148,13 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 	public OtherStaff getOtherStaff(String staff_id) {
 		
 		return otherStaffDao.getOtherStaff(staff_id);
+	}
+
+
+	@Override
+	public List<OtherStaff> getOtherStaffByInsurance(OtherStaff otherStaff){
+
+		return otherStaffDao.getOtherStaffByInsurance(otherStaff);
 	}
 
 	@Override

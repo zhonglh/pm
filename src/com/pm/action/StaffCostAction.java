@@ -122,7 +122,7 @@ public class StaffCostAction extends BaseAction {
 		String error = null;	
 		boolean b = staffCostService.isExist(staffCost);
 		if(b){
-			error = "该员工工号已经存在";
+			error = "该员工工号(身份证号码)已经存在";
 		}		
 		
 		if(!b){
@@ -202,6 +202,7 @@ public class StaffCostAction extends BaseAction {
 			for(StaffCost staffCost : allStaffs){
 				staffCostMap.put(staffCost.getStaff_no(), staffCost);
 				staffCostMap.put(staffCost.getStaff_name(), staffCost);
+				staffCostMap.put(staffCost.getIdentity_card_number(), staffCost);
 			}
 		}
 		
@@ -356,31 +357,38 @@ public class StaffCostAction extends BaseAction {
 		}
 		
 		if(staffCost.getIdentity_card_number() != null && staffCost.getIdentity_card_number().length() > 0){
-			
-			if(staffCost.getIdentity_card_number().length() != 18){
-				staffCost.setErrorInfo(staffCost.getErrorInfo() + "身份证号码必须是18位;");
-				b = false;
-			}else if(!PubMethod.match(BusinessUtil.IDCARD, staffCost.getIdentity_card_number())){
 
-				staffCost.setErrorInfo(staffCost.getErrorInfo() + "身份证号码错误;");
+			if(staffCostMap.containsKey(staffCost.getIdentity_card_number())){
+				staffCost.setErrorInfo(staffCost.getErrorInfo() + "身份证号重复;");
 				b = false;
 			}else {
-				
-				String idcard = staffCost.getIdentity_card_number();
-				
-				String sexStr = idcard.substring(16, 17);
-				if(Integer.parseInt(sexStr)%2 == 1){
-					staffCost.setSex("男");
-				}else{
-					staffCost.setSex("女");
-				}
-				
-				String birthdayStr = idcard.substring(6, 10) + "-" + idcard.substring(10, 12) + "-" + idcard.substring(12, 14);
-				try{
-					staffCost.setBirthday(DateKit.fmtStrToDate(birthdayStr, "yyyy-MM-dd"));
-				}catch(Exception e){
+
+
+				if (staffCost.getIdentity_card_number().length() != 18) {
+					staffCost.setErrorInfo(staffCost.getErrorInfo() + "身份证号码必须是18位;");
+					b = false;
+				} else if (!PubMethod.match(BusinessUtil.IDCARD, staffCost.getIdentity_card_number())) {
+
 					staffCost.setErrorInfo(staffCost.getErrorInfo() + "身份证号码错误;");
 					b = false;
+				} else {
+
+					String idcard = staffCost.getIdentity_card_number();
+
+					String sexStr = idcard.substring(16, 17);
+					if (Integer.parseInt(sexStr) % 2 == 1) {
+						staffCost.setSex("男");
+					} else {
+						staffCost.setSex("女");
+					}
+
+					String birthdayStr = idcard.substring(6, 10) + "-" + idcard.substring(10, 12) + "-" + idcard.substring(12, 14);
+					try {
+						staffCost.setBirthday(DateKit.fmtStrToDate(birthdayStr, "yyyy-MM-dd"));
+					} catch (Exception e) {
+						staffCost.setErrorInfo(staffCost.getErrorInfo() + "身份证号码错误;");
+						b = false;
+					}
 				}
 			}
 			
@@ -653,6 +661,12 @@ public class StaffCostAction extends BaseAction {
 		
 		if(staffCost.getErrorInfo() != null && !staffCost.getErrorInfo().isEmpty()) {
 			b = false;
+		}
+
+		if(b){
+			staffCostMap.put(staffCost.getStaff_no(), staffCost);
+			staffCostMap.put(staffCost.getStaff_name(), staffCost);
+			staffCostMap.put(staffCost.getIdentity_card_number(), staffCost);
 		}
 		
 		return b;

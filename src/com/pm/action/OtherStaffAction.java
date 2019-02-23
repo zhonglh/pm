@@ -94,12 +94,12 @@ public class OtherStaffAction extends BaseAction{
 
 	public String isExist(OtherStaff searchOtherStaff,HttpServletResponse res,HttpServletRequest request){
 
-		String error = null;		
+		String error = null;
 		boolean b = otherStaffService.isExist(searchOtherStaff);
 		if(!b){
 			return null;
 		}else {
-			error = "该人员(工号)已经存在";
+			error = "该人员工号(身份证号码)已经存在";
 			return this.ajaxForwardError(request, error);
 		}		
 	}
@@ -274,6 +274,7 @@ public class OtherStaffAction extends BaseAction{
 		if(allStaffs!=null){
 			for(StaffCost staffCost : allStaffs){
 				staffMap.put(staffCost.getStaff_no(), staffCost.getStaff_no());
+                staffMap.put(staffCost.getIdentity_card_number(), staffCost.getIdentity_card_number());
 			}
 		}
 		
@@ -398,30 +399,37 @@ public class OtherStaffAction extends BaseAction{
 
         if(otherStaff.getIdentity_card_number() != null && otherStaff.getIdentity_card_number().length() > 0){
 
-            if(otherStaff.getIdentity_card_number().length() != 18){
-                otherStaff.setErrorInfo(otherStaff.getErrorInfo() + "身份证号码必须是18位;");
-                b = false;
-            }else if(!PubMethod.match(BusinessUtil.IDCARD, otherStaff.getIdentity_card_number())){
 
-                otherStaff.setErrorInfo(otherStaff.getErrorInfo() + "身份证号码错误;");
+            if(staffMap.containsKey(otherStaff.getIdentity_card_number())){
+                otherStaff.setErrorInfo(otherStaff.getErrorInfo() + "身份证号重复;");
                 b = false;
             }else {
 
-                String idcard = otherStaff.getIdentity_card_number();
+                if (otherStaff.getIdentity_card_number().length() != 18) {
+                    otherStaff.setErrorInfo(otherStaff.getErrorInfo() + "身份证号码必须是18位;");
+                    b = false;
+                } else if (!PubMethod.match(BusinessUtil.IDCARD, otherStaff.getIdentity_card_number())) {
 
-                String sexStr = idcard.substring(16, 17);
-                if(Integer.parseInt(sexStr)%2 == 1){
-                    otherStaff.setSex("男");
-                }else{
-                    otherStaff.setSex("女");
-                }
-
-                String birthdayStr = idcard.substring(6, 10) + "-" + idcard.substring(10, 12) + "-" + idcard.substring(12, 14);
-                try{
-                    otherStaff.setBirthday(DateKit.fmtStrToDate(birthdayStr, "yyyy-MM-dd"));
-                }catch(Exception e){
                     otherStaff.setErrorInfo(otherStaff.getErrorInfo() + "身份证号码错误;");
                     b = false;
+                } else {
+
+                    String idcard = otherStaff.getIdentity_card_number();
+
+                    String sexStr = idcard.substring(16, 17);
+                    if (Integer.parseInt(sexStr) % 2 == 1) {
+                        otherStaff.setSex("男");
+                    } else {
+                        otherStaff.setSex("女");
+                    }
+
+                    String birthdayStr = idcard.substring(6, 10) + "-" + idcard.substring(10, 12) + "-" + idcard.substring(12, 14);
+                    try {
+                        otherStaff.setBirthday(DateKit.fmtStrToDate(birthdayStr, "yyyy-MM-dd"));
+                    } catch (Exception e) {
+                        otherStaff.setErrorInfo(otherStaff.getErrorInfo() + "身份证号码错误;");
+                        b = false;
+                    }
                 }
             }
 
@@ -672,6 +680,11 @@ public class OtherStaffAction extends BaseAction{
 
         if( otherStaff.getErrorInfo() != null && ! otherStaff.getErrorInfo().isEmpty()) {
             b = false;
+        }
+
+        if(b){
+            staffMap.put(otherStaff.getStaff_no(), otherStaff.getStaff_no());
+            staffMap.put(otherStaff.getIdentity_card_number(), otherStaff.getIdentity_card_number());
         }
 
 

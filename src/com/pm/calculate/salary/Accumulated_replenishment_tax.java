@@ -4,7 +4,7 @@ import com.common.utils.NumberKit;
 import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
-import com.pm.domain.business.Salary;
+import com.pm.domain.business.AbstractSalary;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class Accumulated_replenishment_tax extends AbstractSalaryClculate implements ISalaryCalculate {
     @Override
-    public void calculate(Salary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
+    public void calculate(AbstractSalary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
         double result = salary.getAccumulated_deductible_taxpaid() - salary.getAccumulated_prepaid_tax();
 
         result = NumberKit.getNumberFormatByDouble(result);

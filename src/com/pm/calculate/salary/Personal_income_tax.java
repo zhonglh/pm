@@ -6,7 +6,7 @@ import com.common.utils.NumberKit;
 import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
-import com.pm.domain.business.Salary;
+import com.pm.domain.business.AbstractSalary;
 
 /**
  * 计算个人所得税
@@ -16,7 +16,7 @@ import com.pm.domain.business.Salary;
 public class Personal_income_tax extends AbstractSalaryClculate implements ISalaryCalculate {
 
 	@Override
-	public void calculate(Salary salary,Map<String, Params> paramMap, Map<String,ParamExtend> paramExtMap) {
+	public void calculate(AbstractSalary salary,Map<String, Params> paramMap, Map<String,ParamExtend> paramExtMap) {
 		double result = salary.getAccumulated_replenishment_tax();
 		if(result < 0){
 			result = 0;

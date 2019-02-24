@@ -1,11 +1,11 @@
 package com.pm.calculate.salary;
 
 import com.pm.calculate.ISalaryCalculate;
-import com.pm.domain.business.Salary;
+import com.pm.domain.business.AbstractSalary;
 
 public abstract class AbstractSalaryClculate implements ISalaryCalculate{
 	
-	public double getCountSalary(Salary salary){
+	public double getCountSalary(AbstractSalary salary){
 
 		double basic_salary = salary.getBasic_salary();
 		double post_salary = salary.getPost_salary();

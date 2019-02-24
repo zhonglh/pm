@@ -6,7 +6,7 @@ import com.common.utils.NumberKit;
 import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
-import com.pm.domain.business.Salary;
+import com.pm.domain.business.AbstractSalary;
 
 /**
  * 计算应纳税所得额
@@ -16,7 +16,7 @@ import com.pm.domain.business.Salary;
 public class Taxable_income extends AbstractSalaryClculate implements ISalaryCalculate {
 
 	@Override
-	public void calculate(Salary salary,Map<String, Params> paramMap, Map<String,ParamExtend> paramExtMap) {
+	public void calculate(AbstractSalary salary,Map<String, Params> paramMap, Map<String,ParamExtend> paramExtMap) {
 		double result = 0.0;
 
 		double should_salary = salary.getShould_salary();

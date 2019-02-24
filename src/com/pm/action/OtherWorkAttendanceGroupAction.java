@@ -788,7 +788,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		 */
 
 		request.setAttribute("list", pager.getResultList());
-		request.setAttribute("workAttendance1", pager.getResultList().get(0));
+		request.setAttribute("otherWorkAttendance1", pager.getResultList().get(0));
 		request.setAttribute("next_operation", "updateWorkAttendanceGroup");
 		
 		String checked = pager.getResultList().get(0).getVerify_userid();

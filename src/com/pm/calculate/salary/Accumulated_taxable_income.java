@@ -4,7 +4,7 @@ import com.common.utils.NumberKit;
 import com.pm.calculate.ISalaryCalculate;
 import com.pm.domain.business.ParamExtend;
 import com.pm.domain.business.Params;
-import com.pm.domain.business.Salary;
+import com.pm.domain.business.AbstractSalary;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class Accumulated_taxable_income extends AbstractSalaryClculate implements ISalaryCalculate {
     @Override
-    public void calculate(Salary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
+    public void calculate(AbstractSalary salary, Map<String, Params> paramMap, Map<String, ParamExtend> paramExtMap) {
         double result = salary.getAccumulated_pretax_income() - salary.getAccumulated_tax_deduction() -
                 salary.getAccumulated_children_education() - salary.getAccumulated_continuing_education() -
                 salary.getAccumulated_housing_loans()  - salary.getAccumulated_housing_rent() -

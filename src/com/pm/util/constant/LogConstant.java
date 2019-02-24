@@ -43,7 +43,7 @@ public class LogConstant {
 	public static final String ENTITY_PROJECT_EXPEND = "project.expend";
 
 
-	public static final String OTHER_STAFF = "other.staff";
+	public static final String ENTITY_OTHER_STAFF = "other.staff";
 	public static final String ENTITY_OTHER_WORK_ATTENDANCE = "other.work.attendance";
 	
 

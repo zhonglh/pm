@@ -61,8 +61,6 @@
 							<input type="hidden" name="staff_id${status1.index + 1 }" value="${otherWorkAttendance.staff_id }"/>
 							<input type="hidden" name="staff_name${status1.index + 1 }" value="${otherWorkAttendance.staff_name }" />
 							<input type="hidden" name="operationType${status1.index + 1 }" value="${otherWorkAttendance.operationType }" />
-							<input type="hidden"   name="technical_cost${status1.index + 1 }" value='<fmt:formatNumber value="${otherWorkAttendance.technical_cost }" type="number" pattern="####0.00#"/>' />
-							<input type="hidden" name="client_dept${status1.index + 1 }" value="${otherWorkAttendance.client_dept }" />
 							${status1.index + 1 }							
 						</td>
 						<td title="${otherWorkAttendance.staff_no }">${otherWorkAttendance.staff_name }</td>
@@ -109,9 +107,9 @@
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-				
+				<!--
 				<li><div class="buttonActive"><div class="buttonContent"><button type="button" onClick="dialogJumpURL(this.form, '${webroot }/OtherWorkAttendanceGroupAction.do?method=toReCompute')">重新计算</button></div></div></li>
-				
+				-->
 				
 				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">修改</button></div></div></li>
 				<li>

@@ -732,8 +732,6 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		paramprocess(request,workAttendance1);
 		
 		User sessionUser = PubMethod.getUser(request);
-		workAttendance1.setBuild_username(sessionUser.getUser_name());
-		workAttendance1.setBuild_datetime(PubMethod.getCurrentDate());
 		
 		List<OtherWorkAttendance> list = computeWorkAttendance(workAttendance1);
 		
@@ -745,9 +743,12 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 			workAttendanceTmp.setShould_work_days(workAttendance.getShould_work_days());
 			workAttendanceTmp.setLegal_holidays(workAttendance.getLegal_holidays());
 		}
-		
+
+		workAttendance1.setBuild_username(sessionUser.getUser_name());
+		workAttendance1.setBuild_datetime(PubMethod.getCurrentDate());
+
 		request.setAttribute("list", list);
-		request.setAttribute("workAttendance1", workAttendance1);
+		request.setAttribute("otherWorkAttendance1", workAttendance1);
 		request.setAttribute("next_operation", "addWorkAttendanceGroup");
 		request.setAttribute("totayDays", workAttendance.getShould_work_days()+workAttendance.getLegal_holidays());
 		

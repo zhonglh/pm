@@ -8,7 +8,7 @@ import com.pm.vo.UserPermit;
 
 import java.util.List;
 
-public interface IOtherWorkAttendanceService {
+public interface IOtherWorkAttendanceService extends  IGeneralLogService{
 
 	@LogAnnotation(operation_type=LogConstant.OPERATION_INSERT,entity_type=LogConstant.ENTITY_OTHER_WORK_ATTENDANCE)
 	public int addWorkAttendance(OtherWorkAttendance workAttendance) ;

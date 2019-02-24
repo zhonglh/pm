@@ -114,4 +114,9 @@ public class OtherWorkAttendanceServiceImpl implements IOtherWorkAttendanceServi
 			Pager<OtherWorkAttendance> pager) {		
 		return otherWorkAttendanceDao.queryWorkAttendance(workAttendance, userPermit, pager);
 	}
+
+	@Override
+	public <T> T get(String id) {
+		return (T)getWorkAttendance(id);
+	}
 }

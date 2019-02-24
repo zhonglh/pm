@@ -63,8 +63,6 @@
 							<input type="hidden"   name="staff_id${status1.index + 1 }" value="${otherWorkAttendance.staff_id }" />
 							<input type="hidden"   name="staff_name${status1.index + 1 }" value="${otherWorkAttendance.staff_name }" />
 							${otherWorkAttendance.staff_name }
-							<input type="hidden" name="technical_cost${status1.index + 1 }" value='<fmt:formatNumber value="${otherWorkAttendance.technical_cost }" type="number" pattern="####0.00#"/>' />
-							<input type="hidden" name="client_dept${status1.index + 1 }" value="${otherWorkAttendance.client_dept }" />
 						</td>
 						<td><input type="text" size="5" name="should_work_days${status1.index + 1 }" class="number required" value="${otherWorkAttendance.should_work_days }" onchange="javaScript:jsycq(${totayDays },this,'legal_holidays${status1.index + 1 }')" /></td>
 						<td><input type="text" size="5" name="work_days${status1.index + 1 }" class="number required" value="${otherWorkAttendance.work_days }" /></td>

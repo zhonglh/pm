@@ -15,7 +15,7 @@
 				<label>部门：</label>
 
 				<input name="dept.dept_id" class="text" type="hidden" size="2"  value="${workAttendance1.dept_id }" />
-				<input name="dept.dept_name" class="text" type="text" size="20"  value="${workAttendance1.dept_name }" readonly="readonly" lookupPk="dept_id"
+				<input name="dept.dept_name" class="text" type="text" size="30"  value="${workAttendance1.dept_name }" readonly="readonly" lookupPk="dept_id"
 					   suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup&use=search" lookupGroup="dept"/>
 
 			</p>

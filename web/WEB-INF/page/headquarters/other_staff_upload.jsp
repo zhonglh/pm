@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/include.inc.jsp"%>
 
-<h2 class="contentTitle">请选择需要上传的人员文件</h2>
+<h2 class="contentTitle">请选择需要上传的总部人员文件</h2>
 
 <form action="${webroot }/OtherStaffAction.do?method=doExcel" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dailogDoneProcessError)">
 

@@ -10,7 +10,7 @@
 					<tr>
 						<th width="200">导入说明</th>	
 						<th width="80">考勤月份</th>
-						<th  width="150">项目名称</th>
+						<th  width="150">部门名称</th>
 						<th width="80">人员名称</th>
 						<th width="80">人员工号</th>
 						<th width="100">工作日天数</th>
@@ -33,7 +33,7 @@
 						<th width="80">迟到天数</th>
 						<th width="80">周末加班</th>
 						
-						<th width="80">日常加班(小时)</th>
+						<th width="130">日常加班(小时)</th>
 						<th width="200">备注</th>
 					</tr>
 				</thead>

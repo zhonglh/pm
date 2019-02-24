@@ -168,7 +168,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception {
 
 		String sourceFile = this.getClass().getClassLoader().getResource("/templet/otherWorkAttendance.xlsx").getPath();
-		DownloadBaseUtil.download(  sourceFile,  "考勤模板.xlsx" ,response,false);
+		DownloadBaseUtil.download(  sourceFile,  "总部人员考勤模板.xlsx" ,response,false);
 		return null;
 	}
 
@@ -317,8 +317,8 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 			return this.ajaxForwardSuccess(request, rel, true);
 		}else {
 			request.getSession().setAttribute(sessionAttr, workAttendances);
-			request.setAttribute("forwardUrl", request.getContextPath()+"/WorkAttendanceGroupAction.do?method=importResult");
-			return this.ajaxForwardError(request, "导入的考勤信息中有些问题！ ");
+			request.setAttribute("forwardUrl", request.getContextPath()+"/OtherWorkAttendanceGroupAction.do?method=importResult");
+			return this.ajaxForwardError(request, "导入的总部人员考勤信息中有些问题！ ");
 		}
 
 	}
@@ -917,7 +917,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		}
 
 		request.setAttribute("list", pager.getResultList());
-		request.setAttribute("workAttendance1", pager.getResultList().get(0));
+		request.setAttribute("otherWorkAttendance1", pager.getResultList().get(0));
 		request.setAttribute("next_operation", "updateWorkAttendanceGroup");	
 		
 		

@@ -91,7 +91,6 @@
 		every_overtime =#{every_overtime} ,
 		remark =#{remark} 
 		where attendance_id = #{attendance_id}
-		and verify_userid is null
 	</update>
 		
 		
@@ -103,7 +102,6 @@
 		verify_datetime = #{verify_datetime}
 		where attendance_id = #{attendance_id} 
 		and delete_flag = '0'
-		and verify_userid is null
 	</update>
 		
 		
@@ -111,11 +109,11 @@
 		delete from tb_other_work_attendance 
 		where  ( 1!=1
 		<if test="attendance_id != null and attendance_id != ''">
-			or (attendance_id = #{attendance_id} and verify_userid is null)
+			or (attendance_id = #{attendance_id} )
 		</if>
 
 		<if test="dept_id != null and dept_id != ''">
-			or (dept_id = #{dept_id} and attendance_month = #{attendance_month} and verify_userid is null )
+			or (dept_id = #{dept_id} and attendance_month = #{attendance_month}  )
 		</if>	
 		)	
 	</delete>

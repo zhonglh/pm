@@ -15,7 +15,7 @@
 
 
 			<p>
-				<label>项目名称：</label>
+				<label>部门：</label>
 
 
 				<input name="dept.dept_id" class="text" type="hidden" size="2"   />

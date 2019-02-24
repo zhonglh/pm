@@ -381,7 +381,7 @@
 		SELECT salary.* ,dept.dept_name,  sc.staff_name ,sc.join_datetime, aa.need_approve 	,
 		
 		<![CDATA[
-		case when sc.confirmation_date is null then 0 when (#{Salary.date1} < sc.confirmation_date && #{Salary.date2} >= sc.confirmation_date ) then 1 else 0 end showhl,		
+		case when sc.confirmation_date is null then 0 when (#{OtherSalary.date1} < sc.confirmation_date && #{OtherSalary.date2} >= sc.confirmation_date ) then 1 else 0 end showhl,		
 		]]>
 		
 						
@@ -401,53 +401,53 @@
 		
 		
 
-		<if test="Salary.salary_id != null and Salary.salary_id != ''">
-			AND salary.salary_id =  #{Salary.salary_id}  
+		<if test="OtherSalary.salary_id != null and OtherSalary.salary_id != ''">
+			AND salary.salary_id =  #{OtherSalary.salary_id}  
 		</if>
 		
-		<if test="Salary.dept_id != null and Salary.dept_id != ''">
-			AND project.deptid =  #{Salary.dept_id}  
+		<if test="OtherSalary.dept_id != null and OtherSalary.dept_id != ''">
+			AND project.deptid =  #{OtherSalary.dept_id}  
 		</if>	
 
-		<if test="Salary.salary_month != null and Salary.salary_month != 0 ">
+		<if test="OtherSalary.salary_month != null and OtherSalary.salary_month != 0 ">
 			<![CDATA[
-			AND salary.salary_month =  #{Salary.salary_month}  
+			AND salary.salary_month =  #{OtherSalary.salary_month}  
 			]]>
 		</if>
 		
 		
-		<if test="Salary.salary_month1 != null and Salary.salary_month1 != 0 ">
+		<if test="OtherSalary.salary_month1 != null and OtherSalary.salary_month1 != 0 ">
 			<![CDATA[
-			AND salary.salary_month >=  #{Salary.salary_month1}  
+			AND salary.salary_month >=  #{OtherSalary.salary_month1}  
 			]]>
 		</if>
 		
 		
-		<if test="Salary.salary_month2 != null and Salary.salary_month2 != 0 ">
+		<if test="OtherSalary.salary_month2 != null and OtherSalary.salary_month2 != 0 ">
 			<![CDATA[
-			AND salary.salary_month <=  #{Salary.salary_month2}  
+			AND salary.salary_month <=  #{OtherSalary.salary_month2}  
 			]]>
 		</if>
 		
-		<if test="Salary.staff_id != null and Salary.staff_id != ''">
-			AND salary.staff_id =  #{Salary.staff_id}  
+		<if test="OtherSalary.staff_id != null and OtherSalary.staff_id != ''">
+			AND salary.staff_id =  #{OtherSalary.staff_id}  
 		</if>
 		
 		
 		
-		<if test="Salary.staff_name != null and Salary.staff_name != ''">
-			AND sc.staff_name like concat('%',TRIM(#{Salary.staff_name}),'%')  
+		<if test="OtherSalary.staff_name != null and OtherSalary.staff_name != ''">
+			AND sc.staff_name like concat('%',TRIM(#{OtherSalary.staff_name}),'%')  
 		</if>
 		
 		
-		<if test="Salary.verify_flag != null and Salary.verify_flag != ''">
-			<if test="Salary.verify_flag == 1">
+		<if test="OtherSalary.verify_flag != null and OtherSalary.verify_flag != ''">
+			<if test="OtherSalary.verify_flag == 1">
 					and salary.verify_userid is not null 
 			</if>
-			<if test="Salary.verify_flag == 2">			
+			<if test="OtherSalary.verify_flag == 2">			
 					and salary.verify_userid is null
 			</if>
-			<if test="Salary.verify_flag == 3">
+			<if test="OtherSalary.verify_flag == 3">
 				and (salary.verify_userid is not null and aa.need_approve = '1')
 			</if>
 		</if>

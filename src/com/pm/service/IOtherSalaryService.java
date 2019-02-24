@@ -13,20 +13,20 @@ public interface IOtherSalaryService extends IBaseService{
 
 	public void addSalary(OtherSalary salary) ;
 
-	@LogAnnotation(operation_type=LogConstant.OPERATION_INSERT,entity_type=LogConstant.ENTITY_OTHER_STAFF)
+	@LogAnnotation(operation_type=LogConstant.OPERATION_INSERT,entity_type=LogConstant.ENTITY_OTHER_SALARY)
 	public void addSalary(List<OtherSalary> salarys) ;
 	
 
 
-	@LogAnnotation(operation_type=LogConstant.OPERATION_UPDATE,entity_type=LogConstant.ENTITY_OTHER_STAFF)
+	@LogAnnotation(operation_type=LogConstant.OPERATION_UPDATE,entity_type=LogConstant.ENTITY_OTHER_SALARY)
 	public void updateSalary(List<OtherSalary> salarys) ; 
 	
 
-	@LogAnnotation(operation_type=LogConstant.OPERATION_DELETE,entity_type=LogConstant.ENTITY_OTHER_STAFF)
+	@LogAnnotation(operation_type=LogConstant.OPERATION_DELETE,entity_type=LogConstant.ENTITY_OTHER_SALARY)
 	public void deleteSalary(OtherSalary[] salarys) ; 
 	
 
-	@LogAnnotation(operation_type=LogConstant.OPERATION_CHECK,entity_type=LogConstant.ENTITY_OTHER_STAFF)
+	@LogAnnotation(operation_type=LogConstant.OPERATION_CHECK,entity_type=LogConstant.ENTITY_OTHER_SALARY)
 	public void verifySalary(OtherSalary[] salarys) ; 
 	
 

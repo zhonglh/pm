@@ -10,23 +10,23 @@ import com.pm.vo.UserPermit;
 
 public interface IOtherStaffService {
 	
-	@LogAnnotation(operation_type=LogConstant.OPERATION_INSERT,entity_type=LogConstant.OTHER_STAFF)
+	@LogAnnotation(operation_type=LogConstant.OPERATION_INSERT,entity_type=LogConstant.ENTITY_OTHER_STAFF)
 	public int addOtherStaff(OtherStaff otherStaff,
 							 StaffAssessment[] staffAssessments,
 							 StaffPositions[] staffPositionss,
 							 StaffRaiseRecord[] staffRaiseRecords,
 							 StaffRewardPenalty[] staffRewardPenaltys) ;
-	
 
-	@LogAnnotation(operation_type=LogConstant.OPERATION_UPDATE,entity_type=LogConstant.OTHER_STAFF)
+
+	@LogAnnotation(operation_type=LogConstant.OPERATION_UPDATE,entity_type=LogConstant.ENTITY_OTHER_STAFF)
 	public int updateOtherStaff(OtherStaff otherStaff,
 								StaffAssessment[] staffAssessments,
 								StaffPositions[] staffPositionss,
 								StaffRaiseRecord[] staffRaiseRecords,
 								StaffRewardPenalty[] staffRewardPenaltys) ;
-	
 
-	@LogAnnotation(operation_type=LogConstant.OPERATION_DELETE,entity_type=LogConstant.OTHER_STAFF)
+
+	@LogAnnotation(operation_type=LogConstant.OPERATION_DELETE,entity_type=LogConstant.ENTITY_OTHER_STAFF)
 	public void deleteOtherStaff(OtherStaff[] otherStaffs) ;
 	
 	

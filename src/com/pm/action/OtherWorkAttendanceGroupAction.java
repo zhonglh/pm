@@ -7,6 +7,7 @@ import com.common.utils.IDKit;
 import com.common.utils.file.FileKit;
 import com.common.utils.file.download.DownloadBaseUtil;
 import com.common.utils.sorts.SortComparator;
+import com.pm.domain.business.OtherSalary;
 import com.pm.domain.business.OtherStaff;
 import com.pm.domain.business.OtherWorkAttendance;
 import com.pm.domain.business.ReimburseCosts;
@@ -53,6 +54,9 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 
 	@Autowired
 	private IOtherStaffService otherStaffService;
+
+	@Autowired
+	private IOtherSalaryService otherSalaryService;
 
 
 
@@ -579,18 +583,15 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		}
 
 
-		//todo , 打开注释
-		/**
-		Salary searchSalary = new Salary();
-		searchSalary.setProject_id(updateWorkAttendance.getDept_id());
+		OtherSalary searchSalary = new OtherSalary();
+		searchSalary.setDept_id(updateWorkAttendance.getDept_id());
 		searchSalary.setSalary_month(updateWorkAttendance.getAttendance_month());
 		UserPermit userPermit = new UserPermit();
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
-		Pager<Salary> salarys = salaryService.querySalary(searchSalary, userPermit, PubMethod.getPagerByAll(request, Salary.class));
+		Pager<OtherSalary> salarys = otherSalaryService.querySalary(searchSalary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(salarys.getResultList() != null && !salarys.getResultList().isEmpty()){
-			return this.ajaxForwardError(request, "该考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
+			return this.ajaxForwardError(request, "该总部人员考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
 		}
-		 */
 
 		List<OtherWorkAttendance> list = new ArrayList<OtherWorkAttendance>();
 
@@ -776,16 +777,14 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		}
 
 
-		//todo , 打开注释
-		/**
-		Salary searchSalary = new Salary();
-		searchSalary.setProject_id(workAttendance.getProject_id());
+		OtherSalary searchSalary = new OtherSalary();
+		searchSalary.setDept_id(workAttendance.getDept_id());
 		searchSalary.setSalary_month(workAttendance.getAttendance_month());
-		Pager<Salary> salarys = salaryService.querySalary(searchSalary, userPermit, PubMethod.getPagerByAll(request, Salary.class));
+		Pager<OtherSalary> salarys = otherSalaryService.querySalary(searchSalary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(salarys.getResultList() != null && !salarys.getResultList().isEmpty()){
-			return this.ajaxForwardError(request, "该考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
+			return this.ajaxForwardError(request, "该总部人员考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
 		}
-		 */
+
 
 		request.setAttribute("list", pager.getResultList());
 		request.setAttribute("otherWorkAttendance1", pager.getResultList().get(0));
@@ -826,17 +825,15 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 
 
 
-		//todo , 打开注释
-		/**
-		Salary searchSalary = new Salary();
-		searchSalary.setProject_id(workAttendance.getProject_id());
+		OtherSalary searchSalary = new OtherSalary();
+		searchSalary.setDept_id(workAttendance.getDept_id());
 		searchSalary.setSalary_month(workAttendance.getAttendance_month());
-		Pager<Salary> salarys = salaryService.querySalary(searchSalary, userPermit, PubMethod.getPagerByAll(request, Salary.class));
+		Pager<OtherSalary> salarys = otherSalaryService.querySalary(searchSalary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(salarys.getResultList() != null && !salarys.getResultList().isEmpty()){
-			return this.ajaxForwardError(request, "该考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
+			return this.ajaxForwardError(request, "该总部人员考勤已经生成工资单， 需要删除工资单后才能够修改！",true);
 		}
-		*/
-		
+
+
 
 		List<OtherWorkAttendance> newlist = computeWorkAttendance(workAttendance);
 		if(newlist == null) {

@@ -65,7 +65,7 @@
 			</c:if>		
 		</ul>
 	</div>
-	<table class="table" width="1600" layoutH="135">
+	<table class="table" width="1600" layoutH="113">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>

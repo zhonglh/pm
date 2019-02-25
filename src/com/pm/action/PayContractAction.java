@@ -251,7 +251,7 @@ public class PayContractAction extends BaseAction {
 
 	@RequestMapping(params = "method=toExcel")
 	public String toExcel(HttpServletResponse res,HttpServletRequest request){
-		return "payContract/paycontract_upload";		
+		return "basicdata/paycontract_upload";
 	}	
 
 
@@ -361,8 +361,8 @@ public class PayContractAction extends BaseAction {
 			payContract.setErrorInfo(payContract.getErrorInfo() + "合同编号不能为空;");
 			b = false;
 		}else {
-			boolean isExist = payContractService.isNoExist(payContract);
-			if(isExist) {
+			boolean isNoExist = payContractService.isNoExist(payContract);
+			if(!isNoExist) {
 				payContract.setErrorInfo(payContract.getErrorInfo() + "该合同编号已经存在;");
 				b = false;
 			}
@@ -384,7 +384,7 @@ public class PayContractAction extends BaseAction {
 		List<PayContract> list = (List<PayContract>)request.getSession().getAttribute(sessionAttr);
 		request.getSession().removeAttribute(sessionAttr);
 		request.setAttribute("list", list);
-		return "payContract/paycontract_excel_list";
+		return "basicdata/paycontract_excel_list";
 	}
 
 

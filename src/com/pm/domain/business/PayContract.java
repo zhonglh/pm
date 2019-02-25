@@ -87,7 +87,7 @@ public class PayContract extends IdEntity implements Serializable {
     private String effectivedate;
 
 
-    private String errorInfo;
+    private String errorInfo="";
 
 
     //查询条件

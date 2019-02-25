@@ -7,12 +7,13 @@
 				<thead>
 					<tr>
 						<th width="200">导入说明</th>	
-						<th width="100">合同编号</th>	
-						<th width="100">公司名称</th>	
+						<th width="100">合同编号</th>
 						<th width="100">执行合同</th>	
 						<th width="100">金额</th>	
 						<th width="100">合同签订日期</th>	
 						<th width="100">合同有效日期</th>
+						<th width="100">负责人</th>
+						<th width="100">分包合同</th>
 						<th width="100">提交日期</th>	
 						<th width="100">客户联系人</th>	
 						<th width="100">邮箱/电话</th>	
@@ -32,13 +33,23 @@
 								<font color="green">成功</font>
 							</c:if>
 						</td>
-						<td>${payContract.contract_no }</td>	
-						<td>${payContract.company_name }</td>	
+						<td>${payContract.contract_no }</td>
 						<td>${payContract.exec_contract }</td>	
-						<td>${payContract.amount }</td>	
-						<td>${payContract.signing_date }</td>	
-						<td>${payContract.validity_date1 } --- ${payContract.validity_date2 }</td>
-						<td>${payContract.submit_date }</td>	
+						<td>${payContract.amount }</td>
+						<td>
+							<c:if test="${payContract.submit_date != null}">
+								<fmt:formatDate value="${payContract.signing_date }" pattern="yyyy-MM-dd"/>
+							</c:if>
+						</td>
+
+						<td>${payContract.effectivedate } </td>
+						<td>${payContract.manager_username }</td>
+						<td>${payContract.project_name }</td>
+						<td>
+							<c:if test="${payContract.submit_date != null}">
+								<fmt:formatDate value="${payContract.submit_date }" pattern="yyyy-MM-dd"/>
+							</c:if>
+						</td>
 						<td>${payContract.client_linkman }</td>	
 						<td>${payContract.email_phone }</td>	
 						<td>${payContract.contract_number }</td>

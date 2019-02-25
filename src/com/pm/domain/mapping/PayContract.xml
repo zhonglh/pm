@@ -10,6 +10,15 @@
 	<resultMap type="com.pm.domain.business.PayContract" id="payContractMap" />
 
 
+	<select id="isNoExist" parameterType="com.pm.domain.business.PayContract" resultMap="contractMap">
+		select contract.* from tb_pay_contract contract where contract_no  = #{contract_no}
+		<if test="id != null and id != ''">
+			AND id != #{id}
+		</if>
+	</select>
+
+
+
 	<select id="getPayContract" parameterType="com.pm.domain.business.PayContract" resultMap="payContractMap">
 		select pc.* ,project.project_name,project.project_no
 		from tb_pay_contract pc

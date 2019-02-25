@@ -8,10 +8,10 @@ import com.pm.dao.IOtherSalaryDao;
 import com.pm.dao.IPersonnelMonthlyCalculationDao;
 import com.pm.dao.ISalaryDao;
 import com.pm.domain.business.PersonnelMonthlySalary;
-import com.pm.domain.business.ProjectStaffCost;
+import com.pm.domain.business.OtherStaffCost;
 import com.pm.domain.business.OtherSalary;
 import com.pm.service.IOtherSalaryService;
-import com.pm.service.IProjectStaffCostService;
+import com.pm.service.IOtherStaffCostService;
 import com.pm.service.ISalaryService;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.BusinessUtil;
@@ -30,6 +30,8 @@ public class OtherSalaryServiceImpl implements IOtherSalaryService {
 
 	@Autowired
 	private IOtherSalaryDao salaryDao;
+
+	private IOtherStaffCostService otherStaffCostService;
 
 	
 
@@ -86,6 +88,17 @@ public class OtherSalaryServiceImpl implements IOtherSalaryService {
 				throw new PMException (CommonErrorConstants.e029901);
 			}
 		}
+
+
+
+		List<OtherStaffCost> list = otherStaffCostService.computeOtherStaffCost(salarys);
+		for(OtherStaffCost otherStaffCost : list){
+			otherStaffCost.setOther_staff_cost_id(IDKit.generateId());
+			otherStaffCost.setBuild_datetime(PubMethod.getCurrentDate());
+			otherStaffCost.setBuild_userid(salarys[0].getVerify_userid());
+			otherStaffCost.setBuild_username(salarys[0].getVerify_username());
+		}
+		otherStaffCostService.addOtherStaffCost(list);
 		
 	}
 	
@@ -107,8 +120,8 @@ public class OtherSalaryServiceImpl implements IOtherSalaryService {
 		
 		if(pager.getResultList() != null){
 			for(OtherSalary salary1 : pager.getResultList()){
-				//todo 要加上
-				//projectStaffCostService.deleteProjectStaffCost(new OtherSalary[]{salary1});
+
+				otherStaffCostService.deleteOtherStaffCost(new OtherSalary[]{salary1});
 				int size = salaryDao.unVerifySalary(salary1);
 
 				if(size == 0) {

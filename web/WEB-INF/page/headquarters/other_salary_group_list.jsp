@@ -47,13 +47,13 @@
 			<li>
 				<label>工资月份：</label>
 
-				<input type="text" class="digits date month" size="5" maxlength="6" minlength="6" format="yyyyMM" name="salary_month1" value="${param.salary_month1}"/>
-				<input type="text" class="digits date month" size="5" maxlength="6" minlength="6" format="yyyyMM" name="salary_month2" value="${param.salary_month2}"/>
+				<input type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="salary_month1" value="${param.salary_month1}"/>
+				<input type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="salary_month2" value="${param.salary_month2}"/>
 			</li>
 			
 			<li>
 				<label>核单情况：</label>			
-				<select name="verify_flag" style="width:133px">
+				<select name="verify_flag" style="width:153px">
 				<option value="" <c:if test="${'' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag."/></option>
 				<option value="1" <c:if test="${'1' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.1"/></option>
 				<option value="2" <c:if test="${'2' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.2"/></option>

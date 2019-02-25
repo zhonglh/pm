@@ -202,7 +202,11 @@
 		<if test="OtherWorkAttendance.staff_name != null and OtherWorkAttendance.staff_name != ''">
 			AND staff.staff_name like concat('%',TRIM(#{OtherWorkAttendance.staff_name}),'%')
 		</if>
-		
+
+
+		<if test="OtherWorkAttendance.staff_no != null and OtherWorkAttendance.staff_no != ''">
+			AND staff.staff_no like concat('%',TRIM(#{OtherWorkAttendance.staff_no}),'%')
+		</if>
 		
 		
 		<if test="OtherWorkAttendance.verify_flag != null and OtherWorkAttendance.verify_flag != ''">

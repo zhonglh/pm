@@ -21,30 +21,38 @@
 				suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup&use=search" lookupGroup="dept"/>				
 			
 			</li>
-		
+
 
 			<li>
-				<label>考勤月份：</label>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" size="5" format="yyyyMM" name="attendance_month1" value="${param.attendance_month1}"/>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" size="5" format="yyyyMM" name="attendance_month2" value="${param.attendance_month2}"/>
-			
-			
+				<label>工号：</label>
+				<input type="text" name="staff_no" value="${param.staff_no}"/>
 			</li>
-			
-		</ul>
-			
-		<ul class="searchContent">
-		
-				
-			
+
+
 			<li>
 				<label>姓名：</label>
 				<input type="text" name="staff_name" value="${param.staff_name}"/>
 			</li>
+		
+
+			
+		</ul>
+			
+		<ul class="searchContent">
+
+
+			<li>
+				<label>考勤月份：</label>
+				<input type="text" class="digits date month" maxlength="6" minlength="6" size="7" format="yyyyMM" name="attendance_month1" value="${param.attendance_month1}"/>
+				<input type="text" class="digits date month" maxlength="6" minlength="6" size="7" format="yyyyMM" name="attendance_month2" value="${param.attendance_month2}"/>
+
+
+			</li>
+
 			
 			<li>
 				<label>核单情况：</label>			
-				<select name="verify_flag" style="width:133px">
+				<select name="verify_flag" style="width:153px">
 				<option value="" <c:if test="${'' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag."/></option>
 				<option value="1" <c:if test="${'1' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.1"/></option>
 				<option value="2" <c:if test="${'2' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.2"/></option>

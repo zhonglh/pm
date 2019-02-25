@@ -36,6 +36,7 @@ public enum EnumEntityType {
 
 
 	OTHER_STAFF("other.staff.entity","other.staff"),
+	OTHER_WORK_ATTENDANCE("other.work.attendance.entity","other.work.attendance"),
 	OTHER_SALARY("other.salary.entity","other.salary"),
 
 
@@ -48,7 +49,7 @@ public enum EnumEntityType {
 	DICDATA("dicdata","dicdata"),
 
 
-	COMMON_COST_ITEM("common.cost.item.entity","common.cost.item.item"),
+	COMMON_COST_ITEM("common.cost.item.entity","common.cost.item"),
 	
 	
 

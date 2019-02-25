@@ -17,7 +17,9 @@ public abstract class BasicLog {
 	
 
 	public void insertLog(List<Log> logs,ILogService logService) {
-		if(logs == null) return ;
+		if(logs == null) {
+			return ;
+		}
 		for(Log log : logs){
 			logService.insertLog(log, log.getDetails());
 		}

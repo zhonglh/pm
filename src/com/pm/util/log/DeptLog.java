@@ -1,29 +1,26 @@
 package com.pm.util.log;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.common.utils.IDKit;
 import com.common.utils.spring.SpringContextUtil;
+import com.pm.domain.system.Dept;
 import com.pm.domain.system.Log;
 import com.pm.domain.system.LogDetail;
-import com.pm.domain.system.Permit;
-import com.pm.domain.system.Dept;
 import com.pm.domain.system.User;
 import com.pm.service.IDeptService;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.LogConstant;
+import org.aopalliance.intercept.MethodInvocation;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * @author Administrator
+ */
 public class DeptLog extends BasicLog {
 
-	public List<Log> calculateLog(LogAnnotation methodAnnotation,MethodInvocation invocation, User sessionUser) {
+	@Override
+	public List<Log> calculateLog(LogAnnotation methodAnnotation, MethodInvocation invocation, User sessionUser) {
 		
 		IDeptService deptService = SpringContextUtil.getApplicationContext().getBean(IDeptService.class);
 		List<Log> logs = new ArrayList<Log>();
@@ -31,11 +28,15 @@ public class DeptLog extends BasicLog {
 		if(methodAnnotation.operation_type().equals(LogConstant.OPERATION_DELETE)){
 			
 			Dept[] depts = (Dept[])invocation.getArguments()[0];
-			if(depts == null || depts.length == 0) return null;
+			if(depts == null || depts.length == 0) {
+				return null;
+			}
 			for(Dept dept : depts){
 				Log log = super.getLog(methodAnnotation, invocation,sessionUser );
 				Dept preDept = deptService.getDept(dept.getDept_id());
-				if(preDept == null) preDept = new Dept();
+				if(preDept == null) {
+					preDept = new Dept();
+				}
 				log.setEntity_id(dept.getDept_id());
 				log.setEntity_name(dept.getDept_name()==null?preDept.getDept_name():dept.getDept_name());
 				List<LogDetail>  details = PubMethod.getLogDetails(log,Dept.class, preDept,dept);	
@@ -79,9 +80,11 @@ public class DeptLog extends BasicLog {
 
 
 	private void special(List<LogDetail> details){
-		if(details == null || details.isEmpty()) return ;
+		if(details == null || details.isEmpty()) {
+			return ;
+		}
 		for(LogDetail detail : details){
-			if(detail.getData_item_code().equals("statisticsed")){
+			if("statisticsed".equals(detail.getData_item_code())){
 				if(detail.getOperation_after() != null && !detail.getOperation_after().isEmpty()){
 					detail.setOperation_after(SpringContextUtil.getApplicationContext ().getMessage ("boolean."+detail.getOperation_after(), null, Locale.CHINA));
 				}

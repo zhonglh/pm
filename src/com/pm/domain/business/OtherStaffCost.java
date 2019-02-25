@@ -232,7 +232,11 @@ public class OtherStaffCost implements Serializable {
 		this.personal_income_tax = personal_income_tax;
 	}
 
+	public String getOther_staff_cost_id() {
+		return other_staff_cost_id;
+	}
 
-	
-	
+	public void setOther_staff_cost_id(String other_staff_cost_id) {
+		this.other_staff_cost_id = other_staff_cost_id;
+	}
 }

@@ -1,22 +1,15 @@
 package com.pm.service.impl;
 
+import com.pm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.pm.service.IBaseService;
-import com.pm.service.ICommonService;
-import com.pm.service.IDepartCostsService;
-import com.pm.service.IInsuranceService;
-import com.pm.service.IInvoiceService;
-import com.pm.service.IMonthlyStatementService;
-import com.pm.service.IPersonnelMonthlyBaseService;
-import com.pm.service.IProjectExpendService;
-import com.pm.service.IReceivedPaymentService;
-import com.pm.service.IReimburseCostsService;
-import com.pm.service.ISalaryService;
 import com.pm.util.constant.EnumEntityType;
 
 
+/**
+ * @author Administrator
+ */
 @Component
 public class CommonServiceImpl implements ICommonService {
 
@@ -47,6 +40,10 @@ public class CommonServiceImpl implements ICommonService {
 
 	@Autowired
 	private IInsuranceService insuranceService;
+
+
+	@Autowired
+	private IOtherSalaryService otherSalaryService;
 	
 	
 
@@ -70,6 +67,8 @@ public class CommonServiceImpl implements ICommonService {
 			return departCostsService;
 		}else if(EnumEntityType.INSURANCE.name().equals(type)){
 			return insuranceService;
+		}else if(EnumEntityType.OTHER_SALARY.name().equals(type)){
+			return otherSalaryService;
 		}
 		
 		return null;

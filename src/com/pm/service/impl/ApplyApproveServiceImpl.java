@@ -55,7 +55,9 @@ public class ApplyApproveServiceImpl implements IApplyApproveService {
 	@Override
 	public void afterBusiness(ApplyApprove applyApprove){
 		IBaseService baseService = commonService.getBusinessService(applyApprove.getData_type());
-		if(baseService != null) baseService.unVerify(applyApprove.getData_id());
+		if(baseService != null) {
+			baseService.unVerify(applyApprove.getData_id());
+		}
 	}
 	
 	
@@ -68,7 +70,8 @@ public class ApplyApproveServiceImpl implements IApplyApproveService {
 	}
 	
 	
-	public void doApprove(ApplyApprove oldApplyApprove,ApplyApprove newApplyApprove){
+	@Override
+	public void doApprove(ApplyApprove oldApplyApprove, ApplyApprove newApplyApprove){
 		
 		int count = addApplyApprove(newApplyApprove);
 		if(count != 1){

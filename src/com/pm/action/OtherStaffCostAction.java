@@ -24,7 +24,7 @@ public class OtherStaffCostAction extends BaseAction {
 
 	
 
-	private static final String rel = "rel24";
+	private static final String rel = "rel04";
 	
 	@Autowired
 	private IDeptService deptService;
@@ -40,7 +40,7 @@ public class OtherStaffCostAction extends BaseAction {
 	@RequestMapping(params = "method=export")
 	public void export(OtherStaffCost otherStaffCost,HttpServletResponse res,HttpServletRequest request){
 
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PROJECTSTAFFCOSTVIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSTAFFCOSTVIEW.getId());
 
 		paramprocess(request,otherStaffCost);
 		
@@ -59,7 +59,7 @@ public class OtherStaffCostAction extends BaseAction {
 	@RequestMapping(params = "method=list")
 	public String list(OtherStaffCost otherStaffCost,HttpServletResponse res,HttpServletRequest request){
 
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PROJECTSTAFFCOSTVIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSTAFFCOSTVIEW.getId());
 
 		paramprocess(request,otherStaffCost);
 		
@@ -72,7 +72,7 @@ public class OtherStaffCostAction extends BaseAction {
 
 		request.setAttribute(EnumOperationType.READ.getKey(), userPermit.getPermit_id());
 		
-		return "othercosts/other_staff_cost_list";
+		return "headquarters/other_staff_cost_list";
 	}	
 	
 	private void paramprocess(HttpServletRequest request,OtherStaffCost otherStaffCost){		
@@ -105,7 +105,7 @@ public class OtherStaffCostAction extends BaseAction {
 
 		request.setAttribute("otherStaffCost1", otherStaffCost1);
 		
-		return "othercosts/other_staff_cost_view";
+		return "headquarters/other_staff_cost_view";
 		
 	}
 	

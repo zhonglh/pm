@@ -49,9 +49,13 @@ public class ApplyApproveAction extends BaseAction {
 		
 		ApplyApprove tmp =applyApproveService.needHandle(applyApprove.getData_type(), applyApprove.getData_id());
 		if(EnumApplyApproveType.APPLY.getKey().equals(applyApprove.getOperation_type())){
-			if(tmp != null) return this.ajaxForwardError(request, "取消核单已经申请了！");
+			if(tmp != null) {
+				return this.ajaxForwardError(request, "取消核单已经申请了！");
+			}
 		}else if(EnumApplyApproveType.APPROVE.getKey().equals(applyApprove.getOperation_type())){
-			if(tmp == null) return this.ajaxForwardError(request, "已经批复过了!");
+			if(tmp == null) {
+				return this.ajaxForwardError(request, "已经批复过了!");
+			}
 		}
 		
 		
@@ -104,7 +108,9 @@ public class ApplyApproveAction extends BaseAction {
 	public String cancelApplyApprove(ApplyApprove applyApprove,HttpServletResponse res,HttpServletRequest request){
 		
 		ApplyApprove tmp =applyApproveService.needHandle(applyApprove.getData_type(), applyApprove.getData_id());
-		if(tmp == null ) return this.ajaxForwardError(request, "没有申请可以撤销了！");
+		if(tmp == null ) {
+			return this.ajaxForwardError(request, "没有申请可以撤销了！");
+		}
 
 		applyApproveService.deleteApplyApprove(tmp);
 		return this.ajaxForwardSuccess(request, rel, true);

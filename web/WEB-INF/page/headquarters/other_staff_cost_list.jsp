@@ -9,7 +9,7 @@
 </form>
 
 <div class="pageHeader">
-	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/ProjectStaffCostAction.do?method=list" method="post">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/OtherStaffCostAction.do?method=list" method="post">
 	<div class="searchBar">
 		<ul class="searchContent">
 		
@@ -24,14 +24,14 @@
 
 
 			<li>
-				<label>人员名称：</label>
-				<input type="text"  name="staff_name" value="${param.staff_name}"/>
+				<label>人员工号：</label>
+				<input type="text"  name="staff_no" value="${param.staff_no}"/>
 			</li>
 
 
 			<li>
 				<label>人员名称：</label>
-				<input type="text"  name="staff_no" value="${param.staff_no}"/>
+				<input type="text"  name="staff_name" value="${param.staff_name}"/>
 			</li>
 
 			
@@ -43,8 +43,8 @@
 
 			<li>
 				<label>月份：</label>
-				<input type="text" class="digits date month" size="5" maxlength="6" minlength="6" format="yyyyMM" name="work_month1" value="${param.work_month1}"/>
-				<input type="text" class="digits date month" size="5" maxlength="6" minlength="6" format="yyyyMM" name="work_month2" value="${param.work_month2}"/>
+				<input type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="work_month1" value="${param.work_month1}"/>
+				<input type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="work_month2" value="${param.work_month2}"/>
 			</li>
 			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
 			
@@ -60,10 +60,10 @@
 		<ul class="toolBar">			
 			
 			<c:if test="${operation_read != null && operation_read != '' }">
-				<li><a class="edit" href="${webroot}/ProjectStaffCostAction.do?method=toView&other_staff_cost_id={sid_other_staff_cost_id}" mask="true" width="900"  height="480" rel="view_workAttendanceGroupAction" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
+				<li><a class="edit" href="${webroot}/OtherStaffCostAction.do?method=toView&other_staff_cost_id={sid_other_staff_cost_id}" mask="true" width="900"  height="480" rel="view_workAttendanceGroupAction" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
 				
 				<c:if test="${ totalRows <= 15000}">
-				<li><a class="icon" href="${webroot}/ProjectStaffCostAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+				<li><a class="icon" href="${webroot}/OtherStaffCostAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
 				</c:if>
 			</c:if>			
 		</ul>

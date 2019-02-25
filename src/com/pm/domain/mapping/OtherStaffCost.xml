@@ -86,9 +86,9 @@
 		from tb_other_staff_cost psc
 		INNER JOIN ts_dept dept
 		on psc.dept_id = dept.dept_id
-		inner join tb_staff_costs staff
+		inner join tb_other_staff staff
 		on psc.staff_id = staff.staff_id
-		inner join tb_salary salary
+		inner join tb_other_salary salary
 		on psc.salary_id = salary.salary_id
 		WHERE other_staff_cost_id = #{other_staff_cost_id}
 	</select>
@@ -101,9 +101,9 @@
 		from tb_other_staff_cost psc
 		INNER JOIN ts_dept dept
 		on psc.dept_id = dept.dept_id
-		inner join tb_staff_costs staff
+		inner join tb_other_staff staff
 		on psc.staff_id = staff.staff_id
-		inner join tb_salary salary
+		inner join tb_other_salary salary
 		on psc.salary_id = salary.salary_id
 		WHERE salary.salary_id in
 		<foreach item="salary" collection="list" open="(" separator=","
@@ -147,9 +147,9 @@
 		from tb_other_staff_cost psc
 		INNER JOIN ts_dept dept
 		on psc.dept_id = dept.dept_id
-		inner join tb_staff_costs staff
+		inner join tb_other_staff staff
 		on psc.staff_id = staff.staff_id
-		inner join tb_salary salary
+		inner join tb_other_salary salary
 		on psc.salary_id = salary.salary_id
 		WHERE 1 = 1
 
@@ -166,13 +166,16 @@
 			AND staff.staff_id = #{OtherStaffCost.staff_id}
 		</if>
 
-		<if
-			test="OtherStaffCost.staff_name != null and OtherStaffCost.staff_name != ''">
+		<if test="OtherStaffCost.staff_name != null and OtherStaffCost.staff_name != ''">
 			AND staff.staff_name like
 			concat('%',TRIM(#{OtherStaffCost.staff_name}),'%')
 		</if>
 
 
+		<if test="OtherStaffCost.staff_no != null and OtherStaffCost.staff_no != ''">
+			AND staff.staff_no like
+			concat('%',TRIM(#{OtherStaffCost.staff_no}),'%')
+		</if>
 
 		<if test="OtherStaffCost.work_month != 0 ">
 			AND psc.work_month = #{OtherStaffCost.work_month}
@@ -192,11 +195,41 @@
 		</if>
 
 
-		<include refid="ProjectAuthMapping.permission" />
+		<include refid="permission" />
 
 
 		order by psc.work_month desc,dept.build_time ,
 		staff.build_datetime , staff.import_order
+
+	</sql>
+
+
+
+	<sql id="permission">
+
+		<if test="UserPermit.range != null and UserPermit.range != ''">
+
+			<if test="UserPermit.range == 1">
+
+			</if>
+			<if test="UserPermit.range == 2">
+				<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+					and psc.dept_id =  #{UserPermit.user_deptid}
+				</if>
+				<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">
+					and psc.staff_id =  #{UserPermit.staff_id}
+				</if>
+			</if>
+			<if test="UserPermit.range == 3">
+				and psc.staff_id =   #{UserPermit.staff_id}
+			</if>
+
+		</if>
+
+		<if test="UserPermit.range == null or UserPermit.range == ''">
+			and 1 != 1
+		</if>
+
 
 	</sql>
 

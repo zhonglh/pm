@@ -31,6 +31,7 @@ public class OtherSalaryServiceImpl implements IOtherSalaryService {
 	@Autowired
 	private IOtherSalaryDao salaryDao;
 
+	@Autowired
 	private IOtherStaffCostService otherStaffCostService;
 
 	

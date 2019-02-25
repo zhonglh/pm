@@ -14,7 +14,8 @@ import com.pm.util.constant.LogConstant;
 
 public class ProjectStaffCostLog  extends BasicLog {
 
-	public List<Log> calculateLog(LogAnnotation methodAnnotation,MethodInvocation invocation, User sessionUser) {
+	@Override
+	public List<Log> calculateLog(LogAnnotation methodAnnotation, MethodInvocation invocation, User sessionUser) {
 		
 		List<Log> logs = new ArrayList<Log>();
 		

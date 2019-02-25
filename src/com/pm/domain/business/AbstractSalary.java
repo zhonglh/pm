@@ -315,6 +315,9 @@ public abstract class AbstractSalary implements Serializable {
     @EntityAnnotation(item_name="姓名",item_sort=10)
     private String staff_name;
 
+    @EntityAnnotation(item_name="工号")
+    private String staff_no;
+
 
 
     @EntityAnnotation(item_name="合同种类", item_sort=630)
@@ -721,6 +724,14 @@ public abstract class AbstractSalary implements Serializable {
         this.delete_username = delete_username;
     }
 
+
+    public String getStaff_no() {
+        return staff_no;
+    }
+
+    public void setStaff_no(String staff_no) {
+        this.staff_no = staff_no;
+    }
 
     public String getStaff_name() {
         return staff_name;

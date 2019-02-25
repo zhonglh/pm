@@ -38,9 +38,14 @@
 		</ul>
 		
 
-		<ul class="searchContent">		
-			
-		
+		<ul class="searchContent">
+
+
+
+			<li>
+				<label>工号：</label>
+				<input type="text" name="staff_no" value="${param.staff_no}"/>
+			</li>
 				
 			
 			<li>

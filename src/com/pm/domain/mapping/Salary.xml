@@ -442,8 +442,12 @@
 		<if test="Salary.staff_id != null and Salary.staff_id != ''">
 			AND salary.staff_id =  #{Salary.staff_id}  
 		</if>
-		
-		
+
+
+
+		<if test="Salary.staff_no != null and Salary.staff_no != ''">
+			AND sc.staff_no like concat('%',TRIM(#{Salary.staff_no}),'%')
+		</if>
 		
 		<if test="Salary.staff_name != null and Salary.staff_name != ''">
 			AND sc.staff_name like concat('%',TRIM(#{Salary.staff_name}),'%')  

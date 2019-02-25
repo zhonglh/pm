@@ -12,12 +12,12 @@
 						<th width="100">执行合同</th>	
 						<th width="100">金额</th>	
 						<th width="100">合同签订日期</th>	
-						<th width="100">合同有效日期1</th>	
-						<th width="100">合同有效日期2</th>	
+						<th width="100">合同有效日期</th>
 						<th width="100">提交日期</th>	
 						<th width="100">客户联系人</th>	
 						<th width="100">邮箱/电话</th>	
-						<th width="100">合同份数</th>	
+						<th width="100">合同份数</th>
+						<th width="100">付款方式</th>
 						<th width="100">备注</th>	
 					</tr>
 				</thead>
@@ -37,12 +37,12 @@
 						<td>${payContract.exec_contract }</td>	
 						<td>${payContract.amount }</td>	
 						<td>${payContract.signing_date }</td>	
-						<td>${payContract.validity_date1 }</td>	
-						<td>${payContract.validity_date2 }</td>	
+						<td>${payContract.validity_date1 } --- ${payContract.validity_date2 }</td>
 						<td>${payContract.submit_date }</td>	
 						<td>${payContract.client_linkman }</td>	
 						<td>${payContract.email_phone }</td>	
-						<td>${payContract.contract_number }</td>	
+						<td>${payContract.contract_number }</td>
+						<td>${payContract.paymen_mode }</td>
 						<td>${payContract.description }</td>	
 					</tr>
 					</c:forEach>

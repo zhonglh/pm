@@ -62,9 +62,24 @@
 				<label>合同份数：</label>
 				<fmt:formatNumber value="${contract1.contract_number }" type="number" pattern="###,###,##0"/>
 			</p>
+
+
+			<p>
+				<label>付款方式：</label>
+				${contract1.paymen_mode }
+			</p>
+
 			<p>
 				<label>备注：</label>
 				${contract1.description }
+			</p>
+
+			<div class="divider"></div>
+			<p>
+				<label>制单人：</label>  ${contract1.build_username }
+			</p>
+			<p>
+				<label>制单日期：</label> <fmt:formatDate value="${contract1.build_datetime }" pattern="yyyy-MM-dd"/>
 			</p>
 
 		</div>

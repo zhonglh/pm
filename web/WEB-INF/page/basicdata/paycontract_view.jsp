@@ -49,9 +49,22 @@
 				<label>合同份数：</label>
 				<fmt:formatNumber value="${payContract1.contract_number }" type="number" pattern="###,###,##0"/>
 			</p>
+
+			<p>
+				<label>付款方式：</label>
+				${payContract1.paymen_mode }
+			</p>
 			<p>
 				<label>备注：</label>
 				${payContract1.description }
+			</p>
+
+			<div class="divider"></div>
+			<p>
+				<label>制单人：</label>  ${payContract1.build_username }
+			</p>
+			<p>
+				<label>制单日期：</label> <fmt:formatDate value="${payContract1.build_datetime }" pattern="yyyy-MM-dd"/>
 			</p>
 
 			<c:import url="../common/applyapproveInfo.jsp"></c:import>

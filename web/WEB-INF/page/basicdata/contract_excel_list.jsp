@@ -18,7 +18,8 @@
 						<th width="100">客户联系人</th>	
 						<th width="120">法定代表人</th>	
 						<th width="100">提交日期</th>	
-						<th width="100">合同份数</th>	
+						<th width="100">合同份数</th>
+						<th width="100">付款方式</th>
 						<th width="160">备注</th>	
 					</tr>
 				</thead>
@@ -43,7 +44,9 @@
 							<fmt:formatDate value="${contract.signing_date }" pattern="yyyy-MM-dd"/>
 							</c:if>
 						</td>	
-						<td>${contract.effectivedate }</td>	
+						<td>
+								${contract.validity_date1 }---${contract.validity_date2 }
+						</td>
 						<td>${contract.sales_username }</td>
 						<td>${contract.client_linkman }</td>	
 						<td>${contract.corporation }</td>
@@ -51,8 +54,9 @@
 							<c:if test="${contract.submit_date != null}">
 							<fmt:formatDate value="${contract.submit_date }" pattern="yyyy-MM-dd"/>
 							</c:if>
-						</td>	
-						<td>${contract.contract_number }</td>	
+						</td>
+						<td>${contract.contract_number }</td>
+						<td>${contract.paymen_mode }</td>
 						<td>${contract.description }</td>	
 					</tr>
 					</c:forEach>

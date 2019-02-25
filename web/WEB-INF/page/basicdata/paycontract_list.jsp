@@ -65,6 +65,7 @@
 				<th width="80">客户联系人</th>
 				<th width="100">邮箱/电话</th>	
 				<th width="80">合同份数</th>
+				<th width="80">付款方式</th>
 				<th width="250">备注</th>
 				<th width="80">制表人</th>
 			</tr>
@@ -91,6 +92,7 @@
 				<td>${payContract.client_linkman }</td>
 				<td>${payContract.email_phone }</td>
 				<td align="right"><b><fmt:formatNumber value="${payContract.contract_number }" type="number" pattern="###,###,##0"/></b></td>
+				<td>${payContract.paymen_mode }</td>
 				<td>${payContract.description }</td>
 				<td>${payContract.build_username }</td>
 			</tr>

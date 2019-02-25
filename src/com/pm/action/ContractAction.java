@@ -225,9 +225,9 @@ public class ContractAction extends BaseAction {
 
 	@RequestMapping(params = "method=downloadtemplet")
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/contract.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "合同模板.xlsx" ,response,false); 
+
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/contract.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "合同模板.xlsx" ,response,false);
 		return null;  
 	}  	
 

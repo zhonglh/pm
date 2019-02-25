@@ -4,8 +4,6 @@
 <form id="pagerForm" method="post" action="${webroot }/PayContractAction.do?method=list">
 	<input type="hidden" name="pageNum" value="${pageNum}" />
 	<input type="hidden" name="numPerPage" value="${pageSize}" />
-	<input type="hidden" name="project_name" value="${param.project_name}" />
-	<input type="hidden" name="verify_flag" value="${param.verify_flag}" />
 </form>
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/PayContractAction.do?method=list" method="post">

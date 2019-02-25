@@ -1,5 +1,7 @@
 package com.pm.service.impl;
 
+import com.pm.domain.business.Contract;
+import com.pm.util.PubMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;import com.pm.domain.business.PayContract;
 import com.pm.dao.IPayContractDao;
@@ -62,7 +64,17 @@ public class PayContractServiceImpl implements  IPayContractService  {
 		UserPermit userPermit,
 		Pager<PayContract> pager){
 
-		return payContractDao.queryPayContract(payContract, userPermit, pager);
+		Pager<PayContract> pager1 = payContractDao.queryPayContract(payContract, userPermit, pager);
+
+
+		if(pager1.getResultList() != null){
+			for(PayContract contract1 : pager1.getResultList()){
+				contract1.setEffectivedate(PubMethod.twoDate2Str(contract1.getValidity_date1(), contract1.getValidity_date2()));
+			}
+		}
+
+		return pager1;
+
 	}
 
 

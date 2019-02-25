@@ -5,15 +5,9 @@ import com.common.beans.Pager;
 import com.common.utils.DateKit;
 import com.common.utils.IDKit;
 import com.common.utils.file.download.DownloadBaseUtil;
-import com.pm.domain.business.ApplyApprove;
-import com.pm.domain.business.Contract;
-import com.pm.domain.business.PayContract;
-import com.pm.domain.business.Project;
+import com.pm.domain.business.*;
 import com.pm.domain.system.User;
-import com.pm.service.IApplyApproveService;
-import com.pm.service.IPayContractService;
-import com.pm.service.IProjectService;
-import com.pm.service.IRoleService;
+import com.pm.service.*;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.*;
 import com.pm.util.excel.BusinessExcel;
@@ -50,6 +44,9 @@ public class PayContractAction extends BaseAction {
 	@Autowired
 	private IPayContractService payContractService;
 
+
+	@Autowired
+	private IOtherStaffService otherStaffService;
 
 	@Autowired
 	private IApplyApproveService applyApproveService;	
@@ -270,16 +267,28 @@ public class PayContractAction extends BaseAction {
 		Map<String,Project>  projectMap = new HashMap<String,Project>();
 		if(projects.getResultList() != null) {
 			for(Project project : projects.getResultList()){
-				projectMap.put(project.getProject_name(), project);		
+				projectMap.put(project.getProject_name(), project);
+				projectMap.put(project.getProject_no(), project);
 			}
 		}
+
+
+		Pager<OtherStaff> otherStaffs = otherStaffService.queryOtherStaff(new OtherStaff(), userPermit, PubMethod.getPagerByAll(request, OtherStaff.class));
+		Map<String,OtherStaff>  otherStaffMap = new HashMap<String,OtherStaff>();
+		if(otherStaffs.getResultList() != null){
+			for(OtherStaff otherStaff : otherStaffs.getResultList()){
+				otherStaffMap.put(otherStaff.getStaff_name(), otherStaff);
+				otherStaffMap.put(otherStaff.getStaff_no(), otherStaff);
+			}
+		}
+
 		for(PayContract payContract : payContracts){
 
 			Date[] twoDate = PubMethod.str2TtwoDate(payContract.getEffectivedate());
 			payContract.setValidity_date1(twoDate[0]);
 			payContract.setValidity_date2(twoDate[1]);
 
-			checkPayContract(payContract,projectMap);
+			checkPayContract(payContract,projectMap,otherStaffMap);
 		}
 		User sessionUser = PubMethod.getUser(request);
 		boolean isAllOK = true;
@@ -317,7 +326,7 @@ public class PayContractAction extends BaseAction {
 	}	
 
 
-	private boolean checkPayContract(PayContract payContract,	Map<String,Project>  projectMap){
+	private boolean checkPayContract(PayContract payContract,	Map<String,Project>  projectMap , Map<String,OtherStaff>  otherStaffMap){
 		boolean b = true;
 		if(payContract.getProject_name() == null ||  payContract.getProject_name().isEmpty()){
 			payContract.setErrorInfo(payContract.getErrorInfo() + "项目名称不能为空;");
@@ -330,8 +339,39 @@ public class PayContractAction extends BaseAction {
 			}else {
 				payContract.setProject_id(project.getProject_id());
 				payContract.setProject_name(project.getProject_name());
+				payContract.setProject_no(project.getProject_no());
+				payContract.setCompany_name(project.getProject_client_name());
 			}
 		}
+
+
+		if(payContract.getManager_username() != null && payContract.getManager_username().length() > 0){
+			OtherStaff otherStaff = otherStaffMap.get(payContract.getManager_username());
+			if(otherStaff == null) {
+				payContract.setErrorInfo(payContract.getErrorInfo() + "负责人错误;");
+				b = false;
+			}else {
+				payContract.setManager_userid(otherStaff.getStaff_id());
+				payContract.setManager_username(otherStaff.getStaff_name());
+			}
+		}
+
+
+		if(payContract.getContract_no() == null ||  payContract.getContract_no().isEmpty()){
+			payContract.setErrorInfo(payContract.getErrorInfo() + "合同编号不能为空;");
+			b = false;
+		}else {
+			boolean isExist = payContractService.isNoExist(payContract);
+			if(isExist) {
+				payContract.setErrorInfo(payContract.getErrorInfo() + "该合同编号已经存在;");
+				b = false;
+			}
+		}
+
+
+
+
+
 		if(payContract.getErrorInfo() != null && !payContract.getErrorInfo().isEmpty()) {
 			b = false;
 		}

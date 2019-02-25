@@ -25,7 +25,7 @@
 		INNER JOIN vb_project project 
 		on pc.project_id = project.project_id
 		left join tb_other_staff otherstaff
-		on contract.manager_userid = otherstaff.staff_id
+		on pc.manager_userid = otherstaff.staff_id
 		where pc.id = #{id}
 	</select>
 
@@ -89,9 +89,40 @@
 		INNER JOIN vb_project project  
 		on pc.project_id = project.project_id
 		left join tb_other_staff otherstaff
-		on contract.manager_userid = otherstaff.staff_id
-		WHERE 1=1 
+		on pc.manager_userid = otherstaff.staff_id
+		WHERE 1=1
+
+
+		<if test="PayContract.project_id != null and PayContract.project_id != ''">
+			AND project.project_id = #{PayContract.project_id}
+		</if>
+
+		<if test="PayContract.project_name != null and PayContract.project_name != ''">
+			AND project.project_name like concat('%',TRIM(#{PayContract.project_name}),'%')
+		</if>
+
+		<if test="PayContract.contract_no != null and PayContract.contract_no != ''">
+			AND pc.contract_no like concat('%',TRIM(#{PayContract.contract_no}),'%')
+		</if>
+
+
+
+		<if test="PayContract.date1 != null ">
+			<![CDATA[
+				and pc.submit_date >= #{PayContract.date1}
+			]]>
+		</if>
+
+		<if test="PayContract.date2 != null ">
+			<![CDATA[
+				and pc.submit_date <= #{PayContract.date2}
+			]]>
+		</if>
+		
 		<include refid="ProjectAuthMapping.permission" />
+
+
+		order by pc.build_datetime desc
 	</sql>
 
 </mapper>

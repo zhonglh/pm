@@ -12,11 +12,9 @@
 
 
 
-	<select id="computeOtherStaffCost" parameterType="com.pm.domain.business.OtherSalary"
-		resultMap="otherStaffCostMap">
+	<select id="computeOtherStaffCost" parameterType="com.pm.domain.business.OtherSalary" 	resultMap="otherStaffCostMap">
 		select salary.staff_id, dept.dept_id,salary.salary_month as work_month,
-		DATE_ADD(str_to_date(salary.salary_month*100+20,'%Y%m%d'),INTERVAL 1
-		month) as pay_date,
+		DATE_ADD(str_to_date(salary.salary_month*100+20,'%Y%m%d'),INTERVAL 1 month) as pay_date,
 		salary.salary_id,wa.attendance_id,wa.work_days,
 		salary.work_days as total_work_days ,
 		salary.actual_salary as amount,

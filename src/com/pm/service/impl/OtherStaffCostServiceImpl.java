@@ -1,6 +1,7 @@
 package com.pm.service.impl;
 
 import com.common.beans.Pager;
+import com.common.utils.NumberKit;
 import com.pm.dao.IOtherStaffCostDao;
 import com.pm.domain.business.OtherStaffCost;
 import com.pm.domain.business.OtherSalary;
@@ -70,23 +71,73 @@ public class OtherStaffCostServiceImpl implements IOtherStaffCostService {
 				for(OtherStaffCost otherStaffCost : tempList){
 					work_days += otherStaffCost.getWork_days();
 				}
-				
+
+
+				double sum_personal_income_tax = 0;
+				double sum_amount = 0;
+				double sum_insurance_amount = 0;
+				double sum_pub_funds_amount = 0;
+				double sum_all_amount = 0;
+
+				int count = tempList.size();
+
 				if(work_days == 0){
-					for(OtherStaffCost otherStaffCost : tempList){
-						otherStaffCost.setAmount(otherStaffCost.getAmount()/tempList.size());
-						otherStaffCost.setInsurance_amount(otherStaffCost.getInsurance_amount()/tempList.size());
-						otherStaffCost.setPub_funds_amount(otherStaffCost.getPub_funds_amount()/tempList.size());
-						otherStaffCost.setAll_amount(otherStaffCost.getAll_amount()/tempList.size());
-					}	
+					for(int index = 1 ; index < count ; index ++){
+						OtherStaffCost otherStaffCost = tempList.get(index);
+
+						double personal_income_tax = NumberKit.getNumberFormatByDouble(otherStaffCost.getPersonal_income_tax()/tempList.size());
+						double amount = NumberKit.getNumberFormatByDouble(otherStaffCost.getAmount()/tempList.size());
+						double insurance_amount = NumberKit.getNumberFormatByDouble(otherStaffCost.getInsurance_amount()/tempList.size());
+						double pub_funds_amount = NumberKit.getNumberFormatByDouble(otherStaffCost.getPub_funds_amount()/tempList.size());
+						double all_amount = NumberKit.getNumberFormatByDouble(otherStaffCost.getAll_amount()/tempList.size());
+
+						otherStaffCost.setPersonal_income_tax(personal_income_tax);
+						otherStaffCost.setAmount(amount);
+						otherStaffCost.setInsurance_amount(insurance_amount);
+						otherStaffCost.setPub_funds_amount(pub_funds_amount);
+						otherStaffCost.setAll_amount(all_amount);
+
+						sum_personal_income_tax += personal_income_tax;
+						sum_amount += amount;
+						sum_insurance_amount += insurance_amount;
+						sum_pub_funds_amount += pub_funds_amount;
+						sum_all_amount += all_amount;
+					}
+
+
+
+
 				}else {
-					for(OtherStaffCost otherStaffCost : tempList){
-						otherStaffCost.setPersonal_income_tax(otherStaffCost.getPersonal_income_tax()*otherStaffCost.getWork_days()/work_days);
-						otherStaffCost.setAmount(otherStaffCost.getAmount()*otherStaffCost.getWork_days()/work_days);
-						otherStaffCost.setInsurance_amount(otherStaffCost.getInsurance_amount()*otherStaffCost.getWork_days()/work_days);
-						otherStaffCost.setPub_funds_amount(otherStaffCost.getPub_funds_amount()*otherStaffCost.getWork_days()/work_days);
-						otherStaffCost.setAll_amount(otherStaffCost.getAll_amount()*otherStaffCost.getWork_days()/work_days);
+					for(int index = 1 ; index < count ; index ++){
+						OtherStaffCost otherStaffCost = tempList.get(index);
+						double personal_income_tax = NumberKit.getNumberFormatByDouble(otherStaffCost.getPersonal_income_tax()*otherStaffCost.getWork_days()/work_days);
+						double amount = NumberKit.getNumberFormatByDouble(otherStaffCost.getAmount()*otherStaffCost.getWork_days()/work_days);
+						double insurance_amount = NumberKit.getNumberFormatByDouble(otherStaffCost.getInsurance_amount()*otherStaffCost.getWork_days()/work_days);
+						double pub_funds_amount = NumberKit.getNumberFormatByDouble(otherStaffCost.getPub_funds_amount()*otherStaffCost.getWork_days()/work_days);
+						double all_amount = NumberKit.getNumberFormatByDouble(otherStaffCost.getAll_amount()*otherStaffCost.getWork_days()/work_days);
+
+						otherStaffCost.setPersonal_income_tax(personal_income_tax);
+						otherStaffCost.setAmount(amount);
+						otherStaffCost.setInsurance_amount(insurance_amount);
+						otherStaffCost.setPub_funds_amount(pub_funds_amount);
+						otherStaffCost.setAll_amount(all_amount);
+
+						sum_personal_income_tax += personal_income_tax;
+						sum_amount += amount;
+						sum_insurance_amount += insurance_amount;
+						sum_pub_funds_amount += pub_funds_amount;
+						sum_all_amount += all_amount;
 					}	
-				}				
+				}
+
+
+				OtherStaffCost otherStaffCost = tempList.get(0);
+				otherStaffCost.setPersonal_income_tax(otherStaffCost.getPersonal_income_tax() - sum_personal_income_tax);
+				otherStaffCost.setAmount(otherStaffCost.getAmount() - sum_amount);
+				otherStaffCost.setInsurance_amount(otherStaffCost.getInsurance_amount() - sum_insurance_amount);
+				otherStaffCost.setPub_funds_amount(otherStaffCost.getPub_funds_amount() - sum_pub_funds_amount);
+				otherStaffCost.setAll_amount(otherStaffCost.getAll_amount() - sum_all_amount);
+
 
 				list.addAll(tempList);
 				

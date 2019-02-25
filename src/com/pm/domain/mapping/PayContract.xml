@@ -10,7 +10,7 @@
 	<resultMap type="com.pm.domain.business.PayContract" id="payContractMap" />
 
 
-	<select id="isNoExist" parameterType="com.pm.domain.business.PayContract" resultMap="contractMap">
+	<select id="isNoExist" parameterType="com.pm.domain.business.PayContract" resultMap="payContractMap">
 		select contract.* from tb_pay_contract contract where contract_no  = #{contract_no}
 		<if test="id != null and id != ''">
 			AND id != #{id}
@@ -31,12 +31,12 @@
 		insert into  tb_pay_contract(
 			id,contract_no,company_name,exec_contract,amount,
 			signing_date,validity_date1,validity_date2,manager_userid,project_id,
-			submit_date,client_linkman,email_phone,contract_number,description,
+			submit_date,client_linkman,email_phone,contract_number,paymen_mode,description,
 			build_datetime,build_username,build_userid
 		)values  (
 			#{id},#{contract_no},#{company_name},#{exec_contract},#{amount},
 			#{signing_date},#{validity_date1},#{validity_date2},#{manager_userid},#{project_id},
-			#{submit_date},#{client_linkman},#{email_phone},#{contract_number},#{description},
+			#{submit_date},#{client_linkman},#{email_phone},#{contract_number},#{paymen_mode},#{description},
 			#{build_datetime},#{build_username},#{build_userid}
 		)
 	</insert>
@@ -56,10 +56,8 @@
 		client_linkman=#{client_linkman},
 		email_phone=#{email_phone},
 		contract_number=#{contract_number},
-		description=#{description},
-		build_datetime=#{build_datetime},
-		build_username=#{build_username},
-		build_userid=#{build_userid}
+		paymen_mode=#{paymen_mode},
+		description=#{description}
 		where id=#{id}
 	</update>
 

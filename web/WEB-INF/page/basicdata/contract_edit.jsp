@@ -75,6 +75,13 @@
 				<label>合同份数：</label>
 				<input name="contract_number" class="digits required" type="text" size="30" value="<fmt:formatNumber value="${contract1.contract_number }" type="number" pattern="####0"/>" />
 			</p>
+
+
+			<p>
+				<label>付款方式：</label>
+				<input name="paymen_mode" class="text" type="text" size="30" maxlength="30" value="${contract1.paymen_mode }" />
+			</p>
+
 			<p>
 				<label>备注：</label>
 				<input name="description" class="text" type="text" size="30" maxlength="30" value="${contract1.description }" />

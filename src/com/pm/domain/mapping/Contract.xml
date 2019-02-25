@@ -38,12 +38,12 @@
 		insert into  tb_contract(
 			id,storage_addr,project_id,contract_no,
 			exec_contract,monthly_expenses,monthly_expenses2,signing_date,validity_date1,validity_date2,
-			sales_userid,client_linkman,corporation,submit_date,contract_number,description,
+			sales_userid,client_linkman,corporation,submit_date,contract_number,paymen_mode,description,
 			build_datetime,build_userid,build_username
 		)values  (
 			#{id},#{storage_addr},#{project_id},#{contract_no},
 			#{exec_contract},#{monthly_expenses},#{monthly_expenses2},#{signing_date},#{validity_date1},#{validity_date2},
-			#{sales_userid},#{client_linkman},#{corporation},#{submit_date},#{contract_number},#{description},
+			#{sales_userid},#{client_linkman},#{corporation},#{submit_date},#{contract_number},#{paymen_mode},#{description},
 			#{build_datetime},#{build_userid},#{build_username}		)
 	</insert>
 
@@ -63,6 +63,7 @@
 		corporation=#{corporation},
 		submit_date=#{submit_date},
 		contract_number=#{contract_number},
+		paymen_mode=#{paymen_mode},
 		description=#{description}
 		where id=#{id} 
 	</update>

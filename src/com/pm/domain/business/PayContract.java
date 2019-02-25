@@ -58,8 +58,11 @@ public class PayContract extends IdEntity implements Serializable {
     private int contract_number;
 
 
+    @EntityAnnotation(item_name="付款方式" ,item_sort=14,length=5)
+    private int paymen_mode;
 
-    @EntityAnnotation(item_name="备注" ,item_sort=14,length=300)
+
+    @EntityAnnotation(item_name="备注" ,item_sort=15,length=300)
     private String description;
 
     private Timestamp build_datetime;
@@ -256,5 +259,13 @@ public class PayContract extends IdEntity implements Serializable {
 
     public void setProject_no(String project_no) {
         this.project_no = project_no;
+    }
+
+    public int getPaymen_mode() {
+        return paymen_mode;
+    }
+
+    public void setPaymen_mode(int paymen_mode) {
+        this.paymen_mode = paymen_mode;
     }
 }

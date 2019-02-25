@@ -49,9 +49,13 @@ public class Contract extends IdEntity implements Serializable {
 	private Date submit_date    ;   
 
 	@EntityAnnotation(item_name="合同份数" ,item_sort=14,length=9) 
-	private int contract_number ;  
+	private int contract_number ;
 
-	@EntityAnnotation(item_name="备注" ,item_sort=15,length=150) 
+
+	@EntityAnnotation(item_name="付款方式" ,item_sort=15,length=100)
+	private String paymen_mode;
+
+	@EntityAnnotation(item_name="备注" ,item_sort=16,length=150)
 	private String description   ;   
 	
 	private Date build_datetime   ; 
@@ -175,6 +179,15 @@ public class Contract extends IdEntity implements Serializable {
 	public void setContract_number(int contract_number) {
 		this.contract_number = contract_number;
 	}
+
+	public String getPaymen_mode() {
+		return paymen_mode;
+	}
+
+	public void setPaymen_mode(String paymen_mode) {
+		this.paymen_mode = paymen_mode;
+	}
+
 	public String getDescription() {
 		return description;
 	}

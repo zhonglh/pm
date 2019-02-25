@@ -44,7 +44,9 @@ public class GeneralLog extends BasicLog {
 
 		Collection<Object> args = GenericsHelper.processParams(arg,clz,actualClz);
 		
-		if(args == null || args.isEmpty()) return null;
+		if(args == null || args.isEmpty()) {
+			return null;
+		}
 		
 		IGeneralLogService generalLogService = (IGeneralLogService)invocation.getThis();
 

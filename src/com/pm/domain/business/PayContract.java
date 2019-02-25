@@ -31,10 +31,10 @@ public class PayContract extends IdEntity implements Serializable {
     private Date signing_date ;
 
 
-    @EntityAnnotation(item_name="合同有效日期1" ,item_sort=6,length=10)
+    //@EntityAnnotation(item_name="合同有效日期1" ,item_sort=6,length=10)
     private Date validity_date1;
 
-    @EntityAnnotation(item_name="合同有效日期2" ,item_sort=7,length=10)
+    //@EntityAnnotation(item_name="合同有效日期2" ,item_sort=7,length=10)
     private Date validity_date2;
 
     private String manager_userid;
@@ -59,7 +59,7 @@ public class PayContract extends IdEntity implements Serializable {
 
 
     @EntityAnnotation(item_name="付款方式" ,item_sort=14,length=5)
-    private int paymen_mode;
+    private String paymen_mode;
 
 
     @EntityAnnotation(item_name="备注" ,item_sort=15,length=300)
@@ -83,8 +83,16 @@ public class PayContract extends IdEntity implements Serializable {
     private String project_no;
 
 
+    @EntityAnnotation(item_name="合同有效期" ,item_sort=6,length=23)
+    private String effectivedate;
+
+
     private String errorInfo;
 
+
+    //查询条件
+    private Timestamp date1;
+    private Timestamp date2;
 
 
     @Override
@@ -261,11 +269,35 @@ public class PayContract extends IdEntity implements Serializable {
         this.project_no = project_no;
     }
 
-    public int getPaymen_mode() {
+    public String getPaymen_mode() {
         return paymen_mode;
     }
 
-    public void setPaymen_mode(int paymen_mode) {
+    public void setPaymen_mode(String paymen_mode) {
         this.paymen_mode = paymen_mode;
+    }
+
+    public Timestamp getDate1() {
+        return date1;
+    }
+
+    public void setDate1(Timestamp date1) {
+        this.date1 = date1;
+    }
+
+    public Timestamp getDate2() {
+        return date2;
+    }
+
+    public void setDate2(Timestamp date2) {
+        this.date2 = date2;
+    }
+
+    public String getEffectivedate() {
+        return effectivedate;
+    }
+
+    public void setEffectivedate(String effectivedate) {
+        this.effectivedate = effectivedate;
     }
 }

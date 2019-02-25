@@ -105,6 +105,9 @@ public class PayContractAction extends BaseAction {
 	private void paramprocess(HttpServletRequest request,PayContract payContract){
 
 
+		payContract.setEffectivedate(PubMethod.twoDate2Str(payContract.getValidity_date1(), payContract.getValidity_date2()));
+
+
 		if(payContract.getProject_id() == null || payContract.getProject_id().isEmpty()) {
 			payContract.setProject_id(request.getParameter("project.project_id"));
 		}
@@ -115,6 +118,15 @@ public class PayContractAction extends BaseAction {
 		if(payContract.getProject_no() == null || payContract.getProject_no().isEmpty()) {
 			payContract.setProject_no(request.getParameter("project.project_no"));
 		}
+
+
+		if(payContract.getCompany_name() == null || payContract.getCompany_name().isEmpty()) {
+			payContract.setCompany_name(request.getParameter("project.project_client_name"));
+		}
+
+
+		payContract.setManager_userid(request.getParameter("manager.user_id"));
+		payContract.setManager_username(request.getParameter("manager.user_name"));
 	}
 
 
@@ -262,7 +274,12 @@ public class PayContractAction extends BaseAction {
 			}
 		}
 		for(PayContract payContract : payContracts){
-			 checkPayContract(payContract,projectMap);
+
+			Date[] twoDate = PubMethod.str2TtwoDate(payContract.getEffectivedate());
+			payContract.setValidity_date1(twoDate[0]);
+			payContract.setValidity_date2(twoDate[1]);
+
+			checkPayContract(payContract,projectMap);
 		}
 		User sessionUser = PubMethod.getUser(request);
 		boolean isAllOK = true;

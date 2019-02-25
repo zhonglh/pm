@@ -20,10 +20,12 @@
 
 
 	<select id="getPayContract" parameterType="com.pm.domain.business.PayContract" resultMap="payContractMap">
-		select pc.* ,project.project_name,project.project_no
+		select pc.* ,project.project_name,project.project_no ,otherstaff.staff_name as manager_username
 		from tb_pay_contract pc
 		INNER JOIN vb_project project 
-		on pc.project_id = project.project_id 
+		on pc.project_id = project.project_id
+		left join tb_other_staff otherstaff
+		on contract.manager_userid = otherstaff.staff_id
 		where pc.id = #{id}
 	</select>
 
@@ -82,10 +84,12 @@
 	</select>
 
 	<sql id="payContractPagerSql">
-		select pc.* ,project.project_name,project.project_no 
+		select pc.* ,project.project_name,project.project_no ,otherstaff.staff_name as manager_username
 		from tb_pay_contract pc  
 		INNER JOIN vb_project project  
-		on pc.project_id = project.project_id 
+		on pc.project_id = project.project_id
+		left join tb_other_staff otherstaff
+		on contract.manager_userid = otherstaff.staff_id
 		WHERE 1=1 
 		<include refid="ProjectAuthMapping.permission" />
 	</sql>

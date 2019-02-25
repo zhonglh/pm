@@ -193,8 +193,12 @@ public class ContractAction extends BaseAction {
 			count = contractService.updateContract(contract);	
 		}catch(Exception e){
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "该单据已经存在！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "该单据已经存在！", true);
+		}
 	}	
 
 

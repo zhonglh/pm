@@ -21,7 +21,7 @@
 			</p>
 			<p>
 				<label>公司名称：</label>
-				<input name="company_name" class="required" type="text" size="30" maxlength="30" value="${payContract1.company_name }" />
+				<input name="project.project_client_name" class="required" type="text" size="30" maxlength="30" value="${payContract1.company_name }" />
 			</p>
 			<p>
 				<label>执行合同：</label>
@@ -40,6 +40,16 @@
 				<input name="validity_date1" class="date required" type="text" size="12" value="<fmt:formatDate value="${payContract1.validity_date1 }" pattern="yyyy-MM-dd"/>" />
 				<input name="validity_date2" class="date required" type="text" size="12" value="<fmt:formatDate value="${payContract1.validity_date2 }" pattern="yyyy-MM-dd"/>" />
 			</p>
+
+
+
+			<p>
+				<label>负责人：</label>
+				<input type="hidden" size="2" name="manager.user_id" value="${contract1.manager_userid }"/>
+				<input name="manager.user_name" class="text" type="text" size="28"  value="${payContract1.manager_username }" readonly="readonly" />
+				<a class="btnLook" href="${webroot }/OtherStaffAction.do?method=lookup&position_type=2" lookupGroup="manager" lookupPk="user_id" width="950">选择</a>
+			</p>
+
 			<p>
 				<label>提交日期：</label>
 				<input name="submit_date" class="date required" type="text" size="30" value="<fmt:formatDate value="${payContract1.submit_date }" pattern="yyyy-MM-dd"/>" />

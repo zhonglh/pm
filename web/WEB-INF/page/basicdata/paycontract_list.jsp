@@ -9,13 +9,32 @@
 </form>
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/PayContractAction.do?method=list" method="post">
-	<div class="searchBar">
-		<div class="subBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+		<div class="searchBar">
+			<ul class="searchContent">
+
+				<li>
+					<label>项目名称：</label>
+					<input name="project_name" class="text" type="text" value="${param.project_name }" />
+				</li>
+
+				<li>
+					<label>合同编号：</label>
+					<input name="contract_no" class="text" type="text"  value="${param.contract_no }" />
+				</li>
+
+
+				<li>
+					<label>提交日期：</label>
+					<input type="text" class="date" name="date1" size="7" value="${param.date1 }"/>
+					<input type="text" class="date" name="date2" size="7" value="${param.date2 }"/>
+				</li>
+
+
+				<li style="width:40px">
+					<div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div>
+				</li>
 			</ul>
 		</div>
-	</div>
 	</form>
 </div>
 <div class="pageContent">
@@ -33,9 +52,8 @@
 			<c:if test="${operation_read != null && operation_read != '' }">
 				<li><a class="edit" href="${webroot}/PayContractAction.do?method=toView&id={sid}" mask="true" width="900"  height="480" rel="view_paycontract" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
 			</c:if>	
-			<c:if test="${operation_check != null && operation_check != '' }">
-				<li><a title="确定已经批量核实了这些单据吗?" target="selectedTodo" rel="ids" href="${webroot}/PayContractAction.do?method=batchVerifyPayContract" class="delete"><span>批量核单</span></a></li> 
-			</c:if>		
+
+
 			<li class="line">line</li>
 			<c:if test="${operation_read != null && operation_read != '' }">
 				<li><a class="icon" href="${webroot}/PayContractAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
@@ -61,6 +79,7 @@
 				<th width="80">金额</th>
 				<th width="100">合同签订日期</th>	
 				<th width="200">合同有效日期</th>
+				<th width="80">负责人</th>
 				<th width="100">提交日期</th>	
 				<th width="80">客户联系人</th>
 				<th width="100">邮箱/电话</th>	
@@ -88,6 +107,7 @@
 					---
 					<fmt:formatDate value="${payContract.validity_date2 }" pattern="yyyy-MM-dd"/>
 				</td>
+				<td>${payContract.manager_username }</td>
 				<td><fmt:formatDate value="${payContract.submit_date }" pattern="yyyy-MM-dd"/></td>
 				<td>${payContract.client_linkman }</td>
 				<td>${payContract.email_phone }</td>

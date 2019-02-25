@@ -26,13 +26,25 @@
 				<fmt:formatDate value="${payContract1.signing_date }" pattern="yyyy-MM-dd"/>
 			</p>
 			<p>
-				<label>合同有效日期1：</label>
+				<label>合同有效日期1</label>
 				<fmt:formatDate value="${payContract1.validity_date1 }" pattern="yyyy-MM-dd"/>
-			</p>
-			<p>
-				<label>合同有效日期2：</label>
+				---
 				<fmt:formatDate value="${payContract1.validity_date2 }" pattern="yyyy-MM-dd"/>
 			</p>
+
+
+			<p>
+				<label>负责人：</label>
+				${payContract1.manager_username }
+			</p>
+
+
+			<p>
+				<label>分包项目：</label>
+				${payContract1.project_name }
+			</p>
+			project_name
+
 			<p>
 				<label>提交日期：</label>
 				<fmt:formatDate value="${payContract1.submit_date }" pattern="yyyy-MM-dd"/>

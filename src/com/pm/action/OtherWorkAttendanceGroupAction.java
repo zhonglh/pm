@@ -907,6 +907,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 
 		UserPermit userPermit = new UserPermit();
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
+
 		
 		Pager<OtherWorkAttendance> pager = otherWorkAttendanceService.queryWorkAttendance(workAttendance, userPermit, PubMethod.getPagerByAll(request, OtherWorkAttendance.class));
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
@@ -919,7 +920,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		
 		
 
-		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.WORKATTENDANCECHECK.getId());
+		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHERWORKATTENDANCECHECK.getId());
 		request.setAttribute(EnumOperationType.CHECK.getKey(), userPermit1.getPermit_id());
 		
 		return "headquarters/other_work_attendance_group_view";

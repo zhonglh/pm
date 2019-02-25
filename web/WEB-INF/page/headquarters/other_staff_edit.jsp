@@ -466,7 +466,7 @@
 						<td title="${raiserecord.description }">${raiserecord.description }</td>
 						<td width="80" nowrap>
 							<a href="void(0);" onclick="edit_raiserecords(this,'${raiserecord.id }');return false;" ><span>编辑</span></a>
-							<a title="确实要<font color='red'><b>彻底</b></font>删除这条记录吗?" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem"  href="${webroot}/StaffCostAction.do?method=deleteStaffRaiseRecord&id=${raiserecord.id}&rownum=${status1.index}" class="delete"><span>删除</span></a>
+							<a title="确实要<font color='red'><b>彻底</b></font>删除这条记录吗?" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem"  href="${webroot}/OtherStaffAction.do?method=deleteStaffRaiseRecord&id=${raiserecord.id}&rownum=${status1.index}" class="delete"><span>删除</span></a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -496,7 +496,7 @@
 						<td title="${rewardpenalty.description }">${rewardpenalty.description }</td>
 						<td width="80" nowrap>
 							<a href="void(0);" onclick="edit_rewardpenaltys(this,'${rewardpenalty.id }');return false;" ><span>编辑</span></a>
-							<a title="确实要<font color='red'><b>彻底</b></font>删除这条记录吗?" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem"  href="${webroot}/StaffCostAction.do?method=deleteStaffRewardPenalty&id=${rewardpenalty.id}&rownum=${status1.index}" class="delete"><span>删除</span></a>
+							<a title="确实要<font color='red'><b>彻底</b></font>删除这条记录吗?" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem"  href="${webroot}/OtherStaffAction.do?method=deleteStaffRewardPenalty&id=${rewardpenalty.id}&rownum=${status1.index}" class="delete"><span>删除</span></a>
 
 						</td>
 					</tr>
@@ -527,7 +527,7 @@
 						<td title="${assessment.description }">${assessment.description }</td>
 						<td width="80" nowrap>
 							<a href="void(0);" onclick="edit_assessments(this,'${assessment.id }');return false;" ><span>编辑</span></a>
-							<a title="确实要<font color='red'><b>彻底</b></font>删除这条记录吗?" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem"  href="${webroot}/StaffCostAction.do?method=deleteStaffAssessment&id=${assessment.id}&rownum=${status1.index}" class="delete"><span>删除</span></a>
+							<a title="确实要<font color='red'><b>彻底</b></font>删除这条记录吗?" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem"  href="${webroot}/OtherStaffAction.do?method=deleteStaffAssessment&id=${assessment.id}&rownum=${status1.index}" class="delete"><span>删除</span></a>
 
 						</td>
 					</tr>
@@ -561,7 +561,7 @@
 						<td title="${positions.description }">${positions.description }</td>
 						<td width="80" nowrap>
 							<a href="void(0);" onclick="edit_positions(this,'${positions.id }');return false;" ><span>编辑</span></a>
-							<a title="确实要<font color='red'><b>彻底</b></font>删除这条记录吗?" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem"  href="${webroot}/StaffCostAction.do?method=deleteStaffPositions&id=${positions.id}&rownum=${status1.index}" class="delete"><span>删除</span></a>
+							<a title="确实要<font color='red'><b>彻底</b></font>删除这条记录吗?" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem"  href="${webroot}/OtherStaffAction.do?method=deleteStaffPositions&id=${positions.id}&rownum=${status1.index}" class="delete"><span>删除</span></a>
 
 						</td>
 					</tr>

@@ -7,71 +7,67 @@
 		<div class="pageFormContent" layoutH="56">
 			<p>
 				<label>员工名称：</label>
-				${projectStaffCost1.staff_name}
+				${otherStaffCost1.staff_name}
 			</p>
 			<p>
 				<label>工号：</label>
-				${projectStaffCost1.staff_no}
+				${otherStaffCost1.staff_no}
 			</p>
 
 			<p>
-				<label>项目名称：</label>
-				${projectStaffCost1.project_name}
-			</p>
-			<p>
-				<label>项目编号：</label>
-				${projectStaffCost1.project_no}
-			</p>			
+				<label>部门名称：</label>
+				${otherStaffCost1.dept_name}
+			</p>		
 
 			<p>
 				<label>月份：</label>
-				${projectStaffCost1.work_month}
+				${otherStaffCost1.work_month}
 			</p>
 			
 			<p>
 				<label>实际支付日期：</label>
-				<fmt:formatDate value="${projectStaffCost1.pay_date }" pattern="yyyy-MM-dd"/>
+				<fmt:formatDate value="${otherStaffCost1.pay_date }" pattern="yyyy-MM-dd"/>
 			</p>
 			
 				
 
 			<p>
 				<label>工作天数：</label>
-				${projectStaffCost1.work_days}
+				${otherStaffCost1.work_days}
 			</p>
 			<p>
 				<label>实发金额：</label>
-				${projectStaffCost1.amount}
+				${otherStaffCost1.amount}
 			</p>	
 			
 			<p>
 				<label>社保：</label>
-				${projectStaffCost1.insurance_amount}
+				${otherStaffCost1.insurance_amount}
 			</p>	
 			
 			<p>
 				<label>公积金：</label>
-				${projectStaffCost1.pub_funds_amount}
+				${otherStaffCost1.pub_funds_amount}
 			</p>	
 			
 				
 			
 			<p>
 				<label>个税：</label>
-				${projectStaffCost1.personal_income_tax}
+				${otherStaffCost1.personal_income_tax}
 			</p>	
 			
 			<p>
 				<label>总成本：</label>
-				${projectStaffCost1.all_amount}
+				${otherStaffCost1.all_amount}
 			</p>		
 				
 			<div class="divider"></div>
 			<p>
-				<label>制单人：</label>  ${projectStaffCost1.build_username }
+				<label>制单人：</label>  ${otherStaffCost1.build_username }
 			</p>
 			<p>
-				<label>制单日期：</label> <fmt:formatDate value="${projectStaffCost1.build_datetime }" pattern="yyyy-MM-dd"/> 
+				<label>制单日期：</label> <fmt:formatDate value="${otherStaffCost1.build_datetime }" pattern="yyyy-MM-dd"/> 
 			</p>
 		</div>
 		

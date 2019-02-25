@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/include.inc.jsp"%>
 
-<form id="pagerForm" method="post" action="${webroot }/ProjectStaffCostAction.do?method=list">
+<form id="pagerForm" method="post" action="${webroot }/OtherStaffCostAction.do?method=list">
 	<input type="hidden" name="pageNum" value="${pageNum}" />
 	<input type="hidden" name="numPerPage" value="${pageSize}" />
 	
@@ -15,32 +15,36 @@
 		
 		 	<li>
 				<label>所在部门：</label>
-				<input name="dept.dept_id" class="text" type="hidden" size="2"  value="${projectStaffCost.dept_id }" />
-				<input name="dept.dept_name" class="text" type="text" size="20"  value="${projectStaffCost.dept_name }" readonly="readonly" lookupPk="dept_id"
+				<input name="dept.dept_id" class="text" type="hidden" size="2"  value="${otherStaffCost.dept_id }" />
+				<input name="dept.dept_name" class="text" type="text" size="20"  value="${otherStaffCost.dept_name }" readonly="readonly" lookupPk="dept_id"
 				suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup&use=search" lookupGroup="dept"/>				
 
 			</li>
-		
-			<li>
-				<label>项目名称：</label>
-				<input type="text" name="project_name" value="${param.project_name}"/>
-			</li>
+
+
 
 			<li>
-				<label>月份：</label>
-				<input type="text" class="digits date month" size="5" maxlength="6" minlength="6" format="yyyyMM" name="work_month1" value="${param.work_month1}"/>
-				<input type="text" class="digits date month" size="5" maxlength="6" minlength="6" format="yyyyMM" name="work_month2" value="${param.work_month2}"/>
+				<label>人员名称：</label>
+				<input type="text"  name="staff_name" value="${param.staff_name}"/>
 			</li>
+
+
+			<li>
+				<label>人员名称：</label>
+				<input type="text"  name="staff_no" value="${param.staff_no}"/>
+			</li>
+
 			
 		</ul>
 		
 		
 		<ul class="searchContent">
-		
-		
+
+
 			<li>
-				<label>人员名称：</label>
-				<input type="text"  name="staff_name" value="${param.staff_name}"/>
+				<label>月份：</label>
+				<input type="text" class="digits date month" size="5" maxlength="6" minlength="6" format="yyyyMM" name="work_month1" value="${param.work_month1}"/>
+				<input type="text" class="digits date month" size="5" maxlength="6" minlength="6" format="yyyyMM" name="work_month2" value="${param.work_month2}"/>
 			</li>
 			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
 			
@@ -56,7 +60,7 @@
 		<ul class="toolBar">			
 			
 			<c:if test="${operation_read != null && operation_read != '' }">
-				<li><a class="edit" href="${webroot}/ProjectStaffCostAction.do?method=toView&project_staffcost_id={sid_project_staffcost_id}" mask="true" width="900"  height="480" rel="view_workAttendanceGroupAction" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
+				<li><a class="edit" href="${webroot}/ProjectStaffCostAction.do?method=toView&other_staff_cost_id={sid_other_staff_cost_id}" mask="true" width="900"  height="480" rel="view_workAttendanceGroupAction" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
 				
 				<c:if test="${ totalRows <= 15000}">
 				<li><a class="icon" href="${webroot}/ProjectStaffCostAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
@@ -68,8 +72,7 @@
 		<thead>
 			<tr>
 				<th width="40">序号</th>			
-				<th width="200">项目名称</th>	
-				<th width="100">项目编号</th>
+				<th width="200">部门名称</th>	
 				<th width="80">月份</th>
 				<th width="80">人员名称</th>
 				<th width="80">人员工号</th>
@@ -84,21 +87,20 @@
 		</thead>
 		<tbody>
 		
-			<c:forEach var="projectStaffCost"  varStatus="status1" items="${list}">
-			<tr target="sid_project_staffcost_id" rel="${projectStaffCost.project_staffcost_id }">
+			<c:forEach var="otherStaffCost"  varStatus="status1" items="${list}">
+			<tr target="sid_other_staff_cost_id" rel="${otherStaffCost.other_staff_cost_id }">
 				<td>${pageNum*pageSize-pageSize + status1.index + 1 }</td>
-				<td>${projectStaffCost.project_name }</td>
-				<td>${projectStaffCost.project_no }</td>
-				<td>${projectStaffCost.work_month }</td>
-				<td>${projectStaffCost.staff_name }</td>
-				<td>${projectStaffCost.staff_no }</td>
-				<td>${projectStaffCost.work_days }</td>
-				<td><b><fmt:formatNumber value="${projectStaffCost.amount }" type="currency" pattern="###,###,##0.00"/></b></td>
-				<td><b><fmt:formatNumber value="${projectStaffCost.insurance_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
-				<td><b><fmt:formatNumber value="${projectStaffCost.pub_funds_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
-				<td><b><fmt:formatNumber value="${projectStaffCost.personal_income_tax }" type="currency" pattern="###,###,##0.00"/></b></td>
-				<td><b><fmt:formatNumber value="${projectStaffCost.all_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
-				<td><fmt:formatDate value="${projectStaffCost.pay_date }" pattern="yyyy-MM-dd"/></td>
+				<td>${otherStaffCost.dept_name }</td>
+				<td>${otherStaffCost.work_month }</td>
+				<td>${otherStaffCost.staff_name }</td>
+				<td>${otherStaffCost.staff_no }</td>
+				<td>${otherStaffCost.work_days }</td>
+				<td><b><fmt:formatNumber value="${otherStaffCost.amount }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td><b><fmt:formatNumber value="${otherStaffCost.insurance_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td><b><fmt:formatNumber value="${otherStaffCost.pub_funds_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td><b><fmt:formatNumber value="${otherStaffCost.personal_income_tax }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td><b><fmt:formatNumber value="${otherStaffCost.all_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td><fmt:formatDate value="${otherStaffCost.pay_date }" pattern="yyyy-MM-dd"/></td>
 			</p>
 			</tr>
 			</c:forEach>

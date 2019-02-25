@@ -18,7 +18,6 @@ public enum EnumEntityType {
 
 	CLIENT("client.entity","client"),
 	INSURANCE_GRADE("insurance.grade.entity","insurance.grade"),
-	OTHER_STAFF("other.staff.entity","other.staff"),
 	STAFF_COST("staff.cost.entity","staff.cost"),
 	PROJECT("project.entity","project"),
 	CONTRACT("contract","contract"),
@@ -34,6 +33,10 @@ public enum EnumEntityType {
 	PROJECT_EXPEND("project.expend.entity","project.expend"),
 	REIMBURSE_COSTS("reimburse.costs.entity","reimburse.costs"),
 	COMMONCOST("common.cost.entity","common.cost"),
+
+
+	OTHER_STAFF("other.staff.entity","other.staff"),
+	OTHER_SALARY("other.salary.entity","other.salary"),
 
 
 	MONTHLY_STATEMENT("monthly.statement.entity","monthly.statement"),

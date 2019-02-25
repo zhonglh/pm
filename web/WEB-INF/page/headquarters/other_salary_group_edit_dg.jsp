@@ -202,7 +202,7 @@
 
 <body>
 	<table id="dg" class="easyui-datagrid" style="width:550px;height:220px" 
-			<c:if test="${full!=null }">title="修改工资： ${salary1.salary_month } ${salary1.project_name }"</c:if>
+			<c:if test="${full!=null }">title="修改工资： ${salary1.salary_month } ${salary1.dept_name }"</c:if>
 			data-options="fit:true,singleSelect:true,url:'${webroot}/OtherSalaryGroupAction.do?method=edit4EasyuiDatagrid&id=${id }',
 			method:'get',onClickRow: onClickRow,onLoadSuccess:successLoads,toolbar:'#tb',
 			selectOnCheck:false,checkOnSelect:false,

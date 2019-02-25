@@ -32,7 +32,7 @@ import java.util.*;
 public class OtherSalaryGroupAction extends BaseAction {
 
 
-	private static final String rel = "rel21";
+	private static final String rel = "rel03";
 	
 	@Autowired
 	private IOtherSalaryService salaryService;
@@ -279,7 +279,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 				salaryService.addSalary(list);
 			
 				ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), 
-						EnumEntityType.SALARY.name(), list.get(0).getSalary_id(), sessionUser);
+						EnumEntityType.OTHER_SALARY.name(), list.get(0).getSalary_id(), sessionUser);
 				applyApproveService.addApplyApprove(applyApprove);
 			}			
 			
@@ -405,7 +405,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 				}
 				salaryService.addSalary(list);
 			}
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.SALARY.name(), list.get(0).getSalary_id(), sessionUser);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.OTHER_SALARY.name(), list.get(0).getSalary_id(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}
 		return this.ajaxForwardSuccess(request, rel, true);
@@ -590,8 +590,11 @@ public class OtherSalaryGroupAction extends BaseAction {
 
 	
 
-	private void paramprocess(HttpServletRequest request,OtherSalary salary){	
-		salary.setDept_id(request.getParameter("dept.dept_id"));	
+	private void paramprocess(HttpServletRequest request,OtherSalary salary){
+		String dept_id = request.getParameter("dept.dept_id");
+		if(StringUtils.isNotEmpty(dept_id)) {
+			salary.setDept_id(dept_id);
+		}
 				
 		if(salary.getDept_name() == null || salary.getDept_name().isEmpty()) {
 			salary.setDept_name(request.getParameter("dept.dept_name"));
@@ -941,8 +944,8 @@ public class OtherSalaryGroupAction extends BaseAction {
 		salary.setDate1(date1);
 		salary.setDate2(date2);
 
-		UserPermit userPermit = new UserPermit();
-		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
+
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSALARYVIEW.getId());
 		
 		Pager<OtherSalary> pager = salaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
@@ -956,16 +959,22 @@ public class OtherSalaryGroupAction extends BaseAction {
 		request.setAttribute("next_operation", "updateSalaryGroup");
 		
 
-		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.SALARYCHECK.getId());
+		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHERSALARYCHECK.getId());
+		if(EnumDataRange.SELF.getCode().equals(userPermit1.getRange())){
+			userPermit1.setPermit_id("");
+		}
 		request.setAttribute(EnumOperationType.CHECK.getKey(), userPermit1.getPermit_id());	
 
-		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.SALARYUNCHECK.getId());
+		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHERSALARYUNCHECK.getId());
+		if(EnumDataRange.SELF.getCode().equals(userPermit1.getRange())){
+			userPermit1.setPermit_id("");
+		}
 		request.setAttribute(EnumOperationType.UNCHECK.getKey(), userPermit1.getPermit_id());		
 
 		User sessionUser = PubMethod.getUser(request);
 		Dept dept = deptService.getDept( salary.getDept_id());
-		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.SALARY.name(), salary.getSalary_id());
-		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.SALARY.name(),  salary.getSalary_id());
+		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.OTHER_SALARY.name(), salary.getSalary_id());
+		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.OTHER_SALARY.name(),  salary.getSalary_id());
 		
 		request.setAttribute("infos", infos);
 		request.setAttribute("applyApprove", applyApprove);
@@ -974,7 +983,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 
 		request.setAttribute("verify_userid", salary.getVerify_userid());
 		request.setAttribute("data_id", salary.getSalary_id());
-		request.setAttribute("data_type", EnumEntityType.SALARY.name());	
+		request.setAttribute("data_type", EnumEntityType.OTHER_SALARY.name());
 		
 
 		return "headquarters/other_salary_group_view";
@@ -1059,7 +1068,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 					if(!list.isEmpty())  {
 						salaryService.verifySalary( list.toArray(new OtherSalary[list.size()]) );
 
-						ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.SALARY.name(), list.get(0).getSalary_id(), sessionUser);
+						ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.OTHER_SALARY.name(), list.get(0).getSalary_id(), sessionUser);
 						applyApproveService.addApplyApprove(applyApprove);
 					}
 				}catch(Exception e){
@@ -1104,7 +1113,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 			if(!salarys.isEmpty()) {
 				salaryService.verifySalary( salarys.toArray(new OtherSalary[salarys.size()]) );
 				
-				ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.SALARY.name(), salarys.get(0).getSalary_id(), sessionUser);
+				ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.OTHER_SALARY.name(), salarys.get(0).getSalary_id(), sessionUser);
 				applyApproveService.addApplyApprove(applyApprove);
 			}
 		

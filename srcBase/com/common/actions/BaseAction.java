@@ -253,8 +253,12 @@ public class BaseAction {
 		user.setUser_id(PubMethod.getUser(request).getUser_id());
 		user.setPermit_id(permitId);
 		List<UserPermit> permitList = roleService.queryPermitsByUser(user);
-		if(permitList == null || permitList.isEmpty()) return new UserPermit();
-		else return permitList.get(0);
+		if(permitList == null || permitList.isEmpty()) {
+		    return new UserPermit();
+        }
+		else {
+		    return permitList.get(0);
+        }
 		
     }
     

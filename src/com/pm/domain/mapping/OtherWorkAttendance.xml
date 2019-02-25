@@ -22,25 +22,32 @@
 	
 	<select id="getWorkAttendanceByDeptMonth" parameterType="com.pm.domain.business.OtherWorkAttendance" resultMap="workAttendanceMap">
 
+
+
 		<![CDATA[
+			select staff_id,staff_name,staff_no,dept_id,attendance_month	 from (
+				select staff.staff_id,staff.staff_name ,staff.staff_no ,
+				'${dept_id}' as dept_id, ${attendance_month} as attendance_month,
+				staff.build_datetime, staff.import_order
+				from tb_other_staff staff,
+				tb_dept_staff ps
+				where staff.staff_id = ps.staff_id
+				and (
+					(ps.delete_flag = '0' and ps.join_dept_datetime <= #{attendance_day2} ) or (
+						(ps.join_dept_datetime >= #{attendance_day1} and ps.join_dept_datetime < #{attendance_day2})
+						or
+						(ps.leave_dept_datetime >= #{attendance_day1} and ps.leave_dept_datetime < #{attendance_day2})
+						or
+						(ps.join_dept_datetime <= #{attendance_day1} and ps.leave_dept_datetime >= #{attendance_day2})
+					)
+				)
+				and ps.dept_id = #{dept_id}
+			)aa group by staff_id,staff_name,dept_id,attendance_month
+			order by build_datetime, import_order
+		]]>
 
-				select staff.staff_id,staff.staff_name,staff.staff_no,
-				dept.dept_id,dept.dept_name , ${attendance_month} as attendance_month
 
-				from tb_other_staff staff
-			   join ts_dept dept on staff.dept_id = dept.dept_id
-			   where staff.dept_id = #{dept_id}
-			   and (
-				   (staff.delete_flag = '0' and (staff.join_datetime is null or staff.join_datetime < #{attendance_day2}) )
-				   or (
-						staff.delete_flag = '1'
-						and  (staff.join_datetime is null or staff.join_datetime < #{attendance_day2})
-						and staff.leave_job_datetime >= #{attendance_day1}
-				   )
-			   )
-			   order by staff.build_datetime, staff.import_order
 
-		]]>		
 	</select>	
 	
 	<select id="getWorkAttendance" parameterType="com.pm.domain.business.OtherWorkAttendance" resultMap="workAttendanceMap">

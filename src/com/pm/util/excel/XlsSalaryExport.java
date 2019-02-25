@@ -3,6 +3,8 @@ package com.pm.util.excel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pm.domain.business.AbstractSalary;
+import com.pm.domain.business.OtherSalary;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -33,8 +35,8 @@ public class XlsSalaryExport extends XlsSimpleExport {
 	@Override
 	public <T> void createSheet(T t){
 
-		if(t != null && t.getClass() == Salary.class){
-			Salary salary = (Salary)t;
+		if(t != null && t.getClass() == Salary.class || t.getClass() == OtherSalary.class){
+			AbstractSalary salary = (AbstractSalary)t;
 			this.sheet = workbook.createSheet(String.valueOf(salary.getSalary_month()));
 		}else {
 			this.sheet = workbook.createSheet();

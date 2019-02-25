@@ -1,5 +1,6 @@
 package com.pm.util.excel;
 
+import com.pm.domain.business.AbstractSalary;
 import com.pm.domain.business.Salary;
 import com.pm.util.ColumnComparator;
 import com.pm.util.PubMethod;
@@ -85,7 +86,7 @@ public class BusinessExcel {
 				List<String> heads = new ArrayList<String>();
 				
 				if(list != null && !list.isEmpty()){
-					Salary salary = (Salary)list.get(0);
+					AbstractSalary salary = (AbstractSalary)list.get(0);
 					heads.add("北京华路——"+PubMethod.getMonthChinseStr(salary.getSalary_month())+"工资表(本月"+(int)salary.getShould_work_days()+"个工作日)");
 				}else {
 					heads.add("北京华路——工资表()");

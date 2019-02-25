@@ -16,6 +16,22 @@ import com.common.beans.Pager;
 @Component
 public class PayContractDaoImpl extends BatisDao implements IPayContractDao  {
 
+
+	@Override
+	public  boolean isNoExist(PayContract payContract) {
+
+		String sql = "PayContractMapping.isNoExist";
+
+
+		List<PayContract> list = this.query(sql, PayContract.class, payContract);
+		if(list == null || list.isEmpty()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	@Override
 	public int addPayContract(PayContract payContract) {
 		String sql = "PayContractMapping.addPayContract";

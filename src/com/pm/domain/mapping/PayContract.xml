@@ -51,32 +51,13 @@
 		build_datetime=#{build_datetime},
 		build_username=#{build_username},
 		build_userid=#{build_userid}
-		where id=#{id} 
-		and verify_userid is null 
-	</update>
-
-	<update id="verifyPayContract" parameterType="com.pm.domain.business.PayContract" >
-		update  tb_pay_contract set 
-		verify_userid = #{verify_userid}, 
-		verify_username =  #{verify_username}, 
-		verify_datetime = #{verify_datetime} 
-		where id=#{id}
-
-		and verify_userid is null
-	</update>
-
-	<update id="unVerifyPayContract" parameterType="com.pm.domain.business.PayContract" >
-		update  tb_pay_contract set 
-		verify_userid = null, 
-		verify_username = null, 
-		verify_datetime = null
 		where id=#{id}
 	</update>
+
 
 	<delete id="deletePayContract" parameterType="com.pm.domain.business.PayContract" >
 		delete from  tb_pay_contract
 		where id=#{id}
-		and verify_userid is null
 	</delete>
 
 	<select id="queryPayContractTotalAmount" parameterType="map"  resultType="double" >

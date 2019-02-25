@@ -14,6 +14,14 @@ import com.common.beans.Pager;
 public class PayContractServiceImpl implements  IPayContractService  {
 
 	@Autowired IPayContractDao payContractDao;
+
+
+
+	@Override
+	public  boolean isNoExist(PayContract payContract){
+		return payContractDao.isNoExist(payContract);
+	}
+
 	@Override
 	public int addPayContract(PayContract payContract) {
 		return payContractDao.addPayContract(payContract);

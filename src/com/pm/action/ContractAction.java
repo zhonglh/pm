@@ -70,11 +70,13 @@ public class ContractAction extends BaseAction {
 		String error = null;
 		
 		boolean b  = contractService.isContractNoExist(contract);
-		if(b) error = "该合同编号已经存在";
+		if(!b) {
+			error = "该合同编号已经存在";
+		}
 		
 		
 		
-		if(!b){
+		if(b){
 			return this.ajaxForwardSuccess(request);
 		}else {
 			return this.ajaxForwardError(request, error);

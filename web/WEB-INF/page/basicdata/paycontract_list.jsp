@@ -56,29 +56,24 @@
 				<th width="200">项目名称</th>
 				<th width="100">项目编号</th>	
 				<th width="100">合同编号</th>	
-				<th width="100">公司名称</th>	
-				<th width="100">执行合同</th>	
-				<th width="100">金额</th>	
+				<th width="150">公司名称</th>
+				<th width="150">执行合同</th>
+				<th width="80">金额</th>
 				<th width="100">合同签订日期</th>	
-				<th width="100">合同有效日期1</th>	
-				<th width="100">合同有效日期2</th>	
+				<th width="200">合同有效日期</th>
 				<th width="100">提交日期</th>	
-				<th width="100">客户联系人</th>	
+				<th width="80">客户联系人</th>
 				<th width="100">邮箱/电话</th>	
-				<th width="100">合同份数</th>	
-				<th width="100">备注</th>	
+				<th width="80">合同份数</th>
+				<th width="250">备注</th>
 				<th width="80">制表人</th>
-				<th width="80">核单人</th>
-				<th width="120" >申请状态</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="payContract"  varStatus="status1" items="${list}">
 			<tr target="sid" rel="${payContract.id }">
 				<td>
-					<c:if test="${payContract.verify_userid==null || payContract.verify_userid=='' }">
 						<input name="ids" value="${payContract.id }" type="checkbox" />
-					</c:if>
 				</td>
 				<td>${payContract.project_name }</td>
 				<td>${payContract.project_no }</td>
@@ -87,20 +82,17 @@
 				<td>${payContract.exec_contract }</td>
 				<td align="right"><b><fmt:formatNumber value="${payContract.amount }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td><fmt:formatDate value="${payContract.signing_date }" pattern="yyyy-MM-dd"/></td>
-				<td><fmt:formatDate value="${payContract.validity_date1 }" pattern="yyyy-MM-dd"/></td>
-				<td><fmt:formatDate value="${payContract.validity_date2 }" pattern="yyyy-MM-dd"/></td>
+				<td>
+					<fmt:formatDate value="${payContract.validity_date1 }" pattern="yyyy-MM-dd"/>
+					---
+					<fmt:formatDate value="${payContract.validity_date2 }" pattern="yyyy-MM-dd"/>
+				</td>
 				<td><fmt:formatDate value="${payContract.submit_date }" pattern="yyyy-MM-dd"/></td>
 				<td>${payContract.client_linkman }</td>
 				<td>${payContract.email_phone }</td>
 				<td align="right"><b><fmt:formatNumber value="${payContract.contract_number }" type="number" pattern="###,###,##0"/></b></td>
 				<td>${payContract.description }</td>
 				<td>${payContract.build_username }</td>
-				<td>${payContract.verify_username }</td>
-				<td>
-					<c:if test="${payContract.need_approve!=null && payContract.need_approve=='1' }">
-						<font color="red">已申请取消核单</font>
-					</c:if>
-				</td>	
 			</tr>
 			</c:forEach>
 		</tbody>

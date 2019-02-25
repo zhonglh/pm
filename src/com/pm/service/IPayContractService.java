@@ -13,6 +13,8 @@ import com.pm.service.IGeneralLogService;
  */
 public interface IPayContractService extends IGeneralLogService , IBaseService {
 
+	public  boolean isNoExist(PayContract payContract);
+
 	@LogAnnotation(operation_type=LogConstant.OPERATION_INSERT,entity_type=LogConstant.ENTITY_PAYCONTRACT)
 	public int addPayContract(PayContract payContract) ;
 

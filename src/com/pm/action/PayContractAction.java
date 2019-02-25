@@ -6,6 +6,7 @@ import com.common.utils.DateKit;
 import com.common.utils.IDKit;
 import com.common.utils.file.download.DownloadBaseUtil;
 import com.pm.domain.business.ApplyApprove;
+import com.pm.domain.business.Contract;
 import com.pm.domain.business.PayContract;
 import com.pm.domain.business.Project;
 import com.pm.domain.system.User;
@@ -58,6 +59,26 @@ public class PayContractAction extends BaseAction {
 	private IRoleService roleService;
 
 
+	@RequestMapping(params = "method=isExist")
+	public String isExist(PayContract payContract,HttpServletResponse res,HttpServletRequest request){
+
+		String error = null;
+
+		boolean b  = payContractService.isNoExist(payContract);
+		if(!b) {
+			error = "该合同编号已经存在";
+		}
+
+
+
+		if(b){
+			return this.ajaxForwardSuccess(request);
+		}else {
+			return this.ajaxForwardError(request, error);
+		}
+	}
+
+
 	@RequestMapping(params = "method=list")
 	public String list(PayContract payContract,HttpServletResponse res,HttpServletRequest request){
 
@@ -82,9 +103,17 @@ public class PayContractAction extends BaseAction {
 
 
 	private void paramprocess(HttpServletRequest request,PayContract payContract){
-		payContract.setProject_id(request.getParameter("project.project_id"));
+
+
+		if(payContract.getProject_id() == null || payContract.getProject_id().isEmpty()) {
+			payContract.setProject_id(request.getParameter("project.project_id"));
+		}
 		if(payContract.getProject_name() == null || payContract.getProject_name().isEmpty()) {
 			payContract.setProject_name(request.getParameter("project.project_name"));
+		}
+
+		if(payContract.getProject_no() == null || payContract.getProject_no().isEmpty()) {
+			payContract.setProject_no(request.getParameter("project.project_no"));
 		}
 	}
 

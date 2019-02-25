@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/include.inc.jsp"%>
 <div class="pageContent">
-	<form method="post" action="${webroot}/PayContractAction.do?method=${next_operation}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+	<form method="post" action="${webroot}/PayContractAction.do?method=${next_operation}" class="pageForm required-validate" onsubmit="return validateCheckCallback(this, '${webroot }/PayContractAction.do?method=isExist', dialogAjaxDone);">
 		<div class="pageFormContent" layoutH="56">
 			<input type="hidden" name="id" value="${payContract1.id }"/>
 			<p>
@@ -17,15 +17,15 @@
 			</p>
 			<p>
 				<label>合同编号：</label>
-				<input name="contract_no" class="date required" type="text" size="30" maxlength="30" value="${payContract1.contract_no }" />
+				<input name="contract_no" class="required" type="text" size="30" maxlength="30" value="${payContract1.contract_no }" />
 			</p>
 			<p>
 				<label>公司名称：</label>
-				<input name="company_name" class="date required" type="text" size="30" maxlength="30" value="${payContract1.company_name }" />
+				<input name="company_name" class="required" type="text" size="30" maxlength="30" value="${payContract1.company_name }" />
 			</p>
 			<p>
 				<label>执行合同：</label>
-				<input name="exec_contract" class="date required" type="text" size="30" maxlength="30" value="${payContract1.exec_contract }" />
+				<input name="exec_contract" class="required" type="text" size="30" maxlength="30" value="${payContract1.exec_contract }" />
 			</p>
 			<p>
 				<label>金额：</label>
@@ -36,12 +36,9 @@
 				<input name="signing_date" class="date required" type="text" size="30" value="<fmt:formatDate value="${payContract1.signing_date }" pattern="yyyy-MM-dd"/>" />
 			</p>
 			<p>
-				<label>合同有效日期1：</label>
-				<input name="validity_date1" class="date required" type="text" size="30" value="<fmt:formatDate value="${payContract1.validity_date1 }" pattern="yyyy-MM-dd"/>" />
-			</p>
-			<p>
-				<label>合同有效日期2：</label>
-				<input name="validity_date2" class="date required" type="text" size="30" value="<fmt:formatDate value="${payContract1.validity_date2 }" pattern="yyyy-MM-dd"/>" />
+				<label>合同有效日期：</label>
+				<input name="validity_date1" class="date required" type="text" size="12" value="<fmt:formatDate value="${payContract1.validity_date1 }" pattern="yyyy-MM-dd"/>" />
+				<input name="validity_date2" class="date required" type="text" size="12" value="<fmt:formatDate value="${payContract1.validity_date2 }" pattern="yyyy-MM-dd"/>" />
 			</p>
 			<p>
 				<label>提交日期：</label>
@@ -49,11 +46,11 @@
 			</p>
 			<p>
 				<label>客户联系人：</label>
-				<input name="client_linkman" class="date required" type="text" size="30" maxlength="30" value="${payContract1.client_linkman }" />
+				<input name="client_linkman" class="required" type="text" size="30" maxlength="30" value="${payContract1.client_linkman }" />
 			</p>
 			<p>
 				<label>邮箱/电话：</label>
-				<input name="email_phone" class="date required" type="text" size="30" maxlength="30" value="${payContract1.email_phone }" />
+				<input name="email_phone" class="required" type="text" size="30" maxlength="30" value="${payContract1.email_phone }" />
 			</p>
 			<p>
 				<label>合同份数：</label>
@@ -61,7 +58,7 @@
 			</p>
 			<p>
 				<label>备注：</label>
-				<input name="description" class="date required" type="text" size="30" maxlength="30" value="${payContract1.description }" />
+				<input name="description" class="required" type="text" size="30" maxlength="30" value="${payContract1.description }" />
 			</p>
 			<div class="divider"></div>
 			<p>

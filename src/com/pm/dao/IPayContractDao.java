@@ -6,6 +6,9 @@ import com.common.beans.Pager;
 
 public interface IPayContractDao {
 
+
+	public  boolean isNoExist(PayContract payContract) ;
+
 	public int addPayContract(PayContract payContract) ;
 
 	public int updatePayContract(PayContract payContract) ; 

@@ -76,6 +76,10 @@ public class PayContract extends IdEntity implements Serializable {
     private String project_name;
 
 
+    @EntityAnnotation(item_name="分包项目编号" )
+    private String project_no;
+
+
     private String errorInfo;
 
 
@@ -244,5 +248,13 @@ public class PayContract extends IdEntity implements Serializable {
 
     public void setErrorInfo(String errorInfo) {
         this.errorInfo = errorInfo;
+    }
+
+    public String getProject_no() {
+        return project_no;
+    }
+
+    public void setProject_no(String project_no) {
+        this.project_no = project_no;
     }
 }

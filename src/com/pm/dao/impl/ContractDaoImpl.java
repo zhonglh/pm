@@ -15,12 +15,17 @@ public class ContractDaoImpl extends BatisDao implements IContractDao  {
 	
 	
 
+	@Override
 	public boolean isContractNoExist(Contract contract) {
 
 		String sql = "ContractMapping.getContractNoExist"; 
 		List<Contract> list = this.query(sql, Contract.class, contract); 
-		if(list != null && list.size() > 0 ) return true;
-		else return false;
+		if(list != null && list.size() > 0 ) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	@Override
@@ -47,8 +52,12 @@ public class ContractDaoImpl extends BatisDao implements IContractDao  {
 		Contract contract = new Contract(); 
 		contract.setId(id); 
 		List<Contract> list = this.query(sql, Contract.class, contract); 
-		if(list == null || list.isEmpty()) return null; 
-		else return list.get(0);	
+		if(list == null || list.isEmpty()) {
+			return null;
+		}
+		else {
+			return list.get(0);
+		}
 	}
 
 	@Override

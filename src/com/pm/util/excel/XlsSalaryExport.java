@@ -92,8 +92,14 @@ public class XlsSalaryExport extends XlsSimpleExport {
 	@Override
 	public <T> boolean specialHand(T t, List<Column> columns, boolean addNumber){
 		
-		if(t.getClass() == Salary.class){
-			Salary salary = (Salary)t;
+		if(t.getClass() == Salary.class || t.getClass() == OtherSalary.class){
+			String specialHandVal = "";
+			if(t.getClass() == Salary.class){
+				specialHandVal = ((Salary)t).getProject_name();
+			}else if( t.getClass() == OtherSalary.class){
+				specialHandVal = ((OtherSalary)t).getDept_name();
+			}
+			AbstractSalary salary = (AbstractSalary)t;
 			if(salary.getSalary_id() == null){
 				int len = columns.size() + (addNumber ? 1 : 0);
 				for(int i = 0; i < len; i++){					
@@ -111,7 +117,7 @@ public class XlsSalaryExport extends XlsSimpleExport {
 						style.setFont(font1);						
 						cell.setCellStyle(style);
 						
-						cell.setCellValue(salary.getProject_name());	
+						cell.setCellValue(specialHandVal);
 						break;
 					}else {
 						XSSFCell cell = getCurrRow().createCell(i);

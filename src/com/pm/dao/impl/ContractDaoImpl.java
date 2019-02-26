@@ -1,6 +1,8 @@
 package com.pm.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -66,7 +68,24 @@ public class ContractDaoImpl extends BatisDao implements IContractDao  {
 		UserPermit userPermit,
 		Pager<Contract> pager){
 		String sql = "ContractMapping.queryContract"; 
-		Pager<Contract> pager1 =  this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql,Contract.class, contract,userPermit); 
+		Pager<Contract> pager1 =  this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql,Contract.class, contract,userPermit);
+
+
+
+		sql = "ContractMapping.queryContractTotalAmount";
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(contract != null) {
+			map.put(contract.getClass().getSimpleName(), contract);
+		}
+		if(userPermit != null) {
+			map.put(userPermit.getClass().getSimpleName(), userPermit);
+		}
+		Double amount = getSqlSession().selectOne(sql,map);
+		if(amount != null) {
+			double total_amount = amount.doubleValue();
+			pager1.setTotal_amount(total_amount);
+		}
+
 		return pager1;
 	}
 

@@ -113,6 +113,9 @@ public class Project implements Serializable {
 	
 	@EntityAnnotation(item_name="批复人")
 	private String approve_user_name;
+
+	//查询条件  1:有 0:无
+	private String haveContract ;
 	
 	/**
 	 * 项目已用成本
@@ -455,7 +458,7 @@ public class Project implements Serializable {
 	 */
 	public boolean getExceed_budget() {
 		if(estimate_costs > 0){
-			if(amount > estimate_costs) return true;
+			if(amount > estimate_costs) {return true;}
 		}
 		return false;
 	}
@@ -484,13 +487,12 @@ public class Project implements Serializable {
 		this.project_client_no = project_client_no;
 	}
 
-	
-	
-	
-	
-	
-	
 
+	public String getHaveContract() {
+		return haveContract;
+	}
 
-
+	public void setHaveContract(String haveContract) {
+		this.haveContract = haveContract;
+	}
 }

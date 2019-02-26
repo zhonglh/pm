@@ -1,17 +1,17 @@
 package com.pm.util.constant;
 
 /**
- * 数据范围
+ * 项目合同(附件)类型
  * @author Administrator
  */
 
-public enum EnumDataRange {
+public enum EnumProjectContractType {
 
-    All("1" , "全部"),
-    SELF_DEPT("2" , "本部门"),
-    SELF("3" , "本人"),
 
-    ;
+    PAY("0" , "付款合同"),
+    GATHER("1" , "收款合同"),
+
+            ;
 
 
     private String code;
@@ -19,14 +19,14 @@ public enum EnumDataRange {
 
 
 
-    private EnumDataRange(String code, String label) {
+    private EnumProjectContractType(String code, String label) {
         this.code = code;
         this.label = label;
     }
 
 
-    public static EnumDataRange getEnumByCode(String code){
-        for(EnumDataRange enum1 : EnumDataRange.values()){
+    public static EnumProjectContractType getEnumByCode(String code){
+        for(EnumProjectContractType enum1 : EnumProjectContractType.values()){
             if(enum1.getCode().equals(code)){
                 return enum1;
             }
@@ -48,7 +48,6 @@ public enum EnumDataRange {
     public void setLabel(String label) {
         this.label = label;
     }
+    
+    
 }
-
-
-

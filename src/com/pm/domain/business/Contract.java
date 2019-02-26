@@ -93,8 +93,10 @@ public class Contract extends IdEntity implements Serializable {
 	private String monthly_expenses_str;
 
 	private String errorInfo = "";
-	
-	
+
+
+	//提醒标志
+	private int remind;
 
 	//查询条件
 	private Timestamp date1;
@@ -287,10 +289,13 @@ public class Contract extends IdEntity implements Serializable {
 	}
 	public void setDate2(Timestamp date2) {
 		this.date2 = date2;
-	}   
+	}
 
-	
-	
+	public int getRemind() {
+		return remind;
+	}
 
-
+	public void setRemind(int remind) {
+		this.remind = remind;
+	}
 }

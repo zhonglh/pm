@@ -1,21 +1,5 @@
 package com.pm.action;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.poi.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.common.actions.BaseAction;
 import com.common.beans.Pager;
 import com.common.utils.IDKit;
@@ -25,11 +9,7 @@ import com.pm.domain.business.DicData;
 import com.pm.domain.business.OtherStaff;
 import com.pm.domain.business.Project;
 import com.pm.domain.system.User;
-import com.pm.service.IContractService;
-import com.pm.service.IDicDataService;
-import com.pm.service.IOtherStaffService;
-import com.pm.service.IProjectService;
-import com.pm.service.IRoleService;
+import com.pm.service.*;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.BusinessUtil;
 import com.pm.util.constant.EnumDicType;
@@ -37,6 +17,19 @@ import com.pm.util.constant.EnumOperationType;
 import com.pm.util.constant.EnumPermit;
 import com.pm.util.excel.BusinessExcel;
 import com.pm.vo.UserPermit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -179,8 +172,12 @@ public class ContractAction extends BaseAction {
 			count = contractService.addContract(contract);
 		}catch(Exception e){
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "该单据已经存在！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "该单据已经存在！", true);
+		}
 	}
 
 
@@ -227,7 +224,7 @@ public class ContractAction extends BaseAction {
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
 
 		String sourceFile = this.getClass().getClassLoader().getResource("/templet/contract.xlsx").getPath();
-		DownloadBaseUtil.download(  sourceFile,  "合同模板.xlsx" ,response,false);
+		DownloadBaseUtil.download(  sourceFile,  "收款合同模板.xlsx" ,response,false);
 		return null;  
 	}  	
 
@@ -387,8 +384,9 @@ public class ContractAction extends BaseAction {
 			}
 		}
 		
-		if(contract.getErrorInfo() != null && !contract.getErrorInfo().isEmpty())
+		if(contract.getErrorInfo() != null && !contract.getErrorInfo().isEmpty()) {
 			b = false;
+		}
 		return b;
 	}
 

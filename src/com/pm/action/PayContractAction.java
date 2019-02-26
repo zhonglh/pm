@@ -117,13 +117,19 @@ public class PayContractAction extends BaseAction {
 		}
 
 
-		if(payContract.getCompany_name() == null || payContract.getCompany_name().isEmpty()) {
+		/*if(payContract.getCompany_name() == null || payContract.getCompany_name().isEmpty()) {
 			payContract.setCompany_name(request.getParameter("project.project_client_name"));
+		}*/
+
+
+		if(payContract.getManager_userid() == null || payContract.getManager_userid().isEmpty()) {
+			payContract.setManager_userid(request.getParameter("manager.user_id"));
 		}
 
 
-		payContract.setManager_userid(request.getParameter("manager.user_id"));
-		payContract.setManager_username(request.getParameter("manager.user_name"));
+		if(payContract.getManager_username() == null || payContract.getManager_username().isEmpty()) {
+			payContract.setManager_username(request.getParameter("manager.user_name"));
+		}
 	}
 
 
@@ -340,7 +346,7 @@ public class PayContractAction extends BaseAction {
 				payContract.setProject_id(project.getProject_id());
 				payContract.setProject_name(project.getProject_name());
 				payContract.setProject_no(project.getProject_no());
-				payContract.setCompany_name(project.getProject_client_name());
+				//payContract.setCompany_name(project.getProject_client_name());
 			}
 		}
 

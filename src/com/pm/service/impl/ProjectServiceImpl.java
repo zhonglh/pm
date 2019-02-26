@@ -48,8 +48,9 @@ public class ProjectServiceImpl implements IProjectService {
 		
 
 		if(projectContracts != null && projectContracts.length > 0){
-			for(ProjectContract projectContract : projectContracts)
-			projectDao.addProjectContract(projectContract);
+			for(ProjectContract projectContract : projectContracts) {
+				projectDao.addProjectContract(projectContract);
+			}
 		}	
 		return count;
 	}
@@ -71,7 +72,9 @@ public class ProjectServiceImpl implements IProjectService {
 
 				if(StringUtils.isEmpty(projectStaff.getStaff_id())){
 					ProjectStaff temp = projectDao.getProjectStaff(projectStaff);
-					if(temp != null ) projectStaff.setStaff_id(temp.getStaff_id());
+					if(temp != null ) {
+						projectStaff.setStaff_id(temp.getStaff_id());
+					}
 				}
 				
 				StaffCost staffCost = new StaffCost();
@@ -85,8 +88,9 @@ public class ProjectServiceImpl implements IProjectService {
 		}		
 
 		if(projectContracts != null && projectContracts.length > 0){
-			for(ProjectContract projectContract : projectContracts)
-			projectDao.addProjectContract(projectContract);
+			for(ProjectContract projectContract : projectContracts) {
+				projectDao.addProjectContract(projectContract);
+			}
 		}
 		return count;
 	}

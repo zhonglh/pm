@@ -85,6 +85,7 @@ public class PayContractDaoImpl extends BatisDao implements IPayContractDao  {
 
 		String sql = "PayContractMapping.queryPayContract"; 
 		Pager<PayContract> pager1 =  this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql,PayContract.class, payContract,userPermit); 
+
 		sql = "PayContractMapping.queryPayContractTotalAmount";
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(payContract != null) {

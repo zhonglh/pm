@@ -91,7 +91,7 @@
 		</thead>
 		<tbody>
 			<c:forEach var="contract"  varStatus="status1" items="${list}">
-			<tr target="sid" rel="${contract.id }">
+			<tr target="sid" rel="${contract.id }"  <c:if test="${contract.remind == 1}">style="background-color:red;"</c:if> >
 				<td><input name="ids" value="${contract.id }" type="checkbox" /></td>
 				<td>${pageNum*pageSize-pageSize + status1.index + 1 }</td>
 				<td>${contract.project_name }</td>
@@ -114,6 +114,6 @@
 	</table>	
 
 	<!-- 分页 -->
-	<c:import url="../_frag/pager/panelBar.jsp"></c:import>
+	<c:import url="../_frag/pager/panelBar_totalAmount.jsp"></c:import>
 	
 </div>	

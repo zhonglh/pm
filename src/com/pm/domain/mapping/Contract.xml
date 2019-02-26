@@ -74,11 +74,16 @@
 		where id=#{id}
 	</delete>
 
+
+
+
+
 	<select id="queryContractTotalAmount" parameterType="map"  resultType="double" >
-		SELECT sum(amount) FROM (
-			<include refid="contractPagerSql"/>
-		) c
+		SELECT sum( ifnull(monthly_expenses,0) ) FROM (
+		<include refid="contractPagerSql"/>
+		) c where (monthly_expenses2 is null or monthly_expenses2 = 0)
 	</select>
+
 
 	<select id="queryContractByPager_mysql" parameterType="map"  resultMap="contractMap" >
 		<include refid="contractPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
@@ -89,8 +94,14 @@
 	</select>
 
 	<sql id="contractPagerSql">
+		<![CDATA[
 		select contract.* ,project.project_name,project.project_no,dd_sa.dic_data_name as storage_addr_name,
-		client.client_name as project_client_name , otherstaff.staff_name as sales_username
+		client.client_name as project_client_name , otherstaff.staff_name as sales_username,
+		case WHEN
+			validity_date2 is not null
+			and date_add(validity_date2, interval -1 month) < now()
+			and date_add(validity_date2, interval 1 day) > now()
+		then 1 else 0 END as remind
 		from tb_contract contract 
 		INNER JOIN vb_project project 
 		on contract.project_id = project.project_id 
@@ -100,7 +111,7 @@
 		on contract.sales_userid = otherstaff.staff_id 
 		left join ts_dic_data dd_sa on contract.storage_addr = dd_sa.id 
 		WHERE 1=1 
-		
+		]]>
 		
 		<if test="Contract.project_id != null and Contract.project_id != ''">
 			AND project.project_id = #{Contract.project_id}

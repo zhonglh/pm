@@ -70,7 +70,7 @@
 	</delete>
 
 	<select id="queryPayContractTotalAmount" parameterType="map"  resultType="double" >
-		SELECT sum(amount) FROM (
+		SELECT sum( ifnull(amount,0) ) FROM (
 			<include refid="payContractPagerSql"/>
 		) c
 	</select>
@@ -84,13 +84,21 @@
 	</select>
 
 	<sql id="payContractPagerSql">
-		select pc.* ,project.project_name,project.project_no ,otherstaff.staff_name as manager_username
+		<![CDATA[
+		select pc.* ,project.project_name,project.project_no ,otherstaff.staff_name as manager_username,
+		case WHEN
+		validity_date2 is not null
+		and date_add(validity_date2, interval -1 month) < now()
+		and date_add(validity_date2, interval 1 day) > now()
+		then 1 else 0 END as remind
 		from tb_pay_contract pc  
 		INNER JOIN vb_project project  
 		on pc.project_id = project.project_id
 		left join tb_other_staff otherstaff
 		on pc.manager_userid = otherstaff.staff_id
 		WHERE 1=1
+
+		]]>
 
 
 		<if test="PayContract.project_id != null and PayContract.project_id != ''">

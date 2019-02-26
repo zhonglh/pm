@@ -16,6 +16,9 @@ import com.pm.domain.business.StaffCost;
 import com.pm.vo.UserPermit;
 
 
+/**
+ * @author Administrator
+ */
 @Component
 public class ProjectDaoImpl extends BatisDao implements IProjectDao {
 
@@ -36,7 +39,9 @@ public class ProjectDaoImpl extends BatisDao implements IProjectDao {
 
 	@Override
 	public void deleteProject(Project[] projects) {
-		if(projects == null) return ;
+		if(projects == null) {
+			return ;
+		}
 		String sql = "ProjectMapping.deleteProject";
 		for(Project project : projects){
 			deleteProjectStaffByProject(project);
@@ -59,7 +64,9 @@ public class ProjectDaoImpl extends BatisDao implements IProjectDao {
 		map.put(Project.class.getSimpleName(), project);
 		String sql = "ProjectMapping.getProject";
 		List<Project> list = this.query(sql, Project.class ,map);
-		if(list == null || list.size() == 0) return null;
+		if(list == null || list.size() == 0) {
+			return null;
+		}
 		return list.get(0);
 	}
 	
@@ -105,8 +112,12 @@ public class ProjectDaoImpl extends BatisDao implements IProjectDao {
 	public ProjectStaff getProjectStaff(ProjectStaff projectStaff){
 		String sql = "ProjectMapping.getProjectStaff";
 		List<ProjectStaff> list = this.query(sql, ProjectStaff.class ,projectStaff);
-		if(list != null && list.size() >0) return list.get(0);
-		else return null;
+		if(list != null && list.size() >0) {
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override
@@ -125,6 +136,7 @@ public class ProjectDaoImpl extends BatisDao implements IProjectDao {
 	}
 	
 
+	@Override
 	public void doRemoveProjectStaff(ProjectStaff projectStaff) {
 		String sql = "ProjectMapping.doRemoveProjectStaff";
 		this.delete(sql, projectStaff);
@@ -160,8 +172,12 @@ public class ProjectDaoImpl extends BatisDao implements IProjectDao {
 	public ProjectContract getProjectContract(ProjectContract projectContract){
 		String sql = "ProjectMapping.getProjectContract";
 		List<ProjectContract> list = this.query(sql, ProjectContract.class,projectContract);
-		if(list == null || list.isEmpty()) return null;
-		else return list.get(0);
+		if(list == null || list.isEmpty()) {
+			return null;
+		}
+		else {
+			return list.get(0);
+		}
 	}
 
 	@Override

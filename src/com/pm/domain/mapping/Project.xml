@@ -153,11 +153,11 @@
 	
 	<insert id="addProjectContract" parameterType="com.pm.domain.business.ProjectContract">
 		insert into tb_project_contract_attachment(
-			attachment_id, project_id, attachment_name, attachment_path,
+			attachment_id,attachment_type, project_id, attachment_name, attachment_path,
 			build_datetime,build_userid,build_username
 		)
 		values(
-			#{attachment_id}, #{project_id},#{attachment_name}, #{attachment_path}, 
+			#{attachment_id},#{attachment_type}, #{project_id},#{attachment_name}, #{attachment_path},
 			#{build_datetime},#{build_userid},#{build_username}
 		)
 	</insert>
@@ -362,8 +362,18 @@
 		
 		<if test="Project.project_type != null and Project.project_type != ''">
 			AND project.project_type  = #{Project.project_type}
-		</if>	
-				
+		</if>
+
+
+		<if test="Project.haveContract != null and Project.haveContract == 1">
+			AND project.project_id  in (select project_id from tb_contract  union select project_id from tb_pay_contract)
+		</if>
+
+		<if test="Project.haveContract != null and Project.haveContract == 0">
+			AND project.project_id not in (select project_id from tb_contract  union select project_id from tb_pay_contract)
+		</if>
+
+
 		
 		<include refid="ProjectAuthMapping.permission"/>
 		

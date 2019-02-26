@@ -89,7 +89,7 @@
 		</thead>
 		<tbody>
 			<c:forEach var="payContract"  varStatus="status1" items="${list}">
-			<tr target="sid" rel="${payContract.id }">
+			<tr target="sid" rel="${payContract.id }" <c:if test="${payContract.remind == 1}">style="background-color:red;"</c:if> >
 				<td>
 						<input name="ids" value="${payContract.id }" type="checkbox" />
 				</td>

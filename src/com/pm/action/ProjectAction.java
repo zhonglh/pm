@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.util.constant.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,6 @@ import com.pm.service.IContractService;
 import com.pm.service.IProjectService;
 import com.pm.service.IRoleService;
 import com.pm.util.PubMethod;
-import com.pm.util.constant.BusinessUtil;
-import com.pm.util.constant.EnumOperationType;
-import com.pm.util.constant.EnumPermit;
-import com.pm.util.constant.EnumProjectType;
 import com.pm.util.excel.BusinessExcel;
 import com.pm.vo.UserPermit;
 
@@ -74,7 +71,9 @@ public class ProjectAction extends BaseAction {
 			project.setProject_no(request.getParameter("project_no"));
 			project.setProject_name(null);
 			b = projectService.isExist(project);
-			if(b) error = "该项目编号已经存在";
+			if(b) {
+				error = "该项目编号已经存在";
+			}
 		}else {
 			error = "该项目名称已经存在";
 		}
@@ -91,7 +90,7 @@ public class ProjectAction extends BaseAction {
 	
 	/**
 	 * 导出Excel(普通方式导出)
-	 * @param searchStaffCost
+	 * @param searchProject
 	 * @param res
 	 * @param request
 	 */
@@ -277,16 +276,21 @@ public class ProjectAction extends BaseAction {
 	 */
 	private boolean checkStaff(ProjectStaff[] projectStaffs){
 		boolean b = true;
-		if(projectStaffs == null || projectStaffs.length <= 1) return b;
+		if(projectStaffs == null || projectStaffs.length <= 1) {
+			return b;
+		}
 		Map<String,String> map = new HashMap<String,String>();
 		
 		for(ProjectStaff projectStaff : projectStaffs){
 			
 			//用于修改项目人员时
-			if(StringUtils.isEmpty(projectStaff.getStaff_id())) continue;
+			if(StringUtils.isEmpty(projectStaff.getStaff_id())) {
+				continue;
+			}
 			
-			if(map.containsKey(projectStaff.getStaff_id()))
+			if(map.containsKey(projectStaff.getStaff_id())) {
 				return false;
+			}
 			else {
 				map.put(projectStaff.getStaff_id(), projectStaff.getStaff_id());
 			}
@@ -324,8 +328,12 @@ public class ProjectAction extends BaseAction {
 		}catch(Exception e){
 			
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "数据格式错误！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "数据格式错误！", true);
+		}
 		
 	}
 	
@@ -354,23 +362,29 @@ public class ProjectAction extends BaseAction {
 		}catch(Exception e){
 			
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "数据格式错误！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "数据格式错误！", true);
+		}
 		
 	}	
 	
 	
 	private ProjectContract[] getProjectContract(HttpServletRequest request,Project project,User sessionUser){
 
-		String[] rowIndex = request.getParameterValues("index_project_contract_attach_table");
 		List<ProjectContract> projectContractList = new ArrayList<ProjectContract>();
+
+		String[] rowIndex = request.getParameterValues("index_project_contract_attach1_table");
 		if(rowIndex != null && rowIndex.length >0){
 			for(String index : rowIndex) {
 				ProjectContract projectContract = new ProjectContract();
+				projectContract.setAttachment_type(EnumProjectContractType.GATHER.getCode());
 				projectContract.setProject_id(project.getProject_id());
-				projectContract.setAttachment_id(request.getParameter("items["+index+"].attachment.attachment_id"));
-				projectContract.setAttachment_name(request.getParameter("items["+index+"].attachment.attachment_name"));
-				projectContract.setAttachment_path(request.getParameter("items["+index+"].attachment.attachment_path"));
+				projectContract.setAttachment_id(request.getParameter("items["+index+"].attachment1.attachment_id"));
+				projectContract.setAttachment_name(request.getParameter("items["+index+"].attachment1.attachment_name"));
+				projectContract.setAttachment_path(request.getParameter("items["+index+"].attachment1.attachment_path"));
 				
 				projectContract.setBuild_datetime(PubMethod.getCurrentDate());
 				projectContract.setBuild_userid(sessionUser.getUser_id());
@@ -378,6 +392,29 @@ public class ProjectAction extends BaseAction {
 				projectContractList.add(projectContract);
 			}
 		}
+
+
+		rowIndex = request.getParameterValues("index_project_contract_attach0_table");
+		if(rowIndex != null && rowIndex.length >0){
+			for(String index : rowIndex) {
+				ProjectContract projectContract = new ProjectContract();
+				projectContract.setAttachment_type(EnumProjectContractType.PAY.getCode());
+				projectContract.setProject_id(project.getProject_id());
+				projectContract.setAttachment_id(request.getParameter("items["+index+"].attachment0.attachment_id"));
+				projectContract.setAttachment_name(request.getParameter("items["+index+"].attachment0.attachment_name"));
+				projectContract.setAttachment_path(request.getParameter("items["+index+"].attachment0.attachment_path"));
+
+				projectContract.setBuild_datetime(PubMethod.getCurrentDate());
+				projectContract.setBuild_userid(sessionUser.getUser_id());
+				projectContract.setBuild_username(sessionUser.getUser_name());
+				projectContractList.add(projectContract);
+			}
+		}
+
+
+
+
+
 		ProjectContract[] projectContracts = null;
 		if(projectContractList.size() > 0) {
 			projectContracts = new ProjectContract[projectContractList.size()];
@@ -539,7 +576,9 @@ public class ProjectAction extends BaseAction {
 		projectStaff.setDelete_username(sessionUser.getUser_name());
 		
 		String selectProject = request.getParameter("selectProject");
-		if(!"1".equals(selectProject)) project_id = null;
+		if(!"1".equals(selectProject)) {
+			project_id = null;
+		}
 		
 		projectService.exchangeProjectStaff(projectStaff, project_id, technical_costDouble, join_project_datetimeTime);
 		

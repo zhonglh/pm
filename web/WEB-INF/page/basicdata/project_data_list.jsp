@@ -39,7 +39,7 @@
 			 
 			<li>
 				<label>项目类型：</label>
-				<select name="project_type" id="projecct_type" style="width:133px">				
+				<select name="project_type" id="projecct_type" style="width:153px">
 					<option value=""><spring:message code="project.type." /></option>
 					<option value="1" <c:if test="${project.project_type == '1' }">selected</c:if> ><spring:message code="project.type.1" /></option>
 					<option value="2" <c:if test="${project.project_type == '2' }">selected</c:if> ><spring:message code="project.type.2" /></option>
@@ -52,7 +52,19 @@
 				<label>客户名称：</label>
 				<input type="hidden" size="2" name="client.client_id" value="${project.project_client_id }"/>
 				<input name="client.client_name" class="text" type="text" size="20"  value="${project.project_client_name }" />
-			</li>		
+			</li>
+
+
+
+			<li>
+				<label>是否有合同：</label>
+				<select name="haveContract" id="haveContract" style="width:153px">
+					<option value=""></option>
+					<option value="0" <c:if test="${project.haveContract == '0' }">selected</c:if> >无</option>
+					<option value="1" <c:if test="${project.haveContract == '1' }">selected</c:if> >有</option>
+				</select>
+			</li>
+
  			
 
 				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>

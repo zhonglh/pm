@@ -9,6 +9,7 @@
 <div class="pageContent">
 	<div class="pageFormContent" layoutH="97">
 		<input type="hidden" id="project_id" name="project_id" value="${param.project_id }"/>
+		<input type="hidden" id="attachment_type" name="attachment_type" value="${param.attachment_type }"/>
 		<dl>
 			<dt>附件：</dt><dd><input type="file" name="image" class="required" size="40" /></dd>
 		</dl>

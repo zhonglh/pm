@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 public class ProjectContract implements Serializable {
 	
 	private String attachment_id;
+	private String attachment_type;
 	private String project_id;
 	private String attachment_name;
 	private String attachment_path;
@@ -26,6 +27,15 @@ public class ProjectContract implements Serializable {
 	public void setAttachment_id(String attachment_id) {
 		this.attachment_id = attachment_id;
 	}
+
+	public String getAttachment_type() {
+		return attachment_type;
+	}
+
+	public void setAttachment_type(String attachment_type) {
+		this.attachment_type = attachment_type;
+	}
+
 	public String getProject_id() {
 		return project_id;
 	}

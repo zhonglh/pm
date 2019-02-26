@@ -162,27 +162,58 @@
 		<div class="divider"></div>
 			
 
-		<div class="divider"></div>
-			
-			<h3 class="contentTitle">合同附件</h3>
-						<table id="project_contract_attach_table" class="list nowrap itemDetail" addButton="新增合同附件" width="100%">
-							<thead>
-								<tr>
-									<th width="300" fieldClass="required" type="attach" lookupPk="attachment_id" name="items[#index#].attachment.attachment_name" lookupGroup="items[#index#].attachment" lookupUrl="${webroot }/ProjectAction.do?method=toUplodad&project_id=${project1.project_id }" size="90" title="上传合同附件">附件名称</th>									
-									<th width="1" type="hidden" name="items[#index#].attachment.attachment_path" ></th>
-									<th type="del" width="60">操作</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="contractAttach"  varStatus="status1" items="${contractAttachs}">
-								<tr>
-									<td><a href="${webroot }/ProjectAction.do?method=printAttach&project_id=${contractAttach.project_id }&attachment_id=${contractAttach.attachment_id}">${contractAttach.attachment_name }</a></td>
-									<td width="1"></td>
-									<td width="60"><a class="btnDel" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem" href="${webroot }/ProjectAction.do?method=deleteProjectAttach&attachment_id=${contractAttach.attachment_id}&rownum=${status1.index}" ><span>删除附件</span></a></td>
-								</tr>			
-								</c:forEach>								
-							</tbody>
-						</table>	
+			<div class="divider"></div>
+
+			<h3 class="contentTitle">收款合同附件</h3>
+			<table id="project_contract_attach1_table" class="list nowrap itemDetail" addButton="新增收款合同附件" width="100%">
+				<thead>
+				<tr>
+					<th width="300" fieldClass="required" type="attach" lookupPk="attachment_id" name="items[#index#].attachment1.attachment_name" lookupGroup="items[#index#].attachment1" lookupUrl="${webroot }/ProjectAction.do?method=toUplodad&attachment_type=1&project_id=${project1.project_id }" size="90" title="上传收款合同附件">附件名称</th>
+					<th width="1" type="hidden" name="items[#index#].attachment1.attachment_path" ></th>
+					<th type="del" width="60">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="contractAttach"  varStatus="status1" items="${contractAttachs}">
+					<c:if test="${contractAttach.attachment_type=='1'}">
+					<tr>
+						<td><a href="${webroot }/ProjectAction.do?method=printAttach&project_id=${contractAttach.project_id }&attachment_id=${contractAttach.attachment_id}">${contractAttach.attachment_name }</a></td>
+						<td width="1"></td>
+						<td width="60"><a class="btnDel" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem" href="${webroot }/ProjectAction.do?method=deleteProjectAttach&attachment_id=${contractAttach.attachment_id}&rownum=${status1.index}" ><span>删除附件</span></a></td>
+					</tr>
+					</c:if>
+				</c:forEach>
+				</tbody>
+			</table>
+
+
+
+
+
+			<div class="divider"></div>
+
+			<h3 class="contentTitle">付款合同附件</h3>
+			<table id="project_contract_attach0_table" class="list nowrap itemDetail" addButton="新增付款合同附件" width="100%">
+				<thead>
+				<tr>
+					<th width="300" fieldClass="required" type="attach" lookupPk="attachment_id" name="items[#index#].attachment0.attachment_name" lookupGroup="items[#index#].attachment0" lookupUrl="${webroot }/ProjectAction.do?method=toUplodad&attachment_type=0&project_id=${project1.project_id }" size="90" title="上传付款合同附件">附件名称</th>
+					<th width="1" type="hidden" name="items[#index#].attachment0.attachment_path" ></th>
+					<th type="del" width="60">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="contractAttach"  varStatus="status1" items="${contractAttachs}">
+
+					<c:if test="${contractAttach.attachment_type=='0'}">
+					<tr>
+						<td><a href="${webroot }/ProjectAction.do?method=printAttach&project_id=${contractAttach.project_id }&attachment_id=${contractAttach.attachment_id}">${contractAttach.attachment_name }</a></td>
+						<td width="1"></td>
+						<td width="60"><a class="btnDel" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem" href="${webroot }/ProjectAction.do?method=deleteProjectAttach&attachment_id=${contractAttach.attachment_id}&rownum=${status1.index}" ><span>删除附件</span></a></td>
+					</tr>
+					</c:if>
+				</c:forEach>
+				</tbody>
+			</table>
 
 			<div class="divider"></div>
 			<p>

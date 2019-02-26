@@ -18,7 +18,7 @@ public class PayContract extends IdEntity implements Serializable {
     private String contract_no;
 
 
-    @EntityAnnotation(item_name="公司名称" ,item_sort=2)
+    @EntityAnnotation(item_name="公司名称" ,item_sort=2,length=100)
     private String company_name;
 
     @EntityAnnotation(item_name="执行合同" ,item_sort=3,length=300)
@@ -89,6 +89,8 @@ public class PayContract extends IdEntity implements Serializable {
 
     private String errorInfo="";
 
+    //提醒标志
+    private int remind;
 
     //查询条件
     private Timestamp date1;
@@ -299,5 +301,13 @@ public class PayContract extends IdEntity implements Serializable {
 
     public void setEffectivedate(String effectivedate) {
         this.effectivedate = effectivedate;
+    }
+
+    public int getRemind() {
+        return remind;
+    }
+
+    public void setRemind(int remind) {
+        this.remind = remind;
     }
 }

@@ -272,7 +272,7 @@ public class ProjectAction extends BaseAction {
 		payContract.setProject_id(project.getProject_id());
 		Pager<PayContract> payPager = payContractService.queryPayContract(payContract, userPermit, PubMethod.getPagerByAll(PayContract.class));
 		request.setAttribute("paycontract_read", userPermit.getPermit_id());
-		request.setAttribute("paycontracts", pager.getResultList());
+		request.setAttribute("paycontracts", payPager.getResultList());
 
 
 

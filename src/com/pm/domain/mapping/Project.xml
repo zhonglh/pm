@@ -369,7 +369,7 @@
 			AND project.project_id  in (select project_id from tb_contract  union select project_id from tb_pay_contract)
 		</if>
 
-		<if test="Project.haveContract != null and Project.haveContract == 0">
+		<if test="Project.haveContract != null  and Project.haveContract == 2">
 			AND project.project_id not in (select project_id from tb_contract  union select project_id from tb_pay_contract)
 		</if>
 

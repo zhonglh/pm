@@ -60,7 +60,7 @@
 				<label>是否有合同：</label>
 				<select name="haveContract" id="haveContract" style="width:153px">
 					<option value=""></option>
-					<option value="0" <c:if test="${project.haveContract == '0' }">selected</c:if> >无</option>
+					<option value="2" <c:if test="${project.haveContract == '2' }">selected</c:if> >无</option>
 					<option value="1" <c:if test="${project.haveContract == '1' }">selected</c:if> >有</option>
 				</select>
 			</li>

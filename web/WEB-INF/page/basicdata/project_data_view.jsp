@@ -219,6 +219,7 @@
 
 
 
+			<br>
 			<c:if test="${paycontract_read != null && paycontract_read != '' }">
 				<h3 class="contentTitle">付款合同</h3>
 				<table id="project_constract0_table" class="list nowrap " width="100%">
@@ -258,6 +259,7 @@
 
 
 
+			<br>
 			<h3 class="contentTitle">项目付款信息</h3>
 			<table id="project_expend_table" class="list nowrap " width="100%">
 				<thead>
@@ -283,8 +285,10 @@
 				</c:forEach>
 				</tbody>
 			</table>
-			
-			
+
+			<br>
+
+			<div class="divider"></div>
 			
 			<p>
 				<label>制单人：</label>  ${project1.build_username }

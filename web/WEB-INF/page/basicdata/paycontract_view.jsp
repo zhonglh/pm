@@ -43,7 +43,6 @@
 				<label>分包项目：</label>
 				${payContract1.project_name }
 			</p>
-			project_name
 
 			<p>
 				<label>提交日期：</label>

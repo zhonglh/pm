@@ -76,6 +76,9 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 			for(DeptStaff deptStaff : deptStaffs){
 				deptStaff.setDept_staff_id(IDKit.getUUID());
 				deptStaffService.addDeptStaff(deptStaff);
+				if(deptStaff.getLeave_dept_datetime() != null) {
+					deptStaffService.deleteDeptStaff(new DeptStaff[]{deptStaff});
+				}
 			}
 		}
 
@@ -141,6 +144,11 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 					deptStaffService.addDeptStaff(deptStaff);
 				}else {
 					deptStaffService.updateDeptStaff(deptStaff);
+				}
+
+
+				if(deptStaff.getLeave_dept_datetime() != null) {
+					deptStaffService.deleteDeptStaff(new DeptStaff[]{deptStaff});
 				}
 			}
 		}

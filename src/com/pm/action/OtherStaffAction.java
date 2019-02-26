@@ -1095,6 +1095,10 @@ public class OtherStaffAction extends BaseAction{
                 }
                 if(leave_dept_datetime != null && leave_dept_datetime.length() > 0){
                     deptStaff.setDelete_flag(BusinessUtil.DELETEED);
+
+                    deptStaff.setDelete_datetime(PubMethod.getCurrentDate());
+                    deptStaff.setDelete_userid(sessionUser.getUser_id());
+                    deptStaff.setDelete_username(sessionUser.getUser_name());
                     deptStaff.setLeave_dept_datetime(new Timestamp(DateKit.fmtStrToDate(leave_dept_datetime).getTime()));
                 }else {
                     deptStaff.setDelete_flag(BusinessUtil.NOT_DELETEED);

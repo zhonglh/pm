@@ -3,6 +3,7 @@ package com.pm.service.impl;
 import java.util.List;
 
 import com.common.exceptions.PMException;
+import com.common.utils.IDKit;
 import com.pm.domain.business.*;
 import com.pm.service.*;
 import org.apache.commons.lang.StringUtils;
@@ -33,13 +34,18 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 
 	@Autowired
 	private IStaffPositionsService staffPositionsService;
+
+
+	@Autowired
+	private IDeptStaffService deptStaffService;
 	
 	@Override
 	public int addOtherStaff(OtherStaff otherStaff,
 							 StaffAssessment[] staffAssessments,
 							 StaffPositions[] staffPositionss,
 							 StaffRaiseRecord[] staffRaiseRecords,
-							 StaffRewardPenalty[] staffRewardPenaltys) {
+							 StaffRewardPenalty[] staffRewardPenaltys,
+							 DeptStaff[] deptStaffs) {
 
 		if(staffAssessments != null && staffAssessments.length >0){
 			for(StaffAssessment staffAssessment : staffAssessments){
@@ -64,6 +70,15 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 				staffRewardPenaltyService.addStaffRewardPenalty(staffRewardPenalty);
 			}
 		}
+
+
+		if(deptStaffs != null && deptStaffs.length >0){
+			for(DeptStaff deptStaff : deptStaffs){
+				deptStaff.setDept_staff_id(IDKit.getUUID());
+				deptStaffService.addDeptStaff(deptStaff);
+			}
+		}
+
 		return otherStaffDao.addOtherStaff(otherStaff);
 	}
 
@@ -72,7 +87,8 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 								StaffAssessment[] staffAssessments,
 								StaffPositions[] staffPositionss,
 								StaffRaiseRecord[] staffRaiseRecords,
-								StaffRewardPenalty[] staffRewardPenaltys) {
+								StaffRewardPenalty[] staffRewardPenaltys,
+								DeptStaff[] deptStaffs) {
 
 
 
@@ -113,6 +129,18 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 					staffRewardPenaltyService.addStaffRewardPenalty(staffRewardPenalty);
 				}else {
 					staffRewardPenaltyService.updateStaffRewardPenalty(staffRewardPenalty);
+				}
+			}
+		}
+
+
+		if(deptStaffs != null && deptStaffs.length >0){
+			for(DeptStaff deptStaff : deptStaffs){
+				if(StringUtils.isEmpty(deptStaff.getDept_staff_id())) {
+					deptStaff.setDept_staff_id(IDKit.getUUID());
+					deptStaffService.addDeptStaff(deptStaff);
+				}else {
+					deptStaffService.updateDeptStaff(deptStaff);
 				}
 			}
 		}

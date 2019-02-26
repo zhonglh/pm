@@ -591,10 +591,6 @@
 			<table id="dept_staff_table" class="list nowrap itemDetail" addButton="新建部门经历" width="100%">
 				<thead>
 				<tr>
-
-
-
-
 					<th width="120" type="lookup" notLookUp="1" fieldClass="required" name="items[#index#].dept.dept_name" lookupGroup="items[#index#].dept" suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup"   lookupPk="dept_id" size="12">部门</th>
 					<th width="100" type="date" postField="join_dept_datetime" defaultVal="${currDate }"  name="items[#index#].join_dept_datetime"  size="10" fieldClass="date required">加入部门日期</th>
 					<th width="100" type="date" postField="leave_dept_datetime"   name="items[#index#].leave_dept_datetime"  size="10" fieldClass="date">离开部门日期</th>

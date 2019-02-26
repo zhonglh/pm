@@ -15,7 +15,8 @@ public interface IOtherStaffService {
 							 StaffAssessment[] staffAssessments,
 							 StaffPositions[] staffPositionss,
 							 StaffRaiseRecord[] staffRaiseRecords,
-							 StaffRewardPenalty[] staffRewardPenaltys) ;
+							 StaffRewardPenalty[] staffRewardPenaltys,
+							 DeptStaff[] deptStaffs) ;
 
 
 	@LogAnnotation(operation_type=LogConstant.OPERATION_UPDATE,entity_type=LogConstant.ENTITY_OTHER_STAFF)
@@ -23,7 +24,8 @@ public interface IOtherStaffService {
 								StaffAssessment[] staffAssessments,
 								StaffPositions[] staffPositionss,
 								StaffRaiseRecord[] staffRaiseRecords,
-								StaffRewardPenalty[] staffRewardPenaltys) ;
+								StaffRewardPenalty[] staffRewardPenaltys,
+								DeptStaff[] deptStaffs) ;
 
 
 	@LogAnnotation(operation_type=LogConstant.OPERATION_DELETE,entity_type=LogConstant.ENTITY_OTHER_STAFF)

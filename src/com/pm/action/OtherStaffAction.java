@@ -1,5 +1,6 @@
 package com.pm.action;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -154,7 +155,7 @@ public class OtherStaffAction extends BaseAction{
                             staffCost1.setJobharm_insurance_bycompany(insuranceGrade.getJobharm_insurance_bycompany());
                             staffCost1.setReservefund_bypcompany(insuranceGrade.getReservefund_bypcompany());
 
-                            otherStaffService.updateOtherStaff(staffCost1, null, null, null, null);
+                            otherStaffService.updateOtherStaff(staffCost1, null, null,null, null, null);
                         }
                     }
                 }
@@ -327,7 +328,7 @@ public class OtherStaffAction extends BaseAction{
 		for(OtherStaff otherStaff : otherStaffs){
 			if(otherStaff.getErrorInfo()==null || otherStaff.getErrorInfo().length() <= 0){
 				try{
-					otherStaffService.addOtherStaff(otherStaff , null, null, null, null);
+					otherStaffService.addOtherStaff(otherStaff , null, null, null, null, null);
 					index ++;
 				}catch(Exception e){
 					otherStaff.setErrorInfo(e.getMessage());
@@ -1067,6 +1068,55 @@ public class OtherStaffAction extends BaseAction{
 
 
 
+    private DeptStaff[] getDeptStaffs(HttpServletRequest request,OtherStaff otherStaff,User sessionUser){
+
+        String[] rowIndex = request.getParameterValues("index_dept_staff_table");
+
+        List<DeptStaff> deptStaffList = new ArrayList<DeptStaff>();
+        if(rowIndex != null && rowIndex.length >0){
+            for(String index : rowIndex) {
+                DeptStaff deptStaff = new DeptStaff();
+                String dept_staff_id = request.getParameter("items["+index+"]."+"dept_staff_id");
+
+                String dept_id = request.getParameter("items["+index+"].dept."+"dept_id");
+                String dept_name = request.getParameter("items["+index+"].dept."+"dept_name");
+                String join_dept_datetime= request.getParameter("items["+index+"]."+"join_dept_datetime");
+                String leave_dept_datetime = request.getParameter("items["+index+"]."+"leave_dept_datetime");
+                String description = request.getParameter("items["+index+"]."+"description");
+
+                deptStaff.setDept_staff_id(StringUtils.isEmpty(dept_staff_id)?null :dept_staff_id );
+                deptStaff.setDept_id(dept_id);
+                deptStaff.setDept_name(dept_name);
+                deptStaff.setStaff_id(otherStaff.getStaff_id());
+                deptStaff.setDescription(description);
+
+                if(join_dept_datetime != null && join_dept_datetime.length() > 0){
+                    deptStaff.setJoin_dept_datetime(new Timestamp(DateKit.fmtStrToDate(join_dept_datetime).getTime()));
+                }
+                if(leave_dept_datetime != null && leave_dept_datetime.length() > 0){
+                    deptStaff.setDelete_flag(BusinessUtil.DELETEED);
+                    deptStaff.setLeave_dept_datetime(new Timestamp(DateKit.fmtStrToDate(leave_dept_datetime).getTime()));
+                }else {
+                    deptStaff.setDelete_flag(BusinessUtil.NOT_DELETEED);
+                }
+
+                deptStaff.setBuild_datetime(PubMethod.getCurrentDate());
+                deptStaff.setBuild_userid(sessionUser.getUser_id());
+                deptStaff.setBuild_username(sessionUser.getUser_name());
+
+                deptStaffList.add(deptStaff);
+            }
+        }
+
+        DeptStaff[] deptStaffs = null;
+        if(deptStaffList.size() > 0) {
+            deptStaffs = new DeptStaff[deptStaffList.size()];
+            PubMethod.List2Array(deptStaffList, deptStaffs, DeptStaff.class);
+        }
+
+        return deptStaffs;
+    }
+
 
 
     @RequestMapping(params = "method=addOtherStaff")
@@ -1099,7 +1149,10 @@ public class OtherStaffAction extends BaseAction{
 
             StaffRewardPenalty[] staffRewardPenaltys = this.getStaffRewardPenalty(otherStaff, sessionUser, request);
 
-			count = otherStaffService.addOtherStaff(otherStaff ,staffAssessments ,staffPositionss, staffRaiseRecords,staffRewardPenaltys );
+
+            DeptStaff[] deptStaffs = this.getDeptStaffs(request,otherStaff,sessionUser);
+
+			count = otherStaffService.addOtherStaff(otherStaff ,staffAssessments ,staffPositionss, staffRaiseRecords,staffRewardPenaltys , deptStaffs );
 		}catch(Exception e){
 			
 		}
@@ -1134,7 +1187,10 @@ public class OtherStaffAction extends BaseAction{
 
             StaffRewardPenalty[] staffRewardPenaltys = this.getStaffRewardPenalty(otherStaff, sessionUser, request);
 
-			count = otherStaffService.updateOtherStaff(otherStaff,staffAssessments ,staffPositionss, staffRaiseRecords,staffRewardPenaltys);
+
+            DeptStaff[] deptStaffs = this.getDeptStaffs(request,otherStaff,sessionUser);
+
+			count = otherStaffService.updateOtherStaff(otherStaff,staffAssessments ,staffPositionss, staffRaiseRecords,staffRewardPenaltys,deptStaffs);
 		}catch(Exception e){
 			
 		}

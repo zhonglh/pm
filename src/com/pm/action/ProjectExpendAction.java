@@ -81,9 +81,9 @@ public class ProjectExpendAction extends BaseAction {
 	
 	@RequestMapping(params = "method=downloadtemplet")
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/projectexpend.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "付款信息模板.xlsx" ,response,false);  		
+
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/projectexpend.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "付款信息模板.xlsx" ,response,false);
 		return null;  
 	}  	
 	

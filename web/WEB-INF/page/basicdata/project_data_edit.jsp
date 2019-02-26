@@ -160,8 +160,8 @@
 						</table>
 			
 		<div class="divider"></div>
-			
 
+			<br>
 			<div class="divider"></div>
 
 			<h3 class="contentTitle">收款合同附件</h3>
@@ -189,7 +189,7 @@
 
 
 
-
+			<br><br>
 			<div class="divider"></div>
 
 			<h3 class="contentTitle">付款合同附件</h3>

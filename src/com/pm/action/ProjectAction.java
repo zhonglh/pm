@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.domain.business.*;
+import com.pm.service.*;
 import com.pm.util.constant.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +26,7 @@ import com.common.utils.Base64Kit;
 import com.common.utils.DateKit;
 import com.common.utils.IDKit;
 import com.common.utils.file.FileKit;
-import com.pm.domain.business.Contract;
-import com.pm.domain.business.Project;
-import com.pm.domain.business.ProjectContract;
-import com.pm.domain.business.ProjectExpend;
-import com.pm.domain.business.ProjectStaff;
 import com.pm.domain.system.User;
-import com.pm.service.IContractService;
-import com.pm.service.IProjectService;
-import com.pm.service.IRoleService;
 import com.pm.util.PubMethod;
 import com.pm.util.excel.BusinessExcel;
 import com.pm.vo.UserPermit;
@@ -55,8 +49,15 @@ public class ProjectAction extends BaseAction {
 
 	@Autowired
 	private IContractService contractService;
-	
-	
+
+	@Autowired
+	private IPayContractService payContractService;
+
+
+	@Autowired
+	private IProjectExpendService projectExpendService;
+
+
 
 	@RequestMapping(params = "method=isExist")
 	public String isExist(HttpServletResponse res,HttpServletRequest request){
@@ -256,14 +257,35 @@ public class ProjectAction extends BaseAction {
 		request.setAttribute("project1", project);
 		request.setAttribute("currDate", DateKit.getCurrDate());
 		
-		//处理合同信息
+		//处理收款合同信息
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.CONTRACTVIEW.getId());
 		Contract contract = new Contract();
 		contract.setProject_id(project.getProject_id());
 		Pager<Contract> pager = contractService.queryContract(contract, userPermit, PubMethod.getPagerByAll(Contract.class));
 		request.setAttribute(EnumOperationType.READ.getKey(), userPermit.getPermit_id());	
 		request.setAttribute("contracts", pager.getResultList());
-		
+
+
+		//处理付款合同信息
+		userPermit = this.getUserPermit(request, roleService, EnumPermit.PAYCONTRACTVIEW.getId());
+		PayContract payContract = new PayContract();
+		payContract.setProject_id(project.getProject_id());
+		Pager<PayContract> payPager = payContractService.queryPayContract(payContract, userPermit, PubMethod.getPagerByAll(PayContract.class));
+		request.setAttribute("paycontract_read", userPermit.getPermit_id());
+		request.setAttribute("paycontracts", pager.getResultList());
+
+
+
+		//项目付款信息
+
+		UserPermit allPermit = new UserPermit();
+		allPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
+		ProjectExpend searchProjectExpend = new ProjectExpend();
+		searchProjectExpend.setProject_id(project.getProject_id());
+		Pager<ProjectExpend> projectExpendPager = projectExpendService.queryProjectExpend(searchProjectExpend , allPermit , PubMethod.getPagerByAll(request, ProjectExpend.class));
+		request.setAttribute("projectExpends", projectExpendPager.getResultList());
+
+
 		return "basicdata/project_data_view";
 		
 	}

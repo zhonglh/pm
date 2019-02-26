@@ -125,34 +125,62 @@
 						</table>	
 			
 		<div class="divider"></div>
-			
 
-			
-			<h3 class="contentTitle">合同附件</h3>
-						<table id="project_contract_attach_table" class="list nowrap " addButton="新增合同附件" width="100%">
-							<thead>
-								<tr>
-									<th width="300" type="attach" lookupPk="attachment_id" name="items[#index#].attachment.attachment_name" lookupGroup="items[#index#].attachment" lookupUrl="${webroot }/ProjectAction.do?method=toUplodad&project_id=${project.project_id }" size="90" title="上传合同附件">附件名称</th>									
-									
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="contractAttach"  varStatus="status1" items="${contractAttachs}">
-								<tr>
-									<td><a target="dwzExport" targetType="navTab" href="${webroot }/ProjectAction.do?method=printAttach&project_id=${contractAttach.project_id }&attachment_id=${contractAttach.attachment_id}">${contractAttach.attachment_name }</a></td>
-																
-								</tr>			
-								</c:forEach>
-							</tbody>
-						</table>	
+
+			<br>
+			<div class="divider"></div>
+			<h3 class="contentTitle">收款合同附件</h3>
+				<table id="project_contract_attach_table" class="list nowrap "  width="100%">
+					<thead>
+						<tr>
+							<th width="300" type="attach" lookupPk="attachment_id" name="items[#index#].attachment.attachment_name" lookupGroup="items[#index#].attachment" lookupUrl="${webroot }/ProjectAction.do?method=toUplodad&project_id=${project.project_id }" size="90" title="上传合同附件">附件名称</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="contractAttach"  varStatus="status1" items="${contractAttachs}">
+						<c:if test="${contractAttach.attachment_type=='1'}">
+						<tr>
+							<td><a target="dwzExport" targetType="navTab" href="${webroot }/ProjectAction.do?method=printAttach&project_id=${contractAttach.project_id }&attachment_id=${contractAttach.attachment_id}">${contractAttach.attachment_name }</a></td>
+
+						</tr>
+						</c:if>
+						</c:forEach>
+					</tbody>
+				</table>
 
 			<div class="divider"></div>
-			
+
+
+			<br><br>
+			<div class="divider"></div>
+			<h3 class="contentTitle">付款合同附件</h3>
+			<table id="project_contract_attach_table" class="list nowrap "  width="100%">
+				<thead>
+				<tr>
+					<th width="300" type="attach" lookupPk="attachment_id" name="items[#index#].attachment.attachment_name" lookupGroup="items[#index#].attachment" lookupUrl="${webroot }/ProjectAction.do?method=toUplodad&project_id=${project.project_id }" size="90" title="上传合同附件">附件名称</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="contractAttach"  varStatus="status1" items="${contractAttachs}">
+					<c:if test="${contractAttach.attachment_type=='0'}">
+					<tr>
+						<td><a target="dwzExport" targetType="navTab" href="${webroot }/ProjectAction.do?method=printAttach&project_id=${contractAttach.project_id }&attachment_id=${contractAttach.attachment_id}">${contractAttach.attachment_name }</a></td>
+					</tr>
+					</c:if>
+				</c:forEach>
+				</tbody>
+			</table>
+
+			<div class="divider"></div>
+
+			<br>
+			<div class="divider"></div>
 			
 		
 			<c:if test="${operation_read != null && operation_read != '' }">
-				<h3 class="contentTitle">合同管理</h3>
-							<table id="project_staff_cost_table" class="list nowrap " width="100%">
+				<h3 class="contentTitle">收款合同</h3>
+							<table id="project_constract1_table" class="list nowrap " width="100%">
 								<thead>
 									<tr>
 										<th width="100">合同编号</th>	
@@ -168,7 +196,7 @@
 									<tr>
 										<td>
 											<a class="add" href="${webroot}/ContractAction.do?method=toView&id=${contract.id }"  
-													mask="true" width="810" height="390" rel="contractdetail" title="合同明细"  target="dialog">
+													mask="true" width="800" height="390" rel="contractdetail" title="合同明细"  target="dialog">
 												<u>${contract.contract_no }</u>
 											</a>
 										</td>
@@ -184,6 +212,77 @@
 	
 				<div class="divider"></div>
 			</c:if>
+
+
+
+
+
+
+
+			<c:if test="${paycontract_read != null && paycontract_read != '' }">
+				<h3 class="contentTitle">付款合同</h3>
+				<table id="project_constract0_table" class="list nowrap " width="100%">
+					<thead>
+					<tr>
+						<th width="100">合同编号</th>
+						<th width="280">执行合同</th>
+						<th width="120">金额</th>
+						<th width="80">负责人</th>
+						<th width="80">客户联系人</th>
+						<th width="260">公司联系人</th>
+					</tr>
+					</thead>
+					<tbody>
+					<c:forEach var="contract"  varStatus="status1" items="${paycontracts}">
+						<tr>
+							<td>
+								<a class="add" href="${webroot}/PayContractAction.do?method=toView&id=${contract.id }"
+								   mask="true" width="800" height="390" rel="contractdetail" title="合同明细"  target="dialog">
+									<u>${contract.contract_no }</u>
+								</a>
+							</td>
+							<td>${contract.exec_contract }</td>
+							<td><b>${contract.amount }</b></td>
+							<td>${contract.manager_username }</td>
+							<td>${contract.client_linkman }</td>
+							<td>${contract.company_name }</td>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+
+				<div class="divider"></div>
+			</c:if>
+
+
+
+
+
+			<h3 class="contentTitle">项目付款信息</h3>
+			<table id="project_expend_table" class="list nowrap " width="100%">
+				<thead>
+				<tr>
+					<th width="80">应付金额</th>
+					<th width="150">分包商名称</th>
+					<th width="100">分包合同编号</th>
+					<th width="100">收到的发票号</th>
+					<th width="80">应付月份</th>
+					<th width="80">核单人</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="projectExpend"  varStatus="status1" items="${projectExpends}">
+					<tr>
+						<td><fmt:formatNumber value="${projectExpend.amount }" type="currency" pattern="###,###,##0.00"/></td>
+						<td>${projectExpend.sub_contractor_name }</td>
+						<td>${projectExpend.sub_contractor_no }</td>
+						<td>${projectExpend.invoiceno }</td>
+						<td>${projectExpend.use_month }</td>
+						<td>${projectExpend.build_username }</td>
+					</tr>
+				</c:forEach>
+				</tbody>
+			</table>
 			
 			
 			

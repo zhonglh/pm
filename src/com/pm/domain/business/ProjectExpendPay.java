@@ -48,20 +48,25 @@ public class ProjectExpendPay extends IdEntity implements Serializable {
     private String project_no;
 
 
+    @EntityAnnotation(item_name="月份")
     private int use_month;
 
+    @EntityAnnotation(item_name="分包商名称")
     private String sub_contractor_name;
 
 
     @EntityAnnotation(item_name="应付金额" ,item_sort=23)
     private double amount;
 
-    @EntityAnnotation(item_name="累计已付金额" ,item_sort=26)
-    private double pay_amount_total;
 
 
     private String need_approve;
 
+
+    @Override
+    public String toString() {
+        return this.getUse_month() + ":" +this.getProject_name()  + ":" + this.getSub_contractor_name() ;
+    }
 
     public String getProject_expend_id() {
         return project_expend_id;
@@ -175,13 +180,6 @@ public class ProjectExpendPay extends IdEntity implements Serializable {
         this.amount = amount;
     }
 
-    public double getPay_amount_total() {
-        return pay_amount_total;
-    }
-
-    public void setPay_amount_total(double pay_amount_total) {
-        this.pay_amount_total = pay_amount_total;
-    }
 
     public String getProject_id() {
         return project_id;

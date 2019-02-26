@@ -8,6 +8,8 @@
 </form>
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/ProjectExpendPayAction.do?method=list" method="post">
+
+		<input type="hidden" name="project_expend_id" value="${projectExpend.project_expend_id}" />
 		<div class="searchBar">
 
 			<ul class="searchContent">
@@ -59,7 +61,7 @@
 
 
 			<c:if test="${operation_read != null && operation_read != '' }">
-				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=toView&id={sid}" mask="true" width="500"  height="400" rel="view_projectexpendpay" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
+				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=toView&id={sid}" mask="true" width="700"  height="550" rel="view_projectexpendpay" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
 			</c:if>
 
 			<c:if test="${operation_check != null && operation_check != '' }">

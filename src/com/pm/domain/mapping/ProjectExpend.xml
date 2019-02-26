@@ -55,13 +55,11 @@
 
 
 	<update id="doPay" parameterType="com.pm.domain.business.ProjectExpend">
-		update tb_project_expend set 
-		invoiceno  = #{invoiceno},
+		update tb_project_expend set
 		pay_date  = #{pay_date},
 		pay_amount = #{pay_amount}
 		where project_expend_id = #{project_expend_id}
 		and delete_flag = '0'
-	
 	</update>
 	
 

@@ -61,6 +61,20 @@ public class ProjectExpendPayDaoImpl extends BatisDao implements IProjectExpendP
 		}
 	}
 
+
+	@Override
+	public ProjectExpendPay getSumByProjectExpend(ProjectExpendPay projectExpendpay)  {
+
+		String sql = "ProjectExpendPayMapping.getSumByProjectExpend";
+		List<ProjectExpendPay> list = this.query(sql, ProjectExpendPay.class, projectExpendpay);
+		if(list == null || list.isEmpty()) {
+			return null;
+		}
+		else {
+			return list.get(0);
+		}
+	}
+
 	@Override
 	public Pager<ProjectExpendPay> queryProjectExpendPay(
 		ProjectExpendPay projectExpendpay,

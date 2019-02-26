@@ -27,7 +27,7 @@
 			</li>
 			<li>
 				<label>核单情况：</label>			
-				<select name="verify_flag" style="width:133px">
+				<select name="verify_flag" style="width:153px">
 				<option value="" <c:if test="${'' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag."/></option>
 				<option value="1" <c:if test="${'1' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.1"/></option>
 				<option value="2" <c:if test="${'2' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.2"/></option>
@@ -121,8 +121,9 @@
 			<li class="line">line</li>
 
 			<c:if test="${operation_update != null && operation_update != '' }">
-				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=list&project_expend_id={sid}" mask="true" width="950"  height="500" rel="update_project_expend" target="dialog" warn="请选择一条数据"><span>付款信息</span></a></li>
+				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=list&project_expend_id={sid}" mask="true" width="950"  height="500" rel="rel_119"  target="navTab" warn="请选择一条数据"><span>付款信息</span></a></li>
 			</c:if>
+
 
 		</ul>
 	</div>

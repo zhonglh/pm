@@ -55,7 +55,7 @@ public class ProjectExpendPayAction extends BaseAction {
 
 	private static final String sessionAttr = "ProjectExpendPays";
 
-	private static final String rel = "rel19";
+	private static final String rel = "rel_119";
 
 	@Autowired
 	private IProjectService projectService;
@@ -89,7 +89,9 @@ public class ProjectExpendPayAction extends BaseAction {
 
 		request.setAttribute("projectExpend", projectExpend);
 		request.setAttribute("projectExpendpay", projectExpendpay);
-		request.setAttribute(EnumOperationType.READ.getKey(), userPermit.getPermit_id());	
+
+		userPermit = this.getUserPermit(request, roleService, EnumPermit.PROJECTEXPENDVIEW.getId());
+		request.setAttribute(EnumOperationType.READ.getKey(), userPermit.getPermit_id());
 		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PROJECTEXPENDADD.getId());
 		request.setAttribute(EnumOperationType.INSERT.getKey(), userPermit1.getPermit_id());
 		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PROJECTEXPENDUPDATE.getId());
@@ -139,6 +141,9 @@ public class ProjectExpendPayAction extends BaseAction {
 	public String toView(ProjectExpendPay searchProjectExpendPay,HttpServletResponse res,HttpServletRequest request){
 		ProjectExpendPay projectExpendpay = projectExpendpayService.getProjectExpendPay(searchProjectExpendPay.getId());
 		request.setAttribute("projectExpendpay1", projectExpendpay);
+
+		request.setAttribute("projectExpend1", projectExpendService.getProjectExpend(projectExpendpay.getProject_expend_id()));
+
 		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PROJECTEXPENDCHECK.getId());
 		request.setAttribute(EnumOperationType.CHECK.getKey(), userPermit1.getPermit_id());
 		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PROJECTEXPENDUNCHECK.getId());
@@ -162,6 +167,15 @@ public class ProjectExpendPayAction extends BaseAction {
 	public String addProjectExpendPay(ProjectExpendPay addProjectExpendPay,HttpServletResponse res,HttpServletRequest request){
 		ProjectExpendPay projectExpendpay = addProjectExpendPay;	
 		paramprocess(request,projectExpendpay);
+
+		ProjectExpend projectExpend = projectExpendService.getProjectExpend(addProjectExpendPay.getProject_expend_id());
+
+		projectExpendpay.setProject_id(projectExpend.getProject_id());
+		projectExpendpay.setProject_name(projectExpend.getProject_name());
+		projectExpendpay.setProject_no(projectExpend.getProject_no());
+		projectExpendpay.setSub_contractor_name(projectExpend.getSub_contractor_name());
+		projectExpendpay.setUse_month(projectExpend.getUse_month());
+
 		User sessionUser = PubMethod.getUser(request);
 		projectExpendpay.setId(IDKit.generateId());
 		projectExpendpay.setBuild_datetime(PubMethod.getCurrentDate());

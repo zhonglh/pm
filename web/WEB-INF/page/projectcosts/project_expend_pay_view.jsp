@@ -5,6 +5,33 @@
 	<form method="post" action="${webroot}/ProjectExpendPayAction.do?method=verifyProjectExpendPay" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<div class="pageFormContent" layoutH="56">
 			<input type="hidden" name="id" value="${projectExpendpay1.id }"/>
+
+
+			<p>
+				<label>项目名称：</label>
+				${projectExpend1.project_name}
+			</p>
+			<p>
+				<label>项目编号：</label>
+				${projectExpend1.project_no}
+			</p>
+
+
+
+			<p>
+				<label>应付金额：</label>
+				${projectExpend1.amount }
+			</p>
+
+			<p>
+				<label>累计已付金额：</label>
+				${projectExpend1.pay_amount }
+			</p>
+
+
+			<div class="divider"></div>
+
+
 			<p>
 				<label>收到的发票号：</label>
 				${projectExpendpay1.invoiceno }

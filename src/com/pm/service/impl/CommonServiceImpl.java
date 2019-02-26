@@ -21,6 +21,9 @@ public class CommonServiceImpl implements ICommonService {
 	private IProjectExpendService projectExpendService;
 
 	@Autowired
+	private IProjectExpendPayService projectExpendPayService;
+
+	@Autowired
 	private IReimburseCostsService reimburseCostsService;
 
 	@Autowired
@@ -53,6 +56,8 @@ public class CommonServiceImpl implements ICommonService {
 			return salaryService;
 		}else if(EnumEntityType.PROJECT_EXPEND.name().equals(type)){
 			return projectExpendService;
+		}else if(EnumEntityType.PROJECT_EXPEND_PAY.name().equals(type)){
+			return projectExpendPayService;
 		}else if(EnumEntityType.REIMBURSE_COSTS.name().equals(type)){
 			return reimburseCostsService;
 		}else if(EnumEntityType.MONTHLY_STATEMENT.name().equals(type)){

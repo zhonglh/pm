@@ -21,7 +21,10 @@ public interface IProjectExpendPayService extends IGeneralLogService , IBaseServ
 	@LogAnnotation(operation_type=LogConstant.OPERATION_CHECK,entity_type=LogConstant.ENTITY_PROJECTEXPENDPAY)
 	public void verifyProjectExpendPay(ProjectExpendPay projectExpendpay) ;	
 
-	public ProjectExpendPay getProjectExpendPay(String id) ;	
+	public ProjectExpendPay getProjectExpendPay(String id) ;
+
+
+	public ProjectExpendPay getSumByProjectExpend(ProjectExpendPay projectExpendpay) ;
 
 	public Pager<ProjectExpendPay> queryProjectExpendPay(ProjectExpendPay projectExpendpay, UserPermit userPermit, Pager<ProjectExpendPay> pager);
 

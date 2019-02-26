@@ -16,7 +16,9 @@ public interface IProjectExpendPayDao {
 
 	public void unVerifyProjectExpendPay(ProjectExpendPay projectExpendpay) ;
 
-	public ProjectExpendPay getProjectExpendPay(String id) ;	
+	public ProjectExpendPay getProjectExpendPay(String id) ;
+
+	public ProjectExpendPay getSumByProjectExpend(ProjectExpendPay projectExpendpay)  ;
 
 	public Pager<ProjectExpendPay> queryProjectExpendPay(ProjectExpendPay projectExpendpay, UserPermit userPermit, Pager<ProjectExpendPay> pager);
 

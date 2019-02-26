@@ -5,7 +5,7 @@
 <div class="pageContent">
 	<form method="post" action="${webroot}/ProjectExpendPayAction.do?method=${next_operation}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<div class="pageFormContent" layoutH="56">
-			<input type="hidden" name="id" value="${projectExpendPay1.id }"/>
+			<input type="hidden" name="id" value="${projectExpendpay1.id }"/>
 			<input type="hidden" name="project_expend_id" value="${projectExpend1.project_expend_id }"/>
 			<p>
 				<label>项目名称：</label>
@@ -34,18 +34,24 @@
 
 			<p>
 				<label>本次收到的发票：</label>
-				<input name="invoiceno" class="text" type="text" size="30" value="${projectExpendPay1.invoiceno }" />
+				<input name="invoiceno" class="text" type="text" size="30" value="${projectExpendpay1.invoiceno }" />
 			</p>
 						
 			<p>
 				<label>本次实付金额：</label>
-				<input name="pay_amount" class="number required" type="text" size="30" value="<fmt:formatNumber value="${projectExpendPay1.pay_amount }" type="number" pattern="####0.00#"/>" />
+				<input name="pay_amount" class="number required" type="text" size="30" value="<fmt:formatNumber value="${projectExpendpay1.pay_amount }" type="number" pattern="####0.00#"/>" />
 			</p>
 			
 			
 			<p>
 				<label>实际支付日期：</label>
-				<input name="pay_date" class="date required" type="text" size="30" value="<fmt:formatDate value="${projectExpendPay1.pay_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="pay_date" class="date required" type="text" size="30" value="<fmt:formatDate value="${projectExpendpay1.pay_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+			</p>
+
+
+			<p>
+				<label>备注：</label>
+				<input name="description" class="text" type="text" size="30" value="${projectExpendpay1.description }" />
 			</p>
 			
 

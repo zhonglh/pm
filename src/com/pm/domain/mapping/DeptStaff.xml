@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="DeptStaffMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.DeptStaff" id="deptStaffMap" />
+
+
+	<select id="getDeptStaff" parameterType="com.pm.domain.business.DeptStaff" resultMap="deptStaffMap">
+		select ds.* ,dept.dept_name,dept.dept_no,staff.staff_no , staff.staff_name
+		from tb_dept_staff ds
+		INNER JOIN ts_dept dept
+		on ds.dept_id = dept.dept_id
+		INNER  join tb_other_staff staff
+		on ds.staff_id = staff.staff_id
+		where ds.dept_staff_id = #{dept_staff_id}
+	</select>
+
+
+	<select id="getDeptStaffs" parameterType="com.pm.domain.business.DeptStaff" resultMap="deptStaffMap">
+		select ds.* ,dept.dept_name,dept.dept_no,staff.staff_no , staff.staff_name
+		from tb_dept_staff ds
+		INNER JOIN ts_dept dept
+		on ds.dept_id = dept.dept_id
+		INNER  join tb_other_staff staff
+		on ds.staff_id = staff.staff_id
+		where 1=1
+		<if test="staff_id != null and staff_id != ''">
+			AND ds.staff_id = #{staff_id}
+		</if>
+
+		<if test="dept_id != null and dept_id != ''">
+			AND ds.dept_id = #{dept_id}
+		</if>
+
+	</select>
+
+	<insert id="addDeptStaff" parameterType="com.pm.domain.business.DeptStaff" >
+		insert into  tb_dept_staff(
+			dept_staff_id,dept_id,staff_id,join_dept_datetime,leave_dept_datetime,
+			description,build_datetime,build_userid,build_username,delete_flag
+		)values  (
+			#{dept_staff_id},#{dept_id},#{staff_id},#{join_dept_datetime},#{leave_dept_datetime},
+			#{description},#{build_datetime},#{build_userid},#{build_username},#{delete_flag}
+		)
+	</insert>
+
+	<update id="updateDeptStaff" parameterType="com.pm.domain.business.DeptStaff" >
+		update  tb_dept_staff set 
+		dept_id=#{dept_id},
+		staff_id=#{staff_id},
+		join_dept_datetime=#{join_dept_datetime},
+		leave_dept_datetime=#{leave_dept_datetime},
+		description=#{description}
+		where dept_staff_id=#{dept_staff_id} 
+		and delete_flag = '0'
+	</update>
+
+
+	<delete id="deleteDeptStaff" parameterType="com.pm.domain.business.DeptStaff" >
+		update tb_dept_staff
+		set
+		delete_flag = '1' ,
+		delete_datetime = #{delete_datetime} ,
+		delete_userid = #{delete_userid} ,
+		delete_username = #{delete_username}
+		where dept_staff_id=#{dept_staff_id}
+		and delete_flag = '0'
+	</delete>
+
+
+
+
+</mapper>

@@ -16,7 +16,8 @@ import com.pm.util.constant.LogConstant;
 
 public class ProjectExpendLog extends BasicLog {
 
-	public List<Log> calculateLog(LogAnnotation methodAnnotation,MethodInvocation invocation, User sessionUser) {
+	@Override
+	public List<Log> calculateLog(LogAnnotation methodAnnotation, MethodInvocation invocation, User sessionUser) {
 		
 		IProjectExpendService projectExpendService = SpringContextUtil.getApplicationContext().getBean(IProjectExpendService.class);
 		List<Log> logs = new ArrayList<Log>();
@@ -24,11 +25,15 @@ public class ProjectExpendLog extends BasicLog {
 		if(methodAnnotation.operation_type().equals(LogConstant.OPERATION_DELETE)){
 			
 			ProjectExpend[] projectExpends = (ProjectExpend[])invocation.getArguments()[0];
-			if(projectExpends == null || projectExpends.length == 0) return null;
+			if(projectExpends == null || projectExpends.length == 0) {
+				return null;
+			}
 			for(ProjectExpend projectExpend : projectExpends){
 				Log log = super.getLog(methodAnnotation, invocation,sessionUser );
 				ProjectExpend preProjectExpend = projectExpendService.getProjectExpend(projectExpend.getProject_expend_id());
-				if(preProjectExpend == null) preProjectExpend = new ProjectExpend();
+				if(preProjectExpend == null) {
+					preProjectExpend = new ProjectExpend();
+				}
 				log.setEntity_id(projectExpend.getProject_expend_id());
 				String entity_name = projectExpend.getProject_name() == null ?
 						(preProjectExpend.getUse_month() + ":" +preProjectExpend.getProject_name()  + ":" + preProjectExpend.getSub_contractor_name()):

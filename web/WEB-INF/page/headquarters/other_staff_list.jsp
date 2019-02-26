@@ -112,7 +112,9 @@
 
 			<c:if test="${operation_insert != null && operation_insert != '' }">				
 				<li><a class="icon" href="${webroot }/OtherStaffAction.do?method=downloadtemplet" target="dwzExport" targetType="navTab" title="确定要导出这模板吗?"><span>下载模板</span></a></li>
-			</c:if>			
+			</c:if>
+
+
 			
 		</ul>
 	</div>

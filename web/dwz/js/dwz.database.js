@@ -444,8 +444,12 @@
 						}
 
 						html = '<input type="hidden"  name="'+field.lookupGroup+'.'+field.lookupPk+suffix+'"/>'
-							+ '<input type="text" readonly="readonly" name="'+field.name+'"'+suggestFrag+' lookupPk="'+field.lookupPk+'" size="'+field.size+'" class="'+field.fieldClass+'"/>'
-							+ '<a class="btnLook" width=950 href="'+field.lookupUrl+'" lookupGroup="'+field.lookupGroup+'" '+suggestFrag+' lookupPk="'+field.lookupPk+'" title="查找">查找</a>';
+							+ '<input type="text" readonly="readonly" name="'+field.name+'"'+suggestFrag+' lookupPk="'+field.lookupPk+'" size="'+field.size+'" class="'+field.fieldClass+'"/>' ;
+
+
+                        if (field.notLookUp != undefined && field.notLookUp == '1') {
+                            html += '<a class="btnLook" width=950 href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suggestFrag + ' lookupPk="' + field.lookupPk + '" title="查找">查找</a>';
+                        }
 						break;
 					case 'attach':
 						html = '<input type="hidden" name="'+field.lookupGroup+'.'+field.lookupPk+suffix+'"/>'

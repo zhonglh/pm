@@ -287,3 +287,61 @@ function edit_project_staff(this1,project_staff_id) {
 	dateProcess($tr);
 	
 }
+
+
+
+
+
+/**
+ * 部门经历
+ * @param this1
+ * @param id
+ */
+function edit_dept_staff(this1,dept_staff_id){
+
+
+    var $bj = $(this1);
+
+    if($bj.attr("disabled")) return ;
+
+    var $tr = $bj.parents("tr:first");
+    var trNum = $tr[0].rowIndex -1 ;
+
+    $bj.attr("disabled",true);
+
+
+
+
+
+    var $dept_name = $tr.children('td').eq(0);
+    $dept_name.html(
+        $dept_name.text() +
+        '<input type="hidden" name="items['+trNum+'].dept.dept_name" value="'+$dept_name.text()+'">'
+    );
+
+    var $join_dept_datetime = $tr.children('td').eq(1);
+    $join_dept_datetime.html(
+        '<input type="text" readonly="readonly" name="items['+trNum+'].join_dept_datetime" value="'+$join_dept_datetime.text()+'" class="date date required textInput readonly valid" format="yyyy-MM-dd" size="10">'
+    );
+
+
+
+    var $join_leave_datetime = $tr.children('td').eq(2);
+    $join_leave_datetime.html(
+        '<input type="text" readonly="readonly" name="items['+trNum+'].join_leave_datetime" value="'+$join_leave_datetime.text()+'" class="date date textInput readonly valid" format="yyyy-MM-dd" size="10">'
+    );
+
+    var $description = $tr.children('td').eq(3);
+
+    $description.html(
+        '<input type="text" name="items['+trNum+'].description" value="'+$description.text()+'" class="text textInput " maxlength="150" size="38">' +
+        '<input type="hidden" name="index_dept_staff_table" value="'+trNum+'">' +
+        '<input type="hidden" name="items['+trNum+'].dept_staff_id" value="'+dept_staff_id+'">'
+    );
+
+    dateProcess($tr);
+
+
+
+}
+

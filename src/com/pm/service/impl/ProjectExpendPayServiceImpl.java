@@ -43,7 +43,7 @@ public class ProjectExpendPayServiceImpl implements  IProjectExpendPayService {
 		projectExpendpayDao.verifyProjectExpendPay(projectExpendpay);
 
 
-		doProcessProjectExtend4Verify(projectExpendpay.getProject_expend_id());
+		doProcessProjectExtend4Verify(projectExpendpay.getId());
 	}
 
 	@Override

@@ -426,7 +426,7 @@
 					<th width="120" type="date" postField="assessment_time"  name="items[#index#].assessment_time_3" format="yyyy-MM-dd"  size="12" fieldClass="date required">考核时间</th>
 					<th width="100" type="text" postField="attendance_rate"  name="items[#index#].attendance_rate_3" maxlength="6" size="10" fieldClass="number required">出勤率(%)</th>
 					<th width="100" type="text" postField="score"  name="items[#index#].score_3" maxlength="4" size="10" fieldClass="digits required">绩效评分</th>
-					<th width="220" type="text" postField="description"  name="items[#index#].description_3" maxlength="150" size="38" fieldClass="text">备注</th>
+					<th width="350" type="text" postField="description"  name="items[#index#].description_3" maxlength="150" size="38" fieldClass="text">备注</th>
 
 				</tr>
 				</thead>
@@ -474,8 +474,30 @@
 
 
 
+			<br/>
+			<div class="divider"></div>
 
+			<table id="dept_staff_table" class="list nowrap "  width="100%">
+				<thead>
+				<tr>
+					<th width="120" type="lookup" fieldClass="required" name="items[#index#].dept.dept_name" lookupGroup="items[#index#].dept" suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup"   lookupPk="dept_id" size="20">部门</th>
+					<th width="100" type="date" postField="join_dept_datetime" defaultVal="${currDate }"  name="items[#index#].join_dept_datetime"  size="10" fieldClass="date required">加入部门日期</th>
+					<th width="100" type="date" postField="leave_dept_datetime"   name="items[#index#].leave_dept_datetime"  size="10" fieldClass="date">离开部门日期</th>
+					<th width="350" type="text" postField="description"  name="items[#index#].description" maxlength="100" size="30" fieldClass="text">说明</th>
 
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="deptStaff"  varStatus="status1" items="${deptStaffs}">
+					<tr>
+						<td height="22"><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if>${deptStaff.dept_name }<c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></td>
+						<td><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if><fmt:formatDate value="${deptStaff.join_dept_datetime }" pattern="yyyy-MM-dd"/><c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></td>
+						<td><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if><fmt:formatDate value="${deptStaff.leave_dept_datetime }" pattern="yyyy-MM-dd"/><c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></td>
+						<td>${deptStaff.description }</td>
+					</tr>
+				</c:forEach>
+				</tbody>
+			</table>
 
 
 

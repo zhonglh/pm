@@ -28,15 +28,20 @@ public class GeneralLog extends BasicLog {
 	@Override
 	public List<Log> calculateLog(LogAnnotation methodAnnotation, MethodInvocation invocation, User seesionUser) {
 		
-		if(invocation.getArguments().length == 0) return null;		
+		if(invocation.getArguments().length == 0) {
+			return null;
+		}
 		Object arg = invocation.getArguments()[0];
-		if(arg == null) return null;	
+		if(arg == null) {
+			return null;
+		}
 		
 		
 		Method method =  invocation.getMethod();
 		List<Class> list = GenericsHelper.getMethodAllParameterTypes(method, 0);
-		if (list.isEmpty())
+		if (list.isEmpty()) {
 			return null;
+		}
 
 		Class clz = method.getParameterTypes()[0];
 		Class actualClz = list.get(0);
@@ -55,7 +60,9 @@ public class GeneralLog extends BasicLog {
 
 		if (methodAnnotation.operation_type().equals(LogConstant.OPERATION_DELETE)) {
 			for (Object obj : args) {
-				if(obj == null) continue;
+				if(obj == null) {
+					continue;
+				}
 				if (obj instanceof IdEntity) {
 					Log log = super.getLog(methodAnnotation, invocation,seesionUser );
 					IdEntity idEntity = (IdEntity) obj;
@@ -138,6 +145,25 @@ public class GeneralLog extends BasicLog {
 
 			}
 		
+		}else if(
+				methodAnnotation.operation_type().equals(LogConstant.OPERATION_CHECK) ||
+				methodAnnotation.operation_type().equals(LogConstant.OPERATION_UNCHECK)
+		) {
+
+			//核单和取消核单是在明细中查看， 不在日志中显示
+
+			/*for (Object obj : args) {
+				if (obj instanceof IdEntity) {
+					Log log = super.getLog(methodAnnotation, invocation,seesionUser );
+					IdEntity idEntity = (IdEntity) obj;
+					Object preObj = generalLogService.get(idEntity.getId());
+					log.setEntity_id(idEntity.getId());
+					log.setEntity_name(obj.toString());
+					logs.add(log);
+				}
+
+			}*/
+
 		}
 		return logs;
 		

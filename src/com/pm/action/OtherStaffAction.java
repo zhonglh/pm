@@ -73,6 +73,8 @@ public class OtherStaffAction extends BaseAction{
     private IStaffPositionsService staffPositionsService;
 
 
+    @Autowired
+    private IDeptStaffService deptStaffService;
 
 	
 	public static Map<String,String> position_type_Map = new HashMap<String,String>();
@@ -1186,6 +1188,14 @@ public class OtherStaffAction extends BaseAction{
         request.setAttribute("positionss", staffPositionss.getResultList());
 
 
+        if(otherStaff != null && StringUtils.isNotEmpty(otherStaff.getStaff_id())){
+            DeptStaff searchDeptStaff = new DeptStaff();
+            searchDeptStaff.setStaff_id(otherStaff.getStaff_id());
+            List<DeptStaff> deptStaffs =  deptStaffService.getDeptStaffs(searchDeptStaff);
+            request.setAttribute("deptStaffs", deptStaffs);
+        }
+
+
         request.setAttribute("DEFAULT_BASIC_SALARY", BusinessUtil.DEFAULT_BASIC_SALARY);
 		
 		return "headquarters/other_staff_edit";
@@ -1226,6 +1236,12 @@ public class OtherStaffAction extends BaseAction{
         staffPositions.setStaff_id(otherStaff1.getStaff_id());
         Pager<StaffPositions> staffPositionss = staffPositionsService.queryStaffPositions(staffPositions,PubMethod.getPagerByAll(StaffPositions.class));
         request.setAttribute("positionss", staffPositionss.getResultList());
+
+
+        DeptStaff searchDeptStaff = new DeptStaff();
+        searchDeptStaff.setStaff_id(otherStaff.getStaff_id());
+        List<DeptStaff> deptStaffs =  deptStaffService.getDeptStaffs(searchDeptStaff);
+        request.setAttribute("deptStaffs", deptStaffs);
 		
 		return "headquarters/other_staff_view";
 		
@@ -1299,5 +1315,21 @@ public class OtherStaffAction extends BaseAction{
         request.setAttribute("other", "positions_table");
         return this.ajaxForwardSuccess(request,rel,false);
     }
+
+    @RequestMapping(params = "method=deleteDeptStaff")
+    public String deleteDeptStaff(DeptStaff deptStaff,HttpServletResponse res,HttpServletRequest request){
+
+        User sessionUser = PubMethod.getUser(request);
+        deptStaff.setDelete_flag(BusinessUtil.DELETEED);
+        deptStaff.setDelete_userid(sessionUser.getUser_id());
+        deptStaff.setDelete_username(sessionUser.getUser_name());
+        deptStaff.setDelete_datetime(PubMethod.getCurrentDate());
+
+        deptStaffService.deleteDeptStaff(new DeptStaff[]{deptStaff});
+        request.setAttribute("rownum", request.getParameter("rownum"));
+        request.setAttribute("other", "deptstaff_table");
+        return this.ajaxForwardSuccess(request,rel,false);
+    }
+
 	
 }

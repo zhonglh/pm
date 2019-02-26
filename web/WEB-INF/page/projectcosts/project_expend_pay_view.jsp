@@ -38,7 +38,7 @@
 			</p>
 			<p>
 				<label>实际支付日期：</label>
-				${projectExpendpay1.pay_date }
+				<fmt:formatDate value="${projectExpendpay1.pay_date }" pattern="yyyy-MM-dd"/>
 			</p>
 			<p>
 				<label>实付金额：</label>

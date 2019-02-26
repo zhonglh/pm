@@ -10,12 +10,12 @@
 	<resultMap type="com.pm.domain.business.ProjectExpendPay" id="projectExpendpayMap" />
 
 
-
+	<!-- 获取所有的已审核的支付总额 -->
 	<select id="getSumByProjectExpend" parameterType="com.pm.domain.business.ProjectExpendPay" resultMap="projectExpendpayMap">
 		select sum(pep.pay_amount)as pay_amount , max(pay_date) as pay_date
 		from tb_project_expend_pay pep
 		where pep.project_expend_id = #{project_expend_id}
-		and verify_userid is null
+		and verify_userid is not null
 	</select>
 
 	<select id="getProjectExpendPay" parameterType="com.pm.domain.business.ProjectExpendPay" resultMap="projectExpendpayMap">

@@ -39,7 +39,7 @@
 						
 			<p>
 				<label>本次实付金额：</label>
-				<input name="pay_amount" class="number required" type="text" size="30" value="<fmt:formatNumber value="${projectExpendpay1.pay_amount }" type="number" pattern="####0.00#"/>" />
+				<input name="pay_amount" class="number required" min="0.01" type="text" size="30" value="<fmt:formatNumber value="${projectExpendpay1.pay_amount }" type="number" pattern="####0.00#"/>" />
 			</p>
 			
 			

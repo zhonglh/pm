@@ -200,7 +200,17 @@ public class ProjectExpendPayAction extends BaseAction {
 	@RequestMapping(params = "method=updateProjectExpendPay")
 	public String updateProjectExpendPay(ProjectExpendPay updateProjectExpendPay,HttpServletResponse res,HttpServletRequest request){
 		ProjectExpendPay projectExpendpay = updateProjectExpendPay;	
-		paramprocess(request,projectExpendpay);	
+		paramprocess(request,projectExpendpay);
+
+
+		ProjectExpend projectExpend = projectExpendService.getProjectExpend(updateProjectExpendPay.getProject_expend_id());
+		projectExpendpay.setProject_id(projectExpend.getProject_id());
+		projectExpendpay.setProject_name(projectExpend.getProject_name());
+		projectExpendpay.setProject_no(projectExpend.getProject_no());
+		projectExpendpay.setSub_contractor_name(projectExpend.getSub_contractor_name());
+		projectExpendpay.setUse_month(projectExpend.getUse_month());
+		projectExpendpay.setAmount(projectExpend.getAmount());
+
 		int count = 0;
 		try{
 			count = projectExpendpayService.updateProjectExpendPay(projectExpendpay);	
@@ -218,6 +228,7 @@ public class ProjectExpendPayAction extends BaseAction {
 	@RequestMapping(params = "method=verifyProjectExpendPay")
 	public String verifyProjectExpendPay(ProjectExpendPay projectExpendpay,HttpServletResponse res,HttpServletRequest request){
 		User sessionUser = PubMethod.getUser(request);
+
 		projectExpendpay.setVerify_datetime(PubMethod.getCurrentDate());
 		projectExpendpay.setVerify_userid(sessionUser.getUser_id());
 		projectExpendpay.setVerify_username(sessionUser.getUser_name());

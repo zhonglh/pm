@@ -25,6 +25,14 @@
 
 
 				</li>
+
+
+				<li>
+					<label>对应月份：</label>
+					${projectExpend.use_month}
+
+
+				</li>
 			</ul>
 
 
@@ -38,6 +46,14 @@
 				<li>
 					<label>累计已付金额：</label>
 					<b><fmt:formatNumber value="${projectExpend.pay_amount }" type="currency" pattern="###,###,##0.00"/></b>
+
+				</li>
+
+
+				<li>
+					<label>分包合同编号：</label>
+					${projectExpend.sub_contractor_no}
+
 
 				</li>
 			</ul>

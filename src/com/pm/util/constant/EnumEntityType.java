@@ -31,7 +31,7 @@ public enum EnumEntityType {
 	SALARY("salary.entity","salary"),
 	PROJECT_STAFF_COST("project.staff.cost.entity","project.staff.cost"),
 	PROJECT_EXPEND("project.expend.entity","project.expend"),
-	PROJECTEXPENDPAY("project.expend.pay.entity","project.expend.pay"),
+	PROJECT_EXPEND_PAY("project.expend.pay.entity","project.expend.pay"),
 	REIMBURSE_COSTS("reimburse.costs.entity","reimburse.costs"),
 	COMMONCOST("common.cost.entity","common.cost"),
 

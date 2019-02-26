@@ -16,11 +16,7 @@
 				<input name="project.project_no" class="text" type="text" size="30" maxlength="30" value="${projectExpend1.project_no}" readonly="true"/>
 			</p>
 			
-					
-			<p>
-				<label>收到的发票号：</label>
-				<input name="invoiceno" class="text required" type="text" size="30" value="${projectExpend1.invoiceno}" />
-			</p>
+
 			
 			<p>
 				<label>应付金额：</label>
@@ -33,7 +29,7 @@
 			</p>
 
 
-			<div class="formBar">
+			<div class="divider"></div>
 
 
 			<p>

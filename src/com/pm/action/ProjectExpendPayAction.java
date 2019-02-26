@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+import com.pm.domain.business.ProjectExpend;
+import com.pm.service.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +31,6 @@ import com.common.utils.file.download.DownloadBaseUtil;
 import com.pm.domain.business.ApplyApprove;
 import com.pm.domain.business.Project;
 import com.pm.domain.system.User;
-import com.pm.service.IApplyApproveService;
-import com.pm.service.IProjectService;
-import com.pm.service.IRoleService;
 import com.pm.util.Config;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.BusinessUtil;
@@ -45,9 +44,11 @@ import com.pm.vo.UserPermit;
 
 
 import com.pm.domain.business.ProjectExpendPay;
-import com.pm.service.IProjectExpendPayService;
 
 
+/**
+ * @author Administrator
+ */
 @Controller
 @RequestMapping("ProjectExpendPayAction.do")
 public class ProjectExpendPayAction extends BaseAction {
@@ -63,6 +64,10 @@ public class ProjectExpendPayAction extends BaseAction {
 
 
 	@Autowired
+	private IProjectExpendService projectExpendService;
+
+
+	@Autowired
 	private IApplyApproveService applyApproveService;	
 
 
@@ -73,6 +78,8 @@ public class ProjectExpendPayAction extends BaseAction {
 	@RequestMapping(params = "method=list")
 	public String list(ProjectExpendPay projectExpendpay,HttpServletResponse res,HttpServletRequest request){
 
+		ProjectExpend projectExpend = projectExpendService.getProjectExpend(projectExpendpay.getProject_expend_id());
+
 		UserPermit userPermit = this.getAllPermit();
 
 		paramprocess(request,projectExpendpay);
@@ -80,6 +87,7 @@ public class ProjectExpendPayAction extends BaseAction {
 		Pager<ProjectExpendPay> pager = projectExpendpayService.queryProjectExpendPay(projectExpendpay, userPermit, PubMethod.getPager(request, ProjectExpendPay.class));
 		PubMethod.setRequestPager(request, pager,ProjectExpendPay.class);	
 
+		request.setAttribute("projectExpend", projectExpend);
 		request.setAttribute("projectExpendpay", projectExpendpay);
 		request.setAttribute(EnumOperationType.READ.getKey(), userPermit.getPermit_id());	
 		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PROJECTEXPENDADD.getId());
@@ -103,13 +111,17 @@ public class ProjectExpendPayAction extends BaseAction {
 	@RequestMapping(params = "method=toEdit")
 	public String toEdit(ProjectExpendPay searchProjectExpendPay,HttpServletResponse res,HttpServletRequest request){
 		ProjectExpendPay projectExpendpay = null;
+		String project_expend_id = null;
 		if(searchProjectExpendPay != null && StringUtils.isNotEmpty(searchProjectExpendPay.getId())){
 			request.setAttribute("next_operation", "updateProjectExpendPay");
 			projectExpendpay = projectExpendpayService.getProjectExpendPay(searchProjectExpendPay.getId());	
 			if(projectExpendpay.getVerify_userid() != null && projectExpendpay.getVerify_userid().length() > 0){
 				return this.ajaxForwardError(request, "单据已经核实， 不能够再更改了！", true);
 			}
+
+			project_expend_id = projectExpendpay.getProject_expend_id();
 		}else {
+			project_expend_id = searchProjectExpendPay.getProject_expend_id();
 			request.setAttribute("next_operation", "addProjectExpendPay");		
 			User sessionUser = PubMethod.getUser(request);
 			projectExpendpay = new ProjectExpendPay();	
@@ -118,6 +130,7 @@ public class ProjectExpendPayAction extends BaseAction {
 			projectExpendpay.setBuild_datetime(PubMethod.getCurrentDate());
 		}
 		request.setAttribute("projectExpendpay1", projectExpendpay);
+		request.setAttribute("projectExpend1", projectExpendService.getProjectExpend(project_expend_id));
 		return "projectcosts/project_expend_pay_edit";
 	}
 
@@ -132,15 +145,15 @@ public class ProjectExpendPayAction extends BaseAction {
 		request.setAttribute(EnumOperationType.UNCHECK.getKey(), userPermit1.getPermit_id());
 		User sessionUser = PubMethod.getUser(request);
 		Project project = projectService.getProject( projectExpendpay.getProject_id());
-		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.PROJECTEXPENDPAY.name(), projectExpendpay.getId());
-		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.PROJECTEXPENDPAY.name(),  projectExpendpay.getId());
+		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.PROJECT_EXPEND_PAY.name(), projectExpendpay.getId());
+		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.PROJECT_EXPEND_PAY.name(),  projectExpendpay.getId());
 		request.setAttribute("infos", infos);
 		request.setAttribute("applyApprove", applyApprove);
 		request.setAttribute("project", project);
 		request.setAttribute("sessionUser", sessionUser);
 		request.setAttribute("verify_userid", projectExpendpay.getVerify_userid());
 		request.setAttribute("data_id", projectExpendpay.getId());
-		request.setAttribute("data_type", EnumEntityType.PROJECTEXPENDPAY.name());
+		request.setAttribute("data_type", EnumEntityType.PROJECT_EXPEND_PAY.name());
 		return "projectcosts/project_expend_pay_view";
 	}
 
@@ -157,7 +170,7 @@ public class ProjectExpendPayAction extends BaseAction {
 		int count = 0;
 		try{
 			count = projectExpendpayService.addProjectExpendPay(projectExpendpay);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.PROJECTEXPENDPAY.name(), projectExpendpay.getId(), sessionUser);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.PROJECT_EXPEND_PAY.name(), projectExpendpay.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}catch(Exception e){
 		}
@@ -195,7 +208,7 @@ public class ProjectExpendPayAction extends BaseAction {
 		projectExpendpay.setVerify_userid(sessionUser.getUser_id());
 		projectExpendpay.setVerify_username(sessionUser.getUser_name());
 		projectExpendpayService.verifyProjectExpendPay(projectExpendpay);
-		ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.PROJECTEXPENDPAY.name(), projectExpendpay.getId(), sessionUser);
+		ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.PROJECT_EXPEND_PAY.name(), projectExpendpay.getId(), sessionUser);
 		applyApproveService.addApplyApprove(applyApprove);
 		return this.ajaxForwardSuccess(request, rel, true);
 	}
@@ -215,7 +228,7 @@ public class ProjectExpendPayAction extends BaseAction {
 			projectExpendpay.setVerify_username(sessionUser.getUser_name());
 			projectExpendpay.setId(id);
 			projectExpendpayService.verifyProjectExpendPay(projectExpendpay);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.PROJECTEXPENDPAY.name(), projectExpendpay.getId(), sessionUser);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.PROJECT_EXPEND_PAY.name(), projectExpendpay.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}
 		return this.ajaxForwardSuccess(request, rel, false);

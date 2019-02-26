@@ -82,10 +82,7 @@
 			<c:if test="${operation_update != null && operation_update != '' }">
 				<li><a class="edit" href="${webroot}/ProjectExpendAction.do?method=toEdit&project_expend_id={sid}" mask="true" width="900"  height="400" rel="update_project_expend" target="dialog" warn="请选择一条数据"><span>修改</span></a></li>
 			</c:if>
-			
-			<c:if test="${operation_update != null && operation_update != '' }">
-				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=list&project_expend_id={sid}" mask="true" width="950"  height="500" rel="update_project_expend" target="dialog" warn="请选择一条数据"><span>付款信息</span></a></li>
-			</c:if>			
+
 			
 			
 			
@@ -107,8 +104,7 @@
 			</c:if>		
 			</c:if>
 			
-			
-			<li class="line">line</li>
+
 			
 			<c:if test="${operation_insert != null && operation_insert != '' }">
 				<li><a class="add" href="${webroot }/ProjectExpendAction.do?method=toExcel" mask="true" width="850" height="480" rel="add_project_expend" target="dialog"><span>导入EXCEL</span></a></li>
@@ -118,8 +114,16 @@
 			
 			<c:if test="${operation_insert != null && operation_insert != '' }">				
 				<li><a class="icon" href="${webroot }/ProjectExpendAction.do?method=downloadtemplet" target="dwzExport" targetType="navTab" title="确定要导出这模板吗?"><span>下载模板</span></a></li>
-			</c:if>				
-				
+			</c:if>
+
+
+
+			<li class="line">line</li>
+
+			<c:if test="${operation_update != null && operation_update != '' }">
+				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=list&project_expend_id={sid}" mask="true" width="950"  height="500" rel="update_project_expend" target="dialog" warn="请选择一条数据"><span>付款信息</span></a></li>
+			</c:if>
+
 		</ul>
 	</div>
 	<table class="table" width="1600" layoutH="135">

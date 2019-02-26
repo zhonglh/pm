@@ -60,6 +60,9 @@ public class ProjectExpendPay extends IdEntity implements Serializable {
     private double pay_amount_total;
 
 
+    private String need_approve;
+
+
     public String getProject_expend_id() {
         return project_expend_id;
     }
@@ -202,5 +205,14 @@ public class ProjectExpendPay extends IdEntity implements Serializable {
 
     public void setSub_contractor_name(String sub_contractor_name) {
         this.sub_contractor_name = sub_contractor_name;
+    }
+
+
+    public String getNeed_approve() {
+        return need_approve;
+    }
+
+    public void setNeed_approve(String need_approve) {
+        this.need_approve = need_approve;
     }
 }

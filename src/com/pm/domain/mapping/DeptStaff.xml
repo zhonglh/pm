@@ -50,9 +50,7 @@
 	</insert>
 
 	<update id="updateDeptStaff" parameterType="com.pm.domain.business.DeptStaff" >
-		update  tb_dept_staff set 
-		dept_id=#{dept_id},
-		staff_id=#{staff_id},
+		update  tb_dept_staff set
 		join_dept_datetime=#{join_dept_datetime},
 		leave_dept_datetime=#{leave_dept_datetime},
 		description=#{description}

@@ -1144,7 +1144,6 @@ public class OtherStaffAction extends BaseAction{
 		int count = 0;
 		try{
 
-
             StaffAssessment[] staffAssessments = this.getStaffAssessment(otherStaff, sessionUser, request);
 
             StaffPositions[] staffPositionss = this.getStaffPositions(otherStaff, sessionUser, request);
@@ -1155,6 +1154,17 @@ public class OtherStaffAction extends BaseAction{
 
 
             DeptStaff[] deptStaffs = this.getDeptStaffs(request,otherStaff,sessionUser);
+
+
+            if(deptStaffs != null && deptStaffs.length > 0){
+                for(DeptStaff deptStaff : deptStaffs){
+                    if(deptStaff.getLeave_dept_datetime() == null){
+                        otherStaff.setDept_id(deptStaff.getDept_id());
+                        otherStaff.setDept_name(deptStaff.getDept_name());
+                        break;
+                    }
+                }
+            }
 
 			count = otherStaffService.addOtherStaff(otherStaff ,staffAssessments ,staffPositionss, staffRaiseRecords,staffRewardPenaltys , deptStaffs );
 		}catch(Exception e){
@@ -1191,8 +1201,18 @@ public class OtherStaffAction extends BaseAction{
 
             StaffRewardPenalty[] staffRewardPenaltys = this.getStaffRewardPenalty(otherStaff, sessionUser, request);
 
-
             DeptStaff[] deptStaffs = this.getDeptStaffs(request,otherStaff,sessionUser);
+
+
+            if(deptStaffs != null && deptStaffs.length > 0){
+                for(DeptStaff deptStaff : deptStaffs){
+                    if(deptStaff.getLeave_dept_datetime() == null){
+                        otherStaff.setDept_id(deptStaff.getDept_id());
+                        otherStaff.setDept_name(deptStaff.getDept_name());
+                        break;
+                    }
+                }
+            }
 
 			count = otherStaffService.updateOtherStaff(otherStaff,staffAssessments ,staffPositionss, staffRaiseRecords,staffRewardPenaltys,deptStaffs);
 		}catch(Exception e){

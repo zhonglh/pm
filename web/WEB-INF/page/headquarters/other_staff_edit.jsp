@@ -26,6 +26,7 @@
 				<input name="staff_name" class="required" type="text" size="30" maxlength="30" value="${otherStaff1.staff_name}" />
 			</p>
 
+			<!--
 			<c:if test="otherStaff1.staff_id == null || otherStaff1.staff_id == ''">
 			<p>
 				<label>所在部门：</label>
@@ -42,7 +43,7 @@
 					${otherStaff1.dept_name }
 				</p>
 			</c:if>
-					
+			-->
 					
 
 			<p>

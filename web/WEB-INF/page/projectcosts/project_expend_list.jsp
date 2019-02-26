@@ -84,7 +84,7 @@
 			</c:if>
 			
 			<c:if test="${operation_update != null && operation_update != '' }">
-				<li><a class="edit" href="${webroot}/ProjectExpendAction.do?method=toPay&project_expend_id={sid}" mask="true" width="450"  height="300" rel="update_project_expend" target="dialog" warn="请选择一条数据"><span>付款</span></a></li>
+				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=list&project_expend_id={sid}" mask="true" width="950"  height="500" rel="update_project_expend" target="dialog" warn="请选择一条数据"><span>付款信息</span></a></li>
 			</c:if>			
 			
 			

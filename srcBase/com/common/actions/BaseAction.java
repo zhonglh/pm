@@ -261,6 +261,16 @@ public class BaseAction {
         }
 		
     }
+
+
+    public UserPermit getAllPermit(){
+
+        UserPermit userPermit = new UserPermit();
+        userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
+        return userPermit;
+
+    }
+
     
 
 	private String ajaxForward(HttpServletRequest request,int statusCode,String message,String rel,boolean closeCurrent) {

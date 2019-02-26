@@ -188,7 +188,7 @@
 										<th width="120">人月费用</th>	
 										<th width="80">销售负责人</th>	
 										<th width="80">客户联系人</th>	
-										<th width="160">存放地</th>	
+										<th width="200">存放地</th>
 									</tr>												
 								</thead>
 								<tbody>								
@@ -196,7 +196,7 @@
 									<tr>
 										<td>
 											<a class="add" href="${webroot}/ContractAction.do?method=toView&id=${contract.id }"  
-													mask="true" width="800" height="390" rel="contractdetail" title="合同明细"  target="dialog">
+													mask="true" width="800" height="390" rel="contractdetail" title="收款合同明细"  target="dialog">
 												<u>${contract.contract_no }</u>
 											</a>
 										</td>
@@ -216,9 +216,6 @@
 
 
 
-
-
-
 			<br>
 			<c:if test="${paycontract_read != null && paycontract_read != '' }">
 				<h3 class="contentTitle">付款合同</h3>
@@ -230,7 +227,7 @@
 						<th width="120">金额</th>
 						<th width="80">负责人</th>
 						<th width="80">客户联系人</th>
-						<th width="260">公司联系人</th>
+						<th width="200">公司名称</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -238,7 +235,7 @@
 						<tr>
 							<td>
 								<a class="add" href="${webroot}/PayContractAction.do?method=toView&id=${contract.id }"
-								   mask="true" width="800" height="390" rel="contractdetail" title="合同明细"  target="dialog">
+								   mask="true" width="800" height="390" rel="contractdetail" title="付款合同明细"  target="dialog">
 									<u>${contract.contract_no }</u>
 								</a>
 							</td>

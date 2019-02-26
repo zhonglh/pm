@@ -3,8 +3,9 @@
 <%@ include file="/include.inc.jsp"%>
 
 <div class="pageContent">
-	<form method="post" action="${webroot}/ProjectExpendAction.do?method=${next_operation}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+	<form method="post" action="${webroot}/ProjectExpendPayAction.do?method=${next_operation}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<div class="pageFormContent" layoutH="56">
+			<input type="hidden" name="id" value="${projectExpendPay1.id }"/>
 			<input type="hidden" name="project_expend_id" value="${projectExpend1.project_expend_id }"/>
 			<p>
 				<label>项目名称：</label>
@@ -25,17 +26,30 @@
 				<label>应付金额：</label>
 				${projectExpend1.amount }
 			</p>
-			
+
+			<p>
+				<label>累计已付金额：</label>
+				${projectExpend1.pay_amount }
+			</p>
+
+
+			<div class="formBar">
+
+
+			<p>
+				<label>本次收到的发票：</label>
+				<input name="invoiceno" class="text" type="text" size="30" value="${projectExpendPay1.invoiceno }" />
+			</p>
 						
 			<p>
-				<label>实付金额：</label>
-				<input name="pay_amount" class="number required" type="text" size="30" value="<fmt:formatNumber value="${projectExpend1.pay_amount }" type="number" pattern="####0.00#"/>" />
+				<label>本次实付金额：</label>
+				<input name="pay_amount" class="number required" type="text" size="30" value="<fmt:formatNumber value="${projectExpendPay1.pay_amount }" type="number" pattern="####0.00#"/>" />
 			</p>
 			
 			
 			<p>
 				<label>实际支付日期：</label>
-				<input name="pay_date" class="date required" type="text" size="30" value="<fmt:formatDate value="${project1.pay_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="pay_date" class="date required" type="text" size="30" value="<fmt:formatDate value="${projectExpendPay1.pay_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 			
 
@@ -43,7 +57,7 @@
 		
 		<div class="formBar">
 			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">付款</button></div></div></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存付款信息</button></div></div></li>
 				<li>
 					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
 				</li>

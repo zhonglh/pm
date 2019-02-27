@@ -34,6 +34,16 @@ public class DeptStaffDaoImpl extends BatisDao implements IDeptStaffDao  {
 		this.delete(sql, deptStaff);
 	}
 
+
+	@Override
+	public void deleteDeptStaffByOtherStaff(DeptStaff deptStaff) {
+
+		String sql = "DeptStaffMapping.deleteDeptStaffByOtherStaff";
+		this.delete(sql, deptStaff);
+	}
+
+
+
 	@Override
 	public void verifyDeptStaff(DeptStaff deptStaff) {
 		String sql = "DeptStaffMapping.verifyDeptStaff";

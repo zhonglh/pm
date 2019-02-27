@@ -324,6 +324,7 @@
 						postField: $th.attr("postField") || "",
 						readonly: $th.attr("readonly") || false,
 						maxlength: $th.attr("maxlength") || 2000,
+                        notLookUpBut :  $th.attr("notLookUpBut") || "",
 						fieldClass: $th.attr("fieldClass") || ""
 					};
 					fields.push(field);
@@ -447,7 +448,7 @@
 							+ '<input type="text" readonly="readonly" name="'+field.name+'"'+suggestFrag+' lookupPk="'+field.lookupPk+'" size="'+field.size+'" class="'+field.fieldClass+'"/>' ;
 
 
-                        if (field.notLookUp != undefined && field.notLookUp == '1') {
+                        if (field.notLookUpBut == undefined || field.notLookUpBut != '1') {
                             html += '<a class="btnLook" width=950 href="' + field.lookupUrl + '" lookupGroup="' + field.lookupGroup + '" ' + suggestFrag + ' lookupPk="' + field.lookupPk + '" title="查找">查找</a>';
                         }
 						break;

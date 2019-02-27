@@ -144,11 +144,7 @@
 		update tb_other_staff set  
 		staff_no = #{staff_no},
 		staff_name = #{staff_name},
-
-		<if test="dept_id != null and dept_id != ''">
 		dept_id = #{dept_id},
-		</if>
-
 		position_type = #{position_type},
 		position_type1 = #{position_type1},
 		position_type2 = #{position_type2},

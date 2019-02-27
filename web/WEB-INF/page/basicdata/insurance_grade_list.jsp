@@ -30,7 +30,7 @@
 			
 			<c:if test="${operation_synchrodata != null && operation_synchrodata != '' }">						
 				<li><a title="确实要同步到人员成本记录中吗?" target="selectedTodo" rel="ids" href="${webroot }/StaffCostAction.do?method=synchroInsuranceGrade" class="edit"><span>同步到人员成本</span></a></li>
-				<li><a title="确实要同步到人员成本记录中吗?" target="selectedTodo" rel="ids" href="${webroot }/OtherStaffAction.do?method=synchroInsuranceGrade" class="edit"><span>同步到总部人员</span></a></li>
+				<li><a title="确实要同步到总部人员记录中吗?" target="selectedTodo" rel="ids" href="${webroot }/OtherStaffAction.do?method=synchroInsuranceGrade" class="edit"><span>同步到总部人员</span></a></li>
 			</c:if>
 		</ul>
 	</div>

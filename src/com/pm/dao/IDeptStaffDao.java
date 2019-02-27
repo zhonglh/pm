@@ -14,6 +14,9 @@ public interface IDeptStaffDao {
 
 	public void deleteDeptStaff(DeptStaff deptStaff) ;
 
+
+	public void deleteDeptStaffByOtherStaff(DeptStaff deptStaff) ;
+
 	public void verifyDeptStaff(DeptStaff deptStaff) ;	
 
 	public void unVerifyDeptStaff(DeptStaff deptStaff) ;

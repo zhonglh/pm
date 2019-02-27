@@ -39,8 +39,12 @@ public class OtherStaffDaoImpl extends BatisDao implements IOtherStaffDao {
 		otherStaff.setStaff_id(staff_id);
 		String sql = "OtherStaffMapping.getOtherStaff";
 		List<OtherStaff> list = this.query(sql, OtherStaff.class, otherStaff);
-		if(list == null || list.isEmpty()) return null;
-		else return list.get(0);
+		if(list == null || list.isEmpty()) {
+			return null;
+		}
+		else {
+			return list.get(0);
+		}
 	}
 
 
@@ -55,8 +59,12 @@ public class OtherStaffDaoImpl extends BatisDao implements IOtherStaffDao {
 	public boolean isExist(OtherStaff otherStaff) {
 		String sql = "OtherStaffMapping.isExist";
 		List<OtherStaff> list =  this.query(sql, OtherStaff.class, otherStaff);
-		if(list == null || list.isEmpty()) return false;
-		else return true;
+		if(list == null || list.isEmpty()) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	@Override

@@ -313,10 +313,13 @@ function edit_dept_staff(this1,dept_staff_id){
 
 
 
-    var $dept_name = $tr.children('td').eq(0);
-    $dept_name.html(
-        $dept_name.text() +
-        '<input type="hidden" name="items['+trNum+'].dept.dept_name" value="'+$dept_name.text()+'">'
+    var $dept = $tr.children('td').eq(0);
+    var span1 = $dept.children('span').eq(0);
+    var span2 = $dept.children('span').eq(1);
+    $dept.html(
+        span2.text() +
+        '<input type="hidden" name="items['+trNum+'].dept.dept_id" value="'+span1.text()+'">' +
+        '<input type="hidden" name="items['+trNum+'].dept.dept_name" value="'+span2.text()+'">'
     );
 
     var $join_dept_datetime = $tr.children('td').eq(1);
@@ -326,9 +329,9 @@ function edit_dept_staff(this1,dept_staff_id){
 
 
 
-    var $join_leave_datetime = $tr.children('td').eq(2);
-    $join_leave_datetime.html(
-        '<input type="text" readonly="readonly" name="items['+trNum+'].join_leave_datetime" value="'+$join_leave_datetime.text()+'" class="date date textInput readonly valid" format="yyyy-MM-dd" size="10">'
+    var $leave_dept_datetime = $tr.children('td').eq(2);
+    $leave_dept_datetime.html(
+        '<input type="text" readonly="readonly" name="items['+trNum+'].leave_dept_datetime" value="'+$leave_dept_datetime.text()+'" class="date date textInput readonly valid" format="yyyy-MM-dd" size="10">'
     );
 
     var $description = $tr.children('td').eq(3);

@@ -33,6 +33,12 @@ public class DeptStaffServiceImpl implements  IDeptStaffService {
 		}
 	}
 
+
+	@Override
+	public void deleteDeptStaffByOtherStaff(DeptStaff deptStaff) {
+		deptStaffDao.deleteDeptStaffByOtherStaff(deptStaff);
+	}
+
 	@Override
 	public void verifyDeptStaff(DeptStaff deptStaff) {
 		deptStaffDao.verifyDeptStaff(deptStaff);

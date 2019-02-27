@@ -328,7 +328,25 @@ public class OtherStaffAction extends BaseAction{
 		for(OtherStaff otherStaff : otherStaffs){
 			if(otherStaff.getErrorInfo()==null || otherStaff.getErrorInfo().length() <= 0){
 				try{
-					otherStaffService.addOtherStaff(otherStaff , null, null, null, null, null);
+                    DeptStaff[] deptStaffs = new DeptStaff[1];
+                    if(StringUtils.isNotEmpty(otherStaff.getDept_id())){
+
+                        DeptStaff deptStaff = new DeptStaff();
+                        if(otherStaff.getJoin_datetime() == null){
+                            deptStaff.setJoin_dept_datetime(PubMethod.getCurrentDate());
+                        }else {
+                            deptStaff.setJoin_dept_datetime(otherStaff.getJoin_datetime());
+                        }
+                        deptStaff.setStaff_id(otherStaff.getStaff_id());
+                        deptStaff.setDept_id(otherStaff.getDept_id());
+                        deptStaff.setDept_name(otherStaff.getDept_name());
+                        deptStaff.setDelete_flag(BusinessUtil.NOT_DELETEED);
+                        deptStaff.setBuild_datetime(PubMethod.getCurrentDate());
+                        deptStaff.setBuild_userid(sessionUser.getUser_id());
+                        deptStaff.setBuild_username(sessionUser.getUser_name());
+                        deptStaffs[0] = deptStaff;
+                    }
+					otherStaffService.addOtherStaff(otherStaff , null, null, null, null, deptStaffs);
 					index ++;
 				}catch(Exception e){
 					otherStaff.setErrorInfo(e.getMessage());
@@ -1188,6 +1206,7 @@ public class OtherStaffAction extends BaseAction{
 		if(isExist != null) {
 		    return isExist;
         }
+
         User sessionUser = PubMethod.getUser(request);
 		
 		int count = 0;
@@ -1205,6 +1224,8 @@ public class OtherStaffAction extends BaseAction{
 
 
             if(deptStaffs != null && deptStaffs.length > 0){
+                otherStaff.setDept_id(null);
+                otherStaff.setDept_name(null);
                 for(DeptStaff deptStaff : deptStaffs){
                     if(deptStaff.getLeave_dept_datetime() == null){
                         otherStaff.setDept_id(deptStaff.getDept_id());
@@ -1234,7 +1255,12 @@ public class OtherStaffAction extends BaseAction{
 		OtherStaff otherStaff1 = null;
 		if(otherStaff != null && otherStaff.getStaff_id() !=null){
 			otherStaff1 = otherStaffService.getOtherStaff(otherStaff.getStaff_id());
-			request.setAttribute("next_operation", "updateOtherStaff");
+            if(otherStaff1.getDelete_flag().equals(BusinessUtil.DELETEED)){
+                return this.ajaxForwardError(request, "该总部人员已经删除，不能再操作！",true);
+            }
+
+            request.setAttribute("next_operation", "updateOtherStaff");
+
 		}else {
 			request.setAttribute("next_operation", "addOtherStaff");
 		}		
@@ -1246,33 +1272,34 @@ public class OtherStaffAction extends BaseAction{
 		request.setAttribute("otherStaff1", otherStaff1);
 
 
+        if(otherStaff1 != null && StringUtils.isNotEmpty(otherStaff1.getStaff_id())) {
 
-        StaffRaiseRecord staffRaiseRecord = new StaffRaiseRecord();
-        staffRaiseRecord.setStaff_id(otherStaff1.getStaff_id());
-        Pager<StaffRaiseRecord> staffRaiseRecords = staffRaiseRecordService.queryRaiseRecord(staffRaiseRecord,PubMethod.getPagerByAll(StaffRaiseRecord.class));
-        request.setAttribute("raiserecords", staffRaiseRecords.getResultList());
+            StaffRaiseRecord staffRaiseRecord = new StaffRaiseRecord();
+            staffRaiseRecord.setStaff_id(otherStaff1.getStaff_id());
+            Pager<StaffRaiseRecord> staffRaiseRecords = staffRaiseRecordService.queryRaiseRecord(staffRaiseRecord, PubMethod.getPagerByAll(StaffRaiseRecord.class));
+            request.setAttribute("raiserecords", staffRaiseRecords.getResultList());
 
-        StaffRewardPenalty staffRewardPenalty = new StaffRewardPenalty();
-        staffRewardPenalty.setStaff_id(otherStaff1.getStaff_id());
-        Pager<StaffRewardPenalty> staffRewardPenaltys = staffRewardPenaltyService.queryStaffRewardPenalty(staffRewardPenalty,PubMethod.getPagerByAll(StaffRewardPenalty.class));
-        request.setAttribute("rewardpenaltys", staffRewardPenaltys.getResultList());
+            StaffRewardPenalty staffRewardPenalty = new StaffRewardPenalty();
+            staffRewardPenalty.setStaff_id(otherStaff1.getStaff_id());
+            Pager<StaffRewardPenalty> staffRewardPenaltys = staffRewardPenaltyService.queryStaffRewardPenalty(staffRewardPenalty, PubMethod.getPagerByAll(StaffRewardPenalty.class));
+            request.setAttribute("rewardpenaltys", staffRewardPenaltys.getResultList());
 
-        StaffAssessment staffAssessment = new StaffAssessment();
-        staffAssessment.setStaff_id(otherStaff1.getStaff_id());
-        Pager<StaffAssessment> staffAssessments = staffAssessmentService.queryStaffAssessment(staffAssessment,PubMethod.getPagerByAll(StaffAssessment.class));
-        request.setAttribute("assessments", staffAssessments.getResultList());
+            StaffAssessment staffAssessment = new StaffAssessment();
+            staffAssessment.setStaff_id(otherStaff1.getStaff_id());
+            Pager<StaffAssessment> staffAssessments = staffAssessmentService.queryStaffAssessment(staffAssessment, PubMethod.getPagerByAll(StaffAssessment.class));
+            request.setAttribute("assessments", staffAssessments.getResultList());
 
-        StaffPositions staffPositions = new StaffPositions();
-        staffPositions.setStaff_id(otherStaff1.getStaff_id());
-        Pager<StaffPositions> staffPositionss = staffPositionsService.queryStaffPositions(staffPositions,PubMethod.getPagerByAll(StaffPositions.class));
-        request.setAttribute("positionss", staffPositionss.getResultList());
+            StaffPositions staffPositions = new StaffPositions();
+            staffPositions.setStaff_id(otherStaff1.getStaff_id());
+            Pager<StaffPositions> staffPositionss = staffPositionsService.queryStaffPositions(staffPositions, PubMethod.getPagerByAll(StaffPositions.class));
+            request.setAttribute("positionss", staffPositionss.getResultList());
 
 
-        if(otherStaff != null && StringUtils.isNotEmpty(otherStaff.getStaff_id())){
             DeptStaff searchDeptStaff = new DeptStaff();
             searchDeptStaff.setStaff_id(otherStaff.getStaff_id());
-            List<DeptStaff> deptStaffs =  deptStaffService.getDeptStaffs(searchDeptStaff);
+            List<DeptStaff> deptStaffs = deptStaffService.getDeptStaffs(searchDeptStaff);
             request.setAttribute("deptStaffs", deptStaffs);
+
         }
 
 

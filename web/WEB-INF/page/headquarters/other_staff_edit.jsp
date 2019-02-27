@@ -26,7 +26,7 @@
 				<input name="staff_name" class="required" type="text" size="30" maxlength="30" value="${otherStaff1.staff_name}" />
 			</p>
 
-			<!--
+			<%--
 			<c:if test="otherStaff1.staff_id == null || otherStaff1.staff_id == ''">
 			<p>
 				<label>所在部门：</label>
@@ -35,15 +35,13 @@
 				suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup" lookupGroup="dept"/>	
 			</p>
 			</c:if>
-			<c:if test="otherStaff1.staff_id != null && otherStaff1.staff_id != ''">
-				<p>
-					<label>所在部门：</label>
+			--%>
+
+			<c:if test="${otherStaff1.staff_id != null && otherStaff1.staff_id != ''}">
 					<input type="hidden" size="2"  name="dept.dept_id" 	value="${otherStaff1.dept_id }"/>
 					<input type="hidden" size="2"  name="dept.dept_name" value="${otherStaff1.dept_name }" />
-					${otherStaff1.dept_name }
-				</p>
 			</c:if>
-			-->
+
 					
 
 			<p>
@@ -458,6 +456,41 @@
 			<div class="divider"></div>
 
 
+
+			<h3 class="contentTitle">部门经历</h3>
+			<table id="dept_staff_table" class="list nowrap itemDetail" addButton="新建部门经历" width="100%">
+				<thead>
+				<tr>
+					<th width="120" type="lookup" notLookUpBut="1" fieldClass="required" name="items[#index#].dept.dept_name" lookupGroup="items[#index#].dept" suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup"   lookupPk="dept_id" size="12">部门</th>
+					<th width="100" type="date" postField="join_dept_datetime" defaultVal="${currDate }"  name="items[#index#].join_dept_datetime"  size="10" fieldClass="date required">加入部门日期</th>
+					<th width="100" type="date" postField="leave_dept_datetime"   name="items[#index#].leave_dept_datetime"  size="10" fieldClass="date">离开部门日期</th>
+					<th width="350" type="text" postField="description"  name="items[#index#].description" maxlength="100" size="38" fieldClass="text">说明</th>
+					<th type="del" >操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="deptStaff"  varStatus="status1" items="${deptStaffs}">
+					<tr>
+						<td height="22"><span style="display: none">${deptStaff.dept_id}</span><span><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if>${deptStaff.dept_name }<c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></span></td>
+						<td><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if><fmt:formatDate value="${deptStaff.join_dept_datetime }" pattern="yyyy-MM-dd"/><c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></td>
+						<td><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if><fmt:formatDate value="${deptStaff.leave_dept_datetime }" pattern="yyyy-MM-dd"/><c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></td>
+						<td>${deptStaff.description }</td>
+						<td  nowrap>
+							<c:if test="${deptStaff.delete_flag == '0' }">
+								<a href="void(0);" onclick="edit_dept_staff(this,'${deptStaff.dept_staff_id }');return false;" ><span>编辑</span></a>
+							</c:if>
+						</td>
+					</tr>
+				</c:forEach>
+				</tbody>
+			</table>
+
+
+
+			<br />
+			<div class="divider"></div>
+
+
 			<h3 class="contentTitle">加薪记录</h3>
 
 			<table id="raise_record_table" class="list nowrap itemDetail" addButton="新建加薪记录" width="100%">
@@ -587,39 +620,6 @@
 			<div class="divider"></div>
 
 
-
-			<h3 class="contentTitle">部门经历</h3>
-			<table id="dept_staff_table" class="list nowrap itemDetail" addButton="新建部门经历" width="100%">
-				<thead>
-				<tr>
-					<th width="120" type="lookup" notLookUp="1" fieldClass="required" name="items[#index#].dept.dept_name" lookupGroup="items[#index#].dept" suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup"   lookupPk="dept_id" size="12">部门</th>
-					<th width="100" type="date" postField="join_dept_datetime" defaultVal="${currDate }"  name="items[#index#].join_dept_datetime"  size="10" fieldClass="date required">加入部门日期</th>
-					<th width="100" type="date" postField="leave_dept_datetime"   name="items[#index#].leave_dept_datetime"  size="10" fieldClass="date">离开部门日期</th>
-					<th width="350" type="text" postField="description"  name="items[#index#].description" maxlength="100" size="38" fieldClass="text">说明</th>
-					<th type="del" >操作</th>
-				</tr>
-				</thead>
-				<tbody>
-				<c:forEach var="deptStaff"  varStatus="status1" items="${deptStaffs}">
-					<tr>
-						<td height="22"><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if>${deptStaff.dept_name }<c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></td>
-						<td><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if><fmt:formatDate value="${deptStaff.join_dept_datetime }" pattern="yyyy-MM-dd"/><c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></td>
-						<td><c:if test="${deptStaff.delete_flag == '1' }"><s></c:if><fmt:formatDate value="${deptStaff.leave_dept_datetime }" pattern="yyyy-MM-dd"/><c:if test="${deptStaff.delete_flag == '1' }"></s></c:if></td>
-						<td>${deptStaff.description }</td>
-						<td  nowrap>
-							<c:if test="${deptStaff.delete_flag == '0' }">
-								<a href="void(0);" onclick="edit_dept_staff(this,'${deptStaff.dept_staff_id }');return false;" ><span>编辑</span></a>
-							</c:if>
-						</td>
-					</tr>
-				</c:forEach>
-				</tbody>
-			</table>
-
-
-
-			<br />
-			<div class="divider"></div>
 
 
 			<p>

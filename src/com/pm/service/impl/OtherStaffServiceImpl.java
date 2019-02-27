@@ -1,11 +1,14 @@
 package com.pm.service.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.common.exceptions.PMException;
+import com.common.utils.DateKit;
 import com.common.utils.IDKit;
 import com.pm.domain.business.*;
 import com.pm.service.*;
+import com.pm.util.PubMethod;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -168,15 +171,28 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 	@Override
 	public void deleteOtherStaff(OtherStaff[] otherStaffs) {
 		for(OtherStaff otherStaff : otherStaffs){	
-				
-				userDao.deleteUser(
-						otherStaff.getStaff_id(),
-						EnumStaffType.AdminStaff.name(),
-						otherStaff.getDelete_userid(),
-						otherStaff.getDelete_username()
-				);
-				
-				otherStaffDao.deleteOtherStaff(otherStaff);
+
+			userDao.deleteUser(
+					otherStaff.getStaff_id(),
+					EnumStaffType.AdminStaff.name(),
+					otherStaff.getDelete_userid(),
+					otherStaff.getDelete_username()
+			);
+
+			otherStaffDao.deleteOtherStaff(otherStaff);
+
+			//逻辑删除人员的部门经历
+			DeptStaff delDeptStaff = new DeptStaff();
+			delDeptStaff.setDelete_datetime(PubMethod.getCurrentDate());
+			delDeptStaff.setDelete_userid(otherStaff.getDelete_userid());
+			delDeptStaff.setDelete_username(otherStaff.getDelete_username());
+			delDeptStaff.setStaff_id(otherStaff.getStaff_id());
+			if(otherStaff.getLeave_job_datetime() != null) {
+				delDeptStaff.setLeave_dept_datetime(otherStaff.getLeave_job_datetime());
+			}else {
+				delDeptStaff.setLeave_dept_datetime(PubMethod.getCurrentDate());
+			}
+			deptStaffService.deleteDeptStaffByOtherStaff(delDeptStaff);
 		}
 	}
 

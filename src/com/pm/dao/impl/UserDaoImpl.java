@@ -111,7 +111,8 @@ public class UserDaoImpl extends BatisDao implements IUserDao{
 	}
 	
 
-	public boolean deleteUser(String staff_id,String staff_type,String deleteUserId, String deletUserName){
+	@Override
+	public boolean deleteUser(String staff_id, String staff_type, String deleteUserId, String deletUserName){
 		User user = new User();
 		user.setStaff_id(staff_id);
 		user.setStaff_type(staff_type);

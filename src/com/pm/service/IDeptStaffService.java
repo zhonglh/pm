@@ -23,6 +23,12 @@ public interface IDeptStaffService extends IGeneralLogService {
 	@LogAnnotation(operation_type=LogConstant.OPERATION_DELETE,entity_type=LogConstant.ENTITY_DEPT_STAFF)
 	public void deleteDeptStaff(DeptStaff[] deptStaffs) ;
 
+	/**
+	 * 删除人员的部门经历，仅在删除用户时调用
+	 * @param deptStaff
+	 */
+	public void deleteDeptStaffByOtherStaff(DeptStaff deptStaff) ;
+
 	@LogAnnotation(operation_type=LogConstant.OPERATION_CHECK,entity_type=LogConstant.ENTITY_DEPT_STAFF)
 	public void verifyDeptStaff(DeptStaff deptStaff) ;	
 

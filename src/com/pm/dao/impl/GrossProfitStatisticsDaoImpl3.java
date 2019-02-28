@@ -1,40 +1,39 @@
 package com.pm.dao.impl;
 
-import org.springframework.stereotype.Repository;
-
 import com.common.beans.Pager;
 import com.common.daos.BatisDao;
 import com.pm.dao.IGrossProfitStatisticsDao;
 import com.pm.domain.business.Statistics;
 import com.pm.vo.UserPermit;
+import org.springframework.stereotype.Repository;
 
 
 /**
  * @author Administrator
  */
-@Repository(value="grossProfitStatisticsDaoImpl")
-public class GrossProfitStatisticsDaoImpl extends BatisDao implements IGrossProfitStatisticsDao {
+@Repository(value="grossProfitStatisticsDaoImpl3")
+public class GrossProfitStatisticsDaoImpl3 extends BatisDao implements IGrossProfitStatisticsDao {
 
 
 	@Override
 	public Pager<Statistics> queryByProject(Statistics statistics,
 			UserPermit userPermit, 
 			Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryByProject";
+		String sql = "GrossProfitStatisticsMapping3.queryByProject";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 
 	@Override
 	public Pager<Statistics> queryBySales(Statistics statistics,
 			UserPermit userPermit, Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryBySales";
+		String sql = "GrossProfitStatisticsMapping3.queryBySales";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 
 	@Override
 	public Pager<Statistics> queryByManager(Statistics statistics,
 			UserPermit userPermit, Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryByManager";
+		String sql = "GrossProfitStatisticsMapping3.queryByManager";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 	
@@ -42,48 +41,48 @@ public class GrossProfitStatisticsDaoImpl extends BatisDao implements IGrossProf
 
 	@Override
 	public Pager<Statistics> queryByInfoSource(Statistics statistics, UserPermit userPermit, Pager<Statistics> pager){
-		String sql = "GrossProfitStatisticsMapping.queryByInfoSource";
+		String sql = "GrossProfitStatisticsMapping3.queryByInfoSource";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);		
 	}
 
 	@Override
 	public Pager<Statistics> queryByClient(Statistics statistics, UserPermit userPermit, Pager<Statistics> pager){
-		String sql = "GrossProfitStatisticsMapping.queryByClient";
+		String sql = "GrossProfitStatisticsMapping3.queryByClient";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 
 	@Override
 	public Pager<Statistics> queryBySalesDept(Statistics statistics,
 			UserPermit userPermit, Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryBySalesDept";
+		String sql = "GrossProfitStatisticsMapping3.queryBySalesDept";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 
 	@Override
 	public Pager<Statistics> queryByExecDept(Statistics statistics,
 			UserPermit userPermit, Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryByExecDept";
+		String sql = "GrossProfitStatisticsMapping3.queryByExecDept";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 
 	@Override
 	public Pager<Statistics> queryByDept(Statistics statistics,
 			UserPermit userPermit, Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryByDept";
+		String sql = "GrossProfitStatisticsMapping3.queryByDept";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 
 	@Override
 	public Pager<Statistics> queryByYear(Statistics statistics,
 			UserPermit userPermit, Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryByYear";
+		String sql = "GrossProfitStatisticsMapping3.queryByYear";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 
 	@Override
 	public Pager<Statistics> queryByQuarter(Statistics statistics,
 			UserPermit userPermit, Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryByQuarter";
+		String sql = "GrossProfitStatisticsMapping3.queryByQuarter";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 
@@ -91,7 +90,7 @@ public class GrossProfitStatisticsDaoImpl extends BatisDao implements IGrossProf
 	@Override
 	public Pager<Statistics> queryByAll(Statistics statistics,
 			UserPermit userPermit, Pager<Statistics> pager) {
-		String sql = "GrossProfitStatisticsMapping.queryByAll";
+		String sql = "GrossProfitStatisticsMapping3.queryByAll";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}
 

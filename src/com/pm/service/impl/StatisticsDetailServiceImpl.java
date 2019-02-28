@@ -30,6 +30,18 @@ public class StatisticsDetailServiceImpl implements IStatisticsDetailService{
 	}
 
 	@Override
+	public Pager<StatisticsDetail> queryGrossProfit3Detail(
+			Statistics statistics, UserPermit userPermit,
+			Pager<StatisticsDetail> pager) {
+		return statisticsDetailDao.queryGrossProfit3Detail(statistics, userPermit, pager);
+	}
+
+
+
+
+
+
+	@Override
 	public Pager<StatisticsDetail> querySalesDetail(Statistics statistics,
 			UserPermit userPermit, Pager<StatisticsDetail> pager) {
 		return statisticsDetailDao.querySalesDetail(statistics, userPermit, pager);

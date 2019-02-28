@@ -112,7 +112,7 @@ public enum EnumPermit {
 	GROSSPROFITVIEW("1400","permit.gross.profit.view"),
 
 
-	GROSSPROFIT1VIEW("1401","permit.gross.profit2.view"),
+	GROSSPROFIT2VIEW("1401","permit.gross.profit2.view"),
 
 	GROSSPROFIT3VIEW("1402","permit.gross.profit3.view"),
 

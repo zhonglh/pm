@@ -29,6 +29,15 @@ public class StatisticsDetailDaoImpl extends BatisDao implements
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, StatisticsDetail.class, statistics,userPermit);
 	}
 
+
+	@Override
+	public Pager<StatisticsDetail> queryGrossProfit3Detail(
+			Statistics statistics, UserPermit userPermit,
+			Pager<StatisticsDetail> pager) {
+		String sql = "StatisticsDetailMapping.queryGrossProfit3Detail";
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, StatisticsDetail.class, statistics,userPermit);
+	}
+
 	@Override
 	public Pager<StatisticsDetail> querySalesDetail(Statistics statistics,
 			UserPermit userPermit, Pager<StatisticsDetail> pager) {

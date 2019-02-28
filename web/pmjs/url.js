@@ -28,6 +28,21 @@ var gross_profit2_urls=[
 "/ProjectGrossProfitStatisticsAction2.do?method=allList"                            
                       ];
 
+var gross_profit3_urls=[
+    "",
+    "/ProjectGrossProfitStatisticsAction3.do?method=list",
+    "/ProjectGrossProfitStatisticsAction3.do?method=salesUserList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=managerList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=infoSourceList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=clientList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=salesDeptList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=execDeptList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=deptList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=yearList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=quarterList",
+    "/ProjectGrossProfitStatisticsAction3.do?method=allList"
+];
+
 
 
 var sales_urls=[

@@ -62,7 +62,7 @@ public class StatisticsDetailAction extends BaseAction {
 
 	@RequestMapping(params = "method=queryGrossProfit2Detail")
 	public String queryGrossProfit2Detail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFITVIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
 		Pager<StatisticsDetail> pager = statisticsDetailService.queryGrossProfit2Detail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
 		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);	
 		request.setAttribute("excelMethod", "excelGrossProfit2Detail");
@@ -73,7 +73,7 @@ public class StatisticsDetailAction extends BaseAction {
 
 	@RequestMapping(params = "method=excelGrossProfit2Detail")
 	public void excelGrossProfit2Detail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFITVIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
 		Pager<StatisticsDetail> pager = statisticsDetailService.queryGrossProfit2Detail(statistics, userPermit, PubMethod.getPagerByAll(request, StatisticsDetail.class));
 		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);	
 
@@ -83,7 +83,39 @@ public class StatisticsDetailAction extends BaseAction {
 			
 		}
 	}
-	
+
+
+
+
+
+
+	@RequestMapping(params = "method=queryGrossProfit3Detail")
+	public String queryGrossProfit3Detail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
+		Pager<StatisticsDetail> pager = statisticsDetailService.queryGrossProfit3Detail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
+		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);
+		request.setAttribute("excelMethod", "excelGrossProfit3Detail");
+		request.setAttribute("themethod", "queryGrossProfit3Detail");
+		return "statistics/statistics_detail_list";
+	}
+
+
+	@RequestMapping(params = "method=excelGrossProfit3Detail")
+	public void excelGrossProfit3Detail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
+		Pager<StatisticsDetail> pager = statisticsDetailService.queryGrossProfit3Detail(statistics, userPermit, PubMethod.getPagerByAll(request, StatisticsDetail.class));
+		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);
+
+		try{
+			BusinessExcel.export(res, null, pager.getResultList(), StatisticsDetail.class);
+		}catch(Exception e){
+
+		}
+	}
+
+
+
+
 
 
 	@RequestMapping(params = "method=querySalesDetail")

@@ -9,6 +9,9 @@ import com.pm.domain.business.Statistics;
 import com.pm.vo.UserPermit;
 
 
+/**
+ * @author Administrator
+ */
 @Repository(value="grossProfitStatisticsDaoImpl2")
 public class GrossProfitStatisticsDaoImpl2 extends BatisDao implements IGrossProfitStatisticsDao {
 
@@ -37,12 +40,14 @@ public class GrossProfitStatisticsDaoImpl2 extends BatisDao implements IGrossPro
 	
 
 
-	public Pager<Statistics> queryByInfoSource(Statistics statistics,UserPermit userPermit,Pager<Statistics> pager){
+	@Override
+	public Pager<Statistics> queryByInfoSource(Statistics statistics, UserPermit userPermit, Pager<Statistics> pager){
 		String sql = "GrossProfitStatisticsMapping2.queryByInfoSource";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);		
 	}
 
-	public Pager<Statistics> queryByClient(Statistics statistics,UserPermit userPermit,Pager<Statistics> pager){
+	@Override
+	public Pager<Statistics> queryByClient(Statistics statistics, UserPermit userPermit, Pager<Statistics> pager){
 		String sql = "GrossProfitStatisticsMapping2.queryByClient";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}

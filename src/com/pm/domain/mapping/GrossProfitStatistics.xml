@@ -1080,7 +1080,7 @@
 		on project.project_id = pe.project_id 
 		
 		group by project.sales_userid,project.sales_username 
-		order by project.sales_username 
+		order by project.sales_username
 	
 	</sql>		
 	

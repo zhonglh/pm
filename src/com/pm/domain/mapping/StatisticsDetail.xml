@@ -90,10 +90,54 @@
 		
 		<include refid="ProjectAuthMapping.permission"/>			
 		order by business_sort, use_month desc ,project.project_id,build_datetime desc 
-	</sql>	
-		
-		
-		
+	</sql>
+
+
+
+
+
+
+	<select id="queryGrossProfit3DetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="queryGrossProfit3DetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryGrossProfit3DetailByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (
+		<include refid="queryGrossProfit3DetailPagerSql"/>
+		) c
+	</select>
+
+
+	<sql id="queryGrossProfit3DetailPagerSql">
+		SELECT business.*
+		FROM (<include refid="all_data"/>) business
+		inner join tb_project project
+		on business.project_id = project.project_id
+		where 1=1 and business.business_sort in ('11','30','40','51')
+		and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
+
+		<if test="Statistics.project_id != null and Statistics.project_id != ''">
+			AND project.project_id = #{Statistics.project_id}
+		</if>
+
+		<if test="Statistics.month1 != 0">
+			<![CDATA[
+			AND use_month >= #{Statistics.month1}
+		]]>
+		</if>
+		<if test="Statistics.month2 != 0">
+			<![CDATA[
+			AND use_month <= #{Statistics.month2}
+		]]>
+		</if>
+
+		<include refid="ProjectAuthMapping.permission"/>
+		order by business_sort, use_month desc ,project.project_id,build_datetime desc
+	</sql>
+
+
+
+
 
 	<select id="querySalesDetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
 		<include refid="querySalesDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
@@ -179,6 +223,8 @@
 			
 		<include refid="all_data_10"/>	
 		union all
+		<include refid="all_data_11"/>
+		union all
 		<include refid="all_data_20"/>	
 		union all
 		<include refid="all_data_30"/>				
@@ -210,6 +256,21 @@
 			on receivedPayment.project_id = project.project_id 
 			INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id 			
 			where  receivedPayment.verify_userid is not null
+	</sql>
+
+
+	<!-- 金额为回款， 时间为结算单 -->
+	<sql id="all_data_11">
+		select rp.receive_payment_id as obj_id ,project.project_id,project.project_name,project.project_no	,
+		'收入' as amount_type, '到款记录' as business_type,	  '11' as business_sort,
+		rp.amount, rp.statement_month as use_month,  str_to_date(rp.statement_month*100+01,'%Y%m%d') as pay_date,
+		dd_rai.dic_data_name as  otherdesc, rp.description, rp.payment_unit as business_name	,
+		rp.receivable_accounts_item_id as type_id 	, rp.build_datetime
+		from vb_received_payment_monthly rp
+		INNER JOIN tb_project project
+		on rp.project_id = project.project_id
+		INNER join ts_dic_data dd_rai on rp.receivable_accounts_item_id = dd_rai.id
+
 	</sql>
 	
 	

@@ -1,58 +1,42 @@
 package com.pm.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.common.actions.BaseAction;
+import com.common.beans.Pager;
+import com.pm.domain.business.Statistics;
+import com.pm.service.IGrossProfitStatisticsService;
+import com.pm.service.IRoleService;
+import com.pm.util.PubMethod;
+import com.pm.util.constant.EnumPermit;
+import com.pm.util.excel.BusinessExcel;
+import com.pm.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.common.actions.BaseAction;
-import com.common.beans.Pager;
-import com.pm.domain.business.Params;
-import com.pm.domain.business.Statistics;
-import com.pm.service.IGrossProfitStatisticsService;
-import com.pm.service.IParamsService;
-import com.pm.service.IRoleService;
-import com.pm.util.PubMethod;
-import com.pm.util.constant.EnumPermit;
-import com.pm.util.excel.BusinessExcel;
-import com.pm.vo.GrossProfitStatisticsAll;
-import com.pm.vo.GrossProfitStatisticsClient;
-import com.pm.vo.GrossProfitStatisticsDept;
-import com.pm.vo.GrossProfitStatisticsExecDept;
-import com.pm.vo.GrossProfitStatisticsInfoSourcer;
-import com.pm.vo.GrossProfitStatisticsManager;
-import com.pm.vo.GrossProfitStatisticsProject;
-import com.pm.vo.GrossProfitStatisticsQuarter;
-import com.pm.vo.GrossProfitStatisticsSalesDept;
-import com.pm.vo.GrossProfitStatisticsSalesUser;
-import com.pm.vo.GrossProfitStatisticsYear;
-import com.pm.vo.UserPermit;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
- * 项目毛利统计(账面毛利)
+ * 项目回款毛利统计
  * @author zhonglh
  *
  */
 @Controller
-@RequestMapping(value = "ProjectGrossProfitStatisticsAction2.do")
-public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
+@RequestMapping(value = "ProjectGrossProfitStatisticsAction3.do")
+public class ProjectGrossProfitStatisticsAction3 extends BaseAction {
 
 
-	private static String detailMethod = "queryGrossProfit2Detail";
+	private static String detailMethod = "queryGrossProfit3Detail";
 
-	private static final String aciont = "ProjectGrossProfitStatisticsAction2.do";
-	private static final String urls = "gross_profit2_urls";
+	private static final String aciont = "ProjectGrossProfitStatisticsAction3.do";
+	private static final String urls = "gross_profit3_urls";
 
-	private static final String rel = "rel40";
+	private static final String rel = "rel46";
 	
 	@Autowired
 	private IRoleService roleService;
@@ -62,7 +46,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	
 
 	@Autowired
-	@Qualifier("grossProfitStatisticsServiceImpl2") 
+	@Qualifier("grossProfitStatisticsServiceImpl3")
 	private IGrossProfitStatisticsService grossProfitStatisticsService;
 
 	
@@ -74,7 +58,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 		computeTaxRate(searchStatistics);
 		
 		
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByProject(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -105,7 +89,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=export")
 	public void export(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByProject(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsProject> list = new ArrayList<GrossProfitStatisticsProject>();
@@ -129,7 +113,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=salesUserList")
 	public String salesUserList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryBySales(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -156,7 +140,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportSalesUserList")
 	public void exportSalesUserList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryBySales(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsSalesUser> list = new ArrayList<GrossProfitStatisticsSalesUser>();
@@ -178,7 +162,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=managerList")
 	public String managerList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByManager(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -205,7 +189,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportManagerList")
 	public void exportManagerList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByManager(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsManager> list = new ArrayList<GrossProfitStatisticsManager>();
@@ -227,7 +211,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=infoSourceList")
 	public String infoSourceList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByInfoSource(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -254,7 +238,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportInfoSourceList")
 	public void exportInfoSourceList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByInfoSource(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsInfoSourcer> list = new ArrayList<GrossProfitStatisticsInfoSourcer>();
@@ -276,7 +260,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=clientList")
 	public String clientList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByClient(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -303,7 +287,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportClientList")
 	public void exportClientList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());		
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByClient(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsClient> list = new ArrayList<GrossProfitStatisticsClient>();
@@ -326,7 +310,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=salesDeptList")
 	public String salesDeptList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryBySalesDept(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -354,7 +338,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportSalesDeptList")
 	public void exportSalesDeptList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());	
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());	
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryBySalesDept(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsSalesDept> list = new ArrayList<GrossProfitStatisticsSalesDept>();
@@ -376,7 +360,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=execDeptList")
 	public String execDeptList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByExecDept(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -403,7 +387,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportExecDeptList")
 	public void exportExecDeptList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());	
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());	
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByExecDept(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsExecDept> list = new ArrayList<GrossProfitStatisticsExecDept>();
@@ -425,7 +409,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=deptList")
 	public String deptList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByDept(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -452,7 +436,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportDeptList")
 	public void exportDeptList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());	
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());	
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByDept(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsDept> list = new ArrayList<GrossProfitStatisticsDept>();
@@ -474,7 +458,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=yearList")
 	public String yearList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByYear(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		
@@ -501,7 +485,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportYearList")
 	public void exportYearList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());		
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByYear(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsYear> list = new ArrayList<GrossProfitStatisticsYear>();
@@ -528,7 +512,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=quarterList")
 	public String quarterList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByQuarter(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		if(pager.getResultList() != null){
@@ -560,7 +544,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportQuarterList")
 	public void exportQuarterList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());		
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByQuarter(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsQuarter> list = new ArrayList<GrossProfitStatisticsQuarter>();
@@ -597,7 +581,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 
 	@RequestMapping(params = "method=allList")
 	public String allList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByAll(searchStatistics, userPermit, PubMethod.getPager(request, Statistics.class));
 		if(pager.getResultList() != null){
@@ -620,7 +604,7 @@ public class ProjectGrossProfitStatisticsAction2 extends BaseAction {
 	 */
 	@RequestMapping(params = "method=exportAllList")
 	public void exportAllList(Statistics searchStatistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT2VIEW.getId());	
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFIT3VIEW.getId());	
 		computeTaxRate(searchStatistics);
 		Pager<Statistics> pager = getGrossProfitStatisticsService().queryByAll(searchStatistics, userPermit, PubMethod.getPagerByAll(request, Statistics.class));
 		List<GrossProfitStatisticsAll> list = new ArrayList<GrossProfitStatisticsAll>();

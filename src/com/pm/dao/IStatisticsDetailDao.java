@@ -26,8 +26,18 @@ public interface IStatisticsDetailDao {
 	 * @param pager
 	 * @return
 	 */
-	public Pager<StatisticsDetail> queryGrossProfit2Detail(Statistics statistics, UserPermit userPermit,Pager<StatisticsDetail> pager);	
-	
+	public Pager<StatisticsDetail> queryGrossProfit2Detail(Statistics statistics, UserPermit userPermit,Pager<StatisticsDetail> pager);
+
+
+	/**
+	 * 项目回款毛利润统计明细(金额按回款 ， 时间按月度结算单)
+	 * @param statistics
+	 * @param userPermit
+	 * @param pager
+	 * @return
+	 */
+	public Pager<StatisticsDetail> queryGrossProfit3Detail(Statistics statistics, UserPermit userPermit,Pager<StatisticsDetail> pager);
+
 
 	/**
 	 * 合同额统计明细

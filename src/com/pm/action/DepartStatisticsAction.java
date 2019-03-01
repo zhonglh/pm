@@ -147,6 +147,44 @@ public class DepartStatisticsAction extends BaseAction {
 			
 		}
 	}
+
+
+
+
+
+	/**
+	 * 总部人员成本明细
+	 * @param statistics
+	 * @param res
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(params = "method=queryOtherStaffCostDetail")
+	public String queryOtherStaffCostDetail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.DEPARTSTATISTICS.getId());
+		Pager<StatisticsDetail> pager = departStatisticsService.queryOtherStaffCostDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
+		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);
+		return "departstatistics/other_staff_costs_detail_list";
+	}
+
+
+	/**
+	 * 总部人员成本明细导出excel
+	 * @param statistics
+	 * @param res
+	 * @param request
+	 */
+	@RequestMapping(params = "method=excelDepartCostDetail")
+	public void excelOtherStaffCostDetail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.DEPARTSTATISTICS.getId());
+		Pager<StatisticsDetail> pager = departStatisticsService.queryOtherStaffCostDetail(statistics, userPermit, PubMethod.getPagerByAll(StatisticsDetail.class));
+
+		try{
+			BusinessExcel.export(res, null, pager.getResultList(), StatisticsDetail.class);
+		}catch(Exception e){
+
+		}
+	}
 	
 
 	@RequestMapping(params = "method=list")
@@ -505,7 +543,7 @@ public class DepartStatisticsAction extends BaseAction {
 		List<DepartStatisticsItem> list160= new ArrayList<DepartStatisticsItem>();
 		DepartStatisticsItem departStatisticsItem1 = new DepartStatisticsItem();
 		departStatisticsItem1.setItemFormatter("B");
-		departStatisticsItem1.setItemName(items.get(15));	
+		departStatisticsItem1.setItemName(items.get(16));
 		list160.add(departStatisticsItem1);
 		double sum16 = 0;
 		for(Dept dept1 : depts){
@@ -521,7 +559,7 @@ public class DepartStatisticsAction extends BaseAction {
 		if(depts.size() > 1){
 			DepartStatisticsItem departStatisticsItem2 = new DepartStatisticsItem();
 			departStatisticsItem2.setItemFormatter("B");
-			departStatisticsItem2.setItemName(items.get(15));	
+			departStatisticsItem2.setItemName(items.get(16));
 			departStatisticsItem2.setVal(sum16);	
 			list160.add(departStatisticsItem2);
 		}

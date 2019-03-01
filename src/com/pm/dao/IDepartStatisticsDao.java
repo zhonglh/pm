@@ -126,4 +126,15 @@ public interface IDepartStatisticsDao {
 	 */
 	public Pager<DepartStatisticsItem> queryOtherStaffCosts(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
 
+
+
+	/**
+	 * 总部人员成本明细
+	 * @param statistics
+	 * @param userPermit
+	 * @param pager
+	 * @return
+	 */
+	public Pager<StatisticsDetail> queryOtherStaffCostDetail(Statistics statistics,UserPermit userPermit,Pager<StatisticsDetail> pager) ;
+
 }

@@ -335,6 +335,49 @@
 
 
 
+	<select id="queryOtherStaffCostDetailByPager_mysql" parameterType="map"   resultMap="departStatisticsItemMap">
+		<include refid="queryOtherStaffCostDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryOtherStaffCostDetailByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (
+		<include refid="queryOtherStaffCostDetailPagerSql"/>
+		) c
+	</select>
+
+	<sql id="queryOtherStaffCostDetailPagerSql">
+		SELECT business.*
+		FROM (
+		<include refid="all_data_200"/>
+		) business
+		inner join ts_dept dept
+		on business.dept_id = dept.dept_id
+		where dept.statisticsed = '1'
+
+
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND dept.dept_id = #{Statistics.deptId}
+		</if>
+
+
+		<if test="Statistics.month1 != 0">
+			<![CDATA[
+			AND use_month >= #{Statistics.month1}
+		]]>
+		</if>
+		<if test="Statistics.month2 != 0">
+			<![CDATA[
+			AND use_month <= #{Statistics.month2}
+		]]>
+		</if>
+		<include refid="departPermission"/>
+		order by use_month desc ,build_datetime desc
+	</sql>
+
+
+
+
+
 
 
 

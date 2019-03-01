@@ -164,7 +164,7 @@ public class DepartStatisticsAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.DEPARTSTATISTICS.getId());
 		Pager<StatisticsDetail> pager = departStatisticsService.queryOtherStaffCostDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
 		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);
-		return "departstatistics/other_staff_costs_detail_list";
+		return "departstatistics/other_staff_cost_detail_list";
 	}
 
 
@@ -174,7 +174,7 @@ public class DepartStatisticsAction extends BaseAction {
 	 * @param res
 	 * @param request
 	 */
-	@RequestMapping(params = "method=excelDepartCostDetail")
+	@RequestMapping(params = "method=excelOtherStaffCostDetail")
 	public void excelOtherStaffCostDetail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.DEPARTSTATISTICS.getId());
 		Pager<StatisticsDetail> pager = departStatisticsService.queryOtherStaffCostDetail(statistics, userPermit, PubMethod.getPagerByAll(StatisticsDetail.class));
@@ -500,7 +500,7 @@ public class DepartStatisticsAction extends BaseAction {
 		List<DepartStatisticsItem> list130= new ArrayList<DepartStatisticsItem>();
 		List<DepartStatisticsItem> otherStaffCosts = departStatisticsService.queryOtherStaffCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
 		Map<String, DepartStatisticsItem> map130 = PubMethod.list2Map(otherStaffCosts);
-		handleStatistics(list, depts, list130, map130,13,"/DepartStatisticsAction.do?method=queryOtherStaffCostsDetail&x=200","B");
+		handleStatistics(list, depts, list130, map130,13,"/DepartStatisticsAction.do?method=queryOtherStaffCostDetail","B");
 
 
 

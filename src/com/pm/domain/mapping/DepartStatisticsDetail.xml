@@ -335,7 +335,7 @@
 
 
 
-	<select id="queryOtherStaffCostDetailByPager_mysql" parameterType="map"   resultMap="departStatisticsItemMap">
+	<select id="queryOtherStaffCostDetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
 		<include refid="queryOtherStaffCostDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
 	</select>
 

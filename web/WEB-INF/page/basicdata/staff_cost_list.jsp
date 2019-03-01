@@ -25,7 +25,7 @@
 			
 			<li>				
 				<label>外协人员：</label>
-				<select name="outsource_staff" style="width:133px">
+				<select name="outsource_staff" style="width:153px">
 					<option value="">全部</option>
 					<option value="0" <c:if test="${staffCost.outsource_staff == '0' }">selected</c:if>>否</option>
 					<option value="1" <c:if test="${staffCost.outsource_staff == '1' }">selected</c:if>>是</option>					
@@ -47,7 +47,7 @@
 
 			<li>				
 				<label>在职状态：</label>
-				<select name="delete_flag" style="width:133px">
+				<select name="delete_flag" style="width:153px">
 					<option value="">全部</option>
 					<option value="0" <c:if test="${staffCost.delete_flag == '0' }">selected</c:if>>在职</option>
 					<option value="1" <c:if test="${staffCost.delete_flag == '1' }">selected</c:if>>离职</option>					
@@ -55,23 +55,41 @@
 			</li>	
 		</ul>
 		<ul class="searchContent">		
+
+
+
+			<li>
+				<label>入职时间：</label>
+				<input name="join_datetime1" class="date" type="text" size="7" value="${param.join_datetime1 }" readonly="readonly" />
+				<input name="join_datetime2" class="date" type="text" size="7" value="${param.join_datetime2 }" readonly="readonly" />
+			</li>
+
+
+			<li>
+				<label>离职时间：</label>
+				<input name="leave_job_datetime1" class="date" type="text" size="7" value="${param.leave_job_datetime1 }" readonly="readonly" />
+				<input name="leave_job_datetime2" class="date" type="text" size="7" value="${param.leave_job_datetime2 }" readonly="readonly" />
+			</li>
+		</ul>
+
+
+		<ul class="searchContent">
+
 			<li>
 				<label>招聘专员名称：</label>
 				<input type="text" name="recruiter_name" value="${param.recruiter_name }"/>
 			</li>
+
 			<li>
 				<label>时间段：</label>
 				<input name="date1" class="date" type="text" size="7" value="${param.date1 }" readonly="readonly" />
 				<input name="date2" class="date" type="text" size="7" value="${param.date2 }" readonly="readonly" />
 			</li>
 
-			
 			<li>
 				<div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div>
 			</li>
-			
-			
-		</ul>		
+		</ul>
 	</div>
 	</form>
 </div>
@@ -132,7 +150,7 @@
 			
 		</ul>
 	</div>
-	<table class="table" width="6640" layoutH="162">
+	<table class="table" width="6640" layoutH="188">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>

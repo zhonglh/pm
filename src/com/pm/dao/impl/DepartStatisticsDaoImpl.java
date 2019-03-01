@@ -118,8 +118,15 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 		String sql = "DepartStatisticsDetailMapping.queryDepartCostDetail";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, StatisticsDetail.class, statistics,userPermit);
 	}
-	
-	
-	
+
+
+
+	@Override
+	public Pager<DepartStatisticsItem> queryOtherStaffCosts(Statistics statistics, UserPermit userPermit, Pager<DepartStatisticsItem> pager){
+
+		String sql = "DepartStatisticsDetailMapping.queryOtherStaffCostStaistics";
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+
+	}
 
 }

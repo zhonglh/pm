@@ -76,6 +76,13 @@ public class DepartStatisticsServiceImpl implements IDepartStatisticsService {
 	public Pager<StatisticsDetail> queryDepartDetail(Statistics statistics, UserPermit userPermit, Pager<StatisticsDetail> pager) {
 		return departStatisticsDao.queryDepartDetail(statistics, userPermit, pager);
 	}
+
+
+	@Override
+	public Pager<DepartStatisticsItem> queryOtherStaffCosts(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		return departStatisticsDao.queryOtherStaffCosts(statistics, userPermit, pager);
+	}
+
 	
 	
 	

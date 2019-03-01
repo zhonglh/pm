@@ -285,6 +285,67 @@
 		
 		order by  use_month desc ,build_datetime desc 
 	</sql>
+
+
+
+
+	<select id="queryOtherStaffCostStaisticsByPager_mysql" parameterType="map"   resultMap="departStatisticsItemMap">
+		<include refid="queryOtherStaffCostStaisticsPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryOtherStaffCostStaisticsByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (
+		<include refid="queryOtherStaffCostStaisticsPagerSql"/>
+		) c
+	</select>
+
+	<sql id="queryOtherStaffCostStaisticsPagerSql">
+		select sum(amount) as  val,${Statistics.groupSelect} from (
+		SELECT business.*
+		FROM (
+			<include refid="all_data_200"/>
+		) business
+		inner join ts_dept dept
+		on business.dept_id = dept.dept_id
+		where dept.statisticsed = '1'
+
+
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND dept.dept_id = #{Statistics.deptId}
+		</if>
+
+
+		<if test="Statistics.month1 != 0">
+			<![CDATA[
+			AND use_month >= #{Statistics.month1}
+		]]>
+		</if>
+		<if test="Statistics.month2 != 0">
+			<![CDATA[
+			AND use_month <= #{Statistics.month2}
+		]]>
+		</if>
+		<include refid="departPermission"/>
+		) a group by ${Statistics.groupBy}
+	</sql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 	
@@ -337,8 +398,21 @@
 			where dc.delete_flag = '0' and dc.verify_userid is not null
 			and dc_dic.dic_type_id = 'DEPART_MANAG_COSTS'
 	</sql>
-	
 
+
+
+	<sql id="all_data_200">
+		select osc.other_staff_cost_id as obj_id, '' as project_id ,''as project_name, '' as project_no,osc.dept_id,
+		'成本' as amount_type, '总部人员成本' as business_type,  '200' as business_sort,
+		osc.all_amount as amount,osc.work_month as use_month, osc.pay_date,
+		''  as  otherdesc,'' as description,
+		staff.staff_name as business_name	,
+		staff.staff_id,''  as type_id,osc.build_datetime
+		from tb_other_staff_cost osc
+		left JOIN tb_other_staff staff
+		on osc.staff_id = staff.staff_id
+		where 1=1
+	</sql>
 
 	<sql id="departPermission">		
 		

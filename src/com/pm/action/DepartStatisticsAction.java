@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.domain.business.OtherStaffCost;
+import com.pm.service.*;
 import org.bouncycastle.crypto.RuntimeCryptoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +21,6 @@ import com.pm.domain.business.DicData;
 import com.pm.domain.business.Statistics;
 import com.pm.domain.business.StatisticsDetail;
 import com.pm.domain.system.Dept;
-import com.pm.service.IDepartStatisticsService;
-import com.pm.service.IDeptService;
-import com.pm.service.IDicDataService;
-import com.pm.service.IRoleService;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.EnumDicType;
 import com.pm.util.constant.EnumPermit;
@@ -42,6 +40,12 @@ public class DepartStatisticsAction extends BaseAction {
 	
 	@Autowired
 	private IDepartStatisticsService departStatisticsService;
+
+
+
+	@Autowired
+	private IOtherStaffCostService otherStaffCostService;
+
 
 	@Autowired
 	IDeptService deptService;
@@ -66,11 +70,14 @@ public class DepartStatisticsAction extends BaseAction {
 		items.add("项目报销成本");	
 		items.add("项目付款");				
 		items.add("销售费用");			
-		items.add("部门管理费用");		
+		items.add("部门管理费用");
+		items.add("总部人员成本");
 		items.add("部门利润");
 		items.add("部门投入产出比");
 		items.add("部门利润目标");
 		items.add("目标完成情况");
+
+
 	}
 	
 	
@@ -148,17 +155,23 @@ public class DepartStatisticsAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.DEPARTSTATISTICS.getId());
 		
 
-		if(searchStatistics.getDeptId() == null || searchStatistics.getDeptId().isEmpty())
-			searchStatistics.setDeptId(request.getParameter("dept.dept_id"));		
+		if(searchStatistics.getDeptId() == null || searchStatistics.getDeptId().isEmpty()) {
+			searchStatistics.setDeptId(request.getParameter("dept.dept_id"));
+		}
 		
-		if(searchStatistics.getDeptName() == null || searchStatistics.getDeptName().isEmpty())
-			searchStatistics.setDeptName(request.getParameter("dept.dept_name"));	
+		if(searchStatistics.getDeptName() == null || searchStatistics.getDeptName().isEmpty()) {
+			searchStatistics.setDeptName(request.getParameter("dept.dept_name"));
+		}
 		
 		Dept dept = new Dept();
 		dept.setCurr_years(0);
 		dept.setStatisticsed("1");
-		if(searchStatistics.getMonth1() != 0) dept.setYear1(searchStatistics.getMonth1()/100);
-		if(searchStatistics.getMonth2() != 0) dept.setYear2(searchStatistics.getMonth2()/100);
+		if(searchStatistics.getMonth1() != 0) {
+			dept.setYear1(searchStatistics.getMonth1()/100);
+		}
+		if(searchStatistics.getMonth2() != 0) {
+			dept.setYear2(searchStatistics.getMonth2()/100);
+		}
 		
 		if(searchStatistics.getDeptId() != null && searchStatistics.getDeptId().length() >0){
 			dept.setDept_id(searchStatistics.getDeptId());
@@ -171,7 +184,9 @@ public class DepartStatisticsAction extends BaseAction {
 		
 		Pager<Dept> departs = deptService.queryDept(dept, userPermit, PubMethod.getPagerByAll(Dept.class));
 		depts = departs.getResultList();
-		if(depts == null) depts = new ArrayList<Dept>();
+		if(depts == null) {
+			depts = new ArrayList<Dept>();
+		}
 		
 		request.setAttribute("statistics1", searchStatistics);
 		
@@ -189,17 +204,23 @@ public class DepartStatisticsAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.DEPARTSTATISTICS.getId());
 
 
-		if(searchStatistics.getDeptId() == null || searchStatistics.getDeptId().isEmpty())
-			searchStatistics.setDeptId(request.getParameter("dept.dept_id"));		
+		if(searchStatistics.getDeptId() == null || searchStatistics.getDeptId().isEmpty()) {
+			searchStatistics.setDeptId(request.getParameter("dept.dept_id"));
+		}
 		
-		if(searchStatistics.getDeptName() == null || searchStatistics.getDeptName().isEmpty())
-			searchStatistics.setDeptName(request.getParameter("dept.dept_name"));	
+		if(searchStatistics.getDeptName() == null || searchStatistics.getDeptName().isEmpty()) {
+			searchStatistics.setDeptName(request.getParameter("dept.dept_name"));
+		}
 		
 		Dept dept = new Dept();
 		dept.setCurr_years(0);
 		dept.setStatisticsed("1");
-		if(searchStatistics.getMonth1() != 0) dept.setYear1(searchStatistics.getMonth1()/100);
-		if(searchStatistics.getMonth2() != 0) dept.setYear2(searchStatistics.getMonth2()/100);
+		if(searchStatistics.getMonth1() != 0) {
+			dept.setYear1(searchStatistics.getMonth1()/100);
+		}
+		if(searchStatistics.getMonth2() != 0) {
+			dept.setYear2(searchStatistics.getMonth2()/100);
+		}
 		
 		if(searchStatistics.getDeptId() != null && searchStatistics.getDeptId().length() >0){
 			dept.setDept_id(searchStatistics.getDeptId());
@@ -213,9 +234,13 @@ public class DepartStatisticsAction extends BaseAction {
 		
 		Pager<Dept> departs = deptService.queryDept(dept, userPermit, PubMethod.getPagerByAll(Dept.class));
 		depts = departs.getResultList();
-		if(depts == null) depts = new ArrayList<Dept>();
+		if(depts == null) {
+			depts = new ArrayList<Dept>();
+		}
 		
-		if(depts == null || depts.isEmpty()) throw new RuntimeException("没有数据!");
+		if(depts == null || depts.isEmpty()) {
+			throw new RuntimeException("没有数据!");
+		}
 		
 		List<DepartStatisticsItem> list = new ArrayList<DepartStatisticsItem>();
 		DepartStatisticsItem tempItem = new DepartStatisticsItem();
@@ -248,7 +273,9 @@ public class DepartStatisticsAction extends BaseAction {
 		
 		List<List<DepartStatisticsItem>> list = new ArrayList<List<DepartStatisticsItem>>();
 
-		if(depts == null || depts.isEmpty()) return list;
+		if(depts == null || depts.isEmpty()) {
+			return list;
+		}
 
 		computeTaxRate(searchStatistics);
 		
@@ -261,124 +288,124 @@ public class DepartStatisticsAction extends BaseAction {
 		}
 		
 		//处理项目含税收入
-		List<DepartStatisticsItem> list1= new ArrayList<DepartStatisticsItem>();		
+		List<DepartStatisticsItem> list0= new ArrayList<DepartStatisticsItem>();
 		List<DepartStatisticsItem> receivedPayments = 
 				departStatisticsService.queryReceivedPayments(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
-		Map<String, DepartStatisticsItem> map = PubMethod.list2Map(receivedPayments);
-		handleStatistics(list, depts, list1, map,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=20"+searchStr,"");
+		Map<String, DepartStatisticsItem> map0 = PubMethod.list2Map(receivedPayments);
+		handleStatistics(list, depts, list0, map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=20"+searchStr,"");
 		
 
 		//处理项目项目流转税额
-		List<DepartStatisticsItem> list2= new ArrayList<DepartStatisticsItem>();	
-		for(DepartStatisticsItem temp : list1){
+		List<DepartStatisticsItem> list10= new ArrayList<DepartStatisticsItem>();
+		for(DepartStatisticsItem temp : list0){
 			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(1));
 			departStatisticsItem.setVal(departStatisticsItem.getVal() * searchStatistics.getTax_rate());
 			departStatisticsItem.setVal(PubMethod.getNumberFormatByDouble(departStatisticsItem.getVal()));
-			list2.add(departStatisticsItem);
+			list10.add(departStatisticsItem);
 		}
-		list.add(list2);
+		list.add(list10);
 		
 		//项目不含税收入
-		List<DepartStatisticsItem> list3= new ArrayList<DepartStatisticsItem>();	
-		for(DepartStatisticsItem temp : list1){
+		List<DepartStatisticsItem> list20= new ArrayList<DepartStatisticsItem>();
+		for(DepartStatisticsItem temp : list0){
 			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(2));
 			double val = departStatisticsItem.getVal();
 			val = val - (val * searchStatistics.getTax_rate());
 			departStatisticsItem.setVal(val);
 			departStatisticsItem.setVal(PubMethod.getNumberFormatByDouble(departStatisticsItem.getVal()));
-			list3.add(departStatisticsItem);
+			list20.add(departStatisticsItem);
 		}
-		list.add(list3);
+		list.add(list20);
 		
 		
 		//处理项目 人员成本
-		List<DepartStatisticsItem> list4= new ArrayList<DepartStatisticsItem>();		
+		List<DepartStatisticsItem> list30= new ArrayList<DepartStatisticsItem>();
 		List<DepartStatisticsItem> projectStaffCosts = 
 				departStatisticsService.queryProjectStaffCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
-		Map<String, DepartStatisticsItem> map4 = PubMethod.list2Map(projectStaffCosts);		
-		handleStatistics(list, depts, list4, map4,3,"/DepartStatisticsAction.do?method=queryCostsDetail&x=51"+searchStr,"");
+		Map<String, DepartStatisticsItem> map30 = PubMethod.list2Map(projectStaffCosts);
+		handleStatistics(list, depts, list30, map30,3,"/DepartStatisticsAction.do?method=queryCostsDetail&x=51"+searchStr,"");
 		
 		
 		
 
 		//剔除人工成本后项目毛利润额
-		List<DepartStatisticsItem> list5= new ArrayList<DepartStatisticsItem>();	
+		List<DepartStatisticsItem> list40= new ArrayList<DepartStatisticsItem>();
 		int index = 0;
-		for(DepartStatisticsItem temp : list3){
+		for(DepartStatisticsItem temp : list20){
 			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(4));
 			departStatisticsItem.setItemFormatter("B");
 			double val = departStatisticsItem.getVal();
-			val = val -  list4.get(index).getVal();
+			val = val -  list30.get(index).getVal();
 			departStatisticsItem.setVal(val);
-			list5.add(departStatisticsItem);
+			list40.add(departStatisticsItem);
 			
 			index++;
 		}
-		list.add(list5);
+		list.add(list40);
 		
 
 		//项目人工成本占项目收入率
-		List<DepartStatisticsItem> list6= new ArrayList<DepartStatisticsItem>();	
+		List<DepartStatisticsItem> list50= new ArrayList<DepartStatisticsItem>();
 		index = 0;
-		for(DepartStatisticsItem temp : list3){
+		for(DepartStatisticsItem temp : list20){
 			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(5));
 			departStatisticsItem.setItemFormatter("B");
 			double val = departStatisticsItem.getVal();
 			if(val != 0){
-				val = list4.get(index).getVal()/val;
+				val = list30.get(index).getVal()/val;
 			}
 			departStatisticsItem.setFormatter("%");
 			departStatisticsItem.setVal(val*100);
-			list6.add(departStatisticsItem);			
+			list50.add(departStatisticsItem);
 			index++;
 		}
-		list.add(list6);
+		list.add(list50);
 		
 
 		//项目报销占项目收入比率
-		List<DepartStatisticsItem> list7= new ArrayList<DepartStatisticsItem>();	
+		List<DepartStatisticsItem> list60= new ArrayList<DepartStatisticsItem>();
 		index = 0;
-		for(DepartStatisticsItem temp : list3){
+		for(DepartStatisticsItem temp : list20){
 			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(6));	
 			departStatisticsItem.setItemFormatter("B");		
 			departStatisticsItem.setFormatter("%");
-			list7.add(departStatisticsItem);			
+			list60.add(departStatisticsItem);
 			index++;
 		}
-		list.add(list7);
+		list.add(list60);
 		
 
 		//销售费用占项目收入比率
-		List<DepartStatisticsItem> list8= new ArrayList<DepartStatisticsItem>();	
+		List<DepartStatisticsItem> list70= new ArrayList<DepartStatisticsItem>();
 		index = 0;
-		for(DepartStatisticsItem temp : list3){
+		for(DepartStatisticsItem temp : list20){
 			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(7));	
 			departStatisticsItem.setItemFormatter("B");		
 			departStatisticsItem.setFormatter("%");
-			list8.add(departStatisticsItem);			
+			list70.add(departStatisticsItem);
 			index++;
 		}
-		list.add(list8);
+		list.add(list70);
 
 		//部门管理费用占项目收入比率
-		List<DepartStatisticsItem> list9= new ArrayList<DepartStatisticsItem>();	
+		List<DepartStatisticsItem> list80= new ArrayList<DepartStatisticsItem>();
 		index = 0;
-		for(DepartStatisticsItem temp : list3){
+		for(DepartStatisticsItem temp : list20){
 			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(8));	
 			departStatisticsItem.setItemFormatter("B");		
 			departStatisticsItem.setFormatter("%");
-			list9.add(departStatisticsItem);			
+			list80.add(departStatisticsItem);
 			index++;
 		}
-		list.add(list9);
+		list.add(list80);
 		
 
 		//项目报销成本
-		List<DepartStatisticsItem> list10= new ArrayList<DepartStatisticsItem>();		
+		List<DepartStatisticsItem> list90= new ArrayList<DepartStatisticsItem>();
 		List<DepartStatisticsItem> reimburseCosts = 
 				departStatisticsService.queryReimburseCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
-		Map<String, DepartStatisticsItem> map10 = PubMethod.list2Map(reimburseCosts);
-		handleStatistics(list, depts, list10, map10,9,"/DepartStatisticsAction.do?method=queryCostsDetail&x=30"+searchStr,"B");
+		Map<String, DepartStatisticsItem> map90 = PubMethod.list2Map(reimburseCosts);
+		handleStatistics(list, depts, list90, map90,9,"/DepartStatisticsAction.do?method=queryCostsDetail&x=30"+searchStr,"B");
 		
 		
 		//报销明细
@@ -392,18 +419,18 @@ public class DepartStatisticsAction extends BaseAction {
 		
 
 		//项目付款
-		List<DepartStatisticsItem> list11= new ArrayList<DepartStatisticsItem>();		
+		List<DepartStatisticsItem> list100= new ArrayList<DepartStatisticsItem>();
 		List<DepartStatisticsItem> projectExpends = 
 				departStatisticsService.queryProjectExpends(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
-		Map<String, DepartStatisticsItem> map11 = PubMethod.list2Map(projectExpends);
-		handleStatistics(list, depts, list11, map11,10,"/DepartStatisticsAction.do?method=queryCostsDetail&x=40"+searchStr,"B");
+		Map<String, DepartStatisticsItem> map100 = PubMethod.list2Map(projectExpends);
+		handleStatistics(list, depts, list100, map100,10,"/DepartStatisticsAction.do?method=queryCostsDetail&x=40"+searchStr,"B");
 
 		//销售费用
-		List<DepartStatisticsItem> list12= new ArrayList<DepartStatisticsItem>();		
+		List<DepartStatisticsItem> list110= new ArrayList<DepartStatisticsItem>();
 		List<DepartStatisticsItem> salseCosts = 
 				departStatisticsService.querySalseCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
-		Map<String, DepartStatisticsItem> map12 = PubMethod.list2Map(salseCosts);
-		handleStatistics(list, depts, list12, map12,11,"/DepartStatisticsAction.do?method=queryDepartCostsDetail&x=100","B");
+		Map<String, DepartStatisticsItem> map110 = PubMethod.list2Map(salseCosts);
+		handleStatistics(list, depts, list110, map110,11,"/DepartStatisticsAction.do?method=queryDepartCostsDetail&x=100","B");
 		
 		
 		//处理销售费用明细
@@ -416,11 +443,11 @@ public class DepartStatisticsAction extends BaseAction {
 		
 
 		//部门费用
-		List<DepartStatisticsItem> list13= new ArrayList<DepartStatisticsItem>();		
+		List<DepartStatisticsItem> list120= new ArrayList<DepartStatisticsItem>();
 		List<DepartStatisticsItem> departCosts = 
 				departStatisticsService.queryDepartCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
-		Map<String, DepartStatisticsItem> map13 = PubMethod.list2Map(departCosts);
-		handleStatistics(list, depts, list13, map13,12,"/DepartStatisticsAction.do?method=queryDepartCostsDetail&x=101","B");
+		Map<String, DepartStatisticsItem> map120 = PubMethod.list2Map(departCosts);
+		handleStatistics(list, depts, list120, map120,12,"/DepartStatisticsAction.do?method=queryDepartCostsDetail&x=101","B");
 		
 		//部门费用明细
 		searchDicDeta.setDic_type_id(EnumDicType.DEPART_MANAG_COSTS.name());
@@ -429,48 +456,57 @@ public class DepartStatisticsAction extends BaseAction {
 				departStatisticsService.queryDepartCostsDetail(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
 		Map<String, Map<String, DepartStatisticsItem>> mapdc = PubMethod.list2Map2(departCostDetails);		
 		handleDetails(list, depts, departCostTypes, mapdc,"/DepartStatisticsAction.do?method=queryDepartCostsDetail&x=101"+searchStr);
-		
+
+
+		//总部人员成本
+		List<DepartStatisticsItem> list130= new ArrayList<DepartStatisticsItem>();
+		List<DepartStatisticsItem> otherStaffCosts = departStatisticsService.queryOtherStaffCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+		Map<String, DepartStatisticsItem> map130 = PubMethod.list2Map(otherStaffCosts);
+		handleStatistics(list, depts, list130, map130,13,"/DepartStatisticsAction.do?method=queryOtherStaffCostsDetail&x=200","B");
+
+
+
 
 		//部门利润
-		List<DepartStatisticsItem> list14= new ArrayList<DepartStatisticsItem>();	
+		List<DepartStatisticsItem> list140= new ArrayList<DepartStatisticsItem>();
 		index = 0;
-		for(DepartStatisticsItem temp : list3){
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(13));	
+		for(DepartStatisticsItem temp : list20){
+			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(14));
 			departStatisticsItem.setItemFormatter("B");		
 			double val = departStatisticsItem.getVal();
-			val = val - list4.get(index).getVal() - list10.get(index).getVal() - 
-					list11.get(index).getVal() - list12.get(index).getVal() - list13.get(index).getVal() ;
+			val = val - list30.get(index).getVal() - list90.get(index).getVal() -
+					list100.get(index).getVal() - list110.get(index).getVal() - list120.get(index).getVal()  - list130.get(index).getVal() ;
 			departStatisticsItem.setVal(val);
-			list14.add(departStatisticsItem);			
+			list140.add(departStatisticsItem);
 			index++;
 		}
-		list.add(list14);
+		list.add(list140);
 		
 		//部门投入产出比
-		List<DepartStatisticsItem> list15= new ArrayList<DepartStatisticsItem>();	
+		List<DepartStatisticsItem> list150= new ArrayList<DepartStatisticsItem>();
 		index = 0;
-		for(DepartStatisticsItem temp : list4){
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(14));	
+		for(DepartStatisticsItem temp : list30){
+			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(15));
 			double val = departStatisticsItem.getVal();
-			val = val + list10.get(index).getVal() +
-					list11.get(index).getVal() + list12.get(index).getVal() + list13.get(index).getVal() ;
+			val = val + list90.get(index).getVal() +
+					list100.get(index).getVal() + list110.get(index).getVal() + list120.get(index).getVal()+ list130.get(index).getVal() ;
 			if(val != 0) {
-				val = list14.get(index).getVal()/val * 100;
+				val = list140.get(index).getVal()/val * 100;
 			}
 			departStatisticsItem.setVal(val);
 			departStatisticsItem.setFormatter("%");
-			list15.add(departStatisticsItem);			
+			list150.add(departStatisticsItem);
 			index++;
 		}
-		list.add(list15);
+		list.add(list150);
 		
 
 		//部门利润目标
-		List<DepartStatisticsItem> list16= new ArrayList<DepartStatisticsItem>();
+		List<DepartStatisticsItem> list160= new ArrayList<DepartStatisticsItem>();
 		DepartStatisticsItem departStatisticsItem1 = new DepartStatisticsItem();
 		departStatisticsItem1.setItemFormatter("B");
 		departStatisticsItem1.setItemName(items.get(15));	
-		list16.add(departStatisticsItem1);	
+		list160.add(departStatisticsItem1);
 		double sum16 = 0;
 		for(Dept dept1 : depts){
 			DepartStatisticsItem departStatisticsItem = new DepartStatisticsItem();
@@ -478,40 +514,40 @@ public class DepartStatisticsAction extends BaseAction {
 			departStatisticsItem.setVal(dept1.getCurr_profit_objective());			
 			departStatisticsItem.setItemFormatter("B");
 			departStatisticsItem.setItemId("");
-			departStatisticsItem.setItemName(items.get(15));	
+			departStatisticsItem.setItemName(items.get(16));
 			sum16 += departStatisticsItem.getVal();
-			list16.add(departStatisticsItem);				
+			list160.add(departStatisticsItem);
 		}
 		if(depts.size() > 1){
 			DepartStatisticsItem departStatisticsItem2 = new DepartStatisticsItem();
 			departStatisticsItem2.setItemFormatter("B");
 			departStatisticsItem2.setItemName(items.get(15));	
 			departStatisticsItem2.setVal(sum16);	
-			list16.add(departStatisticsItem2);	
+			list160.add(departStatisticsItem2);
 		}
-		list.add(list16);
+		list.add(list160);
 
 		//目标完成情况
-		List<DepartStatisticsItem> list17= new ArrayList<DepartStatisticsItem>();
+		List<DepartStatisticsItem> list170= new ArrayList<DepartStatisticsItem>();
 		index = 0;
-		for(DepartStatisticsItem temp : list16){
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(16));	
+		for(DepartStatisticsItem temp : list160){
+			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(17));
 			double val = departStatisticsItem.getVal();
 			if(val != 0){
-				val = list14.get(index).getVal()/val * 100;
+				val = list140.get(index).getVal()/val * 100;
 			}
 			departStatisticsItem.setVal(val);
 			departStatisticsItem.setFormatter("%");
-			list17.add(departStatisticsItem);			
+			list170.add(departStatisticsItem);
 			index++;
 		}
-		list.add(list17);
+		list.add(list170);
 		
 		//项目报销占项目收入比率
 		index = 0;
-		for(DepartStatisticsItem departStatisticsItem : list7){
+		for(DepartStatisticsItem departStatisticsItem : list60){
 			if(departStatisticsItem.getVal() != 0){
-				double val = list10.get(index).getVal()/departStatisticsItem.getVal()*100;
+				double val = list90.get(index).getVal()/departStatisticsItem.getVal()*100;
 				departStatisticsItem.setVal(val);
 			}
 			index++;
@@ -519,9 +555,9 @@ public class DepartStatisticsAction extends BaseAction {
 		
 		//销售费用占项目收入比率
 		index = 0;
-		for(DepartStatisticsItem departStatisticsItem : list8){
+		for(DepartStatisticsItem departStatisticsItem : list70){
 			if(departStatisticsItem.getVal() != 0){
-				double val = list12.get(index).getVal()/departStatisticsItem.getVal()*100;
+				double val = list110.get(index).getVal()/departStatisticsItem.getVal()*100;
 				departStatisticsItem.setVal(val);
 			}
 			index++;
@@ -529,9 +565,9 @@ public class DepartStatisticsAction extends BaseAction {
 		
 		//部门管理费用占项目收入比率
 		index = 0;
-		for(DepartStatisticsItem departStatisticsItem : list9){
+		for(DepartStatisticsItem departStatisticsItem : list80){
 			if(departStatisticsItem.getVal() != 0){
-				double val = list13.get(index).getVal()/departStatisticsItem.getVal()*100;
+				double val = list120.get(index).getVal()/departStatisticsItem.getVal()*100;
 				departStatisticsItem.setVal(val);
 			}
 			index++;
@@ -563,7 +599,9 @@ public class DepartStatisticsAction extends BaseAction {
 				departStatisticsItem = new DepartStatisticsItem();
 				departStatisticsItem.setDeptId(dept1.getDept_id());
 			}else {
-				if(url != null && url.length() >0) departStatisticsItem.setUrl(url+"&deptId="+dept1.getDept_id());
+				if(url != null && url.length() >0) {
+					departStatisticsItem.setUrl(url+"&deptId="+dept1.getDept_id());
+				}
 			}
 			departStatisticsItem.setItemId("");
 			departStatisticsItem.setItemName(items.get(index));
@@ -598,7 +636,9 @@ public class DepartStatisticsAction extends BaseAction {
 		for(DicData dicData : salesCostTypes){
 			
 			Map<String, DepartStatisticsItem> tempMap = mapsc.get(dicData.getId());
-			if(tempMap == null || tempMap.isEmpty()) continue;
+			if(tempMap == null || tempMap.isEmpty()) {
+				continue;
+			}
 			
 			List<DepartStatisticsItem> tempList = new ArrayList<DepartStatisticsItem>();
 			

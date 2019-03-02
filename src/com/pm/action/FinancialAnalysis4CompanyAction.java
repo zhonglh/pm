@@ -92,7 +92,6 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
 
         UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.COMPANYFINANCIALANALYSISVIEW.getId());
         paramprocess(analysisSearch , request);
-        request.setAttribute("analysisSearch", analysisSearch);
 
         List<AnalysisResultTable> arts = getAnalysisList(analysisSearch,userPermit);
         request.setAttribute("arts", arts);

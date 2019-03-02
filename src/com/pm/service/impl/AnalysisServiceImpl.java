@@ -4,6 +4,7 @@ import com.pm.dao.IAnalysisDao;
 import com.pm.service.IAnalysisService;
 import com.pm.vo.AnalysisResult;
 import com.pm.vo.AnalysisSearch;
+import com.pm.vo.AnalysisVo;
 import com.pm.vo.UserPermit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,64 +22,82 @@ public class AnalysisServiceImpl implements IAnalysisService {
     @Autowired
     private IAnalysisDao analysisDao;
 
+    private void preYearSearch(AnalysisSearch analysisSearch){
+        analysisSearch.setMonth1(analysisSearch.getMonth1() - 100);
+        analysisSearch.setMonth2(analysisSearch.getMonth2() - 100);
+    }
+
+    private void processesult(AnalysisResult ar){
+        ar.setIncrease_or_decrease(ar.getCurr_statistics_amount() - ar.getPre_statistics_amount());
+        ar.setChange_ratio(ar.getIncrease_or_decrease()/ar.getPre_statistics_amount());
+    }
+
+
 
     @Override
     public AnalysisResult queryMonthlyStatements(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryMonthlyStatements(analysisSearch,userPermit);
+        AnalysisResult ar = new AnalysisResult();
+        AnalysisVo av = analysisDao.queryMonthlyStatements(analysisSearch,userPermit);
+        ar.setCurr_statistics_amount(av.getAmount());
+        preYearSearch(analysisSearch);
+        av = analysisDao.queryMonthlyStatements(analysisSearch,userPermit);
+        ar.setPre_statistics_amount(av.getAmount());
+        processesult(ar);
+        return ar;
     }
 
     @Override
     public AnalysisResult queryReceivedPayments(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryReceivedPayments(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult queryReceivables(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryReceivables(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult queryInvoices(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryInvoices(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult queryProjectStaffCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryProjectStaffCosts(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult queryReimburseCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryReimburseCosts(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult queryProjectExpends(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryProjectExpends(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult querySalseCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.querySalseCosts(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult queryDepartCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryDepartCosts(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult queryOtherStaffCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryOtherStaffCosts(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public AnalysisResult queryCommonCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryCommonCosts(analysisSearch,userPermit);
+        return new AnalysisResult();
     }
 
     @Override
     public List<AnalysisResult> queryDepartCostDetail(AnalysisSearch analysisSearch, UserPermit userPermit) {
-        return analysisDao.queryDepartCostDetail(analysisSearch,userPermit);
+        return null;
     }
 }

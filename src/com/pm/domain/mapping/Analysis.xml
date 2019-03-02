@@ -42,7 +42,7 @@
 		) business
 		left join ts_dept dept
 		on business.dept_id = dept.dept_id
-		INNER join ts_dic_data dc_dic on business.type_id = dc_dic.id
+		left join ts_dic_data dc_dic on business.type_id = dc_dic.id
 		where 1=1 
 
 		<if test="AnalysisSearch.dept_id != null and AnalysisSearch.dept_id != ''">
@@ -132,7 +132,7 @@
 			on business.project_id = project.project_id
 			inner join ts_dept dept 
 			on project.deptid = dept.dept_id 	
-			where  dept.statisticsed = '1' 
+			where  1=1
 			<if test="AnalysisSearch.x == 30">
 				and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id)
 				and not EXISTS (select 1 from vb_staffcost_reimburse vsr where business.obj_id = vsr.reimburse_id)
@@ -143,10 +143,11 @@
 			<if test="AnalysisSearch.dept_id != null and AnalysisSearch.dept_id != ''">
 				AND project.deptid = #{AnalysisSearch.dept_id}
 			</if>
-			
+			<!--
 			<if test="AnalysisSearch.type_id != null and AnalysisSearch.type_id != ''">
 				AND business.type_id = #{AnalysisSearch.type_id} 
 			</if>
+			-->
 
 			<!--
 			<if test="AnalysisSearch.month1 != 0">

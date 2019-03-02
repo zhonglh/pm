@@ -1,6 +1,6 @@
 package com.pm.dao;
 
-import com.pm.vo.AnalysisResult;
+import com.pm.vo.AnalysisVo;
 import com.pm.vo.AnalysisSearch;
 import com.pm.vo.UserPermit;
 
@@ -20,7 +20,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryMonthlyStatements(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryMonthlyStatements(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
     /**
@@ -29,7 +29,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryReceivedPayments(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryReceivedPayments(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 
@@ -39,7 +39,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryReceivables(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryReceivables(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 
@@ -50,7 +50,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryInvoices(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryInvoices(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 
@@ -63,7 +63,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryProjectStaffCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryProjectStaffCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 
@@ -74,7 +74,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryReimburseCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryReimburseCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 
@@ -85,7 +85,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryProjectExpends(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryProjectExpends(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
     /**
@@ -94,7 +94,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult querySalseCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo querySalseCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 
@@ -104,7 +104,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryDepartCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryDepartCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 
@@ -115,7 +115,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryOtherStaffCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryOtherStaffCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 
@@ -126,7 +126,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public AnalysisResult queryCommonCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public AnalysisVo queryCommonCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
     /**
@@ -135,7 +135,7 @@ public interface IAnalysisDao {
      * @param userPermit
      * @return
      */
-    public List<AnalysisResult> queryDepartCostDetail(AnalysisSearch analysisSearch, UserPermit userPermit);
+    public List<AnalysisVo> queryDepartCostDetail(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
 }

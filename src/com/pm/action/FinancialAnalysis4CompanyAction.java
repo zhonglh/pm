@@ -1,6 +1,7 @@
 package com.pm.action;
 
 import com.common.actions.BaseAction;
+import com.common.utils.DateUtils;
 import com.pm.service.IAnalysisService;
 import com.pm.service.IDeptService;
 import com.pm.service.IDicDataService;
@@ -93,8 +94,13 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.COMPANYFINANCIALANALYSISVIEW.getId());
         paramprocess(analysisSearch , request);
 
-        List<AnalysisResultTable> arts = getAnalysisList(analysisSearch,userPermit);
-        request.setAttribute("arts", arts);
+        if(analysisSearch.getMonth1() > 0 && analysisSearch.getMonth2() > 0) {
+
+            request.setAttribute("startTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
+            List<AnalysisResultTable> arts = getAnalysisList(analysisSearch, userPermit);
+            request.setAttribute("arts", arts);
+            request.setAttribute("endTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
+        }
 
         return "analysis/analysis_company_list";
     }
@@ -139,6 +145,12 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         ars.add(ar40);
 
         art.setResult(ars);
+
+
+        int index = 1;
+        for(AnalysisResult ar : ars){
+            ar.setItem_name(items10.get(index++));
+        }
 
         return art;
     }
@@ -189,6 +201,11 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         ars.add(ar100);
 
         art.setResult(ars);
+
+        int index = 1;
+        for(AnalysisResult ar : ars){
+            ar.setItem_name(items20.get(index++));
+        }
 
         return art;
     }

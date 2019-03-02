@@ -2,11 +2,13 @@ package com.pm.vo;
 
 import com.pm.util.log.EntityAnnotation;
 
+import java.io.Serializable;
+
 /**
  * 公司层门分析结果
  * @author Administrator
  */
-public class AnalysisCompanyResult extends  AnalysisResult {
+public class AnalysisCompanyResult extends  AnalysisResult implements Serializable {
 
 
     private String item_id;

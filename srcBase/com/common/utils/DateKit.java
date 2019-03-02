@@ -147,6 +147,19 @@ public class DateKit extends DateUtils{
     }
 
 
+    public static Date fmtShortYMTStrToDate(String date){
+        try {
+            if(date == null || date.isEmpty()) {
+                return null;
+            }
+            SimpleDateFormat dateFormat = new SimpleDateFormat ("yyyyMMdd");
+            return dateFormat.parse (date);
+        } catch (Exception e) {
+            e.printStackTrace ();
+            return null;
+        }
+    }
+
     public static Date fmtYMTStrToDate(String date){
         try {
             if(date == null || date.isEmpty()) {

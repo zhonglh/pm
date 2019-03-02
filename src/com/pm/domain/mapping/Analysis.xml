@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AnalysisMapping">
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+
+	
+	<resultMap type="com.pm.vo.AnalysisVo" id="analysisMap" />
+
+
+
+	<select id="queryXDepartCostAnalysis" parameterType="map"  resultMap="analysisMap" >
+
+		<include refid="queryXDepartCostSql"/>
+
+	</select>
+	
+
+	<sql id="queryXDepartCostSql">
+
+		select sum(amount) as  amount
+
+		<if test="AnalysisSearch.groupSelect != null and AnalysisSearch.groupSelect  != ''">
+			,${AnalysisSearch.groupSelect}
+		</if>
+
+		from (
+
+		SELECT business.*
+		FROM (
+		<if test="AnalysisSearch.x == 100">
+			<include refid="DepartStatisticsDetailMapping.all_data_100"/>
+		</if>
+		<if test="AnalysisSearch.x == 101">
+			<include refid="DepartStatisticsDetailMapping.all_data_101"/>
+		</if>
+		<if test="AnalysisSearch.x == 200">
+			<include refid="DepartStatisticsDetailMapping.all_data_200"/>
+		</if>
+		) business
+		left join ts_dept dept
+		on business.dept_id = dept.dept_id
+		INNER join ts_dic_data dc_dic on business.type_id = dc_dic.id
+		where 1=1 
+
+		<if test="AnalysisSearch.dept_id != null and AnalysisSearch.dept_id != ''">
+			AND dept.dept_id = #{AnalysisSearch.dept_id}
+		</if>
+
+		<!--
+		<if test="AnalysisSearch.month1 != 0">
+			<![CDATA[
+			AND use_month >= #{AnalysisSearch.month1}
+		]]>
+		</if>
+		<if test="AnalysisSearch.month2 != 0">
+			<![CDATA[
+			AND use_month <= #{AnalysisSearch.month2}
+		]]>
+		</if>
+		-->
+
+		<if test="AnalysisSearch.date1 != null">
+			<![CDATA[
+			AND pay_date >= #{AnalysisSearch.date1}
+		]]>
+		</if>
+		<if test="AnalysisSearch.date2 != null">
+		<![CDATA[
+			AND pay_date <= #{AnalysisSearch.date2}
+		]]>
+		</if>
+
+		<include refid="analysisPermission"/>
+
+		order by  use_month desc ,build_datetime desc
+
+		) a
+
+		<if test="AnalysisSearch.groupBy != null and AnalysisSearch.groupBy  != ''">
+			group by ${AnalysisSearch.groupBy}
+		</if>
+	</sql>
+
+
+
+
+
+	<select id="queryXStaisticsAnalysis" parameterType="map"  resultMap="analysisMap" >
+
+		<include refid="queryXStaisticsSql"/>
+
+	</select>
+
+	<sql id="queryXStaisticsSql">	
+		select sum(amount) as  amount
+
+		<if test="AnalysisSearch.groupSelect != null and AnalysisSearch.groupSelect  != ''">
+		,${AnalysisSearch.groupSelect}
+		</if>
+		from (
+			SELECT business.*,dept.dept_id
+			FROM (				
+				<if test="AnalysisSearch.x == 10">
+					<include refid="StatisticsDetailMapping.all_data_10"/>
+				</if>
+				<if test="AnalysisSearch.x == 20">
+					<include refid="StatisticsDetailMapping.all_data_20"/>
+				</if>
+				<if test="AnalysisSearch.x == 30">
+					<include refid="StatisticsDetailMapping.all_data_30"/>
+				</if>
+				<if test="AnalysisSearch.x == 40">
+					<include refid="StatisticsDetailMapping.all_data_40"/>
+				</if>
+				<if test="AnalysisSearch.x == 41">
+					<include refid="StatisticsDetailMapping.all_data_41"/>
+				</if>
+				<if test="AnalysisSearch.x == 50">
+					<include refid="StatisticsDetailMapping.all_data_50"/>
+				</if>
+				<if test="AnalysisSearch.x == 51">
+					<include refid="StatisticsDetailMapping.all_data_51"/>
+				</if>
+				<if test="AnalysisSearch.x == 70">
+					<include refid="StatisticsDetailMapping.all_data_70"/>
+				</if>
+		) business
+			inner join vb_project project 
+			on business.project_id = project.project_id
+			inner join ts_dept dept 
+			on project.deptid = dept.dept_id 	
+			where  dept.statisticsed = '1' 
+			<if test="AnalysisSearch.x == 30">
+				and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id)
+				and not EXISTS (select 1 from vb_staffcost_reimburse vsr where business.obj_id = vsr.reimburse_id)
+			</if>
+			
+
+			
+			<if test="AnalysisSearch.dept_id != null and AnalysisSearch.dept_id != ''">
+				AND project.deptid = #{AnalysisSearch.dept_id}
+			</if>
+			
+			<if test="AnalysisSearch.type_id != null and AnalysisSearch.type_id != ''">
+				AND business.type_id = #{AnalysisSearch.type_id} 
+			</if>
+
+			<!--
+			<if test="AnalysisSearch.month1 != 0">
+			<![CDATA[	
+				AND use_month >= #{AnalysisSearch.month1} 
+			]]> 
+			</if> 			
+			<if test="AnalysisSearch.month2 != 0">
+			<![CDATA[	
+				AND use_month <= #{AnalysisSearch.month2} 
+			]]>
+			</if>	
+			-->
+
+			<if test="AnalysisSearch.date1 != null">
+				<![CDATA[
+				AND pay_date >= #{AnalysisSearch.date1}
+			]]>
+			</if>
+			<if test="AnalysisSearch.date2 != null">
+				<![CDATA[
+				AND pay_date <= #{AnalysisSearch.date2}
+			]]>
+			</if>
+
+			<include refid="analysisPermission"/>	
+		) a
+
+		<if test="AnalysisSearch.groupBy != null and AnalysisSearch.groupBy  != ''">
+			group by ${AnalysisSearch.groupBy}
+		</if>
+
+	</sql>
+	 
+
+
+	<sql id="analysisPermission">
+		
+		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
+			
+			<if test="UserPermit.range == 1">
+				
+			</if>
+			<if test="UserPermit.range == 2">
+
+				and 1 = 2
+			</if>
+			<if test="UserPermit.range == 3">
+				and 1 = 2 
+			</if>
+		</if>
+		<if test="UserPermit == null or UserPermit.range == null or UserPermit.range == ''">
+			and 1 = 2 
+		</if>
+	</sql>
+	 
+
+</mapper>

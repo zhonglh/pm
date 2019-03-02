@@ -243,7 +243,7 @@
 	
 	
 	
-	
+	<!-- 回款 -->
 	<sql id="all_data_10">	
 			select receivedPayment.receive_payment_id as obj_id ,project.project_id,project.project_name,project.project_no	,
 			'收入' as amount_type, '到款记录' as business_type,	  '10' as business_sort,
@@ -261,9 +261,11 @@
 
 	<!-- 金额为回款， 时间为结算单 -->
 	<sql id="all_data_11">
+
 		select rp.receive_payment_id as obj_id ,project.project_id,project.project_name,project.project_no	,
 		'收入' as amount_type, '到款记录' as business_type,	  '11' as business_sort,
-		rp.amount, rp.statement_month as use_month,  str_to_date(rp.statement_month*100+01,'%Y%m%d') as pay_date,
+		rp.amount, rp.statement_month as use_month,
+		IFNULL(rp.pay_date,str_to_date(rp.statement_month*100+01,'%Y%m%d')) as pay_date,
 		dd_rai.dic_data_name as  otherdesc, rp.description, rp.payment_unit as business_name	,
 		rp.receivable_accounts_item_id as type_id 	, rp.build_datetime
 		from vb_received_payment_monthly rp
@@ -273,7 +275,7 @@
 
 	</sql>
 	
-	
+	<!-- 结算单 -->
 	<sql id="all_data_20">	
 			SELECT ms.monthly_statement_id as obj_id, project.project_id,project.project_name, project.project_no , 
 			'收入' as amount_type, '月度结算单' as business_type, '20' as business_sort,
@@ -288,8 +290,9 @@
 			on ms.monthly_statement_id = aa.data_id
 			where   ms.verify_userid is not null
 	</sql>
-	
-	
+
+
+	<!-- 结算单明细 -->
 	<sql id="all_data_21">	
 			SELECT ms.monthly_statement_id as obj_id, project.project_id,project.project_name, project.project_no , 
 			'收入' as amount_type, '月度结算单' as business_type, '21' as business_sort,
@@ -304,7 +307,9 @@
 			on ms.project_id = project.project_id			
 			where   ms.verify_userid is not null
 	</sql>
-	
+
+
+	<!-- 所有的报销 -->
 	<sql id="all_data_30">	
 			select rc.reimburse_id as obj_id, rc.project_id,
 			project_name,project_no,'成本' as amount_type, '报销' as business_type, '30' as business_sort,
@@ -319,8 +324,10 @@
 			on rc.staff_id = staff.staff_id 
 			where rc.delete_flag = '0' and rc.verify_userid is not null
 	</sql>
-	
-	
+
+
+
+	<!-- 人员的报销 -->
 	<sql id="all_data_31">	
 			select rc.reimburse_id as obj_id, rc.project_id,
 			project_name,project_no,'成本' as amount_type, '报销' as business_type, '31' as business_sort,
@@ -337,7 +344,7 @@
 			where rc.delete_flag = '0' and rc.verify_userid is not null
 	</sql>
 	
-	
+	<!-- 付款信息(实际付款或应付款) -->
 	<sql id="all_data_40">			
 			select pe.project_expend_id as obj_id, pe.project_id,
 			project_name,project_no,'成本' as amount_type, '项目付款信息' as business_type, '40' as business_sort,
@@ -349,7 +356,9 @@
 			on pe.project_id = project.project_id 
 			WHERE pe.delete_flag = '0' and pe.verify_userid is not null
 	</sql>
-	
+
+
+	<!-- 付款信息(实际付款) -->
 	<sql id="all_data_41">			
 			select pe.project_expend_id as obj_id, pe.project_id,
 			project_name,project_no,'成本' as amount_type, '项目付款信息' as business_type, '41' as business_sort,
@@ -360,8 +369,9 @@
 			on pe.project_id = project.project_id 
 			WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pay_date is not null
 	</sql>
-	
-	
+
+
+	<!-- 项目人员成本(实发工资) -->
 	<sql id="all_data_50">	
 		select psc.project_staffcost_id as obj_id, psc.project_id ,project.project_name,project.project_no,
 			'成本' as amount_type, '项目人员成本' as business_type,  '50' as business_sort,
@@ -373,7 +383,9 @@
 			inner join tb_staff_costs staff
 			on psc.staff_id = staff.staff_id	
 	</sql>
-	
+
+
+	<!-- 项目人员成本(所有成本) -->
 	<sql id="all_data_51">	
 		select psc.project_staffcost_id as obj_id, psc.project_id ,project.project_name,project.project_no,
 			'成本' as amount_type, '项目人员成本' as business_type,  '51' as business_sort,
@@ -405,9 +417,22 @@
 			on psc.staff_id = staff.staff_id	
 			and psc.verify_userid is not null
 	</sql>
-	
-	
-	
+
+
+
+	<!-- 发票 -->
+	<sql id="all_data_70">
+		select invoice.invoice_id as obj_id, invoice.project_id ,project.project_name,project.project_no,
+		'成本' as amount_type, '发票' as business_type,  '70' as business_sort,
+		invoice.invoiceno_amount as amount, date_format(invoice.invoice_date, '%Y%m')  as use_month ,
+		invoice.invoice_date as pay_date,
+		'' as otherdesc, invoice.description as description,
+		invoice.invoice_no  as business_name	, '' as type_id , invoice.build_datetime
+		from tb_invoice invoice
+		INNER JOIN vb_project project
+		on invoice.project_id = project.project_id
+		where  invoice.verify_userid is not null
+	</sql>
 	 
 
 </mapper>

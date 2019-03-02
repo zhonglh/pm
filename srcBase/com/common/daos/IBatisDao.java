@@ -22,6 +22,10 @@ public interface IBatisDao {
 
     public abstract <T> List<T> query(String sql,Class<T> clazz,Object object);
 
+
+
+    public abstract <T> T querySingle(String sql,Class<T> clazz,Object object);
+
     public abstract int insert(String sql);
 
     public abstract int update(String sql);

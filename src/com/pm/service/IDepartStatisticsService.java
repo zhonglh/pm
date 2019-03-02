@@ -17,6 +17,9 @@ import com.pm.vo.UserPermit;
  * @date 2016年6月2日 下午8:50:23
  */
 public interface IDepartStatisticsService {
+
+
+
 	
 	/**
 	 * 项目含税收入统计

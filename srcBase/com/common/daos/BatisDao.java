@@ -30,6 +30,7 @@ public class BatisDao extends SqlSessionDaoSupport implements IBatisDao {
     private static final Logger logger = LoggerFactory.getLogger (BatisDao.class);
     private SqlSessionTemplate  sqlSessionTemplate;
 
+    @Override
     public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate){
         this.sqlSessionTemplate = sqlSessionTemplate;
     }
@@ -73,6 +74,18 @@ public class BatisDao extends SqlSessionDaoSupport implements IBatisDao {
         List<T> list = this.getSqlSession ().selectList (sql, object);
         if (list == null || list.isEmpty ()) return null;
         else return list;
+    }
+
+
+    @Override
+    public <T> T querySingle(String sql,Class<T> clazz,Object object){
+        this.log ("Running sql:" + sql);
+        List<T> list = this.getSqlSession ().selectList (sql, object);
+        if (list == null || list.isEmpty ()) {
+            return null;
+        }else {
+            return list.get(0);
+        }
     }
 
     @Override
@@ -233,8 +246,9 @@ public class BatisDao extends SqlSessionDaoSupport implements IBatisDao {
         else mp.putAll (paramMap);
         return mp;
     }
-    
 
+
+    @Override
     public <K, V> List<Map<K, V>> execProc4List(String sql,Map<K, V> paramMap){
     	this.log ("Running sql:" + sql);
         List<Map<K, V>> mp = this.getSqlSession ().selectList (sql, paramMap);
@@ -250,6 +264,7 @@ public class BatisDao extends SqlSessionDaoSupport implements IBatisDao {
         return mp;    
     }
 
+    @Override
     public <K, V> void execProc(String sql,Map<K, V> paramMap){
         this.log ("Running sql:" + sql);
         this.getSqlSession ().update (sql, paramMap);
@@ -292,6 +307,8 @@ public class BatisDao extends SqlSessionDaoSupport implements IBatisDao {
         }
     }
 
+
+    @Override
     public void execSqlFile(String sqlPath){
         PrintWriter pw = null;
         Connection conn = null;

@@ -43,9 +43,6 @@ public class DepartStatisticsAction extends BaseAction {
 
 
 
-	@Autowired
-	private IOtherStaffCostService otherStaffCostService;
-
 
 	@Autowired
 	IDeptService deptService;

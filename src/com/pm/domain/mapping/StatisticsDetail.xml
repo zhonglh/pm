@@ -25,7 +25,7 @@
 	<sql id="queryGrossProfit1DetailPagerSql">
 		SELECT business.*
 		FROM (<include refid="all_data"/>) business		
-		inner join tb_project project 
+		inner join vb_project project 
 		on business.project_id = project.project_id
 		where 1=1 and business.business_sort in ('10','30','41','50')
 		and not EXISTS (select 1 from vb_begin_data1 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
@@ -68,7 +68,7 @@
 	<sql id="queryGrossProfit2DetailPagerSql">
 		SELECT business.*
 		FROM (<include refid="all_data"/>) business		
-		inner join tb_project project 
+		inner join vb_project project 
 		on business.project_id = project.project_id
 		where 1=1 and business.business_sort in ('20','30','40','51')
 		and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
@@ -111,7 +111,7 @@
 	<sql id="queryGrossProfit3DetailPagerSql">
 		SELECT business.*
 		FROM (<include refid="all_data"/>) business
-		inner join tb_project project
+		inner join vb_project project
 		on business.project_id = project.project_id
 		where 1=1 and business.business_sort in ('11','30','40','51')
 		and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
@@ -153,7 +153,7 @@
 	<sql id="querySalesDetailPagerSql">
 		SELECT business.*
 		FROM (<include refid="all_data"/>) business		
-		inner join tb_project project 
+		inner join vb_project project 
 		on business.project_id = project.project_id
 		where 1=1 and business.business_sort in ('20')
 				
@@ -194,7 +194,7 @@
 	<sql id="queryReceivablesDetailPagerSql">
 		SELECT business.*
 		FROM (<include refid="all_data"/>) business		
-		inner join tb_project project 
+		inner join vb_project project 
 		on business.project_id = project.project_id
 		where 1=1 and business.business_sort in ('10','20')
 				
@@ -252,7 +252,7 @@
 			dd_rai.dic_data_name as  otherdesc, receivedPayment.description, receivedPayment.payment_unit as business_name	,
 			receivedPayment.receivable_accounts_item_id as type_id 	, receivedPayment.build_datetime
 			from tb_received_payment receivedPayment 
-			INNER JOIN tb_project project 
+			INNER JOIN vb_project project 
 			on receivedPayment.project_id = project.project_id 
 			INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id 			
 			where  receivedPayment.verify_userid is not null
@@ -269,7 +269,7 @@
 		dd_rai.dic_data_name as  otherdesc, rp.description, rp.payment_unit as business_name	,
 		rp.receivable_accounts_item_id as type_id 	, rp.build_datetime
 		from vb_received_payment_monthly rp
-		INNER JOIN tb_project project
+		INNER JOIN vb_project project
 		on rp.project_id = project.project_id
 		INNER join ts_dic_data dd_rai on rp.receivable_accounts_item_id = dd_rai.id
 
@@ -284,7 +284,7 @@
 			(case when statement_type='1'   	then '外包结算' when statement_type='2'   	then '外派结算' when statement_type='3'   	then '历史结算' else '其它结算' end)  as business_name,
 			''  as type_id 	 , ms.build_datetime
 			FROM tb_monthly_statement ms 
-			inner join tb_project project 
+			inner join vb_project project 
 			on ms.project_id = project.project_id
 			left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'MONTHLY_STATEMENT' group by data_id) aa
 			on ms.monthly_statement_id = aa.data_id
@@ -303,7 +303,7 @@
 			FROM tb_monthly_statement ms 
 			inner join tb_monthly_statement_detail detail
 			on ms.monthly_statement_id = detail.monthly_statement_id 
-			inner join tb_project project 
+			inner join vb_project project 
 			on ms.project_id = project.project_id			
 			where   ms.verify_userid is not null
 	</sql>
@@ -317,9 +317,9 @@
 			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
 			rc.pay_item_id  as type_id, rc.build_datetime
 			from tb_reimburse_costs rc 
-			INNER JOIN tb_project project 
+			INNER JOIN vb_project project 
 			on rc.project_id = project.project_id 			
-			INNER join ts_dic_data dd_rai on rc.pay_item_id = dd_rai.id 	
+			left join ts_dic_data dd_rai on rc.pay_item_id = dd_rai.id
 			left JOIN tb_staff_costs staff 
 			on rc.staff_id = staff.staff_id 
 			where rc.delete_flag = '0' and rc.verify_userid is not null
@@ -335,9 +335,9 @@
 			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
 			staff.staff_id  as type_id, rc.build_datetime
 			from tb_reimburse_costs rc 
-			INNER JOIN tb_project project 
+			INNER JOIN vb_project project 
 			on rc.project_id = project.project_id 			
-			INNER join ts_dic_data dd_rai 
+			left join ts_dic_data dd_rai
 			on rc.pay_item_id = dd_rai.id 	
 			INNER JOIN tb_staff_costs staff 
 			on rc.staff_id = staff.staff_id 
@@ -352,7 +352,7 @@
 			pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
 			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime
 			from tb_project_expend pe 
-			INNER JOIN tb_project project 
+			INNER JOIN vb_project project 
 			on pe.project_id = project.project_id 
 			WHERE pe.delete_flag = '0' and pe.verify_userid is not null
 	</sql>
@@ -365,7 +365,7 @@
 			pe.pay_amount as amount,pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
 			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime
 			from tb_project_expend pe 
-			INNER JOIN tb_project project 
+			INNER JOIN vb_project project 
 			on pe.project_id = project.project_id 
 			WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pay_date is not null
 	</sql>
@@ -378,7 +378,7 @@
 			 psc.amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
 			staff.staff_name  as business_name	, '' as type_id, psc.build_datetime
 			from tb_project_staff_cost psc 
-			INNER JOIN tb_project project 
+			INNER JOIN vb_project project 
 			on psc.project_id = project.project_id 
 			inner join tb_staff_costs staff
 			on psc.staff_id = staff.staff_id	
@@ -392,7 +392,7 @@
 			 psc.all_amount as amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
 			staff.staff_name  as business_name	, '' as type_id , psc.build_datetime
 			from tb_project_staff_cost psc 
-			INNER JOIN tb_project project 
+			INNER JOIN vb_project project 
 			on psc.project_id = project.project_id 
 			inner join tb_staff_costs staff
 			on psc.staff_id = staff.staff_id	
@@ -433,6 +433,13 @@
 		on invoice.project_id = project.project_id
 		where  invoice.verify_userid is not null
 	</sql>
+
+
+
+
+
+
+
 	 
 
 </mapper>

@@ -32,10 +32,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryMonthlyStatements(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryMonthlyStatements(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryMonthlyStatements(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -44,10 +48,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryReceivedPayments(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryReceivedPayments(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryReceivedPayments(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -57,10 +65,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryInvoices(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryInvoices(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryInvoices(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -69,10 +81,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryProjectStaffCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryProjectStaffCosts(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryProjectStaffCosts(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -81,10 +97,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryReimburseCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryReimburseCosts(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryReimburseCosts(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -93,10 +113,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryProjectExpends(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryProjectExpends(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryProjectExpends(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -105,10 +129,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult querySalseCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.querySalseCosts(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.querySalseCosts(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -117,10 +145,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryDepartCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryDepartCosts(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryDepartCosts(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -129,10 +161,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryOtherStaffCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryOtherStaffCosts(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryOtherStaffCosts(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }
@@ -141,10 +177,14 @@ public class AnalysisServiceImpl implements IAnalysisService {
     public AnalysisResult queryCommonCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();
         AnalysisVo av = analysisDao.queryCommonCosts(analysisSearch,userPermit);
-        ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
         av = analysisDao.queryCommonCosts(preAnalysisSearch,userPermit);
-        ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
         AnalysisUtil.processesult(ar);
         return ar;
     }

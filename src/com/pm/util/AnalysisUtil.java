@@ -29,6 +29,9 @@ public class AnalysisUtil {
      */
     public static void processesult(AnalysisResult ar){
         ar.setIncrease_or_decrease(NumberKit.getNumberFormatByDouble(ar.getCurr_statistics_amount() - ar.getPre_statistics_amount()));
-        ar.setChange_ratio(ar.getIncrease_or_decrease()/ar.getPre_statistics_amount());
+
+        if(ar.getPre_statistics_amount() != 0) {
+            ar.setChange_ratio(ar.getIncrease_or_decrease() / ar.getPre_statistics_amount());
+        }
     }
 }

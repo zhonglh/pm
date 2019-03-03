@@ -810,7 +810,7 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 		}
 		
 		try{
-			String header = " 华路时代人事报表";
+			String header = " 华路时代人事月表";
 			if(personnelMonthlyBase.getThe_month() > 0) {
 				String the_month =  String.valueOf(personnelMonthlyBase.getThe_month());
 				StringBuilder sb = new StringBuilder();

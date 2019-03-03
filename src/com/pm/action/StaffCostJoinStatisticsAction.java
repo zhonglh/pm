@@ -38,7 +38,7 @@ public class StaffCostJoinStatisticsAction extends BaseAction {
 
 
 	/**
-	 * @param searchStaffCost
+	 * @param searchStaffCostStatistics
 	 * @param res
 	 * @param request
 	 */

@@ -12,6 +12,11 @@ public class AnalysisResult implements Serializable {
 
 
 
+
+    @EntityAnnotation(item_name="分析类型",item_sort=2)
+    private String analysis_type;
+
+
     private String item_id;
 
     @EntityAnnotation(item_name="类别",item_sort=10)
@@ -40,6 +45,13 @@ public class AnalysisResult implements Serializable {
     @EntityAnnotation(item_name="变动比例",item_sort=130)
     private double change_ratio;
 
+    public String getAnalysis_type() {
+        return analysis_type;
+    }
+
+    public void setAnalysis_type(String analysis_type) {
+        this.analysis_type = analysis_type;
+    }
 
     public String getItem_id() {
         return item_id;

@@ -30,6 +30,12 @@
 
 		SELECT business.*
 		FROM (
+
+
+		<if test="AnalysisSearch.x == 80">
+			<include refid="DepartStatisticsDetailMapping.all_data_80"/>
+		</if>
+
 		<if test="AnalysisSearch.x == 100">
 			<include refid="DepartStatisticsDetailMapping.all_data_100"/>
 		</if>
@@ -42,7 +48,7 @@
 		) business
 		left join ts_dept dept
 		on business.dept_id = dept.dept_id
-		left join ts_dic_data dc_dic on business.type_id = dc_dic.id
+
 		where 1=1 
 
 		<if test="AnalysisSearch.dept_id != null and AnalysisSearch.dept_id != ''">
@@ -128,9 +134,9 @@
 					<include refid="StatisticsDetailMapping.all_data_70"/>
 				</if>
 		) business
-			inner join vb_project project 
+			left join vb_project project
 			on business.project_id = project.project_id
-			inner join ts_dept dept 
+			left join ts_dept dept
 			on project.deptid = dept.dept_id 	
 			where  1=1
 			<if test="AnalysisSearch.x == 30">

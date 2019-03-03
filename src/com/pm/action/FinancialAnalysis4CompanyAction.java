@@ -3,12 +3,17 @@ package com.pm.action;
 import com.common.actions.BaseAction;
 import com.common.utils.DateKit;
 import com.common.utils.DateUtils;
+import com.common.utils.NumberKit;
+import com.pm.domain.business.PersonnelMonthlyBase;
 import com.pm.service.IAnalysisService;
 import com.pm.service.IDeptService;
 import com.pm.service.IDicDataService;
 import com.pm.service.IRoleService;
 import com.pm.util.AnalysisUtil;
 import com.pm.util.constant.EnumPermit;
+import com.pm.util.excel.BusinessExExcel;
+import com.pm.util.excel.Column;
+import com.pm.util.excel.ThreadLocalModifyColumn;
 import com.pm.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,6 +79,7 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         items20.add("项目销售总费用");
         items20.add("项目管理总费用");
         items20.add("总部人员成本");
+        items20.add("部门总成本");
         items20.add("部门毛利润");
         items20.add("公共管理费用");
         items20.add("公司总利润");
@@ -86,6 +92,56 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
 
 
     }
+
+
+
+    @RequestMapping(params = "method=export")
+    public void export(AnalysisSearch analysisSearch, HttpServletResponse res, HttpServletRequest request){
+
+
+        UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.COMPANYFINANCIALANALYSISVIEW.getId());
+        paramprocess(analysisSearch , request);
+
+        if(analysisSearch.getMonth1() == 0 || analysisSearch.getMonth2() == 0) {
+            //初始化查询月份
+            Date date2 = new Date();
+            Date date1 = DateKit.getYearStart(date2) ;
+            analysisSearch.setMonth1(Integer.parseInt(DateKit.fmtDateToStr(date1 , "yyyyMM")));
+            analysisSearch.setMonth2(Integer.parseInt(DateKit.fmtDateToStr(date2 , "yyyyMM")));
+        }
+
+        List<AnalysisResultTable> arts = getAnalysisList(analysisSearch, userPermit);
+
+
+        try{
+
+            List<Column> modifyColumns = new ArrayList<Column>();
+            Column column1 = new Column();
+            column1.setNumber(3);
+            column1.setName(DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
+            Column column2 = new Column();
+            column2.setNumber(4);
+            column2.setName(DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100));
+            modifyColumns.add(column1);
+            modifyColumns.add(column2);
+            ThreadLocalModifyColumn.setColumns(modifyColumns);
+
+            List<List<?>> lists = new ArrayList<>();
+            lists.add(arts.get(0).getResult());
+            lists.add(arts.get(1).getResult());
+            lists.add(arts.get(2).getResult());
+
+            List<String> headers = new ArrayList<String>(1);
+            headers.add("公司层面财务分析");
+            BusinessExExcel.export(res, headers , lists,false);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            ThreadLocalModifyColumn.setColumns(null);
+        }
+    }
+
+
 
 
     @RequestMapping(params = "method=list")
@@ -123,10 +179,17 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
 
         List<AnalysisResultTable> arts = new ArrayList<AnalysisResultTable>();
 
-        arts.add(getAnalysis1(analysisSearch , userPermit));
-        arts.add(getAnalysis2(analysisSearch , userPermit));
-        arts.add(getAnalysis3(analysisSearch , userPermit));
-        arts.add(getAnalysis4(analysisSearch , userPermit));
+        AnalysisResultTable ar1 = getAnalysis1(analysisSearch , userPermit);
+        arts.add(ar1);
+
+        AnalysisResultTable ar2 = getAnalysis2(analysisSearch , userPermit);
+        arts.add(ar2);
+
+        AnalysisResultTable ar3 = getAnalysis3(ar2 ,analysisSearch , userPermit);
+        arts.add(ar3);
+
+        //AnalysisResultTable ar4 = getAnalysis4(analysisSearch , userPermit);
+        //arts.add(ar4);
 
         return arts;
     }
@@ -140,6 +203,7 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
 
         AnalysisResultTable art = new AnalysisResultTable();
         art.setLabel( tableName.get(1) );
+
 
         AnalysisResult ar10 = analysisService.queryMonthlyStatements(analysisSearch ,userPermit );
         AnalysisResult ar20 = analysisService.queryReceivedPayments(analysisSearch ,userPermit );
@@ -164,6 +228,7 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         int index = 1;
         for(AnalysisResult ar : ars){
             ar.setItem_name(items10.get(index++));
+            ar.setAnalysis_type(art.getLabel());
         }
 
         return art;
@@ -179,8 +244,11 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         AnalysisResultTable art = new AnalysisResultTable();
         art.setLabel( tableName.get(2) );
 
+        double rate = computeTaxRate();
         AnalysisResult ar10 = analysisService.queryReceivedPayments(analysisSearch ,userPermit );
-        //todo 处理税
+        ar10.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(ar10.getPre_statistics_amount() * ( 1- rate)));
+        ar10.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(ar10.getCurr_statistics_amount() * ( 1- rate)));
+        AnalysisUtil.processesult(ar10);
 
 
         AnalysisResult ar20 = analysisService.queryProjectStaffCosts(analysisSearch ,userPermit );
@@ -193,12 +261,37 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
 
 
         AnalysisResult ar80 = new AnalysisResult();
-        //部门毛利率
+        ar80.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(
+                 ar20.getPre_statistics_amount() + ar30.getPre_statistics_amount() + ar40.getPre_statistics_amount()
+                 + ar50.getPre_statistics_amount() + ar60.getPre_statistics_amount() + ar70.getPre_statistics_amount()
+        ));
+        ar80.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(
+                ar20.getCurr_statistics_amount() + ar30.getCurr_statistics_amount() +ar40.getCurr_statistics_amount()
+                +ar50.getCurr_statistics_amount() + ar60.getCurr_statistics_amount() + ar70.getCurr_statistics_amount()
+        ));
+        AnalysisUtil.processesult(ar80);
 
-        AnalysisResult ar90 = analysisService.queryCommonCosts(analysisSearch ,userPermit );
 
-        AnalysisResult ar100 = new AnalysisResult();
-        //公司利润
+        AnalysisResult ar90 = new AnalysisResult();
+        ar90.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(
+                ar10.getPre_statistics_amount() - ar80.getPre_statistics_amount()
+        ));
+        ar90.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(
+                ar10.getCurr_statistics_amount() - ar80.getCurr_statistics_amount()
+        ));
+        AnalysisUtil.processesult(ar90);
+
+
+        AnalysisResult ar100 = analysisService.queryCommonCosts(analysisSearch ,userPermit );
+
+        AnalysisResult ar110 = new AnalysisResult();
+        ar110.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(
+                ar90.getPre_statistics_amount() - ar100.getPre_statistics_amount()
+        ));
+        ar110.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(
+                ar90.getCurr_statistics_amount() - ar100.getCurr_statistics_amount()
+        ));
+        AnalysisUtil.processesult(ar110);
 
 
 
@@ -213,12 +306,14 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         ars.add(ar80);
         ars.add(ar90);
         ars.add(ar100);
+        ars.add(ar110);
 
         art.setResult(ars);
 
         int index = 1;
         for(AnalysisResult ar : ars){
             ar.setItem_name(items20.get(index++));
+            ar.setAnalysis_type(art.getLabel());
         }
 
         return art;
@@ -229,14 +324,30 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
      * 现金流分析
      * @return
      */
-    private AnalysisResultTable getAnalysis3(AnalysisSearch analysisSearch, UserPermit userPermit){
+    private AnalysisResultTable getAnalysis3(AnalysisResultTable art2,AnalysisSearch analysisSearch, UserPermit userPermit){
 
         AnalysisResultTable art = new AnalysisResultTable();
         art.setLabel( tableName.get(3) );
 
-        AnalysisResult ar10 = analysisService.queryMonthlyStatements(analysisSearch ,userPermit );
-        AnalysisResult ar20 = analysisService.queryReceivedPayments(analysisSearch ,userPermit );
+        AnalysisResult ar10 = analysisService.queryReceivedPayments(analysisSearch ,userPermit );
+
+        AnalysisResult ar20 = new AnalysisResult();
+        AnalysisResult departCost = art2.getResult().get(7);
+        AnalysisResult commonCost = art2.getResult().get(9);
+        ar20.setCurr_statistics_amount(departCost.getCurr_statistics_amount() + commonCost.getCurr_statistics_amount());
+        ar20.setPre_statistics_amount(departCost.getPre_statistics_amount() + commonCost.getPre_statistics_amount());
+        AnalysisUtil.processesult(ar20);
+
+
         AnalysisResult ar30 = new AnalysisResult();
+        ar30.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(
+                ar10.getPre_statistics_amount() - ar20.getPre_statistics_amount()
+        ));
+        ar30.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(
+                ar10.getCurr_statistics_amount() - ar20.getCurr_statistics_amount()
+        ));
+        AnalysisUtil.processesult(ar30);
+
 
         List<AnalysisResult> ars = new ArrayList<AnalysisResult>();
         ars.add(ar10);
@@ -244,6 +355,13 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         ars.add(ar30);
 
         art.setResult(ars);
+
+
+        int index = 1;
+        for(AnalysisResult ar : ars){
+            ar.setItem_name(items30.get(index++));
+            ar.setAnalysis_type(art.getLabel());
+        }
 
         return art;
     }

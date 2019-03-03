@@ -416,7 +416,7 @@
 			if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	, 
 			staff.staff_id,dc.pay_item_id  as type_id,dc.build_datetime
 			from tb_depart_costs dc 
-			left JOIN tb_project project 
+			left JOIN vb_project project 
 			on dc.project_id = project.project_id 
 			left JOIN tb_other_staff staff 
 			on dc.staff_id = staff.staff_id 
@@ -433,7 +433,7 @@
 			if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	,  
 			staff.staff_id,dc.pay_item_id  as type_id,dc.build_datetime
 			from tb_depart_costs dc 
-			left JOIN tb_project project 
+			left JOIN vb_project project 
 			on dc.project_id = project.project_id 
 			left JOIN tb_other_staff staff 
 			on dc.staff_id = staff.staff_id 
@@ -457,6 +457,23 @@
 		where 1=1
 	</sql>
 
+
+
+	<!-- 公共费用 -->
+	<sql id="all_data_80">
+		select cc.id as obj_id, '' as project_id , '' as project_name,  '' as project_no, '' as dept_id,
+		'成本' as amount_type, '公共费用' as business_type,  '80' as business_sort,
+		cc.amount as amount, cc.use_month  as use_month ,
+		cc.pay_date as pay_date,
+		'' as otherdesc, cc.description as description,
+		dd_pidata.dic_data_name  as business_name	, cc.pay_item_id as type_id , cc.build_datetime
+		from tb_common_cost cc
+		left join 	 ts_dic_data dd_pidata
+		on cc.pay_item_id = dd_pidata.id
+		where  cc.verify_userid is not null
+	</sql>
+
+
 	<sql id="departPermission">		
 		
 		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
@@ -475,6 +492,10 @@
 			and 1 = 2 
 		</if>
 	</sql>
-	 
+
+
+
+
+
 
 </mapper>

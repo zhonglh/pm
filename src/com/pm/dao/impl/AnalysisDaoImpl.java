@@ -91,8 +91,8 @@ public class AnalysisDaoImpl extends BatisDao implements IAnalysisDao{
         Map<String,Object> map = new HashMap<String,Object>();
         map.put(AnalysisSearch.class.getSimpleName() , analysisSearch);
         map.put(UserPermit.class.getSimpleName() , userPermit);
-        String sql = "AnalysisMapping.queryXStaisticsAnalysis";
-        analysisSearch.setX(EnumStaticType.S40.getCode());
+        String sql = "AnalysisMapping.queryXDepartCostAnalysis";
+        analysisSearch.setX(EnumStaticType.S100.getCode());
         return this.querySingle(sql, AnalysisVo.class, map);
     }
 
@@ -102,7 +102,8 @@ public class AnalysisDaoImpl extends BatisDao implements IAnalysisDao{
         Map<String,Object> map = new HashMap<String,Object>();
         map.put(AnalysisSearch.class.getSimpleName() , analysisSearch);
         map.put(UserPermit.class.getSimpleName() , userPermit);
-        String sql = "AnalysisMapping.queryDepartCosts";
+        String sql = "AnalysisMapping.queryXDepartCostAnalysis";
+        analysisSearch.setX(EnumStaticType.S101.getCode());
         return this.querySingle(sql, AnalysisVo.class, map);
     }
 
@@ -112,7 +113,8 @@ public class AnalysisDaoImpl extends BatisDao implements IAnalysisDao{
         Map<String,Object> map = new HashMap<String,Object>();
         map.put(AnalysisSearch.class.getSimpleName() , analysisSearch);
         map.put(UserPermit.class.getSimpleName() , userPermit);
-        String sql = "AnalysisMapping.queryOtherStaffCosts";
+        String sql = "AnalysisMapping.queryXDepartCostAnalysis";
+        analysisSearch.setX(EnumStaticType.S200.getCode());
         return this.querySingle(sql, AnalysisVo.class, map);
     }
 
@@ -122,7 +124,8 @@ public class AnalysisDaoImpl extends BatisDao implements IAnalysisDao{
         Map<String,Object> map = new HashMap<String,Object>();
         map.put(AnalysisSearch.class.getSimpleName() , analysisSearch);
         map.put(UserPermit.class.getSimpleName() , userPermit);
-        String sql = "AnalysisMapping.queryCommonCosts";
+        String sql = "AnalysisMapping.queryXDepartCostAnalysis";
+        analysisSearch.setX(EnumStaticType.S80.getCode());
         return this.querySingle(sql, AnalysisVo.class, map);
     }
 
@@ -132,7 +135,7 @@ public class AnalysisDaoImpl extends BatisDao implements IAnalysisDao{
         Map<String,Object> map = new HashMap<String,Object>();
         map.put(AnalysisSearch.class.getSimpleName() , analysisSearch);
         map.put(UserPermit.class.getSimpleName() , userPermit);
-        String sql = "AnalysisMapping.queryCommonCostDetail";
+        String sql = "AnalysisMapping.queryXDepartCostAnalysis";
         return this.query(sql, AnalysisVo.class, map);
     }
 }

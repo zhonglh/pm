@@ -160,13 +160,33 @@ public class BusinessExcel {
 			if(list != null && list.size()>0){
 				Collections.sort(list,new ColumnComparator());
 			}
-			
+
+
+			List<Column> cs = ThreadLocalModifyColumn.getColumns();
+
 			int index = 1;
 			for(Column column : list){
 				column.setNumber(index);
+
+				if(cs != null && cs.size() > 0){
+					for(Column c : cs){
+						if(c.getNumber() == index){
+							if(c.getCode() != null) {
+								column.setCode(c.getCode());
+							}
+							if(c.getName() != null) {
+								column.setName(c.getName());
+							}
+							break;
+						}
+					}
+				}
+
 				index ++;
 			}
-			
+
+
+
 			return list;
 		}
 		

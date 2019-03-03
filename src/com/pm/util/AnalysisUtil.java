@@ -3,6 +3,7 @@ package com.pm.util;
 import com.common.utils.NumberKit;
 import com.pm.vo.AnalysisResult;
 import com.pm.vo.AnalysisSearch;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class AnalysisUtil {
         }
 
         for(AnalysisResult ar : ars){
-            if(item_id ==  ar.getItem_id() ){
+            if(StringUtils.isEmpty(item_id) &&  StringUtils.isEmpty(ar.getItem_id()) ){
                 return ar;
             }else if(item_id != null && item_id.equals(ar.getItem_id())){
                 return ar;

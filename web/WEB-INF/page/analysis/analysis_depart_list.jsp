@@ -2,13 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/include.inc.jsp"%>
 
-<form id="pagerForm" method="post" action="${webroot }/FinancialAnalysis4DepartAction.do?method=list">
+<form id="pagerForm" method="post" action="${webroot }/FinancialAnalysis4DepartmentAction.do?method=list">
 
 </form>
 
 
 <div class="pageHeader">
-    <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/FinancialAnalysis4DepartAction.do?method=list" method="post">
+    <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/FinancialAnalysis4DepartmentAction.do?method=list" method="post">
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
@@ -32,7 +32,7 @@
     <div class="panelBar">
         <ul class="toolBar">
 
-            <li><a class="icon" href="${webroot}/FinancialAnalysis4DepartAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+            <li><a class="icon" href="${webroot}/FinancialAnalysis4DepartmentAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
 
         </ul>
     </div>

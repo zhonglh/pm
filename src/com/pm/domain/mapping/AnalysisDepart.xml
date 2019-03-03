@@ -7,10 +7,10 @@
 	<resultMap type="java.util.Map" id="map" />
 
 	
-	<resultMap type="com.pm.vo.AnalysisVo" id="analysisMap" />
+	<resultMap type="com.pm.vo.AnalysisDepartVo" id="analysisDepartMap" />
 
 
-	<select id="queryXStaisticsAnalysis" parameterType="map"  resultMap="analysisMap" >
+	<select id="queryXStaisticsAnalysis" parameterType="map"  resultMap="analysisDepartMap" >
 		<include refid="queryXStaisticsSql"/>
 	</select>
 
@@ -21,7 +21,7 @@
 		,${AnalysisSearch.groupSelect}
 		</if>
 		from (
-			SELECT business.*,dept.dept_id
+			SELECT business.* , dept.dept_name
 			FROM (				
 				<if test="AnalysisSearch.x == 10">
 					<include refid="StatisticsDetailMapping.all_data_10"/>
@@ -83,6 +83,7 @@
 			group by ${AnalysisSearch.groupBy}
 		</if>
 
+
 	</sql>
 
 
@@ -93,7 +94,7 @@
 
 
 
-	<select id="queryAllCost" parameterType="map"  resultMap="analysisMap" >
+	<select id="queryAllCost" parameterType="map"  resultMap="analysisDepartMap" >
 		<include refid="queryAllCostSql"/>
 	</select>
 
@@ -146,19 +147,19 @@
 
 
 	<sql id="project_all_cost">
-		<include refid="all_data_51"/>
+		<include refid="StatisticsDetailMapping.all_data_51"/>
 		union all
-		<include refid="all_data_30"/>
+		<include refid="StatisticsDetailMapping.all_data_30"/>
 		union all
-		<include refid="all_data_40"/>
+		<include refid="StatisticsDetailMapping.all_data_40"/>
 	</sql>
 
 	<sql id="depart_all_cost">
-		<include refid="all_data_100"/>
+		<include refid="DepartStatisticsDetailMapping.all_data_100"/>
 		union all
-		<include refid="all_data_101"/>
+		<include refid="DepartStatisticsDetailMapping.all_data_101"/>
 		union all
-		<include refid="all_data_200"/>
+		<include refid="DepartStatisticsDetailMapping.all_data_200"/>
 	</sql>
 
 

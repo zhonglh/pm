@@ -31,8 +31,8 @@ import java.util.List;
  * @author Administrator
  */
 @Controller
-@RequestMapping(value = "FinancialAnalysis4DepartAction.do")
-public class FinancialAnalysis4DepartAction extends BaseAction {
+@RequestMapping(value = "FinancialAnalysis4DepartmentAction.do")
+public class FinancialAnalysis4DepartmentAction extends BaseAction {
 
     @Autowired
     IDeptService deptService;
@@ -182,8 +182,10 @@ public class FinancialAnalysis4DepartAction extends BaseAction {
         art.setResult(ars);
 
 
-        for(AnalysisResult ar : ars){
-            ar.setAnalysis_type(art.getLabel());
+        if(art.getResult() != null) {
+            for (AnalysisResult ar : ars) {
+                ar.setAnalysis_type(art.getLabel());
+            }
         }
 
         return art;
@@ -203,8 +205,10 @@ public class FinancialAnalysis4DepartAction extends BaseAction {
         List<AnalysisResult> ars = analysisDepartService.queryDepartAllCosts(analysisSearch ,userPermit );
         art.setResult(ars);
 
-        for(AnalysisResult ar : art.getResult()){
-            ar.setAnalysis_type(art.getLabel());
+        if(art.getResult() != null) {
+            for (AnalysisResult ar : art.getResult()) {
+                ar.setAnalysis_type(art.getLabel());
+            }
         }
 
         return art;
@@ -224,8 +228,10 @@ public class FinancialAnalysis4DepartAction extends BaseAction {
 
 
 
-        for(AnalysisResult ar : art.getResult()){
-            ar.setAnalysis_type(art.getLabel());
+        if(art.getResult() != null) {
+            for (AnalysisResult ar : art.getResult()) {
+                ar.setAnalysis_type(art.getLabel());
+            }
         }
 
         return art;

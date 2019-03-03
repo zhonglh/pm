@@ -251,7 +251,7 @@
 			receivedPayment.receive_payment_amount as amount,
 			receivedPayment.receive_payment_month as use_month,  receivedPayment.receive_payment_datetime as pay_date,
 			dd_rai.dic_data_name as  otherdesc, receivedPayment.description, receivedPayment.payment_unit as business_name	,
-			receivedPayment.receivable_accounts_item_id as type_id 	, receivedPayment.build_datetime
+			receivedPayment.receivable_accounts_item_id as type_id 	, receivedPayment.build_datetime  , '' as staff_id
 			from tb_received_payment receivedPayment 
 			INNER JOIN vb_project project 
 			on receivedPayment.project_id = project.project_id 
@@ -269,7 +269,7 @@
 		rp.amount, rp.statement_month as use_month,
 		IFNULL(rp.pay_date,str_to_date(rp.statement_month*100+01,'%Y%m%d')) as pay_date,
 		dd_rai.dic_data_name as  otherdesc, rp.description, rp.payment_unit as business_name	,
-		rp.receivable_accounts_item_id as type_id 	, rp.build_datetime
+		rp.receivable_accounts_item_id as type_id 	, rp.build_datetime  ,  '' as staff_id
 		from vb_received_payment_monthly rp
 		INNER JOIN vb_project project
 		on rp.project_id = project.project_id
@@ -285,7 +285,7 @@
 			ms.amount,ms.statement_month as use_month, str_to_date(ms.statement_month*100+01,'%Y%m%d') as pay_date,
 			'' as  otherdesc, ms.description,
 			(case when statement_type='1'   	then '外包结算' when statement_type='2'   	then '外派结算' when statement_type='3'   	then '历史结算' else '其它结算' end)  as business_name,
-			''  as type_id 	 , ms.build_datetime
+			''  as type_id 	 , ms.build_datetime , '' as    staff_id
 			FROM tb_monthly_statement ms 
 			inner join vb_project project 
 			on ms.project_id = project.project_id
@@ -303,7 +303,7 @@
 			detail.total_cost*(1-${Statistics.tax_rate}) as amount,ms.statement_month as use_month, str_to_date(ms.statement_month*100+01,'%Y%m%d') as pay_date,
 			'' as  otherdesc, ms.description,
 			(case when statement_type='1'   	then '外包结算' when statement_type='2'   	then '外派结算' when statement_type='3'   	then '历史结算' else '其它结算' end)  as business_name,
-			detail.staff_id  as type_id 	 , ms.build_datetime
+			detail.staff_id  as type_id 	 , ms.build_datetime , '' as    staff_id
 			FROM tb_monthly_statement ms 
 			inner join tb_monthly_statement_detail detail
 			on ms.monthly_statement_id = detail.monthly_statement_id 
@@ -320,7 +320,7 @@
 			'成本' as amount_type, '报销' as business_type, '30' as business_sort,
 			rc.amount,rc.use_month, rc.pay_date,  dd_rai.dic_data_name as  otherdesc, rc.description,
 			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
-			rc.pay_item_id  as type_id, rc.build_datetime
+			rc.pay_item_id  as type_id, rc.build_datetime ,   rc.staff_id
 			from tb_reimburse_costs rc 
 			INNER JOIN vb_project project 
 			on rc.project_id = project.project_id 			
@@ -339,7 +339,7 @@
 			'成本' as amount_type, '报销' as business_type, '31' as business_sort,
 			rc.amount,rc.use_month, rc.pay_date,  dd_rai.dic_data_name as  otherdesc, rc.description,
 			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
-			staff.staff_id  as type_id, rc.build_datetime
+			staff.staff_id  as type_id, rc.build_datetime ,   rc.staff_id
 			from tb_reimburse_costs rc 
 			INNER JOIN vb_project project 
 			on rc.project_id = project.project_id 			
@@ -357,7 +357,7 @@
 			'成本' as amount_type, '项目付款信息' as business_type, '40' as business_sort,
 			case when (pe.pay_amount is NULL OR pe.pay_amount = 0) then pe.amount else pe.pay_amount end as amount,
 			pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
-			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime
+			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime , '' as staff_id
 			from tb_project_expend pe 
 			INNER JOIN vb_project project 
 			on pe.project_id = project.project_id 
@@ -371,7 +371,7 @@
 			pe.project_id, project_name,project_no, project.deptid as dept_id,
 			'成本' as amount_type, '项目付款信息' as business_type, '41' as business_sort,
 			pe.pay_amount as amount,pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
-			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime
+			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime , '' as staff_id
 			from tb_project_expend pe 
 			INNER JOIN vb_project project 
 			on pe.project_id = project.project_id 
@@ -385,7 +385,7 @@
 			psc.project_id ,project.project_name,project.project_no, project.deptid as dept_id,
 			'成本' as amount_type, '项目人员成本' as business_type,  '50' as business_sort,
 			 psc.amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
-			staff.staff_name  as business_name	, '' as type_id, psc.build_datetime
+			staff.staff_name  as business_name	, '' as type_id, psc.build_datetime , psc.staff_id
 			from tb_project_staff_cost psc 
 			INNER JOIN vb_project project 
 			on psc.project_id = project.project_id 
@@ -400,7 +400,7 @@
 			psc.project_id ,project.project_name,project.project_no,project.deptid as dept_id,
 			'成本' as amount_type, '项目人员成本' as business_type,  '51' as business_sort,
 			 psc.all_amount as amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
-			staff.staff_name  as business_name	, '' as type_id , psc.build_datetime
+			staff.staff_name  as business_name	, '' as type_id , psc.build_datetime , psc.staff_id
 			from tb_project_staff_cost psc 
 			INNER JOIN vb_project project 
 			on psc.project_id = project.project_id 
@@ -420,7 +420,7 @@
 			) as amount,  psc.salary_month as use_month ,
 			DATE_ADD(str_to_date(psc.salary_month*100+20,'%Y%m%d'),INTERVAL 1 month) as pay_date, 
 			'' as otherdesc, psc.description as description,	
-			staff.staff_name  as business_name	, psc.staff_id as type_id , psc.build_datetime
+			staff.staff_name  as business_name	, psc.staff_id as type_id , psc.build_datetime  , psc.staff_id
 			from tb_salary psc 
 			INNER JOIN vb_project project 
 			on psc.project_id = project.project_id 
@@ -439,7 +439,7 @@
 		invoice.invoiceno_amount as amount, date_format(invoice.invoice_date, '%Y%m')  as use_month ,
 		invoice.invoice_date as pay_date,
 		'' as otherdesc, invoice.description as description,
-		invoice.invoice_no  as business_name	, '' as type_id , invoice.build_datetime
+		invoice.invoice_no  as business_name	, '' as type_id , invoice.build_datetime , invoice.invoice_staff_id as staff_id
 		from tb_invoice invoice
 		INNER JOIN vb_project project
 		on invoice.project_id = project.project_id

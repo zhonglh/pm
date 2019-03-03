@@ -50,7 +50,7 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
             return ars ;
         }
 
-        if(currList == null || currList.isEmpty()){
+        if(currList != null && !currList.isEmpty()){
             for(AnalysisDepartVo analysisDepartVo : currList){
                 AnalysisResult ar = new AnalysisResult();
                 ar.setItem_id(analysisDepartVo.getDept_id());
@@ -60,7 +60,7 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
             }
         }
 
-        if(preList == null || preList.isEmpty()){
+        if(preList != null && !preList.isEmpty()){
             for(AnalysisDepartVo analysisDepartVo : preList){
 
                 AnalysisResult ar = getAnalysisResult(ars , analysisDepartVo.getDept_id());
@@ -76,8 +76,10 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
             }
         }
 
-        for(AnalysisResult ar : ars){
-            AnalysisUtil.processesult(ar);
+        if(ars != null && !ars.isEmpty()) {
+            for (AnalysisResult ar : ars) {
+                AnalysisUtil.processesult(ar);
+            }
         }
 
         return  ars ;

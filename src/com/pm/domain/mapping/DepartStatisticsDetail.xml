@@ -28,7 +28,7 @@
 	
 	<sql id="queryXStaisticsSql">	
 		select sum(amount) as  val,${Statistics.groupSelect} from (
-			SELECT business.*,dept.dept_id
+			SELECT business.*
 			FROM (				
 				<if test="Statistics.x == 10">
 					<include refid="StatisticsDetailMapping.all_data_10"/>
@@ -414,7 +414,7 @@
 			 dc.amount,dc.use_month, dc.pay_date,
 			dc_dic.dic_data_name  as  otherdesc,dc.description,
 			if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	, 
-			staff.staff_id,dc.pay_item_id  as type_id,dc.build_datetime
+			dc.pay_item_id  as type_id,dc.build_datetime,staff.staff_id
 			from tb_depart_costs dc 
 			left JOIN vb_project project 
 			on dc.project_id = project.project_id 
@@ -431,7 +431,7 @@
 			 dc.amount,dc.use_month, dc.pay_date,
 			dc_dic.dic_data_name  as  otherdesc,dc.description,
 			if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	,  
-			staff.staff_id,dc.pay_item_id  as type_id,dc.build_datetime
+			dc.pay_item_id  as type_id,dc.build_datetime,staff.staff_id
 			from tb_depart_costs dc 
 			left JOIN vb_project project 
 			on dc.project_id = project.project_id 
@@ -450,7 +450,7 @@
 		osc.all_amount as amount,osc.work_month as use_month, osc.pay_date,
 		''  as  otherdesc,'' as description,
 		staff.staff_name as business_name	,
-		staff.staff_id,''  as type_id,osc.build_datetime
+		''  as type_id,osc.build_datetime,staff.staff_id
 		from tb_other_staff_cost osc
 		left JOIN tb_other_staff staff
 		on osc.staff_id = staff.staff_id

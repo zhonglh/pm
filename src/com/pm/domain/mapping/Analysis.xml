@@ -94,7 +94,7 @@
 		,${AnalysisSearch.groupSelect}
 		</if>
 		from (
-			SELECT business.*,dept.dept_id
+			SELECT business.*
 			FROM (				
 				<if test="AnalysisSearch.x == 10">
 					<include refid="StatisticsDetailMapping.all_data_10"/>

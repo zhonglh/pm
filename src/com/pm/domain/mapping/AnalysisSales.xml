@@ -52,7 +52,6 @@
 			on business.project_id = project.project_id
 			left join tb_other_staff staff
 		    on project.sales_userid = staff.staff_id
-
 			left join ts_dept dept
 			on project.deptid = dept.dept_id
 			where  1=1
@@ -153,7 +152,7 @@
 			group by ${AnalysisSearch.groupBy}
 		</if>
 
-		order by build_time
+		order by sales_id
 
 	</sql>
 
@@ -172,7 +171,7 @@
 		<include refid="DepartStatisticsDetailMapping.all_data_101"/>
 		union all
 		<include refid="DepartStatisticsDetailMapping.all_data_200"/>
-	</sql>
+</sql>
 
 
 
@@ -181,7 +180,7 @@
 		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
 			
 			<if test="UserPermit.range == 1">
-				
+
 			</if>
 			<if test="UserPermit.range == 2">
 
@@ -189,7 +188,7 @@
 
 			</if>
 			<if test="UserPermit.range == 3">
-				and 1 = 2 
+				and staff.staff_id =   #{UserPermit.staff_id}
 			</if>
 		</if>
 		<if test="UserPermit == null or UserPermit.range == null or UserPermit.range == ''">

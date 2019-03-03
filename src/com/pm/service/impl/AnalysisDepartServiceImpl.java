@@ -23,40 +23,6 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
     @Autowired
     private IAnalysisDepartDao analysisDepartDao ;
 
-    /**
-     * 所有的数乘以负一
-     * 收入为空时， 现金流为成本乘以负一
-     * @param ars
-     */
-    private void minus(List<AnalysisResult> ars){
-        if(ars == null || ars.isEmpty()){
-            return ;
-        }
-        for(AnalysisResult ar : ars){
-            ar.setPre_statistics_amount(ar.getPre_statistics_amount() * -1);
-            ar.setPre_statistics_amount(ar.getPre_statistics_amount() * -1);
-            ar.setIncrease_or_decrease(ar.getIncrease_or_decrease() * -1);
-            ar.setChange_ratio(ar.getChange_ratio() * -1);
-        }
-    }
-
-
-    private AnalysisResult getAnalysisResult(List<AnalysisResult> ars , String item_id){
-        if(ars == null || ars.isEmpty()) {
-            return null;
-        }
-
-        for(AnalysisResult ar : ars){
-            if(item_id ==  ar.getItem_id() ){
-                return ar;
-            }else if(item_id != null && item_id.equals(ar.getItem_id())){
-                return ar;
-            }
-        }
-
-        return null;
-
-    }
 
 
     private List<AnalysisResult> processAnalysis( List<AnalysisDepartVo> currList, List<AnalysisDepartVo> preList) {
@@ -80,7 +46,7 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
         if(preList != null && !preList.isEmpty()){
             for(AnalysisDepartVo analysisDepartVo : preList){
 
-                AnalysisResult ar = getAnalysisResult(ars , analysisDepartVo.getDept_id());
+                AnalysisResult ar = AnalysisUtil.getAnalysisResult(ars , analysisDepartVo.getDept_id());
                 if(ar == null) {
                     ar = new AnalysisResult();
                     ar.setItem_id(analysisDepartVo.getDept_id());
@@ -138,14 +104,14 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
 
         if(ars1 == null || ars1.isEmpty()){
             ars = ars2;
-            minus(ars);
+            AnalysisUtil.minus(ars);
         }else {
             ars = ars1;
 
             if(ars2 != null && !ars2.isEmpty()) {
 
                 for (AnalysisResult ar : ars) {
-                    AnalysisResult costResult = getAnalysisResult(ars2, ar.getItem_id());
+                    AnalysisResult costResult = AnalysisUtil.getAnalysisResult(ars2, ar.getItem_id());
                     if (costResult != null) {
                         ar.setCurr_statistics_amount(ar.getCurr_statistics_amount() - costResult.getCurr_statistics_amount());
                         ar.setPre_statistics_amount(ar.getPre_statistics_amount() - costResult.getPre_statistics_amount());
@@ -154,7 +120,7 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
 
 
                 for (AnalysisResult ar : ars2) {
-                    AnalysisResult result = getAnalysisResult(ars, ar.getItem_id());
+                    AnalysisResult result = AnalysisUtil.getAnalysisResult(ars, ar.getItem_id());
                     if(result == null){
                         AnalysisResult temp = new AnalysisResult();
                         temp.setItem_id(ar.getItem_id());

@@ -19,43 +19,8 @@ import java.util.List;
 @Component
 public class AnalysisSalesServiceImpl implements IAnalysisSalesService {
 
-    @Autowired
     private IAnalysisSalesDao analysisSalesDao ;
-
-    /**
-     * 所有的数乘以负一
-     * 收入为空时， 现金流为成本乘以负一
-     * @param ars
-     */
-    private void minus(List<AnalysisResult> ars){
-        if(ars == null || ars.isEmpty()){
-            return ;
-        }
-        for(AnalysisResult ar : ars){
-            ar.setPre_statistics_amount(ar.getPre_statistics_amount() * -1);
-            ar.setPre_statistics_amount(ar.getPre_statistics_amount() * -1);
-            ar.setIncrease_or_decrease(ar.getIncrease_or_decrease() * -1);
-            ar.setChange_ratio(ar.getChange_ratio() * -1);
-        }
-    }
-
-
-    private AnalysisResult getAnalysisResult(List<AnalysisResult> ars , String item_id){
-        if(ars == null || ars.isEmpty()) {
-            return null;
-        }
-
-        for(AnalysisResult ar : ars){
-            if(item_id ==  ar.getItem_id() ){
-                return ar;
-            }else if(item_id != null && item_id.equals(ar.getItem_id())){
-                return ar;
-            }
-        }
-
-        return null;
-
-    }
+    @Autowired
 
 
     private List<AnalysisResult> processAnalysis( List<AnalysisSalesVo> currList, List<AnalysisSalesVo> preList) {
@@ -79,7 +44,7 @@ public class AnalysisSalesServiceImpl implements IAnalysisSalesService {
         if(preList != null && !preList.isEmpty()){
             for(AnalysisSalesVo analysisSalesVo : preList){
 
-                AnalysisResult ar = getAnalysisResult(ars , analysisSalesVo.getSales_id());
+                AnalysisResult ar = AnalysisUtil.getAnalysisResult(ars , analysisSalesVo.getSales_id());
                 if(ar == null) {
                     ar = new AnalysisResult();
                     ar.setItem_id(analysisSalesVo.getSales_id());
@@ -137,14 +102,14 @@ public class AnalysisSalesServiceImpl implements IAnalysisSalesService {
 
         if(ars1 == null || ars1.isEmpty()){
             ars = ars2;
-            minus(ars);
+            AnalysisUtil.minus(ars);
         }else {
             ars = ars1;
 
             if(ars2 != null && !ars2.isEmpty()) {
 
                 for (AnalysisResult ar : ars) {
-                    AnalysisResult costResult = getAnalysisResult(ars2, ar.getItem_id());
+                    AnalysisResult costResult = AnalysisUtil.getAnalysisResult(ars2, ar.getItem_id());
                     if (costResult != null) {
                         ar.setCurr_statistics_amount(ar.getCurr_statistics_amount() - costResult.getCurr_statistics_amount());
                         ar.setPre_statistics_amount(ar.getPre_statistics_amount() - costResult.getPre_statistics_amount());
@@ -153,7 +118,7 @@ public class AnalysisSalesServiceImpl implements IAnalysisSalesService {
 
 
                 for (AnalysisResult ar : ars2) {
-                    AnalysisResult result = getAnalysisResult(ars, ar.getItem_id());
+                    AnalysisResult result = AnalysisUtil.getAnalysisResult(ars, ar.getItem_id());
                     if(result == null){
                         AnalysisResult temp = new AnalysisResult();
                         temp.setItem_id(ar.getItem_id());

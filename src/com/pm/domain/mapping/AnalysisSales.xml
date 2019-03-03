@@ -178,8 +178,7 @@
 
 	<sql id="analysisDepartPermission">
 
-		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''"
-			 union all>
+		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
 			
 			<if test="UserPermit.range == 1">
 

@@ -110,21 +110,21 @@
 			,${AnalysisSearch.groupSelect}
 		</if>
 		from (
-		SELECT business.* , business.staff_id as sales_id ,  staff.staff_name as sales_name
+		SELECT business.* , staff.staff_id as sales_id ,  staff.staff_name as sales_name
 		FROM (
 			<include refid="project_all_cost"/>
-			 union all
-			<include refid="depart_all_cost"/>
 		) business
 		left join ts_dept dept
 		on business.dept_id = dept.dept_id
+		left join vb_project project
+		on business.project_id = project.project_id
 		left join tb_other_staff staff
-		on business.staff_id = staff.staff_id
+		on project.sales_userid = staff.staff_id
 
 
 		where 1=1
-			and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id)
-			and not EXISTS (select 1 from vb_staffcost_reimburse vsr where business.obj_id = vsr.reimburse_id)
+		and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id)
+		and not EXISTS (select 1 from vb_staffcost_reimburse vsr where business.obj_id = vsr.reimburse_id)
 
 
 
@@ -154,6 +154,7 @@
 
 		order by sales_id
 
+
 	</sql>
 
 
@@ -171,13 +172,14 @@
 		<include refid="DepartStatisticsDetailMapping.all_data_101"/>
 		union all
 		<include refid="DepartStatisticsDetailMapping.all_data_200"/>
-</sql>
+	</sql>
 
 
 
 	<sql id="analysisDepartPermission">
-		
-		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
+
+		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''"
+			 union all>
 			
 			<if test="UserPermit.range == 1">
 

@@ -19,8 +19,8 @@ import java.util.List;
 @Component
 public class AnalysisSalesServiceImpl implements IAnalysisSalesService {
 
-    private IAnalysisSalesDao analysisSalesDao ;
     @Autowired
+    private IAnalysisSalesDao analysisSalesDao ;
 
 
     private List<AnalysisResult> processAnalysis( List<AnalysisSalesVo> currList, List<AnalysisSalesVo> preList) {

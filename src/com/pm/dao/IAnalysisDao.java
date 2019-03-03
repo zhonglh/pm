@@ -33,16 +33,6 @@ public interface IAnalysisDao {
 
 
 
-    /**
-     * 应收款
-     * @param analysisSearch
-     * @param userPermit
-     * @return
-     */
-    public AnalysisVo queryReceivables(AnalysisSearch analysisSearch, UserPermit userPermit);
-
-
-
 
     /**
      * 发票

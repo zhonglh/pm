@@ -14,7 +14,7 @@
 					
 			<li>
 				<label>导出状态：</label>
-				<select name="exported" style="width:133px">
+				<select name="exported" style="width:153px">
 				<option value="" <c:if test="${'' == param.exported }">selected</c:if>>全部</option>
 				<option value="1" <c:if test="${'1' == param.exported }">selected</c:if>>已导出</option>
 				<option value="0" <c:if test="${'0' == param.exported }">selected</c:if>>未导出</option>
@@ -24,7 +24,7 @@
 					
 			<li>
 				<label>业务类型：</label>
-				<select name="data_type" style="width:133px">
+				<select name="data_type" style="width:153px">
 				<option value="" <c:if test="${'' == param.data_type }">selected</c:if>>全部</option>
 				<option value="1" <c:if test="${'1' == param.data_type }">selected</c:if>>月度结算单</option>
 				<option value="2" <c:if test="${'2' == param.data_type }">selected</c:if>>发票</option>

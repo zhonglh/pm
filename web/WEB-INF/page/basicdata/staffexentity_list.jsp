@@ -26,7 +26,7 @@
 
 			<li>				
 				<label>工资模式：</label>
-				<select name="salary_model" style="width:133px">
+				<select name="salary_model" style="width:153px">
 					<option value="">全部</option>
 					<option value="0" <c:if test="${staffExEntity.salary_model == '0' }">selected</c:if>>原有模式</option>
 					<option value="1" <c:if test="${staffExEntity.salary_model == '1' }">selected</c:if>>营销模式</option>					

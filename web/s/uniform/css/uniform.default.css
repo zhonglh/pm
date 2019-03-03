@@ -140,7 +140,7 @@ div.checker {
   div.checker.hover.active span, div.checker.focus.active span {
     background-position: -57px -260px; }
     div.checker.hover.active span.checked, div.checker.focus.active span.checked {
-      background-position: -133px -260px; }
+      background-position: -153px -260px; }
   div.checker.disabled, div.checker.disabled.active {
     background-position: -152px -260px; }
     div.checker.disabled span.checked, div.checker.disabled.active span.checked {

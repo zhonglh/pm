@@ -26,7 +26,7 @@
 
 			<li>
 				<label>在职状态：</label>
-				<select name="delete_flag" style="width:133px">
+				<select name="delete_flag" style="width:153px">
 					<option value="">全部</option>
 					<option value="0" <c:if test="${param.delete_flag == '0' }">selected</c:if>>在职</option>
 					<option value="1" <c:if test="${param.delete_flag == '1' }">selected</c:if>>离职</option>
@@ -54,7 +54,7 @@
 			</li>
 			<li>
 				<label>职位类型：</label>
-				<select name="position_type" style="width:133px">
+				<select name="position_type" style="width:153px">
 					<option value="">全部</option>
 					<option value="1" <c:if test="${otherStaff.position_type == '1' }">selected</c:if>><spring:message code="position.type.1"/></option>
 					<option value="2" <c:if test="${otherStaff.position_type == '2' }">selected</c:if>><spring:message code="position.type.2"/></option>

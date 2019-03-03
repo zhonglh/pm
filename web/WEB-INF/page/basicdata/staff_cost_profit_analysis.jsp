@@ -26,7 +26,7 @@
 			
 			<li>				
 				<label>外协人员：</label>
-				<select name="outsource_staff" style="width:133px">
+				<select name="outsource_staff" style="width:153px">
 					<option value="">全部</option>
 					<option value="0" <c:if test="${staffCost.outsource_staff == '0' }">selected</c:if>>否</option>
 					<option value="1" <c:if test="${staffCost.outsource_staff == '1' }">selected</c:if>>是</option>					
@@ -48,7 +48,7 @@
 
 			<li>				
 				<label>在职状态：</label>
-				<select name="delete_flag" style="width:133px">
+				<select name="delete_flag" style="width:153px">
 					<option value="">全部</option>
 					<option value="0" <c:if test="${staffCost.delete_flag == '0' }">selected</c:if>>在职</option>
 					<option value="1" <c:if test="${staffCost.delete_flag == '1' }">selected</c:if>>离职</option>					
@@ -65,7 +65,7 @@
 			
 			<li>
 				<label>排序：</label>
-				<select name="orderby" style="width:133px">
+				<select name="orderby" style="width:153px">
 					<option value="build_datetime" <c:if test="${param.orderby == 'build_datetime' }">selected</c:if>>入职时间</option>	
 					<option value="technical_income desc" <c:if test="${param.orderby == 'technical_income desc' }">selected</c:if>>总收入</option>	
 					<option value="technical_cost desc" <c:if test="${param.orderby == 'technical_cost desc' }">selected</c:if>>总成本</option>	

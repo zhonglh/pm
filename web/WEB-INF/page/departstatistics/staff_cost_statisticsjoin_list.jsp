@@ -36,7 +36,7 @@
 
 			<li>				
 				<label>在职状态：</label>
-				<select name="delete_flag" style="width:133px">
+				<select name="delete_flag" style="width:153px">
 					<option value="">全部</option>
 					<option value="0" <c:if test="${param.delete_flag == '0' }">selected</c:if>>在职</option>
 					<option value="1" <c:if test="${param.delete_flag == '1' }">selected</c:if>>离职</option>					

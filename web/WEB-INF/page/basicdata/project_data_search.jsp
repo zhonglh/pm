@@ -30,7 +30,7 @@
 			 
 			<li>
 				<label>项目类型：</label>
-				<select name="project_type" id="projecct_type" style="width:133px">				
+				<select name="project_type" id="projecct_type" style="width:153px">
 					<option value=""><spring:message code="project.type." /></option>
 					<option value="1" <c:if test="${project.project_type == '1' }">selected</c:if> ><spring:message code="project.type.1" /></option>
 					<option value="2" <c:if test="${project.project_type == '2' }">selected</c:if> ><spring:message code="project.type.2" /></option>

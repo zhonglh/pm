@@ -13,8 +13,8 @@
             <ul class="searchContent">
                 <li>
                     <label>时间段：</label>
-                    <input type="text" class="digits date month required" readonly maxlength="6" minlength="6" format="yyyyMM" size="7" name="month1" value="${param.month1}"/>
-                    <input type="text" class="digits date month required" readonly maxlength="6" minlength="6" format="yyyyMM" size="7" name="month2" value="${param.month2}"/>
+                    <input type="text" class="digits date month required" readonly maxlength="6" minlength="6" format="yyyyMM" size="7" name="month1" value="${analysisSearch.month1}"/>
+                    <input type="text" class="digits date month required" readonly maxlength="6" minlength="6" format="yyyyMM" size="7" name="month2" value="${analysisSearch.month2}"/>
 
                 </li>
 
@@ -36,34 +36,37 @@
 
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="100">
-        <c:forEach var="analysisTable" items="${arts}">
-        <tr>
-            <td>
 
-                <h3 class="contentTitle">${analysisTable.label}</h3>
-                <table class="table" width="100%" >
-                    <thead>
+    <table class="list" width="99%" layoutH="60">
+        <c:forEach var="analysisTable" items="${arts}">
+
+
+                <thead>
+                <tr>
+                    <th height="30px" colspan="5"><h1 style="margin-top: 5px;margin-bottom : 3px;font-size: 15px">${analysisTable.label}</h1></th>
+                </tr>
+                <tr>
                     <th  width="120">类别</th>
                     <th  width="120">${ startTimeQuantum }</th>
                     <th  width="120">${ endTimeQuantum }</th>
                     <th  width="120">增减额</th>
                     <th  width="120">变动比例</th>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="item" items="analysisTable.result">
-                        <tr>
-                            <td align="center">${item.item_name}</td>
-                            <td align="right">${item.curr_statistics_amount}</td>
-                            <td align="right">${item.pre_statistics_amount}</td>
-                            <td align="right">${item.increase_or_decrease}</td>
-                            <td align="right">${item.change_ratio}</td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
+                </tr>
+                </thead>
+
+                <tbody>
+                <c:forEach var="item" items="${analysisTable.result}">
+                    <tr>
+                        <td align="center">${item.item_name}</td>
+                        <td align="right"><fmt:formatNumber value="${item.curr_statistics_amount }" type="currency" pattern="###,###,##0.00"/></td>
+                        <td align="right"><fmt:formatNumber value="${item.pre_statistics_amount }" type="currency" pattern="###,###,##0.00"/></td>
+                        <td align="right"><fmt:formatNumber value="${item.increase_or_decrease }" type="currency" pattern="###,###,##0.00"/></td>
+                        <td align="right"><fmt:formatNumber value="${item.change_ratio * 100}" type="currency" pattern="###,###,##0.00"/>%</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+
+
         </c:forEach>
     </table>
 </div>

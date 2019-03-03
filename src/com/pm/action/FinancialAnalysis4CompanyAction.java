@@ -1,16 +1,15 @@
 package com.pm.action;
 
 import com.common.actions.BaseAction;
+import com.common.utils.DateKit;
 import com.common.utils.DateUtils;
 import com.pm.service.IAnalysisService;
 import com.pm.service.IDeptService;
 import com.pm.service.IDicDataService;
 import com.pm.service.IRoleService;
+import com.pm.util.AnalysisUtil;
 import com.pm.util.constant.EnumPermit;
-import com.pm.vo.AnalysisResult;
-import com.pm.vo.AnalysisResultTable;
-import com.pm.vo.AnalysisSearch;
-import com.pm.vo.UserPermit;
+import com.pm.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -94,13 +94,21 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
         UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.COMPANYFINANCIALANALYSISVIEW.getId());
         paramprocess(analysisSearch , request);
 
-        if(analysisSearch.getMonth1() > 0 && analysisSearch.getMonth2() > 0) {
-
-            request.setAttribute("startTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
-            List<AnalysisResultTable> arts = getAnalysisList(analysisSearch, userPermit);
-            request.setAttribute("arts", arts);
-            request.setAttribute("endTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
+        if(analysisSearch.getMonth1() == 0 || analysisSearch.getMonth2() == 0) {
+            //初始化查询月份
+            Date date2 = new Date();
+            Date date1 = DateKit.getYearStart(date2) ;
+            analysisSearch.setMonth1(Integer.parseInt(DateKit.fmtDateToStr(date1 , "yyyyMM")));
+            analysisSearch.setMonth2(Integer.parseInt(DateKit.fmtDateToStr(date2 , "yyyyMM")));
         }
+
+        request.setAttribute("startTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
+        List<AnalysisResultTable> arts = getAnalysisList(analysisSearch, userPermit);
+        request.setAttribute("arts", arts);
+        request.setAttribute("endTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100));
+
+
+        request.setAttribute("analysisSearch", analysisSearch);
 
         return "analysis/analysis_company_list";
     }
@@ -135,7 +143,13 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
 
         AnalysisResult ar10 = analysisService.queryMonthlyStatements(analysisSearch ,userPermit );
         AnalysisResult ar20 = analysisService.queryReceivedPayments(analysisSearch ,userPermit );
-        AnalysisResult ar30 = analysisService.queryReceivables(analysisSearch ,userPermit );
+        AnalysisResult ar30 = new AnalysisResult();
+
+        ar30.setCurr_statistics_amount(ar10.getCurr_statistics_amount() - ar20.getCurr_statistics_amount());
+        ar30.setPre_statistics_amount(ar10.getPre_statistics_amount() - ar20.getPre_statistics_amount());
+        AnalysisUtil.processesult(ar30);
+
+
         AnalysisResult ar40 = analysisService.queryInvoices(analysisSearch ,userPermit );
 
         List<AnalysisResult> ars = new ArrayList<AnalysisResult>();

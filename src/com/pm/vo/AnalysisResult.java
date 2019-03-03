@@ -88,4 +88,9 @@ public class AnalysisResult implements Serializable {
     public void setChange_ratio(double change_ratio) {
         this.change_ratio = change_ratio;
     }
+
+
+
+
+
 }

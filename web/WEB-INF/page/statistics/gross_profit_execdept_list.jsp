@@ -57,7 +57,7 @@
 			</li>		
 			<li>
 				<label>统计口径：</label>
-				<select id="statisticsby" name="statisticsby" style="width:133px">
+				<select id="statisticsby" name="statisticsby" style="width:153px">
 					<option value="1" <c:if test="${param.statisticsby == '1' }">selected="selected"</c:if> >按项目</option>
 					<option value="2" <c:if test="${param.statisticsby == '2' }">selected="selected"</c:if> >按销售负责人</option>
 					<option value="3" <c:if test="${param.statisticsby == '3' }">selected="selected"</c:if> >按项目管理人</option>

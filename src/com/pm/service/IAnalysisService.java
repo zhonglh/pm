@@ -34,16 +34,6 @@ public interface IAnalysisService {
 
 
 
-    /**
-     * 应收款
-     * @param analysisSearch
-     * @param userPermit
-     * @return
-     */
-    public AnalysisResult queryReceivables(AnalysisSearch analysisSearch, UserPermit userPermit);
-
-
-
 
     /**
      * 发票

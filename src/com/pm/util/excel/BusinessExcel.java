@@ -380,7 +380,7 @@ public class BusinessExcel {
 		cellStyle.setFont(font);
 		
 		return cellStyle;
-	}	
+	}
 
 
 
@@ -423,7 +423,8 @@ public class BusinessExcel {
 						export.setCell(column.getNumber()- position , "");
 						continue;
 					}
-					
+
+
 					setCellValue(export, position, column, value);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -436,7 +437,14 @@ public class BusinessExcel {
 	
 	protected static void setCellValue(XlsExport export, int position, Column column, Object value) {
 		if(column.getField().getType().equals(String.class)){
-			export.setCell(column.getNumber()- position , String.valueOf(value));
+			if(column.getFormats() != null && PubMethod.isContains(column.getFormats() , EnumCellFormat.bold.getCode())){
+
+				export.setCell(column.getNumber() - position  , value == null ? "" : value.toString() ,
+						(column.getNumber() - position == 0) ? XSSFCellStyle.ALIGN_LEFT : XSSFCellStyle.ALIGN_RIGHT,
+						true	);
+			}else {
+				export.setCell(column.getNumber() - position, String.valueOf(value));
+			}
 		}else if(column.getField().getType().equals(java.sql.Timestamp.class)){
 			export.setCell(column.getNumber()- position , (java.sql.Timestamp)value);
 		}else if(column.getField().getType().equals(java.util.Date.class)){
@@ -446,7 +454,13 @@ public class BusinessExcel {
 		}else if(column.getField().getType().equals(int.class)){
 			export.setCell(column.getNumber()- position , (int)value);
 		}else if(column.getField().getType().equals(double.class)){
-			export.setCell(column.getNumber()- position , (double)value);
+			if(column.getFormats() != null && PubMethod.isContains(column.getFormats() , EnumCellFormat.percent.getCode())){
+				export.setPercentCell(column.getNumber() - position  ,  (double) value ,
+						(column.getNumber() - position == 0) ? XSSFCellStyle.ALIGN_LEFT : XSSFCellStyle.ALIGN_RIGHT,
+						PubMethod.isContains(column.getFormats() , EnumCellFormat.bold.getCode())	? true : false	);
+			}else {
+				export.setCell(column.getNumber() - position, (double) value);
+			}
 		}else if(column.getField().getType().equals(long.class)){
 			export.setCell(column.getNumber()- position , (long)value);
 		}else {						

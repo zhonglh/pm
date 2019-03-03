@@ -859,6 +859,29 @@ public class PubMethod {
 		Matcher matcher = pattern.matcher(str);
 		return matcher.matches();
 	}
+
+
+
+	public static boolean isContains(List<String> arrs , String s){
+		if(arrs == null || arrs.isEmpty()){
+			return false;
+		}
+		return arrs.contains(s);
+	}
+
+	public static boolean isContains(String[] arrs , String s){
+		if(arrs == null || arrs.length == 0){
+			return false;
+		}
+
+		for(String arr : arrs){
+			if(arr.equals(s)){
+				return true;
+			}
+		}
+
+		return false;
+	}
 	
 	
 

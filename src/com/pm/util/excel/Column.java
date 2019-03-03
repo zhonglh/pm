@@ -16,6 +16,9 @@ public class Column {
 
 	//对应列名称
 	private String name;
+
+	//格式化
+	private String[] formats;
 	
 
 	private Field field;
@@ -52,4 +55,11 @@ public class Column {
 		this.length = length;
 	}
 
+	public String[] getFormats() {
+		return formats;
+	}
+
+	public void setFormats(String[] formats) {
+		this.formats = formats;
+	}
 }

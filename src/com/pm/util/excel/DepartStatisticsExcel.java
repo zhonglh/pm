@@ -1,6 +1,5 @@
 package com.pm.util.excel;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +51,7 @@ public class DepartStatisticsExcel extends BusinessExcel{
 			exportHeads(export,heads);
 			
 	
-			exprotContent(export, lists, rowIndex);
+			exportContent(export, lists, rowIndex);
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -62,7 +61,7 @@ public class DepartStatisticsExcel extends BusinessExcel{
 	}
 	
 
-	private static <T> void exprotContent(XlsExport export, List<List<DepartStatisticsItem>> lists, int rowIndex ) {		
+	private static <T> void exportContent(XlsExport export, List<List<DepartStatisticsItem>> lists, int rowIndex ) {
 
 		
 		if(lists == null) {

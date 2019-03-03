@@ -33,7 +33,7 @@ import java.util.List;
  * @author Administrator
  */
 @Controller
-@RequestMapping(value = "FinancialAnalysis4DepartmentAction.do")
+@RequestMapping(value = "FinancialAnalysis4SalesAction.do")
 public class FinancialAnalysis4SalesAction extends BaseAction {
 
     @Autowired

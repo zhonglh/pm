@@ -18,12 +18,12 @@
 
                 </li>
 
-                <li>
+                <%--<li>
                     <label>所在部门：</label>
                     <input name="dept.dept_id" class="text" type="hidden" size="2"  value="${staffCost.dept_id }" />
                     <input name="dept.dept_name" class="text" type="text" value="${staffCost.dept_name }" readonly="readonly" lookupPk="dept_id"
                            suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup&use=search" lookupGroup="dept"/>
-                </li>
+                </li>--%>
 
 
                 <li>
@@ -53,7 +53,7 @@
                     <th height="30px" colspan="5"><h1 style="margin-top: 5px;margin-bottom : 3px;font-size: 15px">${analysisTable.label}</h1></th>
                 </tr>
                 <tr>
-                    <th  width="120">类别</th>
+                    <th  width="120">销售姓名</th>
                     <th  width="120">${ startTimeQuantum }</th>
                     <th  width="120">${ endTimeQuantum }</th>
                     <th  width="120">增减额</th>

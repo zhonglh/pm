@@ -5,23 +5,24 @@ package com.pm.vo;
  */
 public class AnalysisSalesVo extends AnalysisDepartVo{
 
-    private String staff_id;
+    private String sales_id;
 
-    private String staff_name;
+    private String sales_name;
 
-    public String getStaff_id() {
-        return staff_id;
+
+    public String getSales_id() {
+        return sales_id;
     }
 
-    public void setStaff_id(String staff_id) {
-        this.staff_id = staff_id;
+    public void setSales_id(String sales_id) {
+        this.sales_id = sales_id;
     }
 
-    public String getStaff_name() {
-        return staff_name;
+    public String getSales_name() {
+        return sales_name;
     }
 
-    public void setStaff_name(String staff_name) {
-        this.staff_name = staff_name;
+    public void setSales_name(String sales_name) {
+        this.sales_name = sales_name;
     }
 }

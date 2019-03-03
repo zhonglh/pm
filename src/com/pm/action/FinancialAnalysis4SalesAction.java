@@ -4,9 +4,10 @@ import com.common.actions.BaseAction;
 import com.common.utils.BeanKit;
 import com.common.utils.DateKit;
 import com.common.utils.DateUtils;
-import com.common.utils.NumberKit;
-import com.pm.service.*;
-import com.pm.util.AnalysisUtil;
+import com.pm.service.IAnalysisDepartService;
+import com.pm.service.IAnalysisSalesService;
+import com.pm.service.IDeptService;
+import com.pm.service.IRoleService;
 import com.pm.util.constant.EnumPermit;
 import com.pm.util.excel.BusinessExExcel;
 import com.pm.util.excel.Column;
@@ -28,12 +29,12 @@ import java.util.List;
 
 
 /**
- * 部门分析
+ * 销售分析
  * @author Administrator
  */
 @Controller
 @RequestMapping(value = "FinancialAnalysis4DepartmentAction.do")
-public class FinancialAnalysis4DepartmentAction extends BaseAction {
+public class FinancialAnalysis4SalesAction extends BaseAction {
 
     @Autowired
     IDeptService deptService;
@@ -45,7 +46,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
     ;
 
     @Autowired
-    private IAnalysisDepartService analysisDepartService;
+    private IAnalysisSalesService analysisSalesService;
 
 
     private static List<String> tableName = new ArrayList<String>();
@@ -53,9 +54,9 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
 
     static{
         tableName.add("");
-        tableName.add("部门项目收款表分析");
-        tableName.add("部门项目支出表分析");
-        tableName.add("部门项目现金流分析");
+        tableName.add("销售收款表分析");
+        tableName.add("销售支出表分析");
+        tableName.add("销售现金流分析");
 
 
 
@@ -78,7 +79,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
             analysisSearch.setMonth2(Integer.parseInt(DateKit.fmtDateToStr(date2 , "yyyyMM")));
         }
 
-        List<AnalysisResultTable> arts = getAnalysisDepartList(analysisSearch, userPermit);
+        List<AnalysisResultTable> arts = getAnalysisSalesList(analysisSearch, userPermit);
 
 
         try{
@@ -87,7 +88,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
 
             Column column0 = new Column();
             column0.setNumber(2);
-            column0.setName("部门名称");
+            column0.setName("销售姓名");
             Column column1 = new Column();
             column1.setNumber(3);
             column1.setName(DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
@@ -108,7 +109,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
             lists.add(arts.get(2).getResult());
 
             List<String> headers = new ArrayList<String>(1);
-            headers.add("部门层面财务分析");
+            headers.add("销售层面财务分析");
             BusinessExExcel.export(res, headers , lists,false);
         }catch(Exception e){
             e.printStackTrace();
@@ -135,14 +136,14 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
         }
 
         request.setAttribute("startTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
-        List<AnalysisResultTable> arts = getAnalysisDepartList(analysisSearch, userPermit);
+        List<AnalysisResultTable> arts = getAnalysisSalesList(analysisSearch, userPermit);
         request.setAttribute("arts", arts);
         request.setAttribute("endTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100));
 
 
         request.setAttribute("analysisSearch", analysisSearch);
 
-        return "analysis/analysis_depart_list";
+        return "analysis/analysis_sales_list";
     }
 
     /**
@@ -151,7 +152,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
      * @param userPermit
      * @return
      */
-    private List<AnalysisResultTable> getAnalysisDepartList(AnalysisSearch analysisSearch, UserPermit userPermit) {
+    private List<AnalysisResultTable> getAnalysisSalesList(AnalysisSearch analysisSearch, UserPermit userPermit) {
 
         List<AnalysisResultTable> arts = new ArrayList<AnalysisResultTable>();
 
@@ -179,7 +180,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
         art.setLabel( tableName.get(1) );
 
 
-        List<AnalysisResult> ars = analysisDepartService.queryDepartReceivedPayments(analysisSearch ,userPermit );
+        List<AnalysisResult> ars = analysisSalesService.querySalesReceivedPayments(analysisSearch ,userPermit );
         art.setResult(ars);
 
 
@@ -203,7 +204,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
         art.setLabel( tableName.get(2) );
 
 
-        List<AnalysisResult> ars = analysisDepartService.queryDepartAllCosts(analysisSearch ,userPermit );
+        List<AnalysisResult> ars = analysisSalesService.querySalesAllCosts(analysisSearch ,userPermit );
         art.setResult(ars);
 
         if(art.getResult() != null) {
@@ -243,7 +244,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
             }
         }
 
-        List<AnalysisResult> ars = analysisDepartService.queryCashFlow(ars1 ,ars2 );
+        List<AnalysisResult> ars = analysisSalesService.queryCashFlow(ars1 ,ars2 );
         art.setResult(ars);
 
 

@@ -245,7 +245,8 @@
 	
 	<!-- 回款 -->
 	<sql id="all_data_10">	
-			select receivedPayment.receive_payment_id as obj_id ,project.project_id,project.project_name,project.project_no	,
+			select receivedPayment.receive_payment_id as obj_id ,
+			project.project_id,project.project_name,project.project_no	,project.deptid as dept_id,
 			'收入' as amount_type, '到款记录' as business_type,	  '10' as business_sort,
 			receivedPayment.receive_payment_amount as amount,
 			receivedPayment.receive_payment_month as use_month,  receivedPayment.receive_payment_datetime as pay_date,
@@ -262,7 +263,8 @@
 	<!-- 金额为回款， 时间为结算单 -->
 	<sql id="all_data_11">
 
-		select rp.receive_payment_id as obj_id ,project.project_id,project.project_name,project.project_no	,
+		select rp.receive_payment_id as obj_id ,
+		project.project_id,project.project_name,project.project_no	,project.deptid as dept_id,
 		'收入' as amount_type, '到款记录' as business_type,	  '11' as business_sort,
 		rp.amount, rp.statement_month as use_month,
 		IFNULL(rp.pay_date,str_to_date(rp.statement_month*100+01,'%Y%m%d')) as pay_date,
@@ -277,7 +279,8 @@
 	
 	<!-- 结算单 -->
 	<sql id="all_data_20">	
-			SELECT ms.monthly_statement_id as obj_id, project.project_id,project.project_name, project.project_no , 
+			SELECT ms.monthly_statement_id as obj_id,
+			project.project_id,project.project_name, project.project_no , project.deptid as dept_id,
 			'收入' as amount_type, '月度结算单' as business_type, '20' as business_sort,
 			ms.amount,ms.statement_month as use_month, str_to_date(ms.statement_month*100+01,'%Y%m%d') as pay_date,
 			'' as  otherdesc, ms.description,
@@ -294,7 +297,8 @@
 
 	<!-- 结算单明细 -->
 	<sql id="all_data_21">	
-			SELECT ms.monthly_statement_id as obj_id, project.project_id,project.project_name, project.project_no , 
+			SELECT ms.monthly_statement_id as obj_id,
+			project.project_id,project.project_name, project.project_no ,  project.deptid as dept_id,
 			'收入' as amount_type, '月度结算单' as business_type, '21' as business_sort,
 			detail.total_cost*(1-${Statistics.tax_rate}) as amount,ms.statement_month as use_month, str_to_date(ms.statement_month*100+01,'%Y%m%d') as pay_date,
 			'' as  otherdesc, ms.description,
@@ -311,8 +315,9 @@
 
 	<!-- 所有的报销 -->
 	<sql id="all_data_30">	
-			select rc.reimburse_id as obj_id, rc.project_id,
-			project_name,project_no,'成本' as amount_type, '报销' as business_type, '30' as business_sort,
+			select rc.reimburse_id as obj_id,
+			rc.project_id,	project_name,project_no, project.deptid as dept_id,
+			'成本' as amount_type, '报销' as business_type, '30' as business_sort,
 			rc.amount,rc.use_month, rc.pay_date,  dd_rai.dic_data_name as  otherdesc, rc.description,
 			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
 			rc.pay_item_id  as type_id, rc.build_datetime
@@ -329,8 +334,9 @@
 
 	<!-- 人员的报销 -->
 	<sql id="all_data_31">	
-			select rc.reimburse_id as obj_id, rc.project_id,
-			project_name,project_no,'成本' as amount_type, '报销' as business_type, '31' as business_sort,
+			select rc.reimburse_id as obj_id,
+			rc.project_id, project_name,project_no, project.deptid as dept_id,
+			'成本' as amount_type, '报销' as business_type, '31' as business_sort,
 			rc.amount,rc.use_month, rc.pay_date,  dd_rai.dic_data_name as  otherdesc, rc.description,
 			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
 			staff.staff_id  as type_id, rc.build_datetime
@@ -346,8 +352,9 @@
 	
 	<!-- 付款信息(实际付款或应付款) -->
 	<sql id="all_data_40">			
-			select pe.project_expend_id as obj_id, pe.project_id,
-			project_name,project_no,'成本' as amount_type, '项目付款信息' as business_type, '40' as business_sort,
+			select pe.project_expend_id as obj_id,
+			pe.project_id, project_name,project_no, project.deptid as dept_id,
+			'成本' as amount_type, '项目付款信息' as business_type, '40' as business_sort,
 			case when (pe.pay_amount is NULL OR pe.pay_amount = 0) then pe.amount else pe.pay_amount end as amount,
 			pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
 			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime
@@ -360,8 +367,9 @@
 
 	<!-- 付款信息(实际付款) -->
 	<sql id="all_data_41">			
-			select pe.project_expend_id as obj_id, pe.project_id,
-			project_name,project_no,'成本' as amount_type, '项目付款信息' as business_type, '41' as business_sort,
+			select pe.project_expend_id as obj_id,
+			pe.project_id, project_name,project_no, project.deptid as dept_id,
+			'成本' as amount_type, '项目付款信息' as business_type, '41' as business_sort,
 			pe.pay_amount as amount,pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
 			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime
 			from tb_project_expend pe 
@@ -373,7 +381,8 @@
 
 	<!-- 项目人员成本(实发工资) -->
 	<sql id="all_data_50">	
-		select psc.project_staffcost_id as obj_id, psc.project_id ,project.project_name,project.project_no,
+		select psc.project_staffcost_id as obj_id,
+			psc.project_id ,project.project_name,project.project_no, project.deptid as dept_id,
 			'成本' as amount_type, '项目人员成本' as business_type,  '50' as business_sort,
 			 psc.amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
 			staff.staff_name  as business_name	, '' as type_id, psc.build_datetime
@@ -387,7 +396,8 @@
 
 	<!-- 项目人员成本(所有成本) -->
 	<sql id="all_data_51">	
-		select psc.project_staffcost_id as obj_id, psc.project_id ,project.project_name,project.project_no,
+		select psc.project_staffcost_id as obj_id,
+			psc.project_id ,project.project_name,project.project_no,project.deptid as dept_id,
 			'成本' as amount_type, '项目人员成本' as business_type,  '51' as business_sort,
 			 psc.all_amount as amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
 			staff.staff_name  as business_name	, '' as type_id , psc.build_datetime
@@ -400,7 +410,8 @@
 	
 	<!-- 工资 -->
 	<sql id="all_data_60">	
-			select psc.salary_id as obj_id, psc.project_id ,project.project_name,project.project_no,
+			select psc.salary_id as obj_id,
+			psc.project_id ,project.project_name,project.project_no,project.deptid as dept_id,
 			'成本' as amount_type, '人员工资' as business_type,  '60' as business_sort,
 			(
 				psc.should_salary+psc.endowment_insurance_bycompany+psc.medical_insurance_bycompany+
@@ -422,7 +433,8 @@
 
 	<!-- 发票 -->
 	<sql id="all_data_70">
-		select invoice.invoice_id as obj_id, invoice.project_id ,project.project_name,project.project_no,
+		select invoice.invoice_id as obj_id,
+		invoice.project_id ,project.project_name,project.project_no,project.deptid as dept_id,
 		'成本' as amount_type, '发票' as business_type,  '70' as business_sort,
 		invoice.invoiceno_amount as amount, date_format(invoice.invoice_date, '%Y%m')  as use_month ,
 		invoice.invoice_date as pay_date,

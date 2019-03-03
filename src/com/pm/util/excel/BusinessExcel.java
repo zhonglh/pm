@@ -177,6 +177,9 @@ public class BusinessExcel {
 							if(c.getName() != null) {
 								column.setName(c.getName());
 							}
+							if(c.getFormats() != null && c.getFormats().length >0) {
+								column.setFormats(c.getFormats());
+							}
 							break;
 						}
 					}

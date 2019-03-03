@@ -123,13 +123,12 @@ public class FinancialAnalysis4CompanyAction extends BaseAction {
             Column column2 = new Column();
             column2.setNumber(4);
             column2.setName(DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100));
-
             Column column3 = new Column();
-            column2.setNumber(5);
-            column2.setFormats(new String[]{EnumCellFormat.bold.getCode(),EnumCellFormat.percent.getCode()});
-
+            column3.setNumber(6);
+            column3.setFormats(new String[]{EnumCellFormat.bold.getCode(),EnumCellFormat.percent.getCode()});
             modifyColumns.add(column1);
             modifyColumns.add(column2);
+            modifyColumns.add(column3);
             ThreadLocalModifyColumn.setColumns(modifyColumns);
 
             List<List<?>> lists = new ArrayList<>();

@@ -21,7 +21,7 @@
 		,${AnalysisSearch.groupSelect}
 		</if>
 		from (
-			SELECT business.* , dept.dept_name
+			SELECT business.* , dept.dept_name , dept.build_time
 			FROM (				
 				<if test="AnalysisSearch.x == 10">
 					<include refid="StatisticsDetailMapping.all_data_10"/>
@@ -84,6 +84,9 @@
 		</if>
 
 
+		order by build_time
+
+
 	</sql>
 
 
@@ -105,7 +108,7 @@
 			,${AnalysisSearch.groupSelect}
 		</if>
 		from (
-		SELECT business.* , dept.dept_name
+		SELECT business.* , dept.dept_name  , dept.build_time
 		FROM (
 			<include refid="project_all_cost"/>
 			 union all
@@ -142,6 +145,8 @@
 		<if test="AnalysisSearch.groupBy != null and AnalysisSearch.groupBy  != ''">
 			group by ${AnalysisSearch.groupBy}
 		</if>
+
+		order by build_time
 
 	</sql>
 

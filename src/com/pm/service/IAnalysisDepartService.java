@@ -34,5 +34,13 @@ public interface IAnalysisDepartService {
     public List<AnalysisResult> queryDepartAllCosts(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
+    /**
+     * 现金流(回款-成本)
+     * @param ars1
+     * @param ars2
+     * @return
+     */
+    public List<AnalysisResult> queryCashFlow(List<AnalysisResult> ars1, List<AnalysisResult> ars2);
+
 
 }

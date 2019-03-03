@@ -23,6 +23,23 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
     @Autowired
     private IAnalysisDepartDao analysisDepartDao ;
 
+    /**
+     * 所有的数乘以负一
+     * 收入为空时， 现金流为成本乘以负一
+     * @param ars
+     */
+    private void minus(List<AnalysisResult> ars){
+        if(ars == null || ars.isEmpty()){
+            return ;
+        }
+        for(AnalysisResult ar : ars){
+            ar.setPre_statistics_amount(ar.getPre_statistics_amount() * -1);
+            ar.setPre_statistics_amount(ar.getPre_statistics_amount() * -1);
+            ar.setIncrease_or_decrease(ar.getIncrease_or_decrease() * -1);
+            ar.setChange_ratio(ar.getChange_ratio() * -1);
+        }
+    }
+
 
     private AnalysisResult getAnalysisResult(List<AnalysisResult> ars , String item_id){
         if(ars == null || ars.isEmpty()) {
@@ -108,5 +125,58 @@ public class AnalysisDepartServiceImpl implements IAnalysisDepartService {
         List<AnalysisDepartVo> preList = analysisDepartDao.queryDepartAllCosts(preAnalysisSearch, userPermit);
 
         return processAnalysis( currList, preList);
+    }
+
+
+
+    @Override
+    public List<AnalysisResult> queryCashFlow(List<AnalysisResult> ars1, List<AnalysisResult> ars2){
+        List<AnalysisResult> ars = null;
+        if( (ars1 == null || ars1.isEmpty() ) && ( ars2 == null || ars2.isEmpty())){
+            return new ArrayList<AnalysisResult>();
+        }
+
+        if(ars1 == null || ars1.isEmpty()){
+            ars = ars2;
+            minus(ars);
+        }else {
+            ars = ars1;
+
+            if(ars2 != null && !ars2.isEmpty()) {
+
+                for (AnalysisResult ar : ars) {
+                    AnalysisResult costResult = getAnalysisResult(ars2, ar.getItem_id());
+                    if (costResult != null) {
+                        ar.setCurr_statistics_amount(ar.getCurr_statistics_amount() - costResult.getCurr_statistics_amount());
+                        ar.setPre_statistics_amount(ar.getPre_statistics_amount() - costResult.getPre_statistics_amount());
+                    }
+                }
+
+
+                for (AnalysisResult ar : ars2) {
+                    AnalysisResult result = getAnalysisResult(ars, ar.getItem_id());
+                    if(result == null){
+                        AnalysisResult temp = new AnalysisResult();
+                        temp.setItem_id(ar.getItem_id());
+                        temp.setItem_name(ar.getItem_name());
+                        temp.setPre_statistics_amount(0-ar.getPre_statistics_amount());
+                        temp.setCurr_statistics_amount(0-ar.getCurr_statistics_amount());
+                        ars.add(temp);
+                    }
+                }
+
+
+                for (AnalysisResult ar : ars) {
+                    AnalysisUtil.processesult(ar);
+                }
+
+            }
+
+
+        }
+
+        return ars;
+
+
     }
 }

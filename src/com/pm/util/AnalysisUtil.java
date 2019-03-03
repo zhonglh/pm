@@ -32,6 +32,8 @@ public class AnalysisUtil {
 
         if(ar.getPre_statistics_amount() != 0) {
             ar.setChange_ratio(ar.getIncrease_or_decrease() / ar.getPre_statistics_amount());
+        }else {
+            ar.setChange_ratio(0);
         }
     }
 }

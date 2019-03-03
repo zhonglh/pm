@@ -30,6 +30,9 @@ import org.springframework.util.Assert;
 
 import com.common.utils.json.Jsonkit;
 
+/**
+ * @author Administrator
+ */
 public class BeanKit extends org.springframework.beans.BeanUtils {
 
     public static void copyProperties(Object source,Object target) throws BeansException{
@@ -131,7 +134,7 @@ public class BeanKit extends org.springframework.beans.BeanUtils {
     /**
      * 取出bean中set/get方法对应的字段，切忌不要同时使用空字段的set/get方法
      * 
-     * @param beanClass
+     * @param obj
      * @return
      */
     public static String[] getProperties(Object obj){

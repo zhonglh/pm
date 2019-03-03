@@ -1,6 +1,7 @@
 package com.pm.action;
 
 import com.common.actions.BaseAction;
+import com.common.utils.BeanKit;
 import com.common.utils.DateKit;
 import com.common.utils.DateUtils;
 import com.common.utils.NumberKit;
@@ -224,7 +225,13 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
         AnalysisResultTable art = new AnalysisResultTable();
         art.setLabel( tableName.get(3) );
 
+        List<AnalysisResult> ars1 = new ArrayList<AnalysisResult>();
+        BeanKit.copyProperties(art1.getResult() , ars1);
 
+        List<AnalysisResult> ars2 = new ArrayList<AnalysisResult>();
+        BeanKit.copyProperties(art2.getResult() , ars2);
+
+        List<AnalysisResult> ars = analysisDepartService.queryCashFlow(ars1 ,ars2 );
 
 
 

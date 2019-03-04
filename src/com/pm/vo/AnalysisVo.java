@@ -3,6 +3,7 @@ package com.pm.vo;
 import java.io.Serializable;
 
 /**
+ * 数据分析 金额
  * @author Administrator
  */
 public class AnalysisVo implements Serializable {

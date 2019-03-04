@@ -1,6 +1,7 @@
 package com.pm.vo;
 
 /**
+ * 部门分析
  * @author Administrator
  */
 public class AnalysisDepartVo extends AnalysisVo {

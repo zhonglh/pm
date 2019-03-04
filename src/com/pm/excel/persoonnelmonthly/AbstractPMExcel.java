@@ -47,7 +47,9 @@ public abstract class AbstractPMExcel<T extends PersonnelMonthlyBase> {
 			if(baseList != null && !baseList.isEmpty()){
 				List<T> bases = PubMethod.stringArray2List(baseList, getT());
 				if(bases != null && bases.size() > 0){
-					if("000000".equals(bases.get(0).getStaff_no())) bases.remove(0);
+					if("000000".equals(bases.get(0).getStaff_no())) {
+						bases.remove(0);
+					}
 				}
 				
 				if(bases != null && bases.size() > 0){
@@ -75,7 +77,9 @@ public abstract class AbstractPMExcel<T extends PersonnelMonthlyBase> {
 			User sessionUser, AjaxJson ajaxJson) {
 		
 		List<T> bases = this.getPersonnelMonthly(map, the_month, enumType, insuranceGrades, staffCostNoMap, staffCostNameMap);
-		if(bases == null ) return new ArrayList<T>();
+		if(bases == null ) {
+			return new ArrayList<T>();
+		}
 		
 		for(T base : bases){
 			if(StringUtils.isEmpty(base.getErrorInfo())){
@@ -96,9 +100,11 @@ public abstract class AbstractPMExcel<T extends PersonnelMonthlyBase> {
 					base.setErrorInfo(e.getErrmsg());
 					ajaxJson.setOk(false);
 				}catch(Exception e){
-					if(e.getMessage() == null || e.getMessage().toLowerCase().indexOf("key")!=-1 || e.getMessage().toLowerCase().indexOf("index")!=-1) 
+					if(e.getMessage() == null || e.getMessage().toLowerCase().indexOf("key")!=-1 || e.getMessage().toLowerCase().indexOf("index")!=-1) {
 						base.setErrorInfo("已经有此记录");
-					else base.setErrorInfo(e.getMessage());
+					}else {
+						base.setErrorInfo(e.getMessage());
+					}
 					ajaxJson.setOk(false);
 				}
 			}else {
@@ -125,15 +131,25 @@ public abstract class AbstractPMExcel<T extends PersonnelMonthlyBase> {
 			personnelMonthlyBase.setErrorInfo(personnelMonthlyBase.getErrorInfo() + "先输入工号或者姓名;");
 		}else if(!StringUtils.isEmpty(personnelMonthlyBase.getStaff_no())){
 			staffCost = staffCostNoMap.get(personnelMonthlyBase.getStaff_no());
-			if(staffCost == null) personnelMonthlyBase.setErrorInfo(personnelMonthlyBase.getErrorInfo() + "工号错误;");
+			if(staffCost == null) {
+				personnelMonthlyBase.setErrorInfo(personnelMonthlyBase.getErrorInfo() + "工号错误;");
+			}
 		}else if(!StringUtils.isEmpty(personnelMonthlyBase.getStaff_name())){
 			List<StaffCost> scs = staffCostNameMap.get(personnelMonthlyBase.getStaff_name());
-			if(scs == null || scs.isEmpty())  personnelMonthlyBase.setErrorInfo(personnelMonthlyBase.getErrorInfo() + "姓名错误;");
-			else if(scs.size() > 1)  personnelMonthlyBase.setErrorInfo(personnelMonthlyBase.getErrorInfo() + "姓名有重名;");
-			else staffCost = scs.get(0);
+			if(scs == null || scs.isEmpty())  {
+				personnelMonthlyBase.setErrorInfo(personnelMonthlyBase.getErrorInfo() + "姓名错误;");
+			}
+			else if(scs.size() > 1)  {
+				personnelMonthlyBase.setErrorInfo(personnelMonthlyBase.getErrorInfo() + "姓名有重名;");
+			}
+			else {
+				staffCost = scs.get(0);
+			}
 		}
 		
-		if(staffCost == null) return null;
+		if(staffCost == null) {
+			return null;
+		}
 		
 		personnelMonthlyBase.setStaff_id(staffCost.getStaff_id());
 		personnelMonthlyBase.setStaff_no(staffCost.getStaff_no());

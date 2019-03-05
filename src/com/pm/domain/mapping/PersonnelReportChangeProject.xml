@@ -108,7 +108,7 @@
 					on salary.staff_id = staff.staff_id
 					left join ts_dept dept
 					on project.deptid = dept.dept_id
-					and salary.verify_userid is not null
+					where salary.verify_userid is not null
 					and salary_month = #{month}
 		]]>
 

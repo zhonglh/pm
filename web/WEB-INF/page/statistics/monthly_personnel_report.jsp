@@ -23,8 +23,8 @@
                     <label>外协人员：</label>
                     <select name="outsource_staff" style="width:153px">
                         <option value="">全部</option>
-                        <option value="0" <c:if test="${staffCost.outsource_staff == '0' }">selected</c:if>>否</option>
-                        <option value="1" <c:if test="${staffCost.outsource_staff == '1' }">selected</c:if>>是</option>
+                        <option value="0" <c:if test="${outsource_staff == '0' }">selected</c:if>>否</option>
+                        <option value="1" <c:if test="${outsource_staff == '1' }">selected</c:if>>是</option>
                     </select>
                 </li>
 

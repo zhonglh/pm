@@ -132,12 +132,13 @@ public abstract class XlsExport {
 	public void setCell(int index, int value) {
 		XSSFCell cell = getCurrRow().createCell(index);
 		//cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-		cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 		XSSFCellStyle cellStyle = commonStyle(index); // 建立新的cell样式
 		//XSSFDataFormat format = getXSSFWorkbook().createDataFormat();
 		//cellStyle.setDataFormat(format.getFormat(XlsFormatEm.INTEGER.getPattern()));
 		cell.setCellStyle(cellStyle);
-		cell.setCellValue(value);
+
+		cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue(String.valueOf(value));
 	}
 
 	private void setCell(int index, double value, XlsFormatEm formatEm) {

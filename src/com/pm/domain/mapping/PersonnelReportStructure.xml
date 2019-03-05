@@ -103,7 +103,7 @@
 
 	<select id="getStaffSalaryStructure" parameterType="java.util.Map" resultMap="personnelStructureVoMap">
 
-		<![CDATA[
+		<![CDATA[q
 			select count(*) as month_salary_peoples, sum(salary.actual_salary) as month_salary_amount ,
 			sum(salary.should_salary)/count(*)  as month_average_salary_amount
 			from tb_staff_costs staff

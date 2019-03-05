@@ -8,6 +8,7 @@ import com.pm.util.excel.BusinessExExcel;
 import com.pm.vo.personnelreport.PersonnelChangeVo;
 import com.pm.vo.personnelreport.PersonnelInsuranceFundVo;
 import com.pm.vo.personnelreport.PersonnelStructureVo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,33 +41,56 @@ public class PersonnelReportAction extends BaseAction {
      * @return
      */
     @RequestMapping(params = "method=list")
-    public String list(int month , String outsource_staff ,HttpServletResponse res, HttpServletRequest request){
-        if(month == 0){
-            String monthStr = DateKit.fmtDateToStr( DateKit.addMonth(new Date() , -1) ,"yyyyMM");
-            month = Integer.parseInt(monthStr);
+    public String list(String month , String outsource_staff ,HttpServletResponse res, HttpServletRequest request){
+
+
+        int imonth = 0;
+        if(StringUtils.isEmpty(month)){
+            month = DateKit.fmtDateToStr( DateKit.addMonth(new Date() , -1) ,"yyyyMM");
         }
+        imonth = Integer.parseInt(month);
+
+        PersonnelStructureVo personnelStructureVo = personnelReportService.getStaffStructure(imonth , outsource_staff);
+
+        List<PersonnelChangeVo> personnelChangeVos = personnelReportService.getStaffChange(imonth , outsource_staff);
+
+        List<PersonnelInsuranceFundVo> personnelInsuranceFundVos = personnelReportService.getPersonnelInsuranceFund(imonth , outsource_staff);
 
         request.setAttribute("month" , month);
         request.setAttribute("outsource_staff" , outsource_staff);
+
+
+        request.setAttribute("personnelStructureVo",personnelStructureVo);
+        request.setAttribute("personnelChangeVos",personnelChangeVos);
+        request.setAttribute("personnelInsuranceFundVos",personnelInsuranceFundVos);
+
+
+
 
         return "statistics/monthly_personnel_report";
     }
 
 
     @RequestMapping(params = "method=export")
-    public void export(int month , String outsource_staff , HttpServletResponse res, HttpServletRequest request){
+    public void export(String month , String outsource_staff , HttpServletResponse res, HttpServletRequest request){
 
-        PersonnelStructureVo personnelStructureVo = personnelReportService.getStaffStructure(month , outsource_staff);
+        int imonth = 0;
+        if(StringUtils.isEmpty(month)){
+            month = DateKit.fmtDateToStr( DateKit.addMonth(new Date() , -1) ,"yyyyMM");
+        }
+        imonth = Integer.parseInt(month);
 
-        List<PersonnelChangeVo> personnelChangeVos = personnelReportService.getStaffChange(month , outsource_staff);
+        PersonnelStructureVo personnelStructureVo = personnelReportService.getStaffStructure(imonth , outsource_staff);
 
-        List<PersonnelInsuranceFundVo> personnelInsuranceFundVos = personnelReportService.getPersonnelInsuranceFund(month , outsource_staff);
+        List<PersonnelChangeVo> personnelChangeVos = personnelReportService.getStaffChange(imonth , outsource_staff);
+
+        List<PersonnelInsuranceFundVo> personnelInsuranceFundVos = personnelReportService.getPersonnelInsuranceFund(imonth , outsource_staff);
 
 
 
 
         try{
-            String header = DateUtils.ymTitle(month) +"人事报表";
+            String header = DateUtils.ymTitle(imonth) +"人事报表";
             List<String> headers = new ArrayList<String>(1);
             headers.add(header);
 

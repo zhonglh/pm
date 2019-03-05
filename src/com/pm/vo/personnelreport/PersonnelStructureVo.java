@@ -54,7 +54,7 @@ public class PersonnelStructureVo implements Serializable {
 
 
     @EntityAnnotation(item_name="五险一金缴纳人数",item_sort=110)
-    private double month_insurance_fund_peoples;
+    private int month_insurance_fund_peoples;
 
 
     public int getMonth_start_peoples() {
@@ -137,11 +137,11 @@ public class PersonnelStructureVo implements Serializable {
         this.month_average_salary_amount = month_average_salary_amount;
     }
 
-    public double getMonth_insurance_fund_peoples() {
+    public int getMonth_insurance_fund_peoples() {
         return month_insurance_fund_peoples;
     }
 
-    public void setMonth_insurance_fund_peoples(double month_insurance_fund_peoples) {
+    public void setMonth_insurance_fund_peoples(int month_insurance_fund_peoples) {
         this.month_insurance_fund_peoples = month_insurance_fund_peoples;
     }
 }

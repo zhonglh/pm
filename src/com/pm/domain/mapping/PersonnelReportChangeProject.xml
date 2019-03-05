@@ -3,7 +3,7 @@
   	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 
 
-	<mapper namespace="ContractMapping">
+	<mapper namespace="staffChangeMapping">
 
 
 	<resultMap type="java.util.Map" id="map" />
@@ -18,22 +18,22 @@
 		select project_id , project_name ,  dept_id ,dept_name ,
 		sum(
 			case when
-			(staff.join_project_datetime is null or staff.join_project_datetime < '2018-03-01' ) and
-			(staff.leave_project_datetime is null or staff.leave_project_datetime >= '2018-03-01')
+			(staff.join_project_datetime is null or staff.join_project_datetime < #{date1} ) and
+			(staff.leave_project_datetime is null or staff.leave_project_datetime >= #{date1})
 			then 1 else 0 end
 		) as month_start_peoples ,
 		sum(
-			case when staff.join_project_datetime is not null and staff.join_project_datetime >= '2018-03-01' and staff.join_project_datetime <= '2018-03-31'
+			case when staff.join_project_datetime is not null and staff.join_project_datetime >= #{date1} and staff.join_project_datetime <= #{date2}
 			then 1 else 0 end
 		) as month_join_peoples ,
 		sum(
-			case when staff.leave_project_datetime is not null and staff.leave_project_datetime >= '2018-03-01' and staff.leave_project_datetime <= '2018-03-31'
+			case when staff.leave_project_datetime is not null and staff.leave_project_datetime >= #{date1} and staff.leave_project_datetime <= #{date2}
 			then 1 else 0 end
 		) as month_change_project_peoples ,
 		sum(
 			case when
-			(staff.join_project_datetime is null or staff.join_project_datetime <= '2018-03-31' ) and
-			(staff.leave_project_datetime is null or staff.leave_project_datetime > '2018-03-31')
+			(staff.join_project_datetime is null or staff.join_project_datetime <= #{date2} ) and
+			(staff.leave_project_datetime is null or staff.leave_project_datetime > #{date2})
 			then 1 else 0 end
 		) as month_end_peoples
 		from (
@@ -47,8 +47,8 @@
 		on ps.staff_id = staff.staff_id
 		left join ts_dept dept
 		on project.deptid = dept.dept_id
-		where (ps.join_project_datetime is null or ps.join_project_datetime <= '2018-03-31')
-		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= '2018-03-01')
+		where (ps.join_project_datetime is null or ps.join_project_datetime <= #{date2})
+		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= #{date1})
 		<if test="outsource_staff != null and outsource_staff != ''">
 			AND staff.outsource_staff = #{outsource_staff}
 		</if>
@@ -78,10 +78,10 @@
 		left join ts_dept dept
 		on project.deptid = dept.dept_id
 		join  tb_work_attendance wa on staff.staff_id = wa.staff_id
-		where (ps.join_project_datetime is null or ps.join_project_datetime <= '2018-03-31')
-		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= '2018-03-01')
+		where (ps.join_project_datetime is null or ps.join_project_datetime <= #{date2})
+		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= #{date1})
 		and wa.verify_userid is not null
-		and attendance_month = 201803
+		and attendance_month = #{month}
 		<if test="outsource_staff != null and outsource_staff != ''">
 			AND staff.outsource_staff = #{outsource_staff}
 		</if>
@@ -114,10 +114,10 @@
 		on project.deptid = dept.dept_id
 		join  tb_salary salary
 		on staff.staff_id = salary.staff_id
-		where (ps.join_project_datetime is null or ps.join_project_datetime <= '2018-03-31')
-		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= '2018-03-01')
+		where (ps.join_project_datetime is null or ps.join_project_datetime <= #{date2})
+		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= #{date1})
 		and salary.verify_userid is not null
-		and salary_month = 201803
+		and salary_month = #{month}
 		<if test="outsource_staff != null and outsource_staff != ''">
 			AND staff.outsource_staff = #{outsource_staff}
 		</if>

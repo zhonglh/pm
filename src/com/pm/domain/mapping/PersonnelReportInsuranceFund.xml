@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="StaffInsuranceFundMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.vo.personnelreport.PersonnelInsuranceFundVo" id="personnelInsuranceFundVoMap" />
+
+	
+	
+	<select id="getStaffInsuranceFund" parameterType="java.util.Map" resultMap="personnelInsuranceFundVoMap">
+
+		<![CDATA[
+		select securty_unit , count((personal_insurance+company_insurance)>0) securty_peoples ,
+					 sum((personal_insurance+company_insurance)) insurance_all_sum ,
+					 sum(personal_insurance) insurance_bypersonal_sum ,
+					 sum(company_insurance) insurance_bycompany_sum ,
+					 count((reservefund_bypersonal+reservefund_bypcompany)>0) fund_peoples ,
+					 sum((reservefund_bypersonal+reservefund_bypcompany)) fund_all_sum ,
+					 sum(reservefund_bypersonal) fund_bypersonal_sum ,
+					 sum(reservefund_bypcompany) fund_bypcompany_sum
+		from (
+					select
+					(insurance.endowment_insurance_bypersonal +  insurance.medical_insurance_bypersonal +
+					 insurance.losejob_insurance_bypersonal ) as personal_insurance,
+					(insurance.endowment_insurance_bycompany +
+					 insurance.medical_insurance_bycompany +  insurance.losejob_insurance_bycompany +
+					 insurance.maternity_insurance_bycompany +  insurance.jobharm_insurance_bycompany ) as company_insurance ,
+					insurance.reservefund_bypersonal , insurance.reservefund_bypcompany  , insurance.securty_unit
+					from tb_staff_costs staff
+					join  tb_insurance insurance
+					on staff.staff_id = insurance.staff_id
+					where insurance.verify_userid is not null
+					and insurance.salary_month = #{month}
+					<if test="outsource_staff != null and outsource_staff != ''">
+						AND staff.outsource_staff = #{outsource_staff}
+					</if>
+		) aa group by securty_unit
+
+		]]>
+	</select>
+
+
+
+</mapper>
+
+
+
+

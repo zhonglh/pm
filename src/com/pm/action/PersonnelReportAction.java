@@ -2,14 +2,19 @@ package com.pm.action;
 
 import com.common.actions.BaseAction;
 import com.common.utils.DateKit;
+import com.common.utils.DateUtils;
+import com.pm.service.IPersonnelReportService;
+import com.pm.util.excel.BusinessExExcel;
 import com.pm.vo.personnelreport.PersonnelChangeVo;
 import com.pm.vo.personnelreport.PersonnelInsuranceFundVo;
 import com.pm.vo.personnelreport.PersonnelStructureVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +25,10 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "PersonnelReportAction.do")
 public class PersonnelReportAction extends BaseAction {
+
+
+    @Autowired
+    private IPersonnelReportService personnelReportService;
 
 
     /**
@@ -47,12 +56,32 @@ public class PersonnelReportAction extends BaseAction {
     @RequestMapping(params = "method=export")
     public void export(int month , String outsource_staff , HttpServletResponse res, HttpServletRequest request){
 
-        PersonnelStructureVo personnelStructureVo = null;
+        PersonnelStructureVo personnelStructureVo = personnelReportService.getStaffStructure(month , outsource_staff);
 
-        List<PersonnelChangeVo> personnelChangeVos = null;
+        List<PersonnelChangeVo> personnelChangeVos = personnelReportService.getStaffChange(month , outsource_staff);
 
-        List<PersonnelInsuranceFundVo> personnelInsuranceFundVos = null;
+        List<PersonnelInsuranceFundVo> personnelInsuranceFundVos = personnelReportService.getPersonnelInsuranceFund(month , outsource_staff);
 
+
+
+
+        try{
+            String header = DateUtils.ymTitle(month) +"人事报表";
+            List<String> headers = new ArrayList<String>(1);
+            headers.add(header);
+
+            List<PersonnelStructureVo> list1 = new ArrayList<PersonnelStructureVo>();
+            list1.add(personnelStructureVo);
+
+
+            List<List<?>> lists = new ArrayList<>();
+            lists.add(list1);
+            lists.add(personnelChangeVos);
+            lists.add(personnelInsuranceFundVos);
+            BusinessExExcel.export(res, headers , lists,false);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
 
 

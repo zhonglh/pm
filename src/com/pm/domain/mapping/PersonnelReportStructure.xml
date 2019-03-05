@@ -3,7 +3,7 @@
   	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 
 
-	<mapper namespace="ContractMapping">
+	<mapper namespace="StaffStructureMapping">
 
 
 	<resultMap type="java.util.Map" id="map" />
@@ -63,9 +63,9 @@
 		where staff_id in(
 			select staff_id from tb_project_staff where
 			(
-			join_project_datetime is not null and join_project_datetime >= '2018-03-01' and join_project_datetime <= '2018-03-31'
+			join_project_datetime is not null and join_project_datetime >= #{date1} and join_project_datetime <= #{date2}
 			) or (
-			leave_project_datetime is not null and leave_project_datetime >= '2018-03-01' and leave_project_datetime <= '2018-03-31'
+			leave_project_datetime is not null and leave_project_datetime >= #{date1} and leave_project_datetime <= #{date2}
 			)
 		)
 		where 1 = 1
@@ -116,12 +116,11 @@
 	<select id="getStaffInsuranceFundStructure" parameterType="java.util.Map" resultMap="personnelStructureVoMap">
 
 		<![CDATA[
-		select count(*) as month_salary_peoples, sum(salary.actual_salary) as month_salary_amount ,
-		sum(salary.should_salary)/count(*)  as month_average_salary_amount
+		select count(*) as month_insurance_fund_peoples
 		from tb_staff_costs staff
-		join  tb_salary salary
-		on staff.staff_id = salary.staff_id
-		where salary.verify_userid is not null
+		join  tb_insurance insurance
+		on staff.staff_id = insurance.staff_id
+		where insurance.verify_userid is not null
 		and salary_month = #{month}
 		<if test="outsource_staff != null and outsource_staff != ''">
 			AND staff.outsource_staff = #{outsource_staff}

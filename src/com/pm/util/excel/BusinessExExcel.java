@@ -115,7 +115,10 @@ public class BusinessExExcel extends BusinessExcel {
 
 		
 		for(List<?> list : lists){			
-	
+
+			if(list == null || list.isEmpty()){
+				continue;
+			}
 			
 			List<Column> columns = exportTitle(export, list,  addNumber,  ++rowIndex);
 				

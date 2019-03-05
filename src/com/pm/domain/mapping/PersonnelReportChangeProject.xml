@@ -15,47 +15,51 @@
 
 		<![CDATA[
 
-		select project_id , project_name ,  dept_id ,dept_name ,
-		sum(
-			case when
-			(staff.join_project_datetime is null or staff.join_project_datetime < #{date1} ) and
-			(staff.leave_project_datetime is null or staff.leave_project_datetime >= #{date1})
-			then 1 else 0 end
-		) as month_start_peoples ,
-		sum(
-			case when staff.join_project_datetime is not null and staff.join_project_datetime >= #{date1} and staff.join_project_datetime <= #{date2}
-			then 1 else 0 end
-		) as month_join_peoples ,
-		sum(
-			case when staff.leave_project_datetime is not null and staff.leave_project_datetime >= #{date1} and staff.leave_project_datetime <= #{date2}
-			then 1 else 0 end
-		) as month_change_project_peoples ,
-		sum(
-			case when
-			(staff.join_project_datetime is null or staff.join_project_datetime <= #{date2} ) and
-			(staff.leave_project_datetime is null or staff.leave_project_datetime > #{date2})
-			then 1 else 0 end
-		) as month_end_peoples
-		from (
-		select staff.staff_id,staff.staff_name,staff.confirmation_date,project.project_id , project.project_name ,
-		ps.join_project_datetime,ps.leave_project_datetime ,
-		dept.dept_name , dept.dept_id
-		from tb_project_staff  ps
-		INNER JOIN  vb_project project
-		on ps.project_id = project.project_id
-		INNER JOIN tb_staff_costs staff
-		on ps.staff_id = staff.staff_id
-		left join ts_dept dept
-		on project.deptid = dept.dept_id
-		where (ps.join_project_datetime is null or ps.join_project_datetime <= #{date2})
-		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= #{date1})
-		<if test="outsource_staff != null and outsource_staff != ''">
-			AND staff.outsource_staff = #{outsource_staff}
-		</if>
-		) staff
-		group by project_id , project_name ,  dept_id ,dept_name
+				select project_id , project_name ,  dept_id ,dept_name ,
+				sum(
+					case when
+					(staff.join_project_datetime is null or staff.join_project_datetime < #{date1} ) and
+					(staff.leave_project_datetime is null or staff.leave_project_datetime >= #{date1})
+					then 1 else 0 end
+				) as month_start_peoples ,
+				sum(
+					case when staff.join_project_datetime is not null and staff.join_project_datetime >= #{date1} and staff.join_project_datetime <= #{date2}
+					then 1 else 0 end
+				) as month_join_peoples ,
+				sum(
+					case when staff.leave_project_datetime is not null and staff.leave_project_datetime >= #{date1} and staff.leave_project_datetime <= #{date2}
+					then 1 else 0 end
+				) as month_change_project_peoples ,
+				sum(
+					case when
+					(staff.join_project_datetime is null or staff.join_project_datetime <= #{date2} ) and
+					(staff.leave_project_datetime is null or staff.leave_project_datetime > #{date2})
+					then 1 else 0 end
+				) as month_end_peoples
+				from (
+
+					select staff.staff_id,staff.staff_name,staff.confirmation_date,project.project_id , project.project_name ,
+					ps.join_project_datetime,ps.leave_project_datetime ,
+					dept.dept_name , dept.dept_id
+					from tb_project_staff  ps
+					INNER JOIN  vb_project project
+					on ps.project_id = project.project_id
+					INNER JOIN tb_staff_costs staff
+					on ps.staff_id = staff.staff_id
+					left join ts_dept dept
+					on project.deptid = dept.dept_id
+					where (ps.join_project_datetime is null or ps.join_project_datetime <= #{date2})
+					and (ps.leave_project_datetime is null or ps.leave_project_datetime >= #{date1})
 
 		]]>
+
+					<if test="outsource_staff != null and outsource_staff != ''">
+						AND staff.outsource_staff = #{outsource_staff}
+					</if>
+
+				) staff
+				group by project_id , project_name ,  dept_id ,dept_name
+
 	</select>
 
 
@@ -63,67 +67,57 @@
 	<select id="getStaffWorkAttendanceChange" parameterType="java.util.Map" resultMap="personnelChangeVoMap">
 		<![CDATA[
 
+			select project_id , project_name ,  dept_id ,dept_name , count(*) as month_work_attendance_peoples
+			from (
+				select staff.staff_id,staff.staff_name,staff.confirmation_date,project.project_id , project.project_name ,
+				dept.dept_name , dept.dept_id
+				from tb_work_attendance  wa
+				INNER JOIN  vb_project project
+				on wa.project_id = project.project_id
+				INNER JOIN tb_staff_costs staff
+				on wa.staff_id = staff.staff_id
+				left join ts_dept dept
+				on project.deptid = dept.dept_id
+				where wa.verify_userid is not null
+				and attendance_month = #{month}
 
-
-		select project_id , project_name ,  dept_id ,dept_name , count(*) as month_work_attendance_peoples
-		from (
-		select staff.staff_id,staff.staff_name,staff.confirmation_date,project.project_id , project.project_name ,
-		ps.join_project_datetime,ps.leave_project_datetime ,
-		dept.dept_name , dept.dept_id
-		from tb_project_staff  ps
-		INNER JOIN  vb_project project
-		on ps.project_id = project.project_id
-		INNER JOIN tb_staff_costs staff
-		on ps.staff_id = staff.staff_id
-		left join ts_dept dept
-		on project.deptid = dept.dept_id
-		join  tb_work_attendance wa on staff.staff_id = wa.staff_id
-		where (ps.join_project_datetime is null or ps.join_project_datetime <= #{date2})
-		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= #{date1})
-		and wa.verify_userid is not null
-		and attendance_month = #{month}
-		<if test="outsource_staff != null and outsource_staff != ''">
-			AND staff.outsource_staff = #{outsource_staff}
-		</if>
+		]]>
+			<if test="outsource_staff != null and outsource_staff != ''">
+				AND staff.outsource_staff = #{outsource_staff}
+			</if>
 		) staff
 		group by project_id , project_name ,  dept_id ,dept_name
 
-		]]>
 	</select>
 
 
 	<select id="getStaffSalaryChange" parameterType="java.util.Map" resultMap="personnelChangeVoMap">
 
 		<![CDATA[
-
-
-		select project_id , project_name ,  dept_id ,dept_name ,
-		count(*) as month_salary_peoples, sum(actual_salary) as month_salary_amount ,
-				sum(actual_salary)/count(*)  as month_average_salary_amount
-		from (
-		select staff.staff_id,staff.staff_name,staff.confirmation_date,project.project_id , project.project_name ,
-		ps.join_project_datetime,ps.leave_project_datetime ,
-		dept.dept_name , dept.dept_id ,
-		salary.actual_salary
-		from tb_project_staff  ps
-		INNER JOIN  vb_project project
-		on ps.project_id = project.project_id
-		INNER JOIN tb_staff_costs staff
-		on ps.staff_id = staff.staff_id
-		left join ts_dept dept
-		on project.deptid = dept.dept_id
-		join  tb_salary salary
-		on staff.staff_id = salary.staff_id
-		where (ps.join_project_datetime is null or ps.join_project_datetime <= #{date2})
-		and (ps.leave_project_datetime is null or ps.leave_project_datetime >= #{date1})
-		and salary.verify_userid is not null
-		and salary_month = #{month}
-		<if test="outsource_staff != null and outsource_staff != ''">
-			AND staff.outsource_staff = #{outsource_staff}
-		</if>
-		) staff
-		group by project_id , project_name ,  dept_id ,dept_name
+			select project_id , project_name ,  dept_id ,dept_name ,
+			count(*) as month_salary_peoples, sum(actual_salary) as month_salary_amount ,
+					sum(actual_salary)/count(*)  as month_average_salary_amount
+			from (
+					select staff.staff_id,staff.staff_name,staff.confirmation_date,project.project_id , project.project_name ,
+					dept.dept_name , dept.dept_id ,
+					salary.actual_salary
+					from tb_salary salary
+					INNER JOIN  vb_project project
+					on salary.project_id = project.project_id
+					INNER JOIN tb_staff_costs staff
+					on salary.staff_id = staff.staff_id
+					left join ts_dept dept
+					on project.deptid = dept.dept_id
+					and salary.verify_userid is not null
+					and salary_month = #{month}
 		]]>
+
+				<if test="outsource_staff != null and outsource_staff != ''">
+					AND staff.outsource_staff = #{outsource_staff}
+				</if>
+			) staff
+			group by project_id , project_name ,  dept_id ,dept_name
+
 	</select>
 
 

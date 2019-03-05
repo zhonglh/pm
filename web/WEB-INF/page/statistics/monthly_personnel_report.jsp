@@ -51,7 +51,7 @@
         </ul>
     </div>
 
-    <table class="table" width="100%" layoutH="60">
+    <table class="list" width="100%" layoutH="60">
         
         <thead>
         <tr>
@@ -90,8 +90,8 @@
         <thead>
         <tr>
 
-            <th width="100">所属部门</th>
-            <th width="100">所属项目/th>
+            <th width="150">所属部门</th>
+            <th width="150">所属项目</th>
             <th width="70">月初人数</th>
             <th width="70">新入职人数</th>
             <th width="70">换项目人数</th>
@@ -114,8 +114,8 @@
                 <td><fmt:formatNumber value="${personnelChangeVo.month_work_attendance_peoples }" type="currency" pattern="###,###,##0"/></td>
                 <td><fmt:formatNumber value="${personnelChangeVo.month_salary_peoples }" type="currency" pattern="###,###,##0"/></td>
 
-                <td align="right"><b><fmt:formatNumber value="${personnelStructureVo.month_salary_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
-                <td align="right"><b><fmt:formatNumber value="${personnelStructureVo.month_average_salary_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
+                <td align="right"><b><fmt:formatNumber value="${personnelChangeVo.month_salary_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
+                <td align="right"><b><fmt:formatNumber value="${personnelChangeVo.month_average_salary_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
 
             </tr>
         </c:forEach>
@@ -129,7 +129,7 @@
         <tr>
 
             <th width="100">缴纳单位</th>
-            <th width="100">社保缴纳人数/th>
+            <th width="100">社保缴纳人数</th>
             <th width="100">社保个人合计</th>
             <th width="100">社保单位合计</th>
             <th width="100">社保缴费合计</th>

@@ -34,7 +34,7 @@ public abstract class XlsExport {
 	// private static short XLS_ENCODING = XSSFWorkbook.ENCODING_UTF_16;
 
 	protected static enum XlsFormatEm {
-		DATE("yyyy/MM/dd"), NUMBER("0.00"),DOUBLE("##0.00"), CURRENCY("#,##0.00"), PERCENT("0.00%");
+		DATE("yyyy/MM/dd"),INTEGER("##0"), NUMBER("0.00"),DOUBLE("##0.00"), CURRENCY("#,##0.00"), PERCENT("0.00%");
 		private final String pattern;
 
 		XlsFormatEm(String pattern) {
@@ -132,7 +132,10 @@ public abstract class XlsExport {
 	public void setCell(int index, int value) {
 		XSSFCell cell = getCurrRow().createCell(index);
 		cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-		cell.setCellStyle(commonStyle(index));
+		XSSFCellStyle cellStyle = commonStyle(index); // 建立新的cell样式
+		XSSFDataFormat format = getXSSFWorkbook().createDataFormat();
+		cellStyle.setDataFormat(format.getFormat(XlsFormatEm.INTEGER.getPattern()));
+		cell.setCellStyle(cellStyle);
 		cell.setCellValue(value);
 	}
 

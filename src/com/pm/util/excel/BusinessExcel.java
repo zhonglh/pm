@@ -455,7 +455,7 @@ public class BusinessExcel {
 		}else if(column.getField().getType().equals(java.sql.Date.class)){
 			export.setCell(column.getNumber()- position , (java.sql.Date)value);
 		}else if(column.getField().getType().equals(int.class)){
-			export.setCell(column.getNumber()- position , (int)value);
+			export.setCell(column.getNumber()- position , (int)value );
 		}else if(column.getField().getType().equals(double.class)){
 			if(column.getFormats() != null && PubMethod.isContains(column.getFormats() , EnumCellFormat.percent.getCode())){
 				export.setPercentCell(column.getNumber() - position  ,  (double) value ,

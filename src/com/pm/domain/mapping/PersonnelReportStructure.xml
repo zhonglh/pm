@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="ContractMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.vo.personnelreport.PersonnelStructureVo" id="personnelStructureVoMap" />
+
+	
+	
+	<select id="getStaffBaseStructure" parameterType="java.util.Map" resultMap="personnelStructureVoMap">
+
+		<![CDATA[
+
+		select 
+		sum(
+		case when
+		(staff.join_datetime is null or staff.join_datetime < #{date1} ) and
+		(staff.leave_job_datetime is null or staff.leave_job_datetime >= #{date1})
+		then 1 else 0 end
+		) as month_start_peoples ,
+		sum(
+		case when staff.join_datetime is not null and staff.join_datetime >= #{date1} and staff.join_datetime <= #{date2}
+		then 1 else 0 end
+		) as month_join_peoples ,
+		sum(
+		case when staff.leave_job_datetime is not null and staff.leave_job_datetime >= #{date1} and staff.leave_job_datetime <= #{date2}
+		then 1 else 0 end
+		) as month_leave_peoples ,
+		sum(
+		case when
+		(staff.join_datetime is null or staff.join_datetime <= #{date2} ) and
+		(staff.leave_job_datetime is null or staff.leave_job_datetime > #{date2})
+		then 1 else 0 end
+		) as month_end_peoples ,
+
+		sum(
+		case when
+		(staff.confirmation_date is not null and staff.confirmation_date >= #{date1} and staff.confirmation_date <= #{date2} )
+		then 1 else 0 end
+		) as month_confirmation_peoples
+
+
+		from tb_staff_costs staff
+		where 1 = 1
+
+		<if test="outsource_staff != null and outsource_staff != ''">
+			AND staff.outsource_staff = #{outsource_staff}
+		</if>
+
+
+		]]>
+	</select>
+
+
+	<select id="getStaffChangeProjectStructure" parameterType="java.util.Map" resultMap="personnelStructureVoMap">
+
+		<![CDATA[
+		select count(*) as month_change_project_peoples from tb_staff_costs staff
+		where staff_id in(
+			select staff_id from tb_project_staff where
+			(
+			join_project_datetime is not null and join_project_datetime >= '2018-03-01' and join_project_datetime <= '2018-03-31'
+			) or (
+			leave_project_datetime is not null and leave_project_datetime >= '2018-03-01' and leave_project_datetime <= '2018-03-31'
+			)
+		)
+		where 1 = 1
+
+		<if test="outsource_staff != null and outsource_staff != ''">
+			AND staff.outsource_staff = #{outsource_staff}
+		</if>
+
+
+		]]>
+	</select>
+
+
+
+	<select id="getStaffWorkAttendanceStructure" parameterType="java.util.Map" resultMap="personnelStructureVoMap">
+
+		<![CDATA[
+		select count(DISTINCT wa.staff_id)  as month_work_attendance_peoples from tb_staff_costs staff
+		join  tb_work_attendance wa on staff.staff_id = wa.staff_id
+		where wa.verify_userid is not null
+		and attendance_month = #{month}
+		<if test="outsource_staff != null and outsource_staff != ''">
+			AND staff.outsource_staff = #{outsource_staff}
+		</if>
+
+		]]>
+	</select>
+
+
+	<select id="getStaffSalaryStructure" parameterType="java.util.Map" resultMap="personnelStructureVoMap">
+
+		<![CDATA[
+		select count(*) as month_salary_peoples, sum(salary.actual_salary) as month_salary_amount ,
+		sum(salary.should_salary)/count(*)  as month_average_salary_amount
+		from tb_staff_costs staff
+		join  tb_salary salary
+		on staff.staff_id = salary.staff_id
+		where salary.verify_userid is not null
+		and salary_month = #{month}
+		<if test="outsource_staff != null and outsource_staff != ''">
+			AND staff.outsource_staff = #{outsource_staff}
+		</if>
+		]]>
+	</select>
+
+
+
+	<select id="getStaffInsuranceFundStructure" parameterType="java.util.Map" resultMap="personnelStructureVoMap">
+
+		<![CDATA[
+		select count(*) as month_salary_peoples, sum(salary.actual_salary) as month_salary_amount ,
+		sum(salary.should_salary)/count(*)  as month_average_salary_amount
+		from tb_staff_costs staff
+		join  tb_salary salary
+		on staff.staff_id = salary.staff_id
+		where salary.verify_userid is not null
+		and salary_month = #{month}
+		<if test="outsource_staff != null and outsource_staff != ''">
+			AND staff.outsource_staff = #{outsource_staff}
+		</if>
+		]]>
+	</select>
+
+</mapper>
+
+
+
+

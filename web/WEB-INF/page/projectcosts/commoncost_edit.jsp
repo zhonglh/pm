@@ -38,8 +38,8 @@
 			<p>
 				<label>报销人：</label>
 				<input type="hidden" size="2" name="staff.staff_id" value="${commoncost1.staff_id }"/>
-				<input type="hidden" size="2" name="staff.staff_no" value="${commoncost1.staff_no }"/>
-				<input name="staff.staff_name" class="text" type="text" size="28"  value="${commoncost1.staff_name }" />
+				<input type="hidden" size="2" name="staff.staff_no"  value="${commoncost1.staff_no }"/>
+				<input name="staff.staff_name" class="text" type="text" size="28" readonly value="${commoncost1.staff_name }" />
 				<a class="btnLook" href="${webroot }/OtherStaffAction.do?method=lookup" lookupGroup="staff" lookupPk="staff_id" width="970">选择</a>
 			</p>
 

@@ -39,6 +39,7 @@ public enum EnumEntityType {
 	OTHER_STAFF("other.staff.entity","other.staff"),
 	OTHER_WORK_ATTENDANCE("other.work.attendance.entity","other.work.attendance"),
 	OTHER_SALARY("other.salary.entity","other.salary"),
+	STAFF_PERFORMANCE("staff.performance.entity","staff.performance"),
 
 
 	MONTHLY_STATEMENT("monthly.statement.entity","monthly.statement"),

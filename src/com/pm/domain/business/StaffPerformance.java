@@ -6,12 +6,16 @@ import com.pm.util.log.EntityAnnotation;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * 人员月度绩效
+ * @author Administrator
+ */
 @SuppressWarnings("serial")
 public class StaffPerformance extends IdEntity implements Serializable {
 		
 
 
-	@EntityAnnotation(item_name="月份" ,item_sort=1)
+	@EntityAnnotation(item_name="月份" ,item_sort=10)
 	private int the_month;		
 
 	
@@ -20,6 +24,10 @@ public class StaffPerformance extends IdEntity implements Serializable {
 	private String project_id;	
 		
 	private String staff_id;
+
+
+	@EntityAnnotation(item_name="绩效工资" ,item_sort=40 , length = 10)
+	private double performance_salary;
 			
 
 	private int import_order;
@@ -42,16 +50,16 @@ public class StaffPerformance extends IdEntity implements Serializable {
 	private String dept_name;
 	
 
-	@EntityAnnotation(item_name="项目名称" ,item_sort=3) 
-	private String project_name;
+	//@EntityAnnotation(item_name="项目名称" ,item_sort=3)
+	//private String project_name;
 	
 	
 
 
-	@EntityAnnotation(item_name="工号" ,item_sort=4 , length = 30) 
+	@EntityAnnotation(item_name="工号" ,item_sort=20 , length = 30)
 	private String staff_no;	
 
-	@EntityAnnotation(item_name="姓名" ,item_sort=5, length = 60) 
+	@EntityAnnotation(item_name="姓名" ,item_sort=30, length = 60)
 	private String staff_name;
 
 	
@@ -162,13 +170,6 @@ public class StaffPerformance extends IdEntity implements Serializable {
 		this.dept_name = dept_name;
 	}
 
-	public String getProject_name() {
-		return project_name;
-	}
-
-	public void setProject_name(String project_name) {
-		this.project_name = project_name;
-	}
 
 	public String getStaff_no() {
 		return staff_no;
@@ -211,10 +212,15 @@ public class StaffPerformance extends IdEntity implements Serializable {
 	public void setVerify_flag(String verify_flag) {
 		this.verify_flag = verify_flag;
 	}
-	
-	
 
 
+	public double getPerformance_salary() {
+		return performance_salary;
+	}
+
+	public void setPerformance_salary(double performance_salary) {
+		this.performance_salary = performance_salary;
+	}
 
 	@Override
 	public String toString() {

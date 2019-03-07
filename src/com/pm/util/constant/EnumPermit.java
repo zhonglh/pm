@@ -264,6 +264,13 @@ public enum EnumPermit {
 
 
 
+	STAFFPERFORMANCEVIEW("10900","permit.staff.performance.view"),
+	STAFFPERFORMANCEADD("10901","permit.staff.performance.add"),
+	STAFFPERFORMANCEUPDATE("10902","permit.staff.performance.update"),
+	STAFFPERFORMANCEDELETE("10903","permit.staff.performance.delete"),
+	STAFFPERFORMANCECHECK("10904","permit.staff.performance.check"),
+	STAFFPERFORMANCEUNCHECK("10909","permit.staff.performance.uncheck"),
+
 
 	;
 

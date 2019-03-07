@@ -49,6 +49,9 @@ public class LogConstant {
 	public static final String ENTITY_OTHER_WORK_ATTENDANCE = "other.work.attendance";
 	public static final String ENTITY_OTHER_SALARY = "other.salary";
 	public static final String ENTITY_OTHER_STAFF_COST = "other.staff.cost";
+
+
+	public static final String ENTITY_STAFF_PERFORMANCE = "staff.performance";
 	
 
 	public static final String ENTITY_MONTHLY_STATEMENT = "monthly.statement";

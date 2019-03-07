@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="StaffPerformanceMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.StaffPerformance" id="StaffPerformanceMap" />
+
+
+	<select id="getStaffPerformance" parameterType="com.pm.domain.business.StaffPerformance" resultMap="StaffPerformanceMap">
+		select sp.* ,dept.dept_name , staff.staff_no , staff.staff_name
+		from tb_staff_performance sp
+		left JOIN ts_dept dept
+		on sp.dept_id = dept.dept_id
+		join tb_other_staff staff
+		on sp.staff_id = staff.staff_id
+		where sp.id = #{id}
+	</select>
+	
+
+	<select id="getNotCheckNumByWorkAttendance" parameterType="com.pm.domain.business.StaffPerformance" resultType="int" >
+		select count(*) c
+		from tb_staff_performance sp
+		where sp.the_month = #{the_month}
+		and sp.verify_userid is null
+		<if test="dept_id != null and dept_id != ''">
+		and sp.staff_id in (
+			select staff_id from tb_other_work_attendance
+			where attendance_month = #{the_month}			
+			and dept_id = #{dept_id}
+		)
+		</if>
+	</select>
+	
+	
+
+	<insert id="addStaffPerformance" parameterType="com.pm.domain.business.StaffPerformance" >
+		insert into  tb_staff_performance(
+			id,the_month,dept_id,project_id,performance_salary,
+			staff_id,import_order,build_datetime,build_userid,build_username,
+			verify_username,verify_userid,verify_datetime
+		)values  (
+			#{id},#{the_month},#{dept_id},#{project_id},#{performance_salary},
+			#{staff_id},#{import_order},#{build_datetime},#{build_userid},#{build_username},
+			#{verify_username},#{verify_userid},#{verify_datetime}
+		)
+	</insert>
+
+	<update id="updateStaffPerformance" parameterType="com.pm.domain.business.StaffPerformance" >
+		update  tb_staff_performance set 
+		the_month=#{the_month},
+		performance_salary=#{performance_salary},
+		dept_id=#{dept_id},
+		project_id=#{project_id},
+		staff_id=#{staff_id},
+		version_no = version_no + 1 
+		where id=#{id} 
+		and verify_userid is null 
+	</update>
+
+	<update id="verifyStaffPerformance" parameterType="com.pm.domain.business.StaffPerformance" >
+		update  tb_staff_performance set 
+		verify_userid = #{verify_userid}, 
+		verify_username =  #{verify_username}, 
+		verify_datetime = #{verify_datetime} ,
+		version_no = version_no + 1 
+		where id=#{id}
+		and verify_userid is null
+	</update>
+
+	<update id="unVerifyStaffPerformance" parameterType="com.pm.domain.business.StaffPerformance" >
+		update  tb_staff_performance set 
+		verify_userid = null, 
+		verify_username = null, 
+		verify_datetime = null ,
+		version_no = version_no + 1 
+		where id=#{id} and verify_userid is not null
+	</update>
+
+	<delete id="deleteStaffPerformance" parameterType="com.pm.domain.business.StaffPerformance" >
+		delete from  tb_staff_performance
+		where id=#{id}
+		and verify_userid is null
+	</delete>
+
+	<select id="queryStaffPerformanceTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(performance_salary) as amount FROM (
+			<include refid="StaffPerformancePagerSql"/>
+		) c
+	</select>
+
+	<select id="queryStaffPerformanceByPager_mysql" parameterType="map"  resultMap="StaffPerformanceMap" >
+		<include refid="StaffPerformancePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryStaffPerformanceByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="StaffPerformancePagerSql"/> )c
+	</select>
+
+	<sql id="StaffPerformancePagerSql">
+		select sp.* ,dept.dept_name , staff.staff_no , staff.staff_name
+		from tb_staff_performance sp
+		left JOIN ts_dept dept
+		on sp.dept_id = dept.dept_id
+		join tb_other_staff staff
+		on sp.staff_id = staff.staff_id
+		WHERE 1=1 
+		
+		<if test="StaffPerformance.the_month != 0 ">
+			<![CDATA[
+			AND sp.the_month = #{StaffPerformance.the_month}
+			]]>
+		</if>
+		
+		<if test="StaffPerformance.staff_id != null and StaffPerformance.staff_id != ''">
+			<![CDATA[
+			AND sp.staff_id = #{StaffPerformance.staff_id}
+			]]>
+		</if>
+
+		
+		
+		<if test="StaffPerformance.verify_flag != null and StaffPerformance.verify_flag != ''">
+			<if test="StaffPerformance.verify_flag == 1">
+					and sp.verify_userid is not null
+			</if>
+			<if test="StaffPerformance.verify_flag == 0">			
+					and sp.verify_userid is null
+			</if>
+		</if>		
+		
+		<include refid="StaffAuthMapping.permission" />
+	</sql>
+
+
+
+
+
+</mapper>

@@ -3,6 +3,7 @@ package com.pm.action;
 import com.alibaba.fastjson.JSON;
 import com.common.actions.BaseAction;
 import com.common.beans.Pager;
+import com.common.enums.EnumYesNo;
 import com.common.utils.DateKit;
 import com.common.utils.IDKit;
 import com.pm.calculate.SalaryCalculate;
@@ -676,6 +677,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		StaffPerformance searchStaffPerformance = new StaffPerformance();
 		searchStaffPerformance.setDept_id(salary1.getDept_id());
 		searchStaffPerformance.setThe_month(salary1.getSalary_month());
+		searchStaffPerformance.setVerify_flag(EnumYesNo.Yes.getCode());
 		List<StaffPerformance> staffPerformances = staffPerformanceService.getStaffPerformanceList(searchStaffPerformance);
 		Map<String,StaffPerformance> map = new HashMap<String,StaffPerformance>();
 		if(staffPerformances != null){

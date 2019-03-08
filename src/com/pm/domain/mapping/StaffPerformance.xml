@@ -53,10 +53,10 @@
 
 
 		<if test="verify_flag != null and verify_flag != ''">
-			<if test="StaffPerformance.verify_flag == 1">
+			<if test="verify_flag == 1">
 				and sp.verify_userid is not null
 			</if>
-			<if test="StaffPerformance.verify_flag == 0">
+			<if test="verify_flag == 0">
 				and sp.verify_userid is null
 			</if>
 		</if>

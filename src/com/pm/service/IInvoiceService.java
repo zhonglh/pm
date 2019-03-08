@@ -8,6 +8,9 @@ import com.pm.util.constant.LogConstant;
 import com.pm.util.log.LogAnnotation;
 import com.pm.vo.UserPermit;
 
+/**
+ * @author Administrator
+ */
 public interface IInvoiceService extends IBaseService{
 	
 

@@ -47,7 +47,9 @@ public class CommonServiceImpl implements ICommonService {
 
 	@Autowired
 	private IOtherSalaryService otherSalaryService;
-	
+
+	@Autowired
+	private IStaffPerformanceService staffPerformanceService;
 	
 
 	@Override
@@ -74,6 +76,8 @@ public class CommonServiceImpl implements ICommonService {
 			return insuranceService;
 		}else if(EnumEntityType.OTHER_SALARY.name().equals(type)){
 			return otherSalaryService;
+		}else if(EnumEntityType.STAFF_PERFORMANCE.name().equals(type)){
+			return staffPerformanceService;
 		}
 		
 		return null;

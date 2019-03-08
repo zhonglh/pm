@@ -1,13 +1,15 @@
 package com.pm.service.impl;
 
-import com.pm.domain.business.Contract;
-import com.pm.util.PubMethod;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;import com.pm.domain.business.PayContract;
-import com.pm.dao.IPayContractDao;
-import com.pm.service.IPayContractService;
-import com.pm.vo.UserPermit;
 import com.common.beans.Pager;
+import com.pm.dao.IContractAttachmentDao;
+import com.pm.dao.IPayContractDao;
+import com.pm.domain.business.ContractAttachment;
+import com.pm.domain.business.PayContract;
+import com.pm.service.IPayContractService;
+import com.pm.util.PubMethod;
+import com.pm.vo.UserPermit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Administrator
@@ -17,6 +19,8 @@ public class PayContractServiceImpl implements  IPayContractService  {
 
 	@Autowired IPayContractDao payContractDao;
 
+	@Autowired
+	private IContractAttachmentDao contractAttachmentDao;
 
 
 	@Override
@@ -25,12 +29,26 @@ public class PayContractServiceImpl implements  IPayContractService  {
 	}
 
 	@Override
-	public int addPayContract(PayContract payContract) {
+	public int addPayContract(PayContract payContract ,ContractAttachment[] cas) {
+
+		if(cas != null && cas.length > 0){
+			for(ContractAttachment ca : cas) {
+				contractAttachmentDao.addContractAttachment(ca);
+			}
+		}
+
 		return payContractDao.addPayContract(payContract);
 	}
 
 	@Override
-	public int updatePayContract(PayContract payContract) {
+	public int updatePayContract(PayContract payContract , ContractAttachment[] cas) {
+
+		if(cas != null && cas.length > 0){
+			for(ContractAttachment ca : cas) {
+				contractAttachmentDao.addContractAttachment(ca);
+			}
+		}
+
 		return payContractDao.updatePayContract(payContract);
 	}
 

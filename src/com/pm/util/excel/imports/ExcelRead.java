@@ -1,4 +1,4 @@
-package com.pm.util.excel;
+package com.pm.util.excel.imports;
 
 
 import java.io.File;
@@ -23,6 +23,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.pm.util.PubMethod;
 
+/**
+ * @author Administrator
+ */
 public class ExcelRead  {
 	
 	private static final String EXCEL_VALUES = "excel_value"; 

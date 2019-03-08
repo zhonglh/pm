@@ -86,7 +86,45 @@
 				<label>备注：</label>
 				<input name="description" class="text" type="text" size="30" maxlength="30" value="${contract1.description }" />
 			</p>
+
+
+			<br>
+
+
+
 			<div class="divider"></div>
+
+
+			<h3 class="contentTitle">合同附件</h3>
+			<table id="contract_attachment_table" class="list nowrap itemDetail" addButton="新增合同附件" width="100%">
+				<thead>
+				<tr>
+					<th width="300" fieldClass="required" type="attach" lookupPk="attachment_id" name="items[#index#].attachment.attachment_name" lookupGroup="items[#index#].attachment" lookupUrl="${webroot }/ContractAttachmentAction.do?method=toUplodad&contract_id=${contract1.id }" size="90" title="上传合同附件">附件名称</th>
+					<th width="1" type="hidden" name="items[#index#].attachment.attachment_path" ></th>
+					<th type="del" width="60">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="contractAttachment"  varStatus="status1" items="${contractAttachments}">
+						<tr>
+							<td><a href="${webroot }/ContractAttachmentAction.do?method=printAttach&contract_id=${contract1.id }&attachment_id=${contractAttachment.attachment_id}">${contractAttachment.attachment_name }</a></td>
+							<td width="1"></td>
+							<td width="60"><a class="btnDel" target="ajaxTodo" callback="dialogAjaxDoneDeleteItem" href="${webroot }/ContractAttachmentAction.do?method=deleteContractAttachment&attachment_id=${contractAttachment.attachment_id}&rownum=${status1.index}" ><span>删除附件</span></a></td>
+						</tr>
+				</c:forEach>
+				</tbody>
+			</table>
+
+
+
+			<br>
+			<div class="divider"></div>
+
+
+
+
+
+
 			<p>
 				<label>制单人：</label>  ${contract1.build_username }
 			</p>

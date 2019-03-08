@@ -1,5 +1,6 @@
 package com.pm.service;
 
+import com.pm.domain.business.ContractAttachment;
 import com.pm.domain.business.PayContract;
 import com.pm.vo.UserPermit;
 import com.common.beans.Pager;
@@ -16,10 +17,10 @@ public interface IPayContractService extends IGeneralLogService , IBaseService {
 	public  boolean isNoExist(PayContract payContract);
 
 	@LogAnnotation(operation_type=LogConstant.OPERATION_INSERT,entity_type=LogConstant.ENTITY_PAYCONTRACT)
-	public int addPayContract(PayContract payContract) ;
+	public int addPayContract(PayContract payContract , ContractAttachment[] cas) ;
 
 	@LogAnnotation(operation_type=LogConstant.OPERATION_UPDATE,entity_type=LogConstant.ENTITY_PAYCONTRACT)
-	public int updatePayContract(PayContract payContract) ; 
+	public int updatePayContract(PayContract payContract , ContractAttachment[] cas) ;
 
 	@LogAnnotation(operation_type=LogConstant.OPERATION_DELETE,entity_type=LogConstant.ENTITY_PAYCONTRACT)
 	public void deletePayContract(PayContract[] payContracts) ;

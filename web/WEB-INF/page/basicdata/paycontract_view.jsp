@@ -70,6 +70,30 @@
 				${payContract1.description }
 			</p>
 
+
+
+
+			<div class="divider"></div>
+
+
+
+			<h3 class="contentTitle">合同附件</h3>
+			<table id="contract_attachment_table" class="list nowrap " width="100%">
+				<thead>
+				<tr>
+					<th >附件名称</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="contractAttachment"  varStatus="status1" items="${contractAttachments}">
+					<tr>
+						<td><a href="${webroot }/ContractAttachmentAction.do?method=printAttach&contract_id=${contract1.id }&attachment_id=${contractAttachment.attachment_id}">${contractAttachment.attachment_name }</a></td>
+					</tr>
+				</c:forEach>
+				</tbody>
+			</table>
+
+
 			<div class="divider"></div>
 			<p>
 				<label>制单人：</label>  ${payContract1.build_username }

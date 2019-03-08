@@ -1,18 +1,24 @@
 package com.pm.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;import com.pm.domain.business.Contract;
+import com.common.beans.Pager;
+import com.pm.dao.IContractAttachmentDao;
 import com.pm.dao.IContractDao;
+import com.pm.domain.business.Contract;
+import com.pm.domain.business.ContractAttachment;
 import com.pm.service.IContractService;
 import com.pm.util.PubMethod;
 import com.pm.vo.UserPermit;
-import com.common.beans.Pager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ContractServiceImpl implements  IContractService {
 
-	@Autowired IContractDao contractDao;
-	
+	@Autowired
+	private IContractDao contractDao;
+
+	@Autowired
+	private IContractAttachmentDao  contractAttachmentDao;
 
 
 	@Override
@@ -21,12 +27,27 @@ public class ContractServiceImpl implements  IContractService {
 	}
 	
 	@Override
-	public int addContract(Contract contract) {
+	public int addContract(Contract contract,ContractAttachment[] cas) {
+
+		if(cas != null && cas.length > 0){
+			for(ContractAttachment ca : cas) {
+				contractAttachmentDao.addContractAttachment(ca);
+			}
+		}
+
 		return contractDao.addContract(contract);
 	}
 
 	@Override
-	public int updateContract(Contract contract) {
+	public int updateContract(Contract contract , ContractAttachment[] cas) {
+
+
+		if(cas != null && cas.length > 0){
+			for(ContractAttachment ca : cas) {
+				contractAttachmentDao.addContractAttachment(ca);
+			}
+		}
+
 		return contractDao.updateContract(contract);
 	}
 

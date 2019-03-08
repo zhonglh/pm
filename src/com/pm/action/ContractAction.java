@@ -4,17 +4,11 @@ import com.common.actions.BaseAction;
 import com.common.beans.Pager;
 import com.common.utils.IDKit;
 import com.common.utils.file.download.DownloadBaseUtil;
-import com.pm.domain.business.Contract;
-import com.pm.domain.business.DicData;
-import com.pm.domain.business.OtherStaff;
-import com.pm.domain.business.Project;
+import com.pm.domain.business.*;
 import com.pm.domain.system.User;
 import com.pm.service.*;
 import com.pm.util.PubMethod;
-import com.pm.util.constant.BusinessUtil;
-import com.pm.util.constant.EnumDicType;
-import com.pm.util.constant.EnumOperationType;
-import com.pm.util.constant.EnumPermit;
+import com.pm.util.constant.*;
 import com.pm.util.excel.BusinessExcel;
 import com.pm.vo.UserPermit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -55,6 +46,10 @@ public class ContractAction extends BaseAction {
 
 	@Autowired
 	private IRoleService roleService;
+
+
+	@Autowired
+	private IContractAttachmentService contractAttachmentService;
 		
 
 	@RequestMapping(params = "method=isExist")
@@ -133,7 +128,13 @@ public class ContractAction extends BaseAction {
 		
 		if(searchContract != null && searchContract.getId()!=null && searchContract.getId().length() >0){
 			request.setAttribute("next_operation", "updateContract");
-			contract = contractService.getContract(searchContract.getId());				
+			contract = contractService.getContract(searchContract.getId());
+
+			ContractAttachment contractAttachment = new ContractAttachment();
+			contractAttachment.setContract_id(searchContract.getId());
+			List<ContractAttachment> contractAttachments = contractAttachmentService.queryContractAttachment(contractAttachment);
+			request.setAttribute("contractAttachments", contractAttachments);
+
 		}else {
 			request.setAttribute("next_operation", "addContract");		
 			User sessionUser = PubMethod.getUser(request);
@@ -151,6 +152,12 @@ public class ContractAction extends BaseAction {
 	public String toView(Contract searchContract,HttpServletResponse res,HttpServletRequest request){
 		Contract contract = contractService.getContract(searchContract.getId());
 		request.setAttribute("contract1", contract);
+
+
+		ContractAttachment contractAttachment = new ContractAttachment();
+		contractAttachment.setContract_id(searchContract.getId());
+		List<ContractAttachment> contractAttachments = contractAttachmentService.queryContractAttachment(contractAttachment);
+		request.setAttribute("contractAttachments", contractAttachments);
 		
 		Project project = projectService.getProject( contract.getProject_id());
 		request.setAttribute("project", project);
@@ -169,8 +176,11 @@ public class ContractAction extends BaseAction {
 		contract.setBuild_username(sessionUser.getUser_name());
 		int count = 0;
 		try{
-			count = contractService.addContract(contract);
+
+			ContractAttachment[] cas = this.getContractAttachment(request , contract.getId() , sessionUser ) ;
+			count = contractService.addContract(contract , cas);
 		}catch(Exception e){
+			e.printStackTrace();
 		}
 		if(count == 1) 		{
 			return this.ajaxForwardSuccess(request, rel, true);
@@ -183,12 +193,16 @@ public class ContractAction extends BaseAction {
 
 	@RequestMapping(params = "method=updateContract")
 	public String updateContract(Contract updateContract,HttpServletResponse res,HttpServletRequest request){
+
+		User sessionUser = PubMethod.getUser(request);
 		Contract contract = updateContract;	
 		paramprocess(request,contract);	
 		int count = 0;
 		try{
-			count = contractService.updateContract(contract);	
+			ContractAttachment[] cas = this.getContractAttachment(request , contract.getId() , sessionUser ) ;
+			count = contractService.updateContract(contract ,cas);
 		}catch(Exception e){
+			e.printStackTrace();
 		}
 		if(count == 1) 		{
 			return this.ajaxForwardSuccess(request, rel, true);
@@ -305,7 +319,7 @@ public class ContractAction extends BaseAction {
 					contract.setBuild_datetime(PubMethod.getCurrentDate());
 					contract.setBuild_userid(sessionUser.getUser_id());
 					contract.setBuild_username(sessionUser.getUser_name());
-					int count = contractService.addContract(contract);
+					int count = contractService.addContract(contract , null);
 					if(count == 0){
 						contract.setErrorInfo("已经有此记录");
 						isAllOK = false;
@@ -398,6 +412,38 @@ public class ContractAction extends BaseAction {
 		request.setAttribute("list", list);
 		return "basicdata/contract_excel_list";
 	}
+
+
+	private ContractAttachment[] getContractAttachment(HttpServletRequest request,String contract_id,User sessionUser){
+
+		String[] rowIndex = request.getParameterValues("index_contract_attachment_table");
+
+		List<ContractAttachment> contractAttachments = new ArrayList<ContractAttachment>();
+		if(rowIndex != null && rowIndex.length >0){
+			for(String index : rowIndex) {
+				ContractAttachment contractAttachment = new ContractAttachment();
+				contractAttachment.setAttachment_type(EnumProjectContractType.GATHER.getCode());
+				contractAttachment.setContract_id(contract_id);
+				contractAttachment.setAttachment_id(request.getParameter("items["+index+"].attachment.attachment_id"));
+				contractAttachment.setAttachment_name(request.getParameter("items["+index+"].attachment.attachment_name"));
+				contractAttachment.setAttachment_path(request.getParameter("items["+index+"].attachment.attachment_path"));
+
+				contractAttachment.setBuild_datetime(PubMethod.getCurrentDate());
+				contractAttachment.setBuild_userid(sessionUser.getUser_id());
+				contractAttachment.setBuild_username(sessionUser.getUser_name());
+				contractAttachments.add(contractAttachment);
+			}
+		}
+
+		ContractAttachment[] arrays = null;
+
+		if(contractAttachments != null && !contractAttachments.isEmpty()) {
+			arrays = new ContractAttachment[contractAttachments.size()];
+			PubMethod.List2Array(contractAttachments, arrays, ContractAttachment.class);
+		}
+		return arrays;
+	}
+
 
 
 

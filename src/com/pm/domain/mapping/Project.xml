@@ -141,6 +141,7 @@
 	<select id="queryProjectContract" parameterType="com.pm.domain.business.Project"   resultMap="projectContractMap">
 		select * from tb_project_contract_attachment 	
 		where project_id = #{project_id}
+		order by build_datetime desc
 	</select>	
 	
 	<select id="getProjectContract" parameterType="com.pm.domain.business.ProjectContract"   resultMap="projectContractMap">

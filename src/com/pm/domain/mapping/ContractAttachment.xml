@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ContractAttachmentMapping">
+
+
+
+
+    <resultMap type="com.pm.domain.business.ContractAttachment" id="contractAttachmentMap" />
+
+
+    <select id="queryContractAttachment" parameterType="com.pm.domain.business.ContractAttachment"   resultMap="contractAttachmentMap">
+        select * from tb_contract_attachment
+        where contract_id = #{contract_id}
+        order by build_datetime desc
+    </select>
+
+    <select id="getContractAttachment" parameterType="com.pm.domain.business.ContractAttachment"   resultMap="contractAttachmentMap">
+        select * from tb_contract_attachment
+        where attachment_id = #{attachment_id}
+    </select>
+
+
+
+
+    <insert id="addContractAttachment" parameterType="com.pm.domain.business.ContractAttachment">
+        insert into tb_contract_attachment(
+        attachment_id, attachment_type ,contract_id, attachment_name, attachment_path,
+        build_datetime,build_userid,build_username
+        )
+        values(
+        #{attachment_id},#{attachment_type}, #{contract_id},#{attachment_name}, #{attachment_path},
+        #{build_datetime},#{build_userid},#{build_username}
+        )
+    </insert>
+
+    <delete id="deleteContractAttachment" parameterType="com.pm.domain.business.ContractAttachment">
+        delete from tb_contract_attachment where attachment_id = #{attachment_id}
+    </delete>
+
+
+
+
+
+
+
+
+</mapper>

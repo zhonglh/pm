@@ -22,10 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -54,6 +51,10 @@ public class PayContractAction extends BaseAction {
 
 	@Autowired
 	private IRoleService roleService;
+
+
+	@Autowired
+	private IContractAttachmentService contractAttachmentService;
 
 
 	@RequestMapping(params = "method=isExist")
@@ -138,7 +139,14 @@ public class PayContractAction extends BaseAction {
 		PayContract payContract = null;
 		if(searchPayContract != null && searchPayContract.getId()!=null){
 			request.setAttribute("next_operation", "updatePayContract");
-			payContract = payContractService.getPayContract(searchPayContract.getId());	
+			payContract = payContractService.getPayContract(searchPayContract.getId());
+
+
+			ContractAttachment contractAttachment = new ContractAttachment();
+			contractAttachment.setContract_id(searchPayContract.getId());
+			List<ContractAttachment> contractAttachments = contractAttachmentService.queryContractAttachment(contractAttachment);
+			request.setAttribute("contractAttachments", contractAttachments);
+
 
 		}else {
 			request.setAttribute("next_operation", "addPayContract");		
@@ -162,6 +170,14 @@ public class PayContractAction extends BaseAction {
 		User sessionUser = PubMethod.getUser(request);
 		Project project = projectService.getProject( payContract.getProject_id());
 
+
+		ContractAttachment contractAttachment = new ContractAttachment();
+		contractAttachment.setContract_id(searchPayContract.getId());
+		List<ContractAttachment> contractAttachments = contractAttachmentService.queryContractAttachment(contractAttachment);
+		request.setAttribute("contractAttachments", contractAttachments);
+
+
+
 		request.setAttribute("project", project);
 		request.setAttribute("sessionUser", sessionUser);
 		request.setAttribute("data_id", payContract.getId());
@@ -181,7 +197,8 @@ public class PayContractAction extends BaseAction {
 		payContract.setBuild_username(sessionUser.getUser_name());
 		int count = 0;
 		try{
-			count = payContractService.addPayContract(payContract);
+			ContractAttachment[] cas = this.getContractAttachment(request , payContract.getId() , sessionUser ) ;
+			count = payContractService.addPayContract(payContract , cas);
 			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.PAYCONTRACT.name(), payContract.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}catch(Exception e){
@@ -198,10 +215,12 @@ public class PayContractAction extends BaseAction {
 	@RequestMapping(params = "method=updatePayContract")
 	public String updatePayContract(PayContract updatePayContract,HttpServletResponse res,HttpServletRequest request){
 		PayContract payContract = updatePayContract;	
-		paramprocess(request,payContract);	
+		paramprocess(request,payContract);
+		User sessionUser = PubMethod.getUser(request);
 		int count = 0;
 		try{
-			count = payContractService.updatePayContract(payContract);	
+			ContractAttachment[] cas = this.getContractAttachment(request , payContract.getId() , sessionUser ) ;
+			count = payContractService.updatePayContract(payContract , cas);
 		}catch(Exception e){
 		}
 		if(count == 1) 		{
@@ -305,7 +324,7 @@ public class PayContractAction extends BaseAction {
 					payContract.setBuild_datetime(PubMethod.getCurrentDate());
 					payContract.setBuild_userid(sessionUser.getUser_id());
 					payContract.setBuild_username(sessionUser.getUser_name());
-					int count = payContractService.addPayContract(payContract);
+					int count = payContractService.addPayContract(payContract , null);
 					if(count == 0){
 						payContract.setErrorInfo("已经有此记录");
 						isAllOK = false;
@@ -391,6 +410,38 @@ public class PayContractAction extends BaseAction {
 		request.getSession().removeAttribute(sessionAttr);
 		request.setAttribute("list", list);
 		return "basicdata/paycontract_excel_list";
+	}
+
+
+
+	private ContractAttachment[] getContractAttachment(HttpServletRequest request,String contract_id,User sessionUser){
+
+		String[] rowIndex = request.getParameterValues("index_contract_attachment_table");
+
+		List<ContractAttachment> contractAttachments = new ArrayList<ContractAttachment>();
+		if(rowIndex != null && rowIndex.length >0){
+			for(String index : rowIndex) {
+				ContractAttachment contractAttachment = new ContractAttachment();
+				contractAttachment.setAttachment_type(EnumProjectContractType.PAY.getCode());
+				contractAttachment.setContract_id(contract_id);
+				contractAttachment.setAttachment_id(request.getParameter("items["+index+"].attachment.attachment_id"));
+				contractAttachment.setAttachment_name(request.getParameter("items["+index+"].attachment.attachment_name"));
+				contractAttachment.setAttachment_path(request.getParameter("items["+index+"].attachment.attachment_path"));
+
+				contractAttachment.setBuild_datetime(PubMethod.getCurrentDate());
+				contractAttachment.setBuild_userid(sessionUser.getUser_id());
+				contractAttachment.setBuild_username(sessionUser.getUser_name());
+				contractAttachments.add(contractAttachment);
+			}
+		}
+
+		ContractAttachment[] arrays = null;
+
+		if(contractAttachments != null && !contractAttachments.isEmpty()) {
+			arrays = new ContractAttachment[contractAttachments.size()];
+			PubMethod.List2Array(contractAttachments, arrays, ContractAttachment.class);
+		}
+		return arrays;
 	}
 
 

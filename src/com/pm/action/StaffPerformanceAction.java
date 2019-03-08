@@ -308,8 +308,8 @@ public class StaffPerformanceAction extends BaseAction {
 	private void paramprocess(HttpServletRequest request,StaffPerformance staffPerformance){		
 		
 
-		staffPerformance.setDept_id(request.getParameter("dept.dept_id"));
-		staffPerformance.setDept_name(request.getParameter("dept.dept_name"));
+		staffPerformance.setDept_id(request.getParameter("staff.dept_id"));
+		staffPerformance.setDept_name(request.getParameter("staff.dept_name"));
 		
 
 		staffPerformance.setStaff_id(request.getParameter("staff.staff_id"));

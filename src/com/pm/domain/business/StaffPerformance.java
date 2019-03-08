@@ -46,7 +46,7 @@ public class StaffPerformance extends IdEntity implements Serializable {
 	/////////////////////////////////////////////
 	
 
-	//@EntityAnnotation(item_name="部门" ,item_sort=5) 
+	@EntityAnnotation(item_name="部门" ,item_sort=15)
 	private String dept_name;
 	
 

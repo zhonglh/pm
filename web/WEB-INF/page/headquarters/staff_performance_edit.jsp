@@ -10,7 +10,7 @@
 
 			<p>
 				<label>月份：</label>
-				<input name="the_month" id="the_month" class="date required" format="yyyyMM" size="30"  minlength="6" maxlength="6" type="text"  value="${staffPerformance1.the_month }" readonly/>
+				<input name="the_month" id="the_month" class="date required" format="yyyyMM" size="30"  minlength="6" maxlength="6" type="text" <c:if test="${staffPerformance1.the_month>0}">value="${staffPerformance1.the_month }"</c:if>  readonly/>
 			</p>
 
 
@@ -19,7 +19,7 @@
 				<input type="hidden" size="2" name="staff.staff_id" value="${staffPerformance1.staff_id }"/>
 				<input type="hidden" size="2" name="staff.staff_no" value="${staffPerformance1.staff_no }"/>
 				<input name="staff.staff_name" class="required text" type="text" size="28"  value="${staffPerformance1.staff_name }" readonly />
-				<a class="btnLook" href="${webroot }/StaffCostAction.do?method=lookup" lookupGroup="staff" lookupPk="staff_id" width="970">选择</a>
+				<a class="btnLook" href="${webroot }/OtherStaffAction.do?method=lookup" lookupGroup="staff" lookupPk="staff_id" width="970">选择</a>
 			</p>
 
 

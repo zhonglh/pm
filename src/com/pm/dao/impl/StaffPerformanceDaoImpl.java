@@ -70,6 +70,14 @@ public class StaffPerformanceDaoImpl extends BatisDao implements IStaffPerforman
 		return this.query4Int(sql, staffPerformance);
 	}
 
+
+
+	@Override
+	public List<StaffPerformance> getStaffPerformanceList(StaffPerformance staffPerformance){
+		String sql = "StaffPerformanceMapping.getStaffPerformanceList";
+		return this.query(sql, StaffPerformance.class, staffPerformance);
+	}
+
 	@Override
 	public Pager<StaffPerformance> queryStaffPerformance(
 		StaffPerformance staffPerformance,

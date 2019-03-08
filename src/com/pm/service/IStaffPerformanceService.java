@@ -32,7 +32,9 @@ public interface IStaffPerformanceService extends  IBaseService,IGeneralLogServi
 	
 
 
-	public boolean isExistNotCheckByWorkAttendance(String project_id, int the_month) ;	
+	public boolean isExistNotCheckByWorkAttendance(String project_id, int the_month) ;
+
+	public List<StaffPerformance> getStaffPerformanceList(StaffPerformance staffPerformance);
 
 	public Pager<StaffPerformance> queryStaffPerformance(StaffPerformance staffPerformance, UserPermit userPermit, Pager<StaffPerformance> pager);
 

@@ -19,6 +19,49 @@
 		on sp.staff_id = staff.staff_id
 		where sp.id = #{id}
 	</select>
+
+
+
+	<select id="getStaffPerformanceList" parameterType="com.pm.domain.business.StaffPerformance" resultMap="StaffPerformanceMap">
+		select sp.* ,dept.dept_name , staff.staff_no , staff.staff_name
+		from tb_staff_performance sp
+		left JOIN ts_dept dept
+		on sp.dept_id = dept.dept_id
+		join tb_other_staff staff
+		on sp.staff_id = staff.staff_id
+		where 1=1
+
+		<if test="the_month != 0 ">
+			<![CDATA[
+			AND sp.the_month = #{the_month}
+			]]>
+		</if>
+
+		<if test="staff_id != null and staff_id != ''">
+			<![CDATA[
+			AND sp.staff_id = #{staff_id}
+			]]>
+		</if>
+
+
+		<if test="dept_id != null and dept_id != ''">
+			<![CDATA[
+			AND sp.dept_id = #{dept_id}
+			]]>
+		</if>
+
+
+
+		<if test="verify_flag != null and verify_flag != ''">
+			<if test="StaffPerformance.verify_flag == 1">
+				and sp.verify_userid is not null
+			</if>
+			<if test="StaffPerformance.verify_flag == 0">
+				and sp.verify_userid is null
+			</if>
+		</if>
+
+	</select>
 	
 
 	<select id="getNotCheckNumByWorkAttendance" parameterType="com.pm.domain.business.StaffPerformance" resultType="int" >
@@ -107,6 +150,8 @@
 		on sp.dept_id = dept.dept_id
 		join tb_other_staff staff
 		on sp.staff_id = staff.staff_id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'STAFF_PERFORMANCE' group by data_id) aa
+		on invoice.invoice_id = aa.data_id
 		WHERE 1=1 
 		
 		<if test="StaffPerformance.the_month != 0 ">

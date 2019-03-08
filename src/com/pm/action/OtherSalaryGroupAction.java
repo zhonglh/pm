@@ -35,7 +35,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 	private static final String rel = "rel03";
 	
 	@Autowired
-	private IOtherSalaryService salaryService;
+	private IOtherSalaryService otherSalaryService;
 
 	@Autowired
 	private IOtherWorkAttendanceService workAttendanceService;
@@ -55,7 +55,10 @@ public class OtherSalaryGroupAction extends BaseAction {
 
 	@Autowired
 	protected IInsuranceService insuranceService;
-	
+
+	@Autowired
+	protected IStaffPerformanceService staffPerformanceService;
+
 	
 	/**
 	 * 导出Excel
@@ -74,7 +77,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.SALARYVIEW.getId());		
 		
-		Pager<OtherSalary> pager = salaryService.querySalary(searchSalary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
+		Pager<OtherSalary> pager = otherSalaryService.querySalary(searchSalary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		
 		
 		List<List<OtherSalary>> lists = new ArrayList<List<OtherSalary>>();
@@ -128,16 +131,16 @@ public class OtherSalaryGroupAction extends BaseAction {
 			return this.ajaxForwardError(request, workAttendance.getDept_name() + "在 "+workAttendance.getAttendance_month()+ " 的总部人员考勤单还没有制作完成！");
 		}
 		
-		Pager<OtherSalary> pager= salaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPager(request, OtherSalary.class));
+		Pager<OtherSalary> pager= otherSalaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPager(request, OtherSalary.class));
 		if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, searchSalary.getDept_name() + "在 "+searchSalary.getSalary_month()+ " 的总部人员工资记录已经制作，如果继续将会覆盖之前的工资记录！");
 		}
 		
 		
-		/*boolean b = personnelMonthlyBaseService.isExistNotCheckByWorkAttendance(searchSalary.getProject_id(), searchSalary.getSalary_month());
+		boolean b = staffPerformanceService.isExistNotCheckByWorkAttendance(searchSalary.getDept_id(), searchSalary.getSalary_month());
 		if(b){			
-			return this.ajaxForwardConfirm(request, "该项目成员的人事月报数据有些还没有核实，是否确定要继续？");
-		}*/
+			return this.ajaxForwardConfirm(request, "该部门的绩效数据有些还没有核实，是否确定要继续？");
+		}
 		
 		return this.ajaxForwardSuccess(request);
 	}
@@ -161,7 +164,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		request.setAttribute("salary1", searchSalary);
 
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSALARYVIEW.getId());
-		Pager<OtherSalary> pager= salaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPager(request, OtherSalary.class));
+		Pager<OtherSalary> pager= otherSalaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPager(request, OtherSalary.class));
 		PubMethod.setRequestPager(request, pager,OtherSalary.class);
 
 		request.setAttribute(EnumOperationType.READ.getKey(), userPermit.getPermit_id());
@@ -204,15 +207,15 @@ public class OtherSalaryGroupAction extends BaseAction {
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
 		OtherSalary searchSalary = new OtherSalary();
 		searchSalary.setSalary_month(salary_month);
-		Pager<OtherSalary> pager= salaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPager(request, OtherSalary.class));
+		Pager<OtherSalary> pager= otherSalaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPager(request, OtherSalary.class));
 		if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, searchSalary.getSalary_month()+ " 的工资记录已经制作，如果继续将会覆盖之前的工资记录！");
 		}
 				
-		//检查上个月的人事月报是否有未审核的
-		/*if(personnelMonthlyBaseService.isExistNotCheckByWorkAttendance(null, salary_month)){
-			return this.ajaxForwardError(request, "操作错误，上个月的人事月报还有未审核的！",true);
-		}*/
+		//检查上个月的人员绩效是否有未审核的
+		if(staffPerformanceService.isExistNotCheckByWorkAttendance(null, salary_month)){
+			return this.ajaxForwardError(request, "操作错误，上个月的人员绩效还有未审核的！",true);
+		}
 		
 		OtherWorkAttendance workAttendance = new OtherWorkAttendance();
 		workAttendance.setAttendance_month(searchSalary.getSalary_month());
@@ -270,13 +273,13 @@ public class OtherSalaryGroupAction extends BaseAction {
 		
 		synchronized (this) {
 			
-			pager= salaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPagerByAll( OtherSalary.class));
+			pager= otherSalaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPagerByAll( OtherSalary.class));
 			if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
 				return this.ajaxForwardError(request, searchSalary.getSalary_month()+ " 的总部人员工资记录已经制作，如果继续将会覆盖之前的工资记录！");
 			}
 			
 			for(List<OtherSalary> list : lists){
-				salaryService.addSalary(list);
+				otherSalaryService.addSalary(list);
 			
 				ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), 
 						EnumEntityType.OTHER_SALARY.name(), list.get(0).getSalary_id(), sessionUser);
@@ -399,11 +402,11 @@ public class OtherSalaryGroupAction extends BaseAction {
 		
 		if(list != null && list.size() > 0 ) {
 			synchronized (this) {
-				Pager<OtherSalary> pager= salaryService.querySalaryGroup(addSalary, userPermit,PubMethod.getPager(request, OtherSalary.class));
+				Pager<OtherSalary> pager= otherSalaryService.querySalaryGroup(addSalary, userPermit,PubMethod.getPager(request, OtherSalary.class));
 				if(pager.getResultList() != null && !pager.getResultList().isEmpty()){					
 					return this.ajaxForwardError(request, addSalary.getDept_name() + "在 "+addSalary.getSalary_month()+ " 的工资记录已经制作，如果继续将会覆盖之前的工资记录！");
 				}
-				salaryService.addSalary(list);
+				otherSalaryService.addSalary(list);
 			}
 			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.OTHER_SALARY.name(), list.get(0).getSalary_id(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
@@ -446,12 +449,12 @@ public class OtherSalaryGroupAction extends BaseAction {
 				for(OtherSalary temp : updateSalarys){
 					SalaryCalculate.getInstance().calculate(temp, null, paramExtMap);
 				}
-				salaryService.updateSalary(updateSalarys);
+				otherSalaryService.updateSalary(updateSalarys);
 			}
 			
 
 			if(delSalarys != null && !delSalarys.isEmpty()) {
-				salaryService.deleteSalary(delSalarys.toArray(new OtherSalary[delSalarys.size()]));
+				otherSalaryService.deleteSalary(delSalarys.toArray(new OtherSalary[delSalarys.size()]));
 			}
 				
 		}
@@ -572,7 +575,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 
 		
 		if(!list.isEmpty()) {
-			salaryService.updateSalary(list);
+			otherSalaryService.updateSalary(list);
 		}
 		
 		if(!delSalarys.isEmpty()){
@@ -582,7 +585,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 				salarys[index] = salary;
 				index ++;
 			}
-			salaryService.deleteSalary(salarys);
+			otherSalaryService.deleteSalary(salarys);
 		}
 		
 		return this.ajaxForwardSuccess(request, rel, true);
@@ -641,7 +644,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 	}
 
 	/**
-	 * 根据考勤和人事月报，计算出工资初始信息
+	 * 根据考勤和人员绩效，计算出工资初始信息
 	 * @param salary1
 	 * @return
 	 */
@@ -652,7 +655,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		salary1.setDate1(date1);
 		salary1.setDate2(date2);
 		
-		List<OtherSalary> list = salaryService.getSalaryByDeptMonth(salary1);
+		List<OtherSalary> list = otherSalaryService.getSalaryByDeptMonth(salary1);
 		if(list == null) {
 			return new ArrayList<OtherSalary>();
 		}
@@ -669,14 +672,24 @@ public class OtherSalaryGroupAction extends BaseAction {
 			}
 		}*/
 		
-		//查询出人事月报
-		/*List<PersonnelMonthlySalary> personnelMonthlySalarys = salaryService.getCurrSalaryByWorkAttendance(salary1);
-		Map<String,PersonnelMonthlySalary> map = new HashMap<String,PersonnelMonthlySalary>();
-		if(personnelMonthlySalarys != null){
-			for(PersonnelMonthlySalary personnelMonthlySalary : personnelMonthlySalarys){
-				map.put(personnelMonthlySalary.getStaff_id(), personnelMonthlySalary);
+		//查询出人员绩效
+		StaffPerformance searchStaffPerformance = new StaffPerformance();
+		searchStaffPerformance.setDept_id(salary1.getDept_id());
+		searchStaffPerformance.setThe_month(salary1.getSalary_month());
+		List<StaffPerformance> staffPerformances = staffPerformanceService.getStaffPerformanceList(searchStaffPerformance);
+		Map<String,StaffPerformance> map = new HashMap<String,StaffPerformance>();
+		if(staffPerformances != null){
+			for(StaffPerformance staffPerformance : staffPerformances){
+				map.put(staffPerformance.getStaff_id(), staffPerformance);
 			}
-		}*/
+		}
+
+		for(OtherSalary tempSalary : list) {
+			StaffPerformance staffPerformance = map.get(tempSalary.getStaff_id());
+			if (staffPerformance != null) {
+				tempSalary.setPerformance_allowances(staffPerformance.getPerformance_salary());
+			}
+		}
 		
 		/**
 		for(OtherSalary tempSalary : list){
@@ -751,7 +764,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 			for (OtherSalary salary : list) {
 				staffCostIds.add(salary.getStaff_id());
 			}
-			List<OtherSalary> accumulatedSalaryInfos = salaryService.getAccumulatedSalary(startSalaryMonth, endSalaryMonth, staffCostIds);
+			List<OtherSalary> accumulatedSalaryInfos = otherSalaryService.getAccumulatedSalary(startSalaryMonth, endSalaryMonth, staffCostIds);
 			Map<String, OtherSalary> accumulatedSalaryMap = new HashMap<String, OtherSalary>();
 			if(accumulatedSalaryInfos!=null && !accumulatedSalaryInfos.isEmpty()) {
 				for (OtherSalary salary : accumulatedSalaryInfos) {
@@ -796,7 +809,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		UserPermit userPermit = new UserPermit();
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
 		
-		Pager<OtherSalary> pager = salaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
+		Pager<OtherSalary> pager = otherSalaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "没有任何工资记录！",true);
 		}
@@ -832,7 +845,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		UserPermit userPermit = new UserPermit();
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
 		
-		Pager<OtherSalary> pager = salaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
+		Pager<OtherSalary> pager = otherSalaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "没有任何工资记录！",true);
 		}
@@ -871,7 +884,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		UserPermit userPermit = new UserPermit();
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
 		
-		Pager<OtherSalary> pager = salaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
+		Pager<OtherSalary> pager = otherSalaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "没有任何工资记录！",true);
 		}else {				
@@ -913,7 +926,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		UserPermit userPermit = new UserPermit();
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
 		
-		Pager<OtherSalary> pager = salaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
+		Pager<OtherSalary> pager = otherSalaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(pager.getResultList() == null) {
 			pager.setResultList(new ArrayList());
 		}
@@ -947,7 +960,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSALARYVIEW.getId());
 		
-		Pager<OtherSalary> pager = salaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
+		Pager<OtherSalary> pager = otherSalaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 		if(pager.getResultList() == null || pager.getResultList().isEmpty()){
 			return this.ajaxForwardError(request, "没有任何工资记录！",true);
 		}
@@ -1010,7 +1023,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		}
 		
 		if(salaryArray != null && salaryArray.length > 0 ) {
-			salaryService.deleteSalary(salaryArray);
+			otherSalaryService.deleteSalary(salaryArray);
 		}
 
 		return this.ajaxForwardSuccess(request, rel, false);		
@@ -1047,7 +1060,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 			
 			for(OtherSalary salary : salaryArray){
 				List<OtherSalary> list = new ArrayList<OtherSalary>();
-				Pager<OtherSalary> pager = salaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
+				Pager<OtherSalary> pager = otherSalaryService.querySalary(salary, userPermit, PubMethod.getPagerByAll(request, OtherSalary.class));
 				if(pager.getResultList() == null || pager.getResultList().isEmpty()){
 					continue;
 				}
@@ -1066,7 +1079,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 				
 				try{
 					if(!list.isEmpty())  {
-						salaryService.verifySalary( list.toArray(new OtherSalary[list.size()]) );
+						otherSalaryService.verifySalary( list.toArray(new OtherSalary[list.size()]) );
 
 						ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.OTHER_SALARY.name(), list.get(0).getSalary_id(), sessionUser);
 						applyApproveService.addApplyApprove(applyApprove);
@@ -1098,7 +1111,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		
 			List<OtherSalary> salarys = new ArrayList<OtherSalary>();
 			for(String salary_id : ids){
-				OtherSalary salary = salaryService.getSalary(salary_id);
+				OtherSalary salary = otherSalaryService.getSalary(salary_id);
 				if(salary == null) {continue;}
 				if(salary.getVerify_userid() != null && salary.getVerify_userid().length() > 0) {
 					continue;
@@ -1111,7 +1124,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 			}
 	
 			if(!salarys.isEmpty()) {
-				salaryService.verifySalary( salarys.toArray(new OtherSalary[salarys.size()]) );
+				otherSalaryService.verifySalary( salarys.toArray(new OtherSalary[salarys.size()]) );
 				
 				ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.OTHER_SALARY.name(), salarys.get(0).getSalary_id(), sessionUser);
 				applyApproveService.addApplyApprove(applyApprove);

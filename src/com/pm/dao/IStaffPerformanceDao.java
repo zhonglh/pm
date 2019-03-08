@@ -4,6 +4,8 @@ import com.common.beans.Pager;
 import com.pm.domain.business.StaffPerformance;
 import com.pm.vo.UserPermit;
 
+import java.util.List;
+
 /**
  * @author Administrator
  */
@@ -22,6 +24,9 @@ public interface IStaffPerformanceDao {
 	public StaffPerformance getStaffPerformance(String id) ;	
 
 	public int getNotCheckNumByWorkAttendance(StaffPerformance staffPerformance) ;
+
+
+	public List<StaffPerformance> getStaffPerformanceList(StaffPerformance staffPerformance);
 	
 
 	public Pager<StaffPerformance> queryStaffPerformance(StaffPerformance staffPerformance, UserPermit userPermit, Pager<StaffPerformance> pager);

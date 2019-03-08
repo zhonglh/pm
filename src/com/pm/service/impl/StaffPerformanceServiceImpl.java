@@ -10,6 +10,8 @@ import com.pm.vo.UserPermit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author Administrator
  */
@@ -55,6 +57,12 @@ public class StaffPerformanceServiceImpl implements IStaffPerformanceService {
         sp.setThe_month(the_month);
         int size = staffPerformanceDao.getNotCheckNumByWorkAttendance(sp);
         return size != 0 ;
+    }
+
+
+    @Override
+    public List<StaffPerformance> getStaffPerformanceList(StaffPerformance staffPerformance){
+        return staffPerformanceDao.getStaffPerformanceList(staffPerformance);
     }
 
     @Override

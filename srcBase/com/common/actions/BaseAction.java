@@ -78,7 +78,10 @@ public class BaseAction {
 
     private final static String DATA_NAME = "data";
     
-    private final static String OPERATION_DONE = "common/ajaxDone"; 
+    private final static String OPERATION_DONE = "common/ajaxDone";
+
+
+
     
     
 
@@ -91,6 +94,10 @@ public class BaseAction {
 
     @Autowired
     protected IParamExtendService paramExtendService;
+
+
+
+
 
 
     /**

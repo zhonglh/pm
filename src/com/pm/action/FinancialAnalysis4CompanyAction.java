@@ -32,7 +32,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "FinancialAnalysis4CompanyAction.do")
-public class FinancialAnalysis4CompanyAction extends BaseAction {
+public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
 
     @Autowired
     IDeptService deptService;

@@ -10,10 +10,7 @@ import com.pm.util.excel.exports.BusinessExExcel;
 import com.pm.util.excel.Column;
 import com.pm.util.excel.EnumCellFormat;
 import com.pm.util.excel.ThreadLocalModifyColumn;
-import com.pm.vo.AnalysisResult;
-import com.pm.vo.AnalysisResultTable;
-import com.pm.vo.AnalysisSearch;
-import com.pm.vo.UserPermit;
+import com.pm.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +28,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "FinancialAnalysis4DepartmentAction.do")
-public class FinancialAnalysis4DepartmentAction extends BaseAction {
+public class FinancialAnalysis4DepartmentAction extends FinancialAnalysisAbstract {
+
 
     @Autowired
     IDeptService deptService;
@@ -82,7 +80,6 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
         try{
 
             List<Column> modifyColumns = new ArrayList<Column>();
-
             Column column0 = new Column();
             column0.setNumber(2);
             column0.setName("部门名称");
@@ -181,11 +178,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
         art.setResult(ars);
 
 
-        if(art.getResult() != null) {
-            for (AnalysisResult ar : ars) {
-                ar.setAnalysis_type(art.getLabel());
-            }
-        }
+        processResult(art);
 
         return art;
     }
@@ -204,11 +197,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
         List<AnalysisResult> ars = analysisDepartService.queryDepartAllCosts(analysisSearch ,userPermit );
         art.setResult(ars);
 
-        if(art.getResult() != null) {
-            for (AnalysisResult ar : art.getResult()) {
-                ar.setAnalysis_type(art.getLabel());
-            }
-        }
+        processResult(art);
 
         return art;
     }
@@ -245,11 +234,7 @@ public class FinancialAnalysis4DepartmentAction extends BaseAction {
         art.setResult(ars);
 
 
-        if(art.getResult() != null) {
-            for (AnalysisResult ar : art.getResult()) {
-                ar.setAnalysis_type(art.getLabel());
-            }
-        }
+        processResult(art);
 
         return art;
     }

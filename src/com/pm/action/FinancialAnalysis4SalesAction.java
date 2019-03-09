@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "FinancialAnalysis4SalesAction.do")
-public class FinancialAnalysis4SalesAction extends BaseAction {
+public class FinancialAnalysis4SalesAction extends FinancialAnalysisAbstract {
 
     @Autowired
     IDeptService deptService;
@@ -183,11 +183,7 @@ public class FinancialAnalysis4SalesAction extends BaseAction {
         art.setResult(ars);
 
 
-        if(art.getResult() != null) {
-            for (AnalysisResult ar : ars) {
-                ar.setAnalysis_type(art.getLabel());
-            }
-        }
+        processResult(art);
 
         return art;
     }
@@ -206,11 +202,7 @@ public class FinancialAnalysis4SalesAction extends BaseAction {
         List<AnalysisResult> ars = analysisSalesService.querySalesAllCosts(analysisSearch ,userPermit );
         art.setResult(ars);
 
-        if(art.getResult() != null) {
-            for (AnalysisResult ar : art.getResult()) {
-                ar.setAnalysis_type(art.getLabel());
-            }
-        }
+        processResult(art);
 
         return art;
     }
@@ -247,11 +239,7 @@ public class FinancialAnalysis4SalesAction extends BaseAction {
         art.setResult(ars);
 
 
-        if(art.getResult() != null) {
-            for (AnalysisResult ar : art.getResult()) {
-                ar.setAnalysis_type(art.getLabel());
-            }
-        }
+        processResult(art);
 
         return art;
     }

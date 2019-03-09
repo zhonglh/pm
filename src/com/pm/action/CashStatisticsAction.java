@@ -37,7 +37,7 @@ import java.util.Map;
 @RequestMapping(value = "CashStatisticsAction.do")
 public class CashStatisticsAction extends DepartStatisticsAction {
 
-	private final String PERMIT_ID = EnumPermit.DEPARTSTATISTICS.getId();
+	private final String PERMIT_ID = EnumPermit.CASHSTATISTICS.getId();
 
 
 	@Override

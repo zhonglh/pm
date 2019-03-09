@@ -45,7 +45,7 @@ public abstract class DepartStatisticsBaseAction extends DepartStatisticsAbstrac
         UserPermit userPermit = this.getUserPermit(request, roleService, getPermitId());
         Pager<StatisticsDetail> pager = departStatisticsService.queryCostsDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
         PubMethod.setRequestPager(request, pager, StatisticsDetail.class);
-        request.setAttribute("actionName" , "getClassName()");
+        request.setAttribute("actionName" , getClassName());
         return "departstatistics/costs_detail_list";
     }
 
@@ -82,7 +82,7 @@ public abstract class DepartStatisticsBaseAction extends DepartStatisticsAbstrac
         UserPermit userPermit = this.getUserPermit(request, roleService, getPermitId());
         Pager<StatisticsDetail> pager = departStatisticsService.queryDepartDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
         PubMethod.setRequestPager(request, pager, StatisticsDetail.class);
-        request.setAttribute("actionName" , "getClassName()");
+        request.setAttribute("actionName" , getClassName());
         return "departstatistics/departcosts_detail_list";
     }
 
@@ -119,7 +119,7 @@ public abstract class DepartStatisticsBaseAction extends DepartStatisticsAbstrac
         UserPermit userPermit = this.getUserPermit(request, roleService, getPermitId());
         Pager<StatisticsDetail> pager = departStatisticsService.queryOtherStaffCostDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
         PubMethod.setRequestPager(request, pager, StatisticsDetail.class);
-        request.setAttribute("actionName" , "getClassName()");
+        request.setAttribute("actionName" , getClassName());
         return "departstatistics/other_staff_cost_detail_list";
     }
 
@@ -159,7 +159,7 @@ public abstract class DepartStatisticsBaseAction extends DepartStatisticsAbstrac
         request.setAttribute("datass", getDepartStatisticsList(searchStatistics, depts, userPermit));
         request.setAttribute("depts", depts);
         request.setAttribute("deptsize", depts.size());
-        request.setAttribute("actionName" , "getClassName()");
+        request.setAttribute("actionName" , getClassName());
         return "departstatistics/depart_statistics_list";
     }
 

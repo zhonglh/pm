@@ -189,6 +189,7 @@ public enum EnumPermit {
 	
 
 	DEPARTSTATISTICS("26001","permit.departstatistics.view"),
+	CASHSTATISTICS("26011","permit.cashstatistics.view"),
 	
 	RECRUITLIBRAR("27000","permit.recruit.library.view"),
 	

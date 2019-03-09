@@ -54,6 +54,20 @@
 				</select>
 			</li>
 
+
+
+			<li>
+				<label>结算单类型：</label>
+				<select id="statement_type" name="statement_type" style="width:153px">
+					<option value="">全部</option>
+					<option value="1" <c:if test="${param.statement_type == '1' }">selected</c:if> ><spring:message code="statement.type.1"/></option>
+					<option value="2" <c:if test="${param.statement_type == '2' }">selected</c:if> ><spring:message code="statement.type.2"/></option>
+					<option value="3" <c:if test="${param.statement_type == '3' }">selected</c:if> ><spring:message code="statement.type.3"/></option>
+					<option value="4" <c:if test="${param.statement_type == '4' }">selected</c:if> ><spring:message code="statement.type.4"/></option>
+				</select>
+
+			</li>
+
 			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
 
 		</ul>		

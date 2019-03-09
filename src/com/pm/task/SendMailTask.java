@@ -16,7 +16,7 @@ import com.pm.service.ISalaryMailService;
 import com.pm.service.IStaffCostService;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.BusinessUtil;
-import com.pm.util.excel.BusinessExcel;
+import com.pm.util.excel.exports.BusinessExcel;
 import com.pm.util.excel.Column;
 
 public class SendMailTask implements Runnable{

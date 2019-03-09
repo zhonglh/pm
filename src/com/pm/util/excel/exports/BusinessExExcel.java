@@ -1,9 +1,10 @@
-package com.pm.util.excel;
+package com.pm.util.excel.exports;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.util.excel.Column;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 
 /**
@@ -32,7 +33,7 @@ public class BusinessExExcel extends BusinessExcel {
 	
 
 
-	public static  void export(XlsExport export,List<String> heads,List<List<?>> lists) {
+	public static  void export(XlsExport export, List<String> heads, List<List<?>> lists) {
 		export(export,heads,lists, true);
 	}
 	

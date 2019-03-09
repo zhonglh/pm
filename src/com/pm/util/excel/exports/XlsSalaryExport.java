@@ -1,10 +1,11 @@
-package com.pm.util.excel;
+package com.pm.util.excel.exports;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.pm.domain.business.AbstractSalary;
 import com.pm.domain.business.OtherSalary;
+import com.pm.util.excel.Column;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;

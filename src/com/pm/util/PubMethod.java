@@ -31,7 +31,7 @@ import com.pm.domain.system.Permit;
 import com.pm.domain.system.User;
 import com.pm.service.impl.SalaryMailServiceImpl;
 import com.pm.util.constant.BusinessUtil;
-import com.pm.util.excel.BusinessExcel;
+import com.pm.util.excel.exports.BusinessExcel;
 import com.pm.util.excel.Column;
 import com.pm.util.log.EntityAnnotation;
 import com.pm.vo.DepartStatisticsItem;

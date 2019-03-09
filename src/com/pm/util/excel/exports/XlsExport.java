@@ -1,8 +1,9 @@
-package com.pm.util.excel;
+package com.pm.util.excel.exports;
 
 import java.util.Date;
 import java.util.List;
 
+import com.pm.util.excel.Column;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;

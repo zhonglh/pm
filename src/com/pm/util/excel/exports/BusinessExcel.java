@@ -1,10 +1,12 @@
-package com.pm.util.excel;
+package com.pm.util.excel.exports;
 
 import com.pm.domain.business.AbstractSalary;
-import com.pm.domain.business.Salary;
 import com.pm.util.ColumnComparator;
 import com.pm.util.PubMethod;
 import com.pm.util.ThreadLocalBusinessNameHolder;
+import com.pm.util.excel.Column;
+import com.pm.util.excel.EnumCellFormat;
+import com.pm.util.excel.ThreadLocalModifyColumn;
 import com.pm.util.log.EntityAnnotation;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -76,7 +78,7 @@ public class BusinessExcel {
 
 	
 	public static <T> void exportSalary(HttpServletResponse response,List<List<T>> lists,Class<T> clz ){		
-		XlsSalaryExport export = new XlsSalaryExport();		
+		XlsSalaryExport export = new XlsSalaryExport();
 		if(lists == null || lists.isEmpty()){
 			List<String> heads = new ArrayList<String>();
 			heads.add("北京华路——工资表");
@@ -197,7 +199,7 @@ public class BusinessExcel {
 	}
 	
 
-	public static <T> void export(XlsExport export,List<String> heads,List<T> list, Class<T> clz) {
+	public static <T> void export(XlsExport export, List<String> heads, List<T> list, Class<T> clz) {
 		export(export,heads,list,clz, true);
 	}
 	

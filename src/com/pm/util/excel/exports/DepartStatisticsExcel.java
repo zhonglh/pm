@@ -1,4 +1,4 @@
-package com.pm.util.excel;
+package com.pm.util.excel.exports;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -14,7 +14,7 @@ import com.pm.vo.DepartStatisticsItem;
 /**
  * @author Administrator
  */
-public class DepartStatisticsExcel extends BusinessExcel{
+public class DepartStatisticsExcel extends BusinessExcel {
 	
 	
 	public static <T> void export(HttpServletResponse response,List<String> heads,List<List<DepartStatisticsItem>> lists ){		

@@ -18,10 +18,20 @@ import com.pm.vo.UserPermit;
 @Component
 public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisticsDao {
 
+
+	@Override
+	public Pager<DepartStatisticsItem> queryMonthlyStatement(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
+		statistics.setX("20");
+		statistics.setGroupBy("dept_id");
+		statistics.setGroupSelect("dept_id as deptId");
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+	}
+
 	@Override
 	public Pager<DepartStatisticsItem> queryReceivedPayments(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
-		statistics.setX("20");
+		statistics.setX("10");
 		statistics.setGroupBy("dept_id");
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
@@ -55,7 +65,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	}
 
 	@Override
-	public Pager<DepartStatisticsItem> queryProjectExpends(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+	public Pager<DepartStatisticsItem> queryProjectExpends40(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
 		statistics.setX("40");
 		statistics.setGroupBy("dept_id");
@@ -63,6 +73,14 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
 	}
 
+	@Override
+	public Pager<DepartStatisticsItem> queryProjectExpends41(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
+		statistics.setX("41");
+		statistics.setGroupBy("dept_id");
+		statistics.setGroupSelect("dept_id as deptId");
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+	}
 	
 	
 	

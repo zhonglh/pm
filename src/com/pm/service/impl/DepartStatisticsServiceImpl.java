@@ -22,6 +22,14 @@ public class DepartStatisticsServiceImpl implements IDepartStatisticsService {
 	@Autowired
 	private IDepartStatisticsDao departStatisticsDao;
 
+
+
+	@Override
+	public Pager<DepartStatisticsItem> queryMonthlyStatement(Statistics statistics, UserPermit userPermit, Pager<DepartStatisticsItem> pager){
+		return departStatisticsDao.queryMonthlyStatement(statistics, userPermit, pager);
+	}
+
+
 	@Override
 	public Pager<DepartStatisticsItem> queryReceivedPayments(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		return departStatisticsDao.queryReceivedPayments(statistics, userPermit, pager);
@@ -43,8 +51,12 @@ public class DepartStatisticsServiceImpl implements IDepartStatisticsService {
 	}
 
 	@Override
-	public Pager<DepartStatisticsItem> queryProjectExpends(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
-		return departStatisticsDao.queryProjectExpends(statistics, userPermit, pager);
+	public Pager<DepartStatisticsItem> queryProjectExpends40(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		return departStatisticsDao.queryProjectExpends40(statistics, userPermit, pager);
+	}
+	@Override
+	public Pager<DepartStatisticsItem> queryProjectExpends41(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		return departStatisticsDao.queryProjectExpends41(statistics, userPermit, pager);
 	}
 
 	@Override

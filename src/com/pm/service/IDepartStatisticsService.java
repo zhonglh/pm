@@ -20,9 +20,18 @@ public interface IDepartStatisticsService {
 
 
 
-	
 	/**
-	 * 项目含税收入统计
+	 * 项目含税收入统计 结算单
+	 * @param statistics
+	 * @param userPermit
+	 * @param pager
+	 * @return
+	 */
+	public Pager<DepartStatisticsItem> queryMonthlyStatement(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+
+
+	/**
+	 * 项目含税收入统计 , 回款
 	 * @param statistics
 	 * @param userPermit
 	 * @param pager
@@ -64,8 +73,9 @@ public interface IDepartStatisticsService {
 	 * @param pager
 	 * @return
 	 */
-	public Pager<DepartStatisticsItem> queryProjectExpends(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);	
-	
+	public Pager<DepartStatisticsItem> queryProjectExpends40(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+	public Pager<DepartStatisticsItem> queryProjectExpends41(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+
 	/**
 	 * 销售费用统计
 	 * @param statistics

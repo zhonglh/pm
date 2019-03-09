@@ -7,9 +7,19 @@ import com.pm.vo.DepartStatisticsItem;
 import com.pm.vo.UserPermit;
 
 public interface IDepartStatisticsDao {
-	
+
+
 	/**
-	 * 项目含税收入
+	 * 项目含税收入 结算单
+	 * @param statistics
+	 * @param userPermit
+	 * @param pager
+	 * @return
+	 */
+	public Pager<DepartStatisticsItem> queryMonthlyStatement(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+
+	/**
+	 * 项目含税收入 回款
 	 * @param statistics
 	 * @param userPermit
 	 * @param pager
@@ -51,8 +61,9 @@ public interface IDepartStatisticsDao {
 	 * @param pager
 	 * @return
 	 */
-	public Pager<DepartStatisticsItem> queryProjectExpends(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);	
-	
+	public Pager<DepartStatisticsItem> queryProjectExpends40(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+	public Pager<DepartStatisticsItem> queryProjectExpends41(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+
 	/**
 	 * 销售费用
 	 * @param statistics

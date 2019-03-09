@@ -2,14 +2,14 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/include.inc.jsp"%>
 
-<form id="pagerForm" method="post" action="${webroot }/DepartStatisticsAction.do?method=list">
+<form id="pagerForm" method="post" action="${webroot }/${actionName}.do?method=list">
 	<input type="hidden" name="pageNum" value="${pageNum}" />
 	<input type="hidden" name="numPerPage" value="${pageSize}" />
 </form>
 
 
 <div class="pageHeader">
-	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/DepartStatisticsAction.do?method=list" method="post">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="${webroot }/${actionName}.do?method=list" method="post">
 	<div class="searchBar">
 		
 		<ul class="searchContent">		
@@ -43,7 +43,7 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 		
-			<li><a class="icon" href="${webroot}/DepartStatisticsAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+			<li><a class="icon" href="${webroot}/${actionName}.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
 					
 		</ul>
 	</div>

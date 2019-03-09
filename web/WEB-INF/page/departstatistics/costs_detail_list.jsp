@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/include.inc.jsp"%>
 
-<form id="pagerForm" method="post" action="${webroot }/DepartStatisticsAction.do?method=queryCostsDetail">
+<form id="pagerForm" method="post" action="${webroot }/${actionName}.do?method=queryCostsDetail">
 
 	<input type="hidden" name="pageNum" value="${pageNum}" />
 	<input type="hidden" name="numPerPage" value="${pageSize}" />
@@ -23,7 +23,7 @@
 
 	<div class="panelBar">
 		<ul class="toolBar">			
-				<li><a class="icon" href="${webroot }/DepartStatisticsAction.do?method=excelCostsDetail" target="dwzExport" targetType="dialog" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+				<li><a class="icon" href="${webroot }/${actionName}.do?method=excelCostsDetail" target="dwzExport" targetType="dialog" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
 		</ul>
 	</div>
 

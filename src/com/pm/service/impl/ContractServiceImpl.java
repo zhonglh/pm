@@ -1,6 +1,8 @@
 package com.pm.service.impl;
 
 import com.common.beans.Pager;
+import com.common.utils.Base64Kit;
+import com.common.utils.file.FileKit;
 import com.pm.dao.IContractAttachmentDao;
 import com.pm.dao.IContractDao;
 import com.pm.domain.business.Contract;
@@ -10,6 +12,8 @@ import com.pm.util.PubMethod;
 import com.pm.vo.UserPermit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ContractServiceImpl implements  IContractService {
@@ -54,6 +58,26 @@ public class ContractServiceImpl implements  IContractService {
 	@Override
 	public void deleteContract(Contract[] contracts) {
 		for(Contract contract : contracts){
+
+			try {
+				//删除合同附件
+				ContractAttachment search = new ContractAttachment();
+				search.setContract_id(contract.getId());
+				List<ContractAttachment> contractAttachments = contractAttachmentDao.queryContractAttachment(search);
+				for (ContractAttachment contractAttachment : contractAttachments) {
+					if (contractAttachment != null && contractAttachment.getAttachment_id() != null) {
+						try {
+							FileKit.deleteFile(new String(Base64Kit.decode(contractAttachment.getAttachment_path())));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						contractAttachmentDao.deleteContractAttachment(contractAttachment);
+					}
+				}
+			}catch (Exception e){
+
+			}
+
 			contractDao.deleteContract(contract);
 		}
 	}

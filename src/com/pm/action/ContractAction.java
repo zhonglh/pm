@@ -227,8 +227,9 @@ public class ContractAction extends BaseAction {
 				contracts[index] = contract;
 				index ++ ;
 			}
-			if(contracts != null && contracts.length > 0)
-			contractService.deleteContract(contracts);
+			if(contracts != null && contracts.length > 0) {
+				contractService.deleteContract(contracts);
+			}
 		}
 		return this.ajaxForwardSuccess(request,rel,false);
 	}	

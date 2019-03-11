@@ -164,7 +164,7 @@
 		union all
 		<include refid="DepartStatisticsDetailMapping.all_data_101"/>
 		union all
-		<include refid="DepartStatisticsDetailMapping.all_data_200"/>
+		<include refid="DepartStatisticsDetailMapping.all_data_201"/>
 	</sql>
 
 

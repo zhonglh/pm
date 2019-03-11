@@ -34,7 +34,7 @@
 		salary.personal_income_tax +
 		salary.actual_salary+salary.accumulation_fund+salary.reservefund_bypcompany)
 		as all_amount,
-		staff.staff_name, staff.staff_no, dept.dept_name
+		staff.staff_name, staff.staff_no, staff.cost_center, dept.dept_name
 		from tb_other_salary salary
 		inner join tb_other_work_attendance wa
 		on salary.staff_id = wa.staff_id
@@ -57,13 +57,13 @@
 		(
 		other_staff_cost_id, staff_id, dept_id, amount,work_month,pay_date,
 		insurance_amount,pub_funds_amount,personal_income_tax, other_amount,
-		all_amount,
-		salary_id,attendance_id,work_days,build_datetime,build_username,build_userid
+		all_amount, salary_id,attendance_id,work_days,cost_center,
+		build_datetime,build_username,build_userid
 		)values (
 		#{other_staff_cost_id}, #{staff_id},#{dept_id}, #{amount}, #{work_month}, #{pay_date},
-		#{insurance_amount}, #{pub_funds_amount}, #{personal_income_tax},
-		#{other_amount}, #{all_amount},
-		#{salary_id}, #{attendance_id},#{work_days}, #{build_datetime}, #{build_username},
+		#{insurance_amount}, #{pub_funds_amount}, #{personal_income_tax},#{other_amount},
+		 #{all_amount},#{salary_id}, #{attendance_id},#{work_days},,#{cost_center}
+		  #{build_datetime}, #{build_username},
 		#{build_userid}
 		)
 	</insert>
@@ -81,30 +81,30 @@
 
 	<select id="getOtherStaffCost" parameterType="com.pm.domain.business.OtherStaffCost"
 		resultMap="otherStaffCostMap">
-		select psc.* ,dept.dept_name ,
+		select osc.* ,dept.dept_name ,
 		staff.staff_name , staff.staff_no, salary.work_days as total_work_days
-		from tb_other_staff_cost psc
+		from tb_other_staff_cost osc
 		INNER JOIN ts_dept dept
-		on psc.dept_id = dept.dept_id
+		on osc.dept_id = dept.dept_id
 		inner join tb_other_staff staff
-		on psc.staff_id = staff.staff_id
+		on osc.staff_id = staff.staff_id
 		inner join tb_other_salary salary
-		on psc.salary_id = salary.salary_id
+		on osc.salary_id = salary.salary_id
 		WHERE other_staff_cost_id = #{other_staff_cost_id}
 	</select>
 
 
 	<select id="getOtherStaffCostBySalary" parameterType="map"
 		resultMap="otherStaffCostMap">
-		select psc.* ,dept.dept_name
+		select osc.* ,dept.dept_name
 		staff.staff_name , staff.staff_no, salary.work_days as total_work_days
-		from tb_other_staff_cost psc
+		from tb_other_staff_cost osc
 		INNER JOIN ts_dept dept
-		on psc.dept_id = dept.dept_id
+		on osc.dept_id = dept.dept_id
 		inner join tb_other_staff staff
-		on psc.staff_id = staff.staff_id
+		on osc.staff_id = staff.staff_id
 		inner join tb_other_salary salary
-		on psc.salary_id = salary.salary_id
+		on osc.salary_id = salary.salary_id
 		WHERE salary.salary_id in
 		<foreach item="salary" collection="list" open="(" separator=","
 			close=")">
@@ -141,23 +141,23 @@
 
 	<sql id="otherStaffCostPagerSql">
 
-		select psc.* ,dept.dept_name,
+		select osc.* ,dept.dept_name,
 		staff.staff_name , staff.staff_no , salary.work_days as
 		total_work_days
-		from tb_other_staff_cost psc
+		from tb_other_staff_cost osc
 		INNER JOIN ts_dept dept
-		on psc.dept_id = dept.dept_id
+		on osc.dept_id = dept.dept_id
 		inner join tb_other_staff staff
-		on psc.staff_id = staff.staff_id
+		on osc.staff_id = staff.staff_id
 		inner join tb_other_salary salary
-		on psc.salary_id = salary.salary_id
+		on osc.salary_id = salary.salary_id
 		WHERE 1 = 1
 
 
 
 		<if
 			test="OtherStaffCost.dept_id != null and OtherStaffCost.dept_id != ''">
-			AND psc.dept_id = #{OtherStaffCost.dept_id}
+			AND osc.dept_id = #{OtherStaffCost.dept_id}
 		</if>
 
 
@@ -178,19 +178,19 @@
 		</if>
 
 		<if test="OtherStaffCost.work_month != 0 ">
-			AND psc.work_month = #{OtherStaffCost.work_month}
+			AND osc.work_month = #{OtherStaffCost.work_month}
 		</if>
 
 
 		<if test="OtherStaffCost.work_month1 != 0 ">
 			<![CDATA[
-			AND psc.work_month >= #{OtherStaffCost.work_month1}
+			AND osc.work_month >= #{OtherStaffCost.work_month1}
 			]]>
 		</if>
 
 		<if test="OtherStaffCost.work_month2 != 0 ">
 			<![CDATA[
-			AND psc.work_month <= #{OtherStaffCost.work_month2}
+			AND osc.work_month <= #{OtherStaffCost.work_month2}
 			]]>
 		</if>
 
@@ -198,7 +198,7 @@
 		<include refid="StaffAuthMapping.permission" />
 
 
-		order by psc.work_month desc,dept.build_time ,
+		order by osc.work_month desc,dept.build_time ,
 		staff.build_datetime , staff.import_order
 
 	</sql>

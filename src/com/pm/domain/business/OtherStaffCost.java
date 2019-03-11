@@ -16,6 +16,10 @@ public class OtherStaffCost implements Serializable {
 	private String other_staff_cost_id;
 	private String staff_id	;
 	private String dept_id;
+
+
+	@EntityAnnotation(item_name="工作天数",item_sort=6)
+	private double work_days;
 	
 	@EntityAnnotation(item_name="实发金额",item_sort=7)
 	private double amount;		
@@ -44,11 +48,12 @@ public class OtherStaffCost implements Serializable {
 	private Timestamp pay_date;
 	
 	private String salary_id;	
-	private String attendance_id;	
-	
+	private String attendance_id;
 
-	@EntityAnnotation(item_name="工作天数",item_sort=6)
-	private double work_days;
+
+
+	//成本中心
+	private String cost_center;
 	
 	private Timestamp build_datetime;
 	private String build_userid;	
@@ -72,6 +77,10 @@ public class OtherStaffCost implements Serializable {
 	private String staff_no;
 
 	private double total_work_days;
+
+
+	@EntityAnnotation(item_name="成本中心" , item_sort=13,length=10)
+	private String cost_center_name;
 	
 	
 	//用于查询
@@ -238,5 +247,21 @@ public class OtherStaffCost implements Serializable {
 
 	public void setOther_staff_cost_id(String other_staff_cost_id) {
 		this.other_staff_cost_id = other_staff_cost_id;
+	}
+
+	public String getCost_center() {
+		return cost_center;
+	}
+
+	public void setCost_center(String cost_center) {
+		this.cost_center = cost_center;
+	}
+
+	public String getCost_center_name() {
+		return cost_center_name;
+	}
+
+	public void setCost_center_name(String cost_center_name) {
+		this.cost_center_name = cost_center_name;
 	}
 }

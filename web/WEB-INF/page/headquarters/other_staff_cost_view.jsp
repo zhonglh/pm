@@ -60,7 +60,14 @@
 			<p>
 				<label>总成本：</label>
 				${otherStaffCost1.all_amount}
-			</p>		
+			</p>
+
+
+
+			<p>
+				<label>成本中心：</label>
+				<spring:message code="cost.center.${otherStaffCost1.cost_center}" />
+			</p>
 				
 			<div class="divider"></div>
 			<p>

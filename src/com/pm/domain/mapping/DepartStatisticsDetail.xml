@@ -303,7 +303,7 @@
 		select sum(amount) as  val,${Statistics.groupSelect} from (
 		SELECT business.*
 		FROM (
-			<include refid="all_data_200"/>
+			<include refid="all_data_201"/>
 		) business
 		inner join ts_dept dept
 		on business.dept_id = dept.dept_id
@@ -348,7 +348,7 @@
 	<sql id="queryOtherStaffCostDetailPagerSql">
 		SELECT business.*
 		FROM (
-		<include refid="all_data_200"/>
+		<include refid="all_data_201"/>
 		) business
 		inner join ts_dept dept
 		on business.dept_id = dept.dept_id
@@ -408,53 +408,99 @@
 	</sql>	
 	
 	
-	<sql id="all_data_100">	
-			select dc.id as obj_id, dc.project_id ,project.project_name,project.project_no,dc.dept_id,
-			'成本' as amount_type, '销售费用' as business_type,  '100' as business_sort,
-			 dc.amount,dc.use_month, dc.pay_date,
-			dc_dic.dic_data_name  as  otherdesc,dc.description,
-			if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	, 
-			dc.pay_item_id  as type_id,dc.build_datetime,staff.staff_id
-			from tb_depart_costs dc 
-			left JOIN vb_project project 
-			on dc.project_id = project.project_id 
-			left JOIN tb_other_staff staff 
-			on dc.staff_id = staff.staff_id 
-			INNER join ts_dic_data dc_dic on dc.pay_item_id = dc_dic.id	
-			where dc.delete_flag = '0' and dc.verify_userid is not null
-			and dc_dic.dic_type_id = 'SALES_COSTS'
+	<sql id="all_data_100">
+
+		<include refid="DepartStatisticsDetailMapping.data_100"/>
+		union all
+		<include refid="DepartStatisticsDetailMapping.data_202"/>
+	</sql>
+
+
+	<sql id="data_100">
+		select dc.id as obj_id, dc.project_id ,project.project_name,project.project_no,dc.dept_id,
+		'成本' as amount_type, '销售费用' as business_type,  '100' as business_sort,
+		dc.amount,dc.use_month, dc.pay_date,
+		dc_dic.dic_data_name  as  otherdesc,dc.description,
+		if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	,
+		dc.pay_item_id  as type_id,dc.build_datetime,staff.staff_id
+		from tb_depart_costs dc
+		left JOIN vb_project project
+		on dc.project_id = project.project_id
+		left JOIN tb_other_staff staff
+		on dc.staff_id = staff.staff_id
+		INNER join ts_dic_data dc_dic on dc.pay_item_id = dc_dic.id
+		where dc.delete_flag = '0' and dc.verify_userid is not null
+		and dc_dic.dic_type_id = 'SALES_COSTS'
 	</sql>
 	
-	<sql id="all_data_101">	
-			select dc.id as obj_id, dc.project_id ,project.project_name,project.project_no,dc.dept_id,
-			'成本' as amount_type, '部门管理费用' as business_type,  '101' as business_sort,
-			 dc.amount,dc.use_month, dc.pay_date,
-			dc_dic.dic_data_name  as  otherdesc,dc.description,
-			if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	,  
-			dc.pay_item_id  as type_id,dc.build_datetime,staff.staff_id
-			from tb_depart_costs dc 
-			left JOIN vb_project project 
-			on dc.project_id = project.project_id 
-			left JOIN tb_other_staff staff 
-			on dc.staff_id = staff.staff_id 
-			INNER join ts_dic_data dc_dic on dc.pay_item_id = dc_dic.id	
-			where dc.delete_flag = '0' and dc.verify_userid is not null
-			and dc_dic.dic_type_id = 'DEPART_MANAG_COSTS'
+	<sql id="all_data_101">
+		<include refid="DepartStatisticsDetailMapping.data_101"/>
+		union all
+		<include refid="DepartStatisticsDetailMapping.data_203"/>
 	</sql>
 
 
+	<sql id="data_101">
+		select dc.id as obj_id, dc.project_id ,project.project_name,project.project_no,dc.dept_id,
+		'成本' as amount_type, '部门管理费用' as business_type,  '101' as business_sort,
+		dc.amount,dc.use_month, dc.pay_date,
+		dc_dic.dic_data_name  as  otherdesc,dc.description,
+		if(staff.staff_id = null or staff.staff_id = '' , dc.staff_id , staff.staff_name)  as business_name	,
+		dc.pay_item_id  as type_id,dc.build_datetime,staff.staff_id
+		from tb_depart_costs dc
+		left JOIN vb_project project
+		on dc.project_id = project.project_id
+		left JOIN tb_other_staff staff
+		on dc.staff_id = staff.staff_id
+		INNER join ts_dic_data dc_dic on dc.pay_item_id = dc_dic.id
+		where dc.delete_flag = '0' and dc.verify_userid is not null
+		and dc_dic.dic_type_id = 'DEPART_MANAG_COSTS'
+	</sql>
 
-	<sql id="all_data_200">
+
+	<!---总部人员成本-->
+	<sql id="all_data_201">
 		select osc.other_staff_cost_id as obj_id, '' as project_id ,''as project_name, '' as project_no,osc.dept_id,
-		'成本' as amount_type, '总部人员成本' as business_type,  '200' as business_sort,
+		'成本' as amount_type, '总部人员成本' as business_type,  '201' as business_sort,
 		osc.all_amount as amount,osc.work_month as use_month, osc.pay_date,
-		''  as  otherdesc,'' as description,
+		'总部人员工资成本'  as  otherdesc,'' as description,
 		staff.staff_name as business_name	,
 		''  as type_id,osc.build_datetime,staff.staff_id
 		from tb_other_staff_cost osc
 		left JOIN tb_other_staff staff
 		on osc.staff_id = staff.staff_id
-		where 1=1
+		where osc.cost_center = '1'
+	</sql>
+
+
+	<!---销售成本-->
+	<sql id="data_202">
+		select osc.other_staff_cost_id as obj_id, '' as project_id ,''as project_name, '' as project_no,osc.dept_id,
+		'成本' as amount_type, '销售费用' as business_type,  '100' as business_sort,
+		osc.all_amount as amount,osc.work_month as use_month, osc.pay_date,
+		'销售人员工资成本'  as  otherdesc,'' as description,
+		staff.staff_name as business_name	,
+		''  as type_id,osc.build_datetime,staff.staff_id
+		from tb_other_staff_cost osc
+		left JOIN tb_other_staff staff
+		on osc.staff_id = staff.staff_id
+		where osc.cost_center = '2'
+	</sql>
+
+
+
+	<!---部门管理成本-->
+	<sql id="data_203">
+		select osc.other_staff_cost_id as obj_id, '' as project_id ,''as project_name, '' as project_no,osc.dept_id,
+		'成本' as amount_type, '部门管理费用' as business_type,  '101' as business_sort,
+		osc.all_amount as amount,osc.work_month as use_month, osc.pay_date,
+		'管理人员工资成本'  as  otherdesc,'' as description,
+		staff.staff_name as business_name	,
+		''  as type_id,osc.build_datetime,staff.staff_id
+		from tb_other_staff_cost osc
+		left JOIN tb_other_staff staff
+		on osc.staff_id = staff.staff_id
+		where osc.cost_center = '3'
 	</sql>
 
 

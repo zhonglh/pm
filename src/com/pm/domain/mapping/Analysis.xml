@@ -42,8 +42,8 @@
 		<if test="AnalysisSearch.x == 101">
 			<include refid="DepartStatisticsDetailMapping.all_data_101"/>
 		</if>
-		<if test="AnalysisSearch.x == 200">
-			<include refid="DepartStatisticsDetailMapping.all_data_200"/>
+		<if test="AnalysisSearch.x == 201">
+			<include refid="DepartStatisticsDetailMapping.all_data_201"/>
 		</if>
 		) business
 		left join ts_dept dept

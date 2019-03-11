@@ -83,6 +83,7 @@
 				<th width="100">个税</th>
 				<th width="100">总成本</th>
 				<th width="120">实际支付日期</th>
+				<th width="120">成本中心</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -101,6 +102,7 @@
 				<td><b><fmt:formatNumber value="${otherStaffCost.personal_income_tax }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td><b><fmt:formatNumber value="${otherStaffCost.all_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td><fmt:formatDate value="${otherStaffCost.pay_date }" pattern="yyyy-MM-dd"/></td>
+				<td><spring:message code="cost.center.${otherStaffCost.cost_center }" /></td>
 			</p>
 			</tr>
 			</c:forEach>

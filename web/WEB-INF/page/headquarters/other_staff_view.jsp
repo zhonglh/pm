@@ -352,7 +352,8 @@
 
 			<p>
 				<label>成本中心：</label>
-				${otherStaff1.cost_center_name}
+
+				<spring:message code="cost.center.${otherStaff1.cost_center }"/>
 			</p>
 
 			<p style="margin-top: 20px">

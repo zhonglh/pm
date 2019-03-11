@@ -2,6 +2,7 @@ package com.pm.action;
 
 import com.common.actions.BaseAction;
 import com.common.beans.Pager;
+import com.pm.domain.business.OtherStaff;
 import com.pm.domain.business.OtherStaffCost;
 import com.pm.service.*;
 import com.pm.util.PubMethod;
@@ -45,8 +46,11 @@ public class OtherStaffCostAction extends BaseAction {
 		paramprocess(request,otherStaffCost);
 		
 		Pager<OtherStaffCost> pager = otherStaffCostService.queryOtherStaffCost(otherStaffCost, userPermit, PubMethod.getPagerByAll(request, OtherStaffCost.class));
-		
-		
+
+
+		for(OtherStaffCost otherStaffCost1 : pager.getResultList()){
+			otherStaffCost1.setCost_center_name(this.getMsg("cost.center." + (otherStaffCost1.getCost_center()==null?"":otherStaffCost1.getCost_center()), request));
+		}
 		try{
 			BusinessExcel.export(res, null, pager.getResultList(), OtherStaffCost.class);
 		}catch(Exception e){

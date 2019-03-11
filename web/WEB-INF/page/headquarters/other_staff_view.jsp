@@ -349,6 +349,12 @@
 				<fmt:formatNumber value="${otherStaff1.continuing_education }" type="number" pattern="####0.00#"/>
 			</p>
 
+
+			<p>
+				<label>成本中心：</label>
+				${otherStaff1.cost_center_name}
+			</p>
+
 			<p style="margin-top: 20px">
 			<dl class="nowrap">
 				<dt>备注：</dt>

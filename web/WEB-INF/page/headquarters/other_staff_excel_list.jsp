@@ -49,6 +49,7 @@
 						<th width="100">合同种类</th>
 						<th width="100">合同归属</th>
 						<th width="100">社保说明</th>
+						<th width="100">成本中心</th>
 						<th width="300">备注</th>
 					</tr>
 				</thead>
@@ -106,6 +107,7 @@
 						<td>${staffcost.contract_type_name }</td>
 						<td>${staffcost.contract_attach_name }</td>
 						<td>${staffcost.social_security_name }</td>
+						<td>${staffcost.cost_center_name }</td>
 						<td>${staffcost.description }</td>
 					</tr>
 					</c:forEach>

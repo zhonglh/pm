@@ -113,7 +113,7 @@
 			endowment_insurance_bycompany,medical_insurance_bycompany,losejob_insurance_bycompany,maternity_insurance_bycompany,jobharm_insurance_bycompany,
 			reservefund_bypcompany,extra,email,open_account,
 			bank_card_number,extra_expend,can_send_info,
-			contract_type,contract_attach,social_security,description,
+			contract_type,contract_attach,social_security,cost_center,description,
 			specialty,graduation_date,working_life,insured_city,working_address,certificate,
 			children_education,continuing_education,housing_loans,housing_rent,support_elderly,
 			build_datetime,build_userid,build_username,delete_flag
@@ -132,7 +132,7 @@
 			#{endowment_insurance_bycompany},#{medical_insurance_bycompany},#{losejob_insurance_bycompany},#{maternity_insurance_bycompany},#{jobharm_insurance_bycompany},
 			#{reservefund_bypcompany},#{extra},#{email},#{open_account},
 			#{bank_card_number},#{extra_expend},#{can_send_info},
-			#{contract_type},#{contract_attach},#{social_security},#{description},
+			#{contract_type},#{contract_attach},#{social_security},#{cost_center},#{description},
 			#{specialty},#{graduation_date},#{working_life},#{insured_city},#{working_address},#{certificate},
 			#{children_education},#{continuing_education},#{housing_loans},#{housing_rent},#{support_elderly},
 			#{build_datetime},#{build_userid},#{build_username},#{delete_flag}
@@ -218,6 +218,7 @@
 		housing_rent=#{housing_rent},
 		support_elderly=#{support_elderly},
 
+		cost_center=#{cost_center},
 		description=#{description},
 		version_no = version_no + 1
 		where staff_id = #{staff_id}

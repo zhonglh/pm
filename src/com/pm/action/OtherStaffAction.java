@@ -191,7 +191,11 @@ public class OtherStaffAction extends BaseAction{
             otherStaff.setCan_send_info(this.getMsg("boolean." + (otherStaff.getCan_send_info()==null?"":otherStaff.getCan_send_info()), request));
 
             otherStaff.setPosition_type_temp(this.getMsg("position.type." + (otherStaff.getPosition_type()==null?"":otherStaff.getPosition_type()), request));
-		}
+
+
+            otherStaff.setCost_center_name(this.getMsg("cost.center." + (otherStaff.getCost_center()==null?"":otherStaff.getCost_center()), request));
+
+        }
 		
 		try{
 			BusinessExcel.export(res, null, pager.getResultList(), OtherStaff.class);
@@ -697,6 +701,19 @@ public class OtherStaffAction extends BaseAction{
             b = false;
         }
 
+        if(StringUtils.isEmpty(otherStaff.getCost_center_name())){
+            otherStaff.setErrorInfo( otherStaff.getErrorInfo() + "请填写成本中心;");
+            b = false;
+        }else {
+            EnumCostCenter ecc = EnumCostCenter.getEnumByLabel(otherStaff.getCost_center_name());
+            if(ecc == null){
+                otherStaff.setErrorInfo( otherStaff.getErrorInfo() + "成本中心填写错误;");
+                b = false;
+            }else {
+                otherStaff.setCost_center(ecc.getCode());
+            }
+        }
+
 
         if( otherStaff.getErrorInfo() != null && ! otherStaff.getErrorInfo().isEmpty()) {
             b = false;
@@ -767,6 +784,7 @@ public class OtherStaffAction extends BaseAction{
                 if(otherStaff.getContract_end_date() != null) {
                     otherStaff.setContract_end_month(DateKit.fmtDateToYM(otherStaff.getContract_end_date()));
                 }
+
             }
         }
 

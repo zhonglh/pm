@@ -118,7 +118,7 @@
 			
 		</ul>
 	</div>
-	<table class="table" width="6600" layoutH="138">
+	<table class="table" width="6680" layoutH="138">
 		<thead>
 			<tr>
 				<th width="25"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
@@ -207,6 +207,7 @@
 				<th width="80">赡养老人</th>
 				<th width="80">继续教育</th>
 
+				<th width="80">成本中心</th>
 				<th width="600">备注</th>
 
 				<th width="100">创建人</th>
@@ -357,6 +358,7 @@
 				<td align="right"><fmt:formatNumber value="${ otherStaff.support_elderly }" type="currency" pattern="#0.00"/></td>
 				<td align="right"><fmt:formatNumber value="${ otherStaff.continuing_education }" type="currency" pattern="#0.00"/></td>
 
+				<td><spring:message code="cost.center.${otherStaff.cost_center }" /></td>
 				<td title="${ otherStaff.description }">${ otherStaff.description }</td>
 				<td>${otherStaff.build_username }</td>
 				<td><fmt:formatDate value="${otherStaff.build_datetime }" pattern="yyyy-MM-dd"/></td>

@@ -443,6 +443,17 @@
 			</p>
 
 
+
+			<p>
+				<label>成本中心：</label>
+				<select name="cost_center" style="width:185px">
+					<option value="1" <c:if test="${otherStaff1.cost_center == '1' }">selected</c:if>><spring:message code="cost.center.1"/></option>
+					<option value="2" <c:if test="${otherStaff1.cost_center == '2' }">selected</c:if>><spring:message code="cost.center.2"/></option>
+					<option value="3" <c:if test="${otherStaff1.cost_center == '3' }">selected</c:if>><spring:message code="cost.center.3"/></option>
+				</select>
+			</p>
+
+
 			<p style="margin-top: 20px">
 			<dl class="nowrap">
 				<dt>备注：</dt>

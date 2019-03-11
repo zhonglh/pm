@@ -278,7 +278,11 @@ public class OtherStaff implements Serializable {
 	private String work_status;
 
 
-	@EntityAnnotation(item_name="备注" , item_sort=74,length=300)
+	//成本中心
+	private String cost_center;
+
+
+	@EntityAnnotation(item_name="备注" , item_sort=75,length=300)
 	private String description;
 
 
@@ -349,6 +353,8 @@ public class OtherStaff implements Serializable {
 	private String certificate_name;
 
 
+	@EntityAnnotation(item_name="成本中心" , item_sort=74,length=10)
+	private String cost_center_name;
 
 
 
@@ -1270,5 +1276,21 @@ public class OtherStaff implements Serializable {
 
 	public void setVersion_no(int version_no) {
 		this.version_no = version_no;
+	}
+
+	public String getCost_center() {
+		return cost_center;
+	}
+
+	public void setCost_center(String cost_center) {
+		this.cost_center = cost_center;
+	}
+
+	public String getCost_center_name() {
+		return cost_center_name;
+	}
+
+	public void setCost_center_name(String cost_center_name) {
+		this.cost_center_name = cost_center_name;
 	}
 }

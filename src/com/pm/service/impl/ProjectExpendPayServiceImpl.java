@@ -64,6 +64,8 @@ public class ProjectExpendPayServiceImpl implements  IProjectExpendPayService {
 		ProjectExpend projectExpend = new ProjectExpend();
 		if(projectExpendpay != null ){
 			projectExpend.setPay_amount(projectExpendpay.getPay_amount());
+			projectExpend.setTax_deduction(projectExpendpay.getTax_deduction());
+			projectExpend.setActual_cost(projectExpendpay.getActual_cost());
 			projectExpend.setPay_date(projectExpendpay.getPay_date());
 		}
 		projectExpend.setProject_expend_id(project_expend_id);

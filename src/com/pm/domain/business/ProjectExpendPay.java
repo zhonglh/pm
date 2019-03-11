@@ -23,8 +23,14 @@ public class ProjectExpendPay extends IdEntity implements Serializable {
     private double pay_amount;
 
 
+    @EntityAnnotation(item_name="进项税额" ,item_sort=60,length=12)
+    private double tax_deduction;
 
-    @EntityAnnotation(item_name="备注" ,item_sort=60,length=150)
+    @EntityAnnotation(item_name="实际成本" ,item_sort=70,length=12)
+    private double actual_cost ;
+
+
+    @EntityAnnotation(item_name="备注" ,item_sort=80,length=150)
     private String description;
 
 
@@ -212,5 +218,21 @@ public class ProjectExpendPay extends IdEntity implements Serializable {
 
     public void setNeed_approve(String need_approve) {
         this.need_approve = need_approve;
+    }
+
+    public double getTax_deduction() {
+        return tax_deduction;
+    }
+
+    public void setTax_deduction(double tax_deduction) {
+        this.tax_deduction = tax_deduction;
+    }
+
+    public double getActual_cost() {
+        return actual_cost;
+    }
+
+    public void setActual_cost(double actual_cost) {
+        this.actual_cost = actual_cost;
     }
 }

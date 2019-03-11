@@ -56,6 +56,11 @@
 
 				</li>
 
+			</ul>
+
+
+			<ul class="searchContent">
+
 
 				<li>
 					<label>实际成本累计：</label>
@@ -67,8 +72,6 @@
 				<li>
 					<label>分包合同编号：</label>
 					${projectExpend.sub_contractor_no}
-
-
 				</li>
 			</ul>
 
@@ -80,18 +83,18 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<c:if test="${operation_insert != null && operation_insert != '' }">
-				<li><a class="add" href="${webroot}/ProjectExpendPayAction.do?method=toEdit&project_expend_id=${projectExpend.project_expend_id}" mask="true" width="500" height="400" rel="add_projectexpendpay"  target="dialog"><span>添加项目实际支付信息</span></a></li>
+				<li><a class="add" href="${webroot}/ProjectExpendPayAction.do?method=toEdit&project_expend_id=${projectExpend.project_expend_id}" mask="true" width="800" height="400" rel="add_projectexpendpay"  target="dialog"><span>添加项目实际支付信息</span></a></li>
 			</c:if>
 			<c:if test="${operation_delete != null && operation_delete != '' }">
 				<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${webroot}/ProjectExpendPayAction.do?method=deleteProjectExpendPay" class="delete"><span>删除</span></a></li> 
 		</c:if>
 			<c:if test="${operation_update != null && operation_update != '' }">
-				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=toEdit&id={sid}" mask="true" width="500"  height="400" rel="update_projectexpendpay" target="dialog" warn="请选择一条数据"><span>修改项目实际支付信息</span></a></li>
+				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=toEdit&id={sid}" mask="true" width="800"  height="400" rel="update_projectexpendpay" target="dialog" warn="请选择一条数据"><span>修改项目实际支付信息</span></a></li>
 			</c:if>
 
 
 			<c:if test="${operation_read != null && operation_read != '' }">
-				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=toView&id={sid}" mask="true" width="700"  height="550" rel="view_projectexpendpay" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
+				<li><a class="edit" href="${webroot}/ProjectExpendPayAction.do?method=toView&id={sid}" mask="true" width="800"  height="550" rel="view_projectexpendpay" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
 			</c:if>
 
 			<c:if test="${operation_check != null && operation_check != '' }">
@@ -104,7 +107,7 @@
 
 		</ul>
 	</div>
-	<table class="table" width="100%" layoutH="135">
+	<table class="table" width="100%" layoutH="162">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>

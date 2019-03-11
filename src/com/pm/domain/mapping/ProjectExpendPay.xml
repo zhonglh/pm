@@ -12,7 +12,7 @@
 
 	<!-- 获取所有的已审核的支付总额 -->
 	<select id="getSumByProjectExpend" parameterType="com.pm.domain.business.ProjectExpendPay" resultMap="projectExpendpayMap">
-		select sum(pep.pay_amount)as pay_amount , max(pay_date) as pay_date
+		select sum(pep.pay_amount)as pay_amount ,sum(pep.tax_deduction)as tax_deduction ,sum(pep.actual_cost)as actual_cost , max(pay_date) as pay_date
 		from tb_project_expend_pay pep
 		where pep.project_expend_id = #{project_expend_id}
 		and verify_userid is not null

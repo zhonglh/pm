@@ -23,10 +23,6 @@
 				${projectExpend1.amount }
 			</p>
 
-			<p>
-				<label>累计已付金额：</label>
-				${projectExpend1.pay_amount }
-			</p>
 
 
 			<div class="divider"></div>

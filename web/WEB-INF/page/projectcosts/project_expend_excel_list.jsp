@@ -16,8 +16,6 @@
 						<th width="100">分包合同编号</th>
 						<th width="100">收到的发票号</th>
 						<th width="80">应付月份</th>
-						<th width="120">实际支付日期</th>						
-						<th width="80">实付金额</th>
 						<th width="300">描述</th>
 					</tr>
 				</thead>
@@ -46,8 +44,6 @@
 						<td>${projectExpend.sub_contractor_no }</td>
 						<td>${projectExpend.invoiceno }</td>
 						<td>${projectExpend.str_month }</td>
-						<td><fmt:formatDate value="${projectExpend.pay_date }" pattern="yyyy-MM-dd"/></td>
-						<td align="right"><b><fmt:formatNumber value="${projectExpend.pay_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
 						<td>${projectExpend.description }</td>
 				
 					</tr>

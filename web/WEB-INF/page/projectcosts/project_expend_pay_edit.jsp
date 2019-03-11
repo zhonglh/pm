@@ -24,8 +24,16 @@
 			</p>
 
 			<p>
-				<label>累计已付金额：</label>
+				<label>已付金额累计：</label>
 				${projectExpend1.pay_amount }
+			</p>
+			<p>
+				<label>进项税额累计：</label>
+				${projectExpend1.tax_deduction }
+			</p>
+			<p>
+				<label>实际成本累计：</label>
+				${projectExpend1.actual_cost }
 			</p>
 
 
@@ -39,7 +47,19 @@
 						
 			<p>
 				<label>本次实付金额：</label>
-				<input name="pay_amount" class="number required" min="0.01" type="text" size="30" value="<fmt:formatNumber value="${projectExpendpay1.pay_amount }" type="number" pattern="####0.00#"/>" />
+				<input name="pay_amount" class="number required" min="0.01" type="text" size="30" onchange="computeActualCost(this.form)" value="<fmt:formatNumber value="${projectExpendpay1.pay_amount }"  type="number" pattern="####0.00#"/>" />
+			</p>
+
+
+			<p>
+				<label>本次进项税额：</label>
+				<input name="tax_deduction" class="number required" min="0.00" type="text" size="30" onchange="computeActualCost(this.form)" value="<fmt:formatNumber value="${projectExpendpay1.tax_deduction }" type="number" pattern="####0.00#"/>" />
+
+			</p>
+			<p>
+				<label>本次实际成本：</label>
+				<input name="actual_cost" class="number required" readonly min="0.00" type="text" size="30" value="<fmt:formatNumber value="${projectExpendpay1.actual_cost }" type="number" pattern="####0.00#"/>" />
+
 			</p>
 			
 			

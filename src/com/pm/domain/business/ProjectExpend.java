@@ -45,18 +45,22 @@ public class ProjectExpend implements Serializable {
 	
 
 
-	@EntityAnnotation(item_name="实际支付日期", item_sort=8,length=10) 
+	@EntityAnnotation(item_name="实际支付日期", item_sort=8)
 	private Timestamp pay_date;
 
-	@EntityAnnotation(item_name="实付金额" ,item_sort=9,length=12)
+	@EntityAnnotation(item_name="实付金额" ,item_sort=9)
 	private double pay_amount;
 
-	
-	
-	
+
+	@EntityAnnotation(item_name="进项税额" ,item_sort=10)
+	private double tax_deduction;
+
+	@EntityAnnotation(item_name="实际成本" ,item_sort=11)
+	private double actual_cost ;
 
 
-	@EntityAnnotation(item_name="备注" ,item_sort=10,length=150)
+
+	@EntityAnnotation(item_name="备注" ,item_sort=12,length=150)
 	private String description;
 
 
@@ -332,7 +336,21 @@ public class ProjectExpend implements Serializable {
 	}
 	public void setPay_date2(Timestamp pay_date2) {
 		this.pay_date2 = pay_date2;
-	}	
+	}
 
+	public double getTax_deduction() {
+		return tax_deduction;
+	}
 
+	public void setTax_deduction(double tax_deduction) {
+		this.tax_deduction = tax_deduction;
+	}
+
+	public double getActual_cost() {
+		return actual_cost;
+	}
+
+	public void setActual_cost(double actual_cost) {
+		this.actual_cost = actual_cost;
+	}
 }

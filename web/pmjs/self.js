@@ -220,3 +220,20 @@ function jsycq(days , this1 , other){
 }
 
 
+/**
+ * 计算实际支付信息中的实际成本
+ * @param form1
+ */
+function computeActualCost(form1){
+	var pay_amount = form1.pay_amount.value;
+    var tax_deduction = form1.tax_deduction.value;
+    if(pay_amount == undefined || pay_amount == NaN || pay_amount == null){
+        pay_amount = "0";
+	}if(tax_deduction == undefined || tax_deduction == NaN || tax_deduction == null){
+        tax_deduction = "0";
+    }
+    var actual_cost = parseFloat(pay_amount) - parseFloat(tax_deduction) ;
+    actual_cost = fixed(actual_cost) ;
+    form1.actual_cost.value = actual_cost;
+}
+

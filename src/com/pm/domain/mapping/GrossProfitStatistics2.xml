@@ -72,7 +72,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
 		inner join 	(
 				select project_id,  (use_month-use_month%100+(floor(use_month%100/4)+1)) as quarter,
-				sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end)*-1 amount  ,
+				sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end)*-1 amount  ,
 				0 as total_amount
 				from tb_project_expend where delete_flag = '0' 
 				and verify_userid is not NULL 
@@ -176,7 +176,7 @@
 		select project.project_name,pe.* 
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
 		inner join 	(
-				select project_id, floor(use_month/100) year1,sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end)*-1 amount  ,
+				select project_id, floor(use_month/100) year1,sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end)*-1 amount  ,
 				0 as total_amount
 				from tb_project_expend where delete_flag = '0' 
 				and verify_userid is not NULL 
@@ -301,7 +301,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
@@ -401,7 +401,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
@@ -506,7 +506,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
@@ -609,7 +609,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
@@ -712,7 +712,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
@@ -816,7 +816,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
@@ -921,7 +921,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
@@ -1027,7 +1027,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
@@ -1141,7 +1141,7 @@
 		)  rc 
 		on project.project_id = rc.project_id 
 		left join (
-			select project_id, sum(case when (pay_amount is NULL OR pay_amount = 0) then amount else pay_amount end) amount 
+			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
 			from tb_project_expend where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">

@@ -31,11 +31,11 @@
 
 	<insert id="addProjectExpendPay" parameterType="com.pm.domain.business.ProjectExpendPay" >
 		insert into  tb_project_expend_pay(
-			id,project_expend_id,invoiceno,pay_date,pay_amount,description,
-			build_datetime,build_username,build_userid
+			id,project_expend_id,invoiceno,pay_date,pay_amount,tax_deduction,actual_cost,
+			description,build_datetime,build_username,build_userid
 		)values  (
-			#{id},#{project_expend_id},#{invoiceno},#{pay_date},#{pay_amount},#{description},
-			#{build_datetime},#{build_username},#{build_userid}
+			#{id},#{project_expend_id},#{invoiceno},#{pay_date},#{pay_amount},#{tax_deduction},#{actual_cost},
+			#{description},#{build_datetime},#{build_username},#{build_userid}
 		)
 	</insert>
 
@@ -44,6 +44,8 @@
 		invoiceno=#{invoiceno},
 		pay_date=#{pay_date},
 		pay_amount=#{pay_amount},
+		tax_deduction=#{tax_deduction},
+		actual_cost=#{actual_cost},
 		description=#{description}
 		where id=#{id} 
 		and verify_userid is null 

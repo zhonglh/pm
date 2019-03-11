@@ -355,7 +355,7 @@
 			select pe.project_expend_id as obj_id,
 			pe.project_id, project_name,project_no, project.deptid as dept_id,
 			'成本' as amount_type, '项目付款信息' as business_type, '40' as business_sort,
-			case when (pe.pay_amount is NULL OR pe.pay_amount = 0) then pe.amount else pe.pay_amount end as amount,
+			case when (pe.actual_cost is NULL OR pe.actual_cost = 0) then pe.amount else pe.actual_cost end as amount,
 			pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
 			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime , '' as staff_id
 			from tb_project_expend pe 
@@ -370,7 +370,7 @@
 			select pe.project_expend_id as obj_id,
 			pe.project_id, project_name,project_no, project.deptid as dept_id,
 			'成本' as amount_type, '项目付款信息' as business_type, '41' as business_sort,
-			pe.pay_amount as amount,pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
+			pe.actual_cost as amount,pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
 			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime , '' as staff_id
 			from tb_project_expend pe 
 			INNER JOIN vb_project project 

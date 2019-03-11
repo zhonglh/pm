@@ -47,7 +47,7 @@ public class StaffPerformance extends IdEntity implements Serializable {
 
 
 
-	@EntityAnnotation(item_name="月份" ,item_sort=10  , length = 6)
+	@EntityAnnotation(item_name="月份" ,item_sort=10  , length = 9)
 	private String the_month_str;
 
 	@EntityAnnotation(item_name="部门" ,item_sort=15)
@@ -255,6 +255,9 @@ public class StaffPerformance extends IdEntity implements Serializable {
 	}
 
 	public void setThe_month_str(String the_month_str) {
+		if(the_month_str.endsWith(".00")){
+			the_month_str = the_month_str.substring(0,the_month_str.length() -3);
+		}
 		this.the_month_str = the_month_str;
 	}
 

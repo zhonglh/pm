@@ -27,11 +27,15 @@
 	<insert id="addProjectExpend" parameterType="com.pm.domain.business.ProjectExpend">
 	 	 insert into tb_project_expend
 		 (
-		 	project_expend_id, project_id,pay_amount, sub_contractor_name, sub_contractor_no,invoiceno,expend_object,
-		  	use_month,pay_date,amount,description,build_datetime,build_username,build_userid,delete_flag
+		 	project_expend_id, project_id,
+
+		 	sub_contractor_name, sub_contractor_no,invoiceno,expend_object,
+		  	use_month,amount,description,build_datetime,build_username,build_userid,delete_flag
 		)values  (
-			#{project_expend_id}, #{project_id},#{pay_amount},#{sub_contractor_name}, #{sub_contractor_no}, #{invoiceno}, #{expend_object}, 
-		  	#{use_month},#{pay_date}, #{amount},#{description}, #{build_datetime}, #{build_username}, #{build_userid}, #{delete_flag}
+			#{project_expend_id}, #{project_id},
+
+			#{sub_contractor_name}, #{sub_contractor_no}, #{invoiceno}, #{expend_object},
+		  	#{use_month}, #{amount},#{description}, #{build_datetime}, #{build_username}, #{build_userid}, #{delete_flag}
 		 )
 	</insert>
 	
@@ -57,7 +61,9 @@
 	<update id="doPay" parameterType="com.pm.domain.business.ProjectExpend">
 		update tb_project_expend set
 		pay_date  = #{pay_date},
-		pay_amount = #{pay_amount}
+		pay_amount = #{pay_amount},
+		tax_deduction = #{tax_deduction},
+		actual_cost = #{actual_cost}
 		where project_expend_id = #{project_expend_id}
 		and delete_flag = '0'
 	</update>

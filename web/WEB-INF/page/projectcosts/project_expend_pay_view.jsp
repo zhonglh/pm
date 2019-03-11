@@ -44,6 +44,16 @@
 				<label>实付金额：</label>
 				<fmt:formatNumber value="${projectExpendpay1.pay_amount }" type="currency" pattern="###,###,##0.00"/>
 			</p>
+
+			<p>
+				<label>进项税额：</label>
+				<fmt:formatNumber value="${projectExpendpay1.tax_deduction }" type="currency" pattern="###,###,##0.00"/>
+			</p>
+
+			<p>
+				<label>实际成本：</label>
+				<fmt:formatNumber value="${projectExpendpay1.actual_cost }" type="currency" pattern="###,###,##0.00"/>
+			</p>
 			<p>
 				<label>备注：</label>
 				${projectExpendpay1.description }

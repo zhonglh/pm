@@ -44,8 +44,22 @@
 
 				</li>
 				<li>
-					<label>累计已付金额：</label>
+					<label>已付金额累计：</label>
 					<b><fmt:formatNumber value="${projectExpend.pay_amount }" type="currency" pattern="###,###,##0.00"/></b>
+
+				</li>
+
+
+				<li>
+					<label>进项税额累计：</label>
+					<b><fmt:formatNumber value="${projectExpend.tax_deduction }" type="currency" pattern="###,###,##0.00"/></b>
+
+				</li>
+
+
+				<li>
+					<label>实际成本累计：</label>
+					<b><fmt:formatNumber value="${projectExpend.actual_cost }" type="currency" pattern="###,###,##0.00"/></b>
 
 				</li>
 
@@ -96,7 +110,9 @@
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
 				<th width="100">收到的发票号</th>	
 				<th width="100">实际支付日期</th>	
-				<th width="100">实付金额</th>	
+				<th width="100">实付金额</th>
+				<th width="100">进项税额</th>
+				<th width="100">实际成本</th>
 				<th width="200">备注</th>
 				<th width="80">制表人</th>
 				<th width="80">核单人</th>
@@ -114,6 +130,8 @@
 				<td>${projectExpendPay.invoiceno }</td>
 				<td><fmt:formatDate value="${projectExpendPay.pay_date }" pattern="yyyy-MM-dd"/></td>
 				<td align="right"><b><fmt:formatNumber value="${projectExpendPay.pay_amount }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td align="right"><b><fmt:formatNumber value="${projectExpendPay.tax_deduction }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td align="right"><b><fmt:formatNumber value="${projectExpendPay.actual_cost }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td>${projectExpendPay.description }</td>
 				<td>${projectExpendPay.build_username }</td>
 				<td>${projectExpendPay.verify_username }</td>

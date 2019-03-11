@@ -127,7 +127,7 @@
 
 		</ul>
 	</div>
-	<table class="table" width="1600" layoutH="135">
+	<table class="table" width="1700" layoutH="135">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
@@ -140,6 +140,8 @@
 				<th width="80">应付月份</th>
 				<th width="120">实际支付日期</th>
 				<th width="80">实付金额</th>
+				<th width="80">进项税额</th>
+				<th width="80">实际成本</th>
 				<th width="200">备注</th>
 				<th width="80">制表人</th>
 				<th width="80">核单人</th>
@@ -164,10 +166,17 @@
 				<td>${projectExpend.use_month }</td>
 				<td><fmt:formatDate value="${projectExpend.pay_date }" pattern="yyyy-MM-dd"/></td>				
 				<td align="right"><b>
-				<c:if  test="${projectExpend.pay_amount != 0 }">
-				<fmt:formatNumber value="${projectExpend.pay_amount }" type="currency" pattern="###,###,##0.00"/>
-				</c:if>
+					<fmt:formatNumber value="${projectExpend.pay_amount }" type="currency" pattern="###,###,##0.00"/>
 				</b></td>
+
+				<td align="right"><b>
+					<fmt:formatNumber value="${projectExpend.tax_deduction }" type="currency" pattern="###,###,##0.00"/>
+				</b></td>
+
+				<td align="right"><b>
+					<fmt:formatNumber value="${projectExpend.actual_cost }" type="currency" pattern="###,###,##0.00"/>
+				</b></td>
+
 				<td title="${projectExpend.description }">${projectExpend.description }</td>
 				<td>${projectExpend.build_username }</td>
 				<td>${projectExpend.verify_username }</td>

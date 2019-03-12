@@ -5,7 +5,7 @@
 <div class="pageContent">		
 			
 		<div class="pageFormContent" layoutH="56">	
-			<table class="list nowrap" width="5000" >
+			<table class="list nowrap" width="5100" >
 				<thead>
 					<tr>
 						<th width="180">导入说明</th>	
@@ -49,7 +49,7 @@
 						<th width="100">合同种类</th>
 						<th width="100">合同归属</th>
 						<th width="100">社保说明</th>
-						<th width="100">成本中心</th>
+						<th width="120">成本中心</th>
 						<th width="300">备注</th>
 					</tr>
 				</thead>

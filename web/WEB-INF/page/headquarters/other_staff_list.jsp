@@ -207,8 +207,8 @@
 				<th width="80">赡养老人</th>
 				<th width="80">继续教育</th>
 
-				<th width="80">成本中心</th>
-				<th width="600">备注</th>
+				<th width="120">成本中心</th>
+				<th width="550">备注</th>
 
 				<th width="100">创建人</th>
 				<th width="120">创建时间</th>

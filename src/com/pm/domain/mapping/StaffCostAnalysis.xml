@@ -154,7 +154,7 @@
 		SELECT business.*
 		FROM  tb_staff_costs sc 
 		inner join (
-			<include refid="StatisticsDetailMapping.all_data_21"/>	
+			<include refid="ProjectItemDetailMapping.all_data_21"/>
 		) business		
 		on sc.staff_id = business.type_id
 		where sc.staff_id = #{Statistics.staff_id}
@@ -191,9 +191,9 @@
 		SELECT business.*
 		FROM  tb_staff_costs sc 
 		inner join (
-			<include refid="StatisticsDetailMapping.all_data_31"/>	
+			<include refid="ProjectItemDetailMapping.all_data_31"/>
 			union all
-			<include refid="StatisticsDetailMapping.all_data_60"/>	
+			<include refid="ProjectItemDetailMapping.all_data_60"/>
 		) business		
 		on sc.staff_id = business.type_id
 		where sc.staff_id = #{Statistics.staff_id}

@@ -24,28 +24,28 @@
 			SELECT business.* , project.sales_userid as sales_id , staff.staff_name as sales_name
 			FROM (				
 				<if test="AnalysisSearch.x == 10">
-					<include refid="StatisticsDetailMapping.all_data_10"/>
+					<include refid="ProjectItemDetailMapping.all_data_10"/>
 				</if>
 				<if test="AnalysisSearch.x == 20">
-					<include refid="StatisticsDetailMapping.all_data_20"/>
+					<include refid="ProjectItemDetailMapping.all_data_20"/>
 				</if>
 				<if test="AnalysisSearch.x == 30">
-					<include refid="StatisticsDetailMapping.all_data_30"/>
+					<include refid="ProjectItemDetailMapping.all_data_30"/>
 				</if>
 				<if test="AnalysisSearch.x == 40">
-					<include refid="StatisticsDetailMapping.all_data_40"/>
+					<include refid="ProjectItemDetailMapping.all_data_40"/>
 				</if>
 				<if test="AnalysisSearch.x == 41">
-					<include refid="StatisticsDetailMapping.all_data_41"/>
+					<include refid="ProjectItemDetailMapping.all_data_41"/>
 				</if>
 				<if test="AnalysisSearch.x == 50">
-					<include refid="StatisticsDetailMapping.all_data_50"/>
+					<include refid="ProjectItemDetailMapping.all_data_50"/>
 				</if>
 				<if test="AnalysisSearch.x == 51">
-					<include refid="StatisticsDetailMapping.all_data_51"/>
+					<include refid="ProjectItemDetailMapping.all_data_51"/>
 				</if>
 				<if test="AnalysisSearch.x == 70">
-					<include refid="StatisticsDetailMapping.all_data_70"/>
+					<include refid="ProjectItemDetailMapping.all_data_70"/>
 				</if>
 		) business
 			left join vb_project project
@@ -159,19 +159,19 @@
 
 
 	<sql id="project_all_cost">
-		<include refid="StatisticsDetailMapping.all_data_51"/>
+		<include refid="ProjectItemDetailMapping.all_data_51"/>
 		union all
-		<include refid="StatisticsDetailMapping.all_data_30"/>
+		<include refid="ProjectItemDetailMapping.all_data_30"/>
 		union all
-		<include refid="StatisticsDetailMapping.all_data_40"/>
+		<include refid="ProjectItemDetailMapping.all_data_40"/>
 	</sql>
 
 	<sql id="depart_all_cost">
-		<include refid="DepartStatisticsDetailMapping.all_data_100"/>
+		<include refid="DepartItemDetailMapping.all_data_100"/>
 		union all
-		<include refid="DepartStatisticsDetailMapping.all_data_101"/>
+		<include refid="DepartItemDetailMapping.all_data_101"/>
 		union all
-		<include refid="DepartStatisticsDetailMapping.all_data_201"/>
+		<include refid="DepartItemDetailMapping.all_data_201"/>
 	</sql>
 
 

@@ -62,7 +62,7 @@
 		)values (
 		#{other_staff_cost_id}, #{staff_id},#{dept_id}, #{amount}, #{work_month}, #{pay_date},
 		#{insurance_amount}, #{pub_funds_amount}, #{personal_income_tax},#{other_amount},
-		 #{all_amount},#{salary_id}, #{attendance_id},#{work_days},,#{cost_center}
+		 #{all_amount},#{salary_id}, #{attendance_id},#{work_days},#{cost_center},
 		  #{build_datetime}, #{build_username},
 		#{build_userid}
 		)

@@ -101,7 +101,7 @@ public class ProjectExpendAction extends BaseAction {
 	public String doExcel(@RequestParam("image") MultipartFile file,HttpServletResponse res,HttpServletRequest request) throws  Exception{
 		
 		
-		List<String[]> list = getExcel(file,10,res,request);
+		List<String[]> list = getExcel(file,8,res,request);
 		
 		List<ProjectExpend> projectExpends = PubMethod.stringArray2List(list, ProjectExpend.class);
 		

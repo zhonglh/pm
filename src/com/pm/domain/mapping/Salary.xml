@@ -314,7 +314,7 @@
 
 		select staff_id ,
 		sum(should_salary) as before_accumulated_pretax_income,
-		(count(*) * 5000 )as before_accumulated_tax_deduction,
+		max(accumulated_tax_deduction) as before_accumulated_tax_deduction,
 		sum(children_education) as before_accumulated_children_education,
 		sum(continuing_education) as before_accumulated_continuing_education,
 		sum(housing_loans) as before_accumulated_housing_loans,

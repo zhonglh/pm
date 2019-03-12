@@ -792,6 +792,8 @@ public class SalaryGroupAction extends BaseAction {
 					salary.setBefore_accumulated_support_elderly(accumulatedSalary.getBefore_accumulated_support_elderly());
 					salary.setBefore_accumulated_deductions_cost(accumulatedSalary.getBefore_accumulated_deductions_cost());
 					salary.setAccumulated_prepaid_tax(accumulatedSalary.getAccumulated_prepaid_tax());
+				}else {
+					salary.setBefore_accumulated_tax_deduction(5000);
 				}
 
 			}

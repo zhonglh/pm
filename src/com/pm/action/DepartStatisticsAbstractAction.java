@@ -43,7 +43,7 @@ public class DepartStatisticsAbstractAction extends BaseAction {
     protected IRoleService roleService;
 
 
-    protected static String unconfirmedItem = "未确认收入";
+    protected static String unconfirmedItem = "未确认项目收入";
     protected static List<String> items = new ArrayList<String>();
     static{
         items.add("项目含税收入");

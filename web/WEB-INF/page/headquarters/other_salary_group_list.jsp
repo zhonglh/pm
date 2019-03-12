@@ -75,7 +75,7 @@
 		
 			<c:if test="${operation_insert != null && operation_insert != '' }">
 				<li><a class="add" href="${webroot}/OtherSalaryGroupAction.do?method=toEditFirst" mask="true" width="900" height="480" rel="add_salaryGroupAction"  target="dialog"><span>添加工资</span></a></li>
-				<li><a id="autoadd" title="确定上个月份的考勤和人员绩效都已经制作并审核通过了?" msg="可以一次性的制作所有总部人员上月份工资，前提是该部门上月的考勤和人员绩效都已经审核通过了，并且上月份的工资没有制作过。" target="ajaxTodo" href="${webroot}/OtherSalaryGroupAction.do?method=autoAddSalaryGroup" class="add btn-outline-msg"><span>一键添加</span></a></li>
+				<li><a id="autoadd" title="一键制作月工资" msg="可以一次性的制作所有总部人员单个月份工资，前提是该部门在该月的考勤和人员绩效都已经审核通过了，并且该月份的工资还没有制作过。" width="450" height="220" target="dialog" href="${webroot}/OtherSalaryGroupAction.do?method=toAutoAddSalaryGroup" class="add btn-outline-msg"><span>一键添加</span></a></li>
 			</c:if>
 			
 			

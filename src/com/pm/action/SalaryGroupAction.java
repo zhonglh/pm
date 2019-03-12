@@ -186,6 +186,25 @@ public class SalaryGroupAction extends BaseAction {
 		return "projectcosts/salary_group_list";
 		
 	}
+
+
+
+
+	/**
+	 * 跳转到选择月份的界面
+	 * @param res
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(params = "method=toAutoAddSalaryGroup")
+	public String toAutoAddSalaryGroup(HttpServletResponse res,HttpServletRequest request){
+
+		String salary_month_str = DateKit.fmtDateToStr(DateKit.addMonth(new Date(), -1),"yyyyMM");
+		salary_month_str = salary_month_str.intern();
+		int salary_month = Integer.parseInt(salary_month_str);
+		request.setAttribute("salary_month" , salary_month);
+		return "headquarters/salary_group_selectmonth";
+	}
 	
 	
 	/**
@@ -195,12 +214,10 @@ public class SalaryGroupAction extends BaseAction {
 	 * @return
 	 */
 	@RequestMapping(params = "method=autoAddSalaryGroup")
-	public String autoAddSalaryGroup(HttpServletResponse res,HttpServletRequest request){	
+	public String autoAddSalaryGroup(int salary_month,HttpServletResponse res,HttpServletRequest request){
 
 		User sessionUser = PubMethod.getUser(request);
-		String salary_month_str = DateKit.fmtDateToStr(DateKit.addMonth(new java.util.Date(), -1),"yyyyMM");
-		salary_month_str = salary_month_str.intern();
-		int salary_month = Integer.parseInt(salary_month_str); 
+
 		
 		UserPermit userPermit = new UserPermit();
 		userPermit.setRange(BusinessUtil.DATA_RANGE_ALL);
@@ -213,7 +230,7 @@ public class SalaryGroupAction extends BaseAction {
 				
 		//检查上个月的人事月报是否有未审核的
 		if(personnelMonthlyBaseService.isExistNotCheckByWorkAttendance(null, salary_month)){
-			return this.ajaxForwardError(request, "操作错误，上个月的人事月报还有未审核的！",true);
+			return this.ajaxForwardError(request, "操作错误，该月份的人事月报还有未审核的！",true);
 		}
 		
 		WorkAttendance workAttendance = new WorkAttendance();
@@ -222,7 +239,7 @@ public class SalaryGroupAction extends BaseAction {
 		
 		Pager<WorkAttendance> waPager = workAttendanceService.queryWorkAttendanceGroup(workAttendance, userPermit, PubMethod.getPagerByAll(WorkAttendance.class));
 		if(waPager == null || waPager.getResultList() == null || waPager.getResultList().isEmpty()){
-			return this.ajaxForwardError(request, "操作错误，上个月的考勤没有已审核通过的！",true);
+			return this.ajaxForwardError(request, "操作错误，该月份的考勤没有已审核通过的！",true);
 		}
 
 
@@ -274,7 +291,7 @@ public class SalaryGroupAction extends BaseAction {
 			
 			pager= salaryService.querySalaryGroup(searchSalary, userPermit,PubMethod.getPagerByAll( Salary.class));
 			if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
-				return this.ajaxForwardError(request, searchSalary.getSalary_month()+ " 的工资记录已经制作，如果继续将会覆盖之前的工资记录！");
+				return this.ajaxForwardError(request, searchSalary.getSalary_month()+ " 的工资记录已经制作，继续将会覆盖之前的工资记录！");
 			}
 			
 			for(List<Salary> list : lists){

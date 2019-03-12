@@ -65,8 +65,10 @@
 				<c:forEach var="data"  varStatus="status2" items="${datas}">				
 					<c:if test="${status2.index == 0}">											
 						<td>						
-							<c:if test="${data.itemFormatter == 'B' }"><b></c:if>	
+							<c:if test="${data.itemFormatter == 'B' }"><b></c:if>
+							<c:if test="${data.itemFormatter == 'red' }"><font color="red"></c:if>
 							${data.itemName }
+							<c:if test="${data.itemFormatter == 'red' }"></font></c:if>
 							<c:if test="${data.itemFormatter == 'B' }"></b></c:if>		
 						</td>									
 					</c:if>					
@@ -78,7 +80,9 @@
 							</c:if>	
 						
 							<c:if test="${data.itemFormatter == 'B' }"><b></c:if>
-							<fmt:formatNumber value="${data.val }" type="currency" pattern="###,###,##0.00"/>${data.formatter }
+								<c:if test="${data.itemFormatter == 'red' }"><font color="red"></c:if>
+									<fmt:formatNumber value="${data.val }" type="currency" pattern="###,###,##0.00"/>${data.formatter }
+								<c:if test="${data.itemFormatter == 'red' }"></font></c:if>
 							<c:if test="${data.itemFormatter == 'B' }"></b></c:if>	
 							
 							<c:if test="${data.url != null && data.url != '' }">

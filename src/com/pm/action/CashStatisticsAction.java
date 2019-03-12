@@ -58,8 +58,24 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 	 */
 	@Override
 	protected List<DepartStatisticsItem> getGeneralIncome(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
-		return this.getReceivedPayments(searchStatistics, depts, userPermit, searchStr);
+		return this.getReceivedPayments10(searchStatistics, depts, userPermit, searchStr);
 	}
+
+
+	/**
+	 * 未确认收入
+	 *
+	 * @param searchStatistics
+	 * @param depts
+	 * @param userPermit
+	 * @param searchStr
+	 * @return
+	 */
+	@Override
+	protected List<DepartStatisticsItem> getUnconfirmedIncome(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+		return super.getReceivedPayments12(searchStatistics, depts, userPermit, searchStr);
+	}
+
 
 	/**
 	 * 项目付款信息

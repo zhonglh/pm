@@ -6,7 +6,6 @@ import com.pm.dao.IAnalysisDao;
 import com.pm.util.constant.EnumStaticType;
 import com.pm.vo.AnalysisVo;
 import com.pm.vo.AnalysisSearch;
-import com.pm.vo.AnalysisVo;
 import com.pm.vo.UserPermit;
 import org.springframework.stereotype.Component;
 
@@ -114,7 +113,7 @@ public class AnalysisDaoImpl extends BatisDao implements IAnalysisDao{
         map.put(AnalysisSearch.class.getSimpleName() , analysisSearch);
         map.put(UserPermit.class.getSimpleName() , userPermit);
         String sql = "AnalysisMapping.queryXDepartCostAnalysis";
-        analysisSearch.setX(EnumStaticType.S200.getCode());
+        analysisSearch.setX(EnumStaticType.S201.getCode());
         return this.querySingle(sql, AnalysisVo.class, map);
     }
 

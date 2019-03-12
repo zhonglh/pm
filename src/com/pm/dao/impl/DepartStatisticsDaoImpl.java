@@ -20,7 +20,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 
 
 	@Override
-	public Pager<DepartStatisticsItem> queryMonthlyStatement(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+	public Pager<DepartStatisticsItem> queryMonthlyStatement20(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
 		statistics.setX("20");
 		statistics.setGroupBy("dept_id");
@@ -28,14 +28,38 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
 	}
 
+
 	@Override
-	public Pager<DepartStatisticsItem> queryReceivedPayments(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+	public Pager<DepartStatisticsItem> queryMonthlyStatement22(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
+		statistics.setX("22");
+		statistics.setGroupBy("dept_id");
+		statistics.setGroupSelect("dept_id as deptId");
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+	}
+
+
+
+	@Override
+	public Pager<DepartStatisticsItem> queryReceivedPayments10(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
 		statistics.setX("10");
 		statistics.setGroupBy("dept_id");
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
 	}
+
+	@Override
+	public Pager<DepartStatisticsItem> queryReceivedPayments12(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
+		statistics.setX("12");
+		statistics.setGroupBy("dept_id");
+		statistics.setGroupSelect("dept_id as deptId");
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+	}
+
+
+
 
 	@Override
 	public Pager<DepartStatisticsItem> queryProjectStaffCosts(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {

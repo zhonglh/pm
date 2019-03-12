@@ -25,14 +25,24 @@ public class DepartStatisticsServiceImpl implements IDepartStatisticsService {
 
 
 	@Override
-	public Pager<DepartStatisticsItem> queryMonthlyStatement(Statistics statistics, UserPermit userPermit, Pager<DepartStatisticsItem> pager){
-		return departStatisticsDao.queryMonthlyStatement(statistics, userPermit, pager);
+	public Pager<DepartStatisticsItem> queryMonthlyStatement20(Statistics statistics, UserPermit userPermit, Pager<DepartStatisticsItem> pager){
+		return departStatisticsDao.queryMonthlyStatement20(statistics, userPermit, pager);
+	}
+
+	@Override
+	public Pager<DepartStatisticsItem> queryMonthlyStatement22(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager){
+		return departStatisticsDao.queryMonthlyStatement22(statistics, userPermit, pager);
 	}
 
 
 	@Override
-	public Pager<DepartStatisticsItem> queryReceivedPayments(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
-		return departStatisticsDao.queryReceivedPayments(statistics, userPermit, pager);
+	public Pager<DepartStatisticsItem> queryReceivedPayments10(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		return departStatisticsDao.queryReceivedPayments10(statistics, userPermit, pager);
+	}
+
+	@Override
+	public Pager<DepartStatisticsItem> queryReceivedPayments12(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		return departStatisticsDao.queryReceivedPayments12(statistics, userPermit, pager);
 	}
 
 	@Override

@@ -64,6 +64,12 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 			searchStr += "&month2=" + searchStatistics.getMonth2();
 		}
 
+
+
+		//未核实收入
+		List<DepartStatisticsItem> listA = getUnconfirmedIncome(searchStatistics, depts, userPermit, searchStr);
+		list.add(listA);
+
 		//处理项目含税总收入 ,  回款总计
 		List<DepartStatisticsItem> list0 = getGeneralIncome(searchStatistics, depts, userPermit, searchStr);
 		list.add(list0);
@@ -315,6 +321,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 	}
 
 
+
 	/**
 	 * 项目总收入
 	 *
@@ -325,8 +332,23 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 	 * @return
 	 */
 	protected List<DepartStatisticsItem> getGeneralIncome(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
-		return super.queryMonthlyStatement(searchStatistics, depts, userPermit, searchStr);
+		return super.queryMonthlyStatement20(searchStatistics, depts, userPermit, searchStr);
 	}
+
+	/**
+	 * 未确认收入
+	 *
+	 * @param searchStatistics
+	 * @param depts
+	 * @param userPermit
+	 * @param searchStr
+	 * @return
+	 */
+	protected List<DepartStatisticsItem> getUnconfirmedIncome(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+		return super.queryMonthlyStatement22(searchStatistics, depts, userPermit, searchStr);
+	}
+
+
 
 	/**
 	 * 项目付款信息

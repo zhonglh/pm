@@ -12,6 +12,7 @@ import com.pm.service.IDicDataService;
 import com.pm.service.IRoleService;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.EnumDicType;
+import com.pm.util.excel.EnumCellFormat;
 import com.pm.vo.DepartStatisticsItem;
 import com.pm.vo.UserPermit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class DepartStatisticsAbstractAction extends BaseAction {
     protected IRoleService roleService;
 
 
+    protected static String unconfirmedItem = "未确认收入";
     protected static List<String> items = new ArrayList<String>();
     static{
         items.add("项目含税收入");
@@ -62,8 +64,6 @@ public class DepartStatisticsAbstractAction extends BaseAction {
         items.add("部门投入产出比");
         items.add("部门利润目标");
         items.add("目标完成情况");
-
-
     }
 
     /**
@@ -261,11 +261,34 @@ public class DepartStatisticsAbstractAction extends BaseAction {
      * @param searchStr
      * @return
      */
-    protected List<DepartStatisticsItem> queryMonthlyStatement(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+    protected List<DepartStatisticsItem> queryMonthlyStatement20(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
         List<DepartStatisticsItem> receivedPayments =
-                departStatisticsService.queryMonthlyStatement(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+                departStatisticsService.queryMonthlyStatement20(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
         Map<String, DepartStatisticsItem> map0 = PubMethod.list2Map(receivedPayments);
         return handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=20"+searchStr,"");
+    }
+
+
+    /**
+     * 项目未确认结算单统计
+     * @param searchStatistics
+     * @param depts
+     * @param userPermit
+     * @param searchStr
+     * @return
+     */
+    protected List<DepartStatisticsItem> queryMonthlyStatement22(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+        List<DepartStatisticsItem> receivedPayments =
+                departStatisticsService.queryMonthlyStatement22(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+        Map<String, DepartStatisticsItem> map0 = PubMethod.list2Map(receivedPayments);
+        List<DepartStatisticsItem> list =  handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=22"+searchStr,"");
+        if(list != null && !list.isEmpty()){
+            for(DepartStatisticsItem dsi : list){
+                dsi.setItemName(unconfirmedItem);
+                dsi.setFormatter(EnumCellFormat.red.getCode());
+            }
+        }
+        return list;
     }
 
 
@@ -277,11 +300,33 @@ public class DepartStatisticsAbstractAction extends BaseAction {
      * @param searchStr
      * @return
      */
-    protected List<DepartStatisticsItem> getReceivedPayments(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+    protected List<DepartStatisticsItem> getReceivedPayments10(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
         List<DepartStatisticsItem> receivedPayments =
-                departStatisticsService.queryReceivedPayments(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+                departStatisticsService.queryReceivedPayments10(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
         Map<String, DepartStatisticsItem> map0 = PubMethod.list2Map(receivedPayments);
         return handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=10"+searchStr,"");
+    }
+
+    /**
+     * 项目未确认回款统计
+     * @param searchStatistics
+     * @param depts
+     * @param userPermit
+     * @param searchStr
+     * @return
+     */
+    protected List<DepartStatisticsItem> getReceivedPayments12(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+        List<DepartStatisticsItem> receivedPayments =
+                departStatisticsService.queryReceivedPayments12(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+        Map<String, DepartStatisticsItem> map0 = PubMethod.list2Map(receivedPayments);
+        List<DepartStatisticsItem> list =  handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=12"+searchStr,"");
+        if(list != null && !list.isEmpty()){
+            for(DepartStatisticsItem dsi : list){
+                dsi.setItemName(unconfirmedItem);
+                dsi.setFormatter(EnumCellFormat.red.getCode());
+            }
+        }
+        return list;
     }
 
 

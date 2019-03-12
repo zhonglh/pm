@@ -27,7 +27,8 @@ public interface IDepartStatisticsService {
 	 * @param pager
 	 * @return
 	 */
-	public Pager<DepartStatisticsItem> queryMonthlyStatement(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+	public Pager<DepartStatisticsItem> queryMonthlyStatement20(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+	public Pager<DepartStatisticsItem> queryMonthlyStatement22(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
 
 
 	/**
@@ -37,7 +38,8 @@ public interface IDepartStatisticsService {
 	 * @param pager
 	 * @return
 	 */
-	public Pager<DepartStatisticsItem> queryReceivedPayments(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);	
+	public Pager<DepartStatisticsItem> queryReceivedPayments10(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+	public Pager<DepartStatisticsItem> queryReceivedPayments12(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
 	
 	/**
 	 * 项目人员成本统计

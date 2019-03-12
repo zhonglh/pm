@@ -35,7 +35,6 @@
 		<if test="AnalysisSearch.x == 80">
 			<include refid="DepartItemDetailMapping.all_data_80"/>
 		</if>
-
 		<if test="AnalysisSearch.x == 100">
 			<include refid="DepartItemDetailMapping.all_data_100"/>
 		</if>

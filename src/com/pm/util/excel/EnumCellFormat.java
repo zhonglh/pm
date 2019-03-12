@@ -6,6 +6,9 @@ package com.pm.util.excel;
 
 public enum EnumCellFormat {
 
+
+    red("red" , "红色") ,
+
     bold("B" , "粗体") ,
 
     percent("%" , "百分比") ,

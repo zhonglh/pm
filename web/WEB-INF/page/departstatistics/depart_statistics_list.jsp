@@ -66,10 +66,13 @@
 					<c:if test="${status2.index == 0}">											
 						<td>						
 							<c:if test="${data.itemFormatter == 'B' }"><b></c:if>
+									${data.itemName }
+							<c:if test="${data.itemFormatter == 'B' }"></b></c:if>
+
+
 							<c:if test="${data.itemFormatter == 'red' }"><font color="red"></c:if>
-							${data.itemName }
+								${data.itemName }
 							<c:if test="${data.itemFormatter == 'red' }"></font></c:if>
-							<c:if test="${data.itemFormatter == 'B' }"></b></c:if>		
 						</td>									
 					</c:if>					
 					<c:if test="${status2.index > 0}">										
@@ -77,14 +80,18 @@
 							
 							<c:if test="${data.url != null && data.url != '' }">
 								<a class="add" href="${webroot}/${data.url}" mask="true" width="850" height="520" rel="detail" title="明细"  target="dialog"><u>
-							</c:if>	
+							</c:if>
+
+
 						
 							<c:if test="${data.itemFormatter == 'B' }"><b></c:if>
 								<c:if test="${data.itemFormatter == 'red' }"><font color="red"></c:if>
-									<fmt:formatNumber value="${data.val }" type="currency" pattern="###,###,##0.00"/>${data.formatter }
+								<fmt:formatNumber value="${data.val }" type="currency" pattern="###,###,##0.00"/>
 								<c:if test="${data.itemFormatter == 'red' }"></font></c:if>
-							<c:if test="${data.itemFormatter == 'B' }"></b></c:if>	
-							
+							<c:if test="${data.itemFormatter == 'B' }"></b></c:if>
+
+
+
 							<c:if test="${data.url != null && data.url != '' }">
 								</u></a>
 							</c:if>	

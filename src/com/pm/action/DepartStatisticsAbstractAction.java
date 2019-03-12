@@ -285,7 +285,7 @@ public class DepartStatisticsAbstractAction extends BaseAction {
         if(list != null && !list.isEmpty()){
             for(DepartStatisticsItem dsi : list){
                 dsi.setItemName(unconfirmedItem);
-                dsi.setFormatter(EnumCellFormat.red.getCode());
+                dsi.setItemFormatter(EnumCellFormat.red.getCode());
             }
         }
         return list;
@@ -323,7 +323,7 @@ public class DepartStatisticsAbstractAction extends BaseAction {
         if(list != null && !list.isEmpty()){
             for(DepartStatisticsItem dsi : list){
                 dsi.setItemName(unconfirmedItem);
-                dsi.setFormatter(EnumCellFormat.red.getCode());
+                dsi.setItemFormatter(EnumCellFormat.red.getCode());
             }
         }
         return list;

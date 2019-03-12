@@ -203,7 +203,7 @@ public class SalaryGroupAction extends BaseAction {
 		salary_month_str = salary_month_str.intern();
 		int salary_month = Integer.parseInt(salary_month_str);
 		request.setAttribute("salary_month" , salary_month);
-		return "headquarters/salary_group_selectmonth";
+		return "projectcosts/salary_group_selectmonth";
 	}
 	
 	
@@ -304,7 +304,7 @@ public class SalaryGroupAction extends BaseAction {
 			
 		}
 
-		return this.ajaxForwardSuccess(request, rel, false);
+		return this.ajaxForwardSuccess(request, rel, true);
 	}
 	
 	

@@ -338,6 +338,29 @@ public class DepartStatisticsAbstractAction extends BaseAction {
 
 
     /**
+     * 项目未确认回款统计 ,  月份按照收款日期
+     * @param searchStatistics
+     * @param depts
+     * @param userPermit
+     * @param searchStr
+     * @return
+     */
+    protected List<DepartStatisticsItem> getReceivedPayments14(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+        List<DepartStatisticsItem> receivedPayments =
+                departStatisticsService.queryReceivedPayments14(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+        Map<String, DepartStatisticsItem> map0 = PubMethod.list2Map(receivedPayments);
+        List<DepartStatisticsItem> list =  handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=14"+searchStr,"");
+        if(list != null && !list.isEmpty()){
+            for(DepartStatisticsItem dsi : list){
+                dsi.setItemName(unconfirmedItem4RP);
+                dsi.setItemFormatter(EnumCellFormat.red.getCode());
+            }
+        }
+        return list;
+    }
+
+
+    /**
      * 项目人工成本 , 所有成本 ，  工资+税+社保
      * @param searchStatistics
      * @param depts

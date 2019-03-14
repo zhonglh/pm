@@ -41,6 +41,12 @@
 				<if test="Statistics.x == 12">
 					<include refid="ProjectItemDetailMapping.all_data_12"/>
 				</if>
+				<if test="Statistics.x == 13">
+					<include refid="ProjectItemDetailMapping.all_data_13"/>
+				</if>
+				<if test="Statistics.x == 14">
+					<include refid="ProjectItemDetailMapping.all_data_14"/>
+				</if>
 				<if test="Statistics.x == 20">
 					<include refid="ProjectItemDetailMapping.all_data_20"/>
 				</if>
@@ -128,6 +134,12 @@
 				</if>
 				<if test="Statistics.x == 12">
 					<include refid="ProjectItemDetailMapping.all_data_12"/>
+				</if>
+				<if test="Statistics.x == 13">
+					<include refid="ProjectItemDetailMapping.all_data_13"/>
+				</if>
+				<if test="Statistics.x == 14">
+					<include refid="ProjectItemDetailMapping.all_data_14"/>
 				</if>
 				<if test="Statistics.x == 20">
 					<include refid="ProjectItemDetailMapping.all_data_20"/>

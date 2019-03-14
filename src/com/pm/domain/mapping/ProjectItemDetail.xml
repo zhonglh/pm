@@ -19,6 +19,10 @@
 		union all
 		<include refid="ProjectItemDetailMapping.all_data_12"/>
 		union all
+		<include refid="ProjectItemDetailMapping.all_data_13"/>
+		union all
+		<include refid="ProjectItemDetailMapping.all_data_14"/>
+		union all
 		<include refid="ProjectItemDetailMapping.all_data_20"/>
 		union all
 		<include refid="ProjectItemDetailMapping.all_data_22"/>
@@ -110,6 +114,22 @@
 		where  receivedPayment.verify_userid is not null
 	</sql>
 
+
+	<!-- 未核实回款 -->
+	<sql id="all_data_14">
+		select receivedPayment.receive_payment_id as obj_id ,
+		project.project_id,project.project_name,project.project_no	,project.deptid as dept_id,
+		'收入' as amount_type, '未核实到款记录' as business_type,	  '14' as business_sort,
+		receivedPayment.receive_payment_amount as amount,
+		DATE_FORMAT(receivedPayment.receive_payment_datetime,'%Y%m') as  use_month,  receivedPayment.receive_payment_datetime as pay_date,
+		dd_rai.dic_data_name as  otherdesc, receivedPayment.description, receivedPayment.payment_unit as business_name	,
+		receivedPayment.receivable_accounts_item_id as type_id 	, receivedPayment.build_datetime  , '' as staff_id
+		from tb_received_payment receivedPayment
+		INNER JOIN vb_project project
+		on receivedPayment.project_id = project.project_id
+		INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id
+		where  receivedPayment.verify_userid is  null
+	</sql>
 
 
 

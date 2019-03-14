@@ -66,6 +66,14 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
 	}
+	@Override
+	public Pager<DepartStatisticsItem> queryReceivedPayments14(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
+		statistics.setX(EnumStaticType.S14.getCode());
+		statistics.setGroupBy("dept_id");
+		statistics.setGroupSelect("dept_id as deptId");
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+	}
 
 
 

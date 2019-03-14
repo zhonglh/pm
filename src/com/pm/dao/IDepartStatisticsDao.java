@@ -29,6 +29,7 @@ public interface IDepartStatisticsDao {
 	public Pager<DepartStatisticsItem> queryReceivedPayments10(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
 	public Pager<DepartStatisticsItem> queryReceivedPayments12(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
 	public Pager<DepartStatisticsItem> queryReceivedPayments13(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+	public Pager<DepartStatisticsItem> queryReceivedPayments14(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
 	
 	/**
 	 * 项目人员成本

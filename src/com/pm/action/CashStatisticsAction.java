@@ -56,7 +56,7 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 	 */
 	@Override
 	protected List<DepartStatisticsItem> getUnconfirmedIncome(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
-		return super.getReceivedPayments12(searchStatistics, depts, userPermit, searchStr);
+		return super.getReceivedPayments14(searchStatistics, depts, userPermit, searchStr);
 	}
 
 

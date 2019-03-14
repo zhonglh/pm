@@ -20,7 +20,7 @@
 		from tb_reimburse_costs rc
 		INNER JOIN vb_project project 
 		on rc.project_id = project.project_id 
-		left JOIN vb_all_staff staff
+		left JOIN tb_staff_costs staff
 		on rc.staff_id = staff.staff_id 
 		left join ts_dept dept 
 		on project.deptid = dept.dept_id 			
@@ -117,7 +117,7 @@
 		from tb_reimburse_costs rc
 		INNER JOIN vb_project project 
 		on rc.project_id = project.project_id 
-		left JOIN vb_all_staff staff
+		left JOIN tb_staff_costs staff
 		on rc.staff_id = staff.staff_id 
 		left join ts_dept dept 
 		on project.deptid = dept.dept_id 		

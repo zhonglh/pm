@@ -69,7 +69,7 @@
 							 	select a.project_id, p.project_name, c.staff_id, '3' as type,
 							  	a.use_month as month1 ,
 								a.amount
-								from tb_reimburse_costs a ,	vb_project p , vb_all_staff c
+								from tb_reimburse_costs a ,	vb_project p , tb_staff_costs c
 								where a.verify_userid is not NULL 	
 								and a.project_id = p.project_id 
 								and a.staff_id = c.staff_id 

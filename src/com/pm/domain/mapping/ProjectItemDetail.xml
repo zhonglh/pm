@@ -28,7 +28,9 @@
 		<include refid="ProjectItemDetailMapping.all_data_40"/>
 		union all			
 		<include refid="ProjectItemDetailMapping.all_data_41"/>
-		union all			
+		union all
+		<include refid="ProjectItemDetailMapping.all_data_42"/>
+		union all
 		<include refid="ProjectItemDetailMapping.all_data_50"/>
 		union all			
 		<include refid="ProjectItemDetailMapping.all_data_51"/>
@@ -209,6 +211,22 @@
 			INNER JOIN vb_project project 
 			on pe.project_id = project.project_id 
 			WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pay_date is not null
+	</sql>
+
+
+
+	<sql id="all_data_42">
+		select pe.project_expend_id as obj_id,
+		pe.project_id, project_name,project_no, project.deptid as dept_id,
+		'成本' as amount_type, '项目付款信息' as business_type, '42' as business_sort,
+		pep.actual_cost as amount,DATE_FORMAT(pep.pay_date,'%Y%m'), pep.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
+		sub_contractor_name as business_name	, '' as type_id , pe.build_datetime , '' as staff_id
+		from tb_project_expend_pay pep
+		inner join tb_project_expend pe
+		on pep.project_expend_id = pe.project_expend_id
+		INNER JOIN vb_project project
+		on pe.project_id = project.project_id
+		WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pep.pay_date is not null
 	</sql>
 
 

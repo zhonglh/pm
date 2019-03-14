@@ -38,6 +38,9 @@
 				<if test="AnalysisSearch.x == 41">
 					<include refid="ProjectItemDetailMapping.all_data_41"/>
 				</if>
+				<if test="AnalysisSearch.x == 42">
+					<include refid="ProjectItemDetailMapping.all_data_42"/>
+				</if>
 				<if test="AnalysisSearch.x == 50">
 					<include refid="ProjectItemDetailMapping.all_data_50"/>
 				</if>

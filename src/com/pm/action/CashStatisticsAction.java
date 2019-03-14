@@ -71,7 +71,7 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 	 */
 	@Override
 	protected List<DepartStatisticsItem> getProjectExpends(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
-		return super.getProjectExpends41(searchStatistics, depts, userPermit, searchStr);
+		return super.getProjectExpends42(searchStatistics, depts, userPermit, searchStr);
 	}
 
 

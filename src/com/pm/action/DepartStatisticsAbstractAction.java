@@ -43,7 +43,8 @@ public class DepartStatisticsAbstractAction extends BaseAction {
     protected IRoleService roleService;
 
 
-    protected static String unconfirmedItem = "未确认项目收入";
+    protected static String unconfirmedItem4RP = "还未核单的结算额";
+    protected static String unconfirmedItem4MS = "还未核单的项目收入";
     protected static List<String> items = new ArrayList<String>();
     static{
         items.add("项目含税收入");
@@ -284,7 +285,7 @@ public class DepartStatisticsAbstractAction extends BaseAction {
         List<DepartStatisticsItem> list =  handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=22"+searchStr,"");
         if(list != null && !list.isEmpty()){
             for(DepartStatisticsItem dsi : list){
-                dsi.setItemName(unconfirmedItem);
+                dsi.setItemName(unconfirmedItem4MS);
                 dsi.setItemFormatter(EnumCellFormat.red.getCode());
             }
         }
@@ -322,7 +323,7 @@ public class DepartStatisticsAbstractAction extends BaseAction {
         List<DepartStatisticsItem> list =  handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=12"+searchStr,"");
         if(list != null && !list.isEmpty()){
             for(DepartStatisticsItem dsi : list){
-                dsi.setItemName(unconfirmedItem);
+                dsi.setItemName(unconfirmedItem4RP);
                 dsi.setItemFormatter(EnumCellFormat.red.getCode());
             }
         }
@@ -401,6 +402,13 @@ public class DepartStatisticsAbstractAction extends BaseAction {
                 departStatisticsService.queryProjectExpends41(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
         Map<String, DepartStatisticsItem> map100 = PubMethod.list2Map(projectExpends);
         return handleStatistics( depts,  map100,10,"/DepartStatisticsAction.do?method=queryCostsDetail&x=41"+searchStr,"B");
+    }
+
+    protected List<DepartStatisticsItem> getProjectExpends42(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+        List<DepartStatisticsItem> projectExpends =
+                departStatisticsService.queryProjectExpends42(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+        Map<String, DepartStatisticsItem> map100 = PubMethod.list2Map(projectExpends);
+        return handleStatistics( depts,  map100,10,"/DepartStatisticsAction.do?method=queryCostsDetail&x=42"+searchStr,"B");
     }
 
 

@@ -65,6 +65,7 @@ public interface IDepartStatisticsDao {
 	 */
 	public Pager<DepartStatisticsItem> queryProjectExpends40(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
 	public Pager<DepartStatisticsItem> queryProjectExpends41(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+	public Pager<DepartStatisticsItem> queryProjectExpends42(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
 
 	/**
 	 * 销售费用

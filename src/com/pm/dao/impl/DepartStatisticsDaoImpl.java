@@ -1,5 +1,6 @@
 package com.pm.dao.impl;
 
+import com.pm.util.constant.EnumStaticType;
 import org.springframework.stereotype.Component;
 
 import com.common.beans.Pager;
@@ -43,7 +44,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	@Override
 	public Pager<DepartStatisticsItem> queryReceivedPayments10(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
-		statistics.setX("10");
+		statistics.setX(EnumStaticType.S10.getCode());
 		statistics.setGroupBy("dept_id");
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
@@ -52,7 +53,15 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	@Override
 	public Pager<DepartStatisticsItem> queryReceivedPayments12(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
-		statistics.setX("12");
+		statistics.setX(EnumStaticType.S12.getCode());
+		statistics.setGroupBy("dept_id");
+		statistics.setGroupSelect("dept_id as deptId");
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+	}
+	@Override
+	public Pager<DepartStatisticsItem> queryReceivedPayments13(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
+		statistics.setX(EnumStaticType.S13.getCode());
 		statistics.setGroupBy("dept_id");
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
@@ -100,7 +109,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	@Override
 	public Pager<DepartStatisticsItem> queryProjectExpends41(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
-		statistics.setX("41");
+		statistics.setX(EnumStaticType.S41.getCode());
 		statistics.setGroupBy("dept_id");
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
@@ -108,7 +117,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	@Override
 	public Pager<DepartStatisticsItem> queryProjectExpends42(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryXStaistics";
-		statistics.setX("42");
+		statistics.setX(EnumStaticType.S42.getCode());
 		statistics.setGroupBy("dept_id");
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
@@ -119,7 +128,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	@Override
 	public Pager<DepartStatisticsItem> querySalseCosts(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryDepartCostStaistics";
-		statistics.setX("100");
+		statistics.setX(EnumStaticType.S100.getCode());
 		statistics.setGroupBy("dept_id");
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
@@ -128,7 +137,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	@Override
 	public Pager<DepartStatisticsItem> querySalseCostsDetail(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryDepartCostStaistics";
-		statistics.setX("100");
+		statistics.setX(EnumStaticType.S100.getCode());
 		statistics.setGroupBy("dept_id,type_id");
 		statistics.setGroupSelect("dept_id as deptId,type_id as itemId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
@@ -137,7 +146,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	@Override
 	public Pager<DepartStatisticsItem> queryDepartCosts(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryDepartCostStaistics";
-		statistics.setX("101");
+		statistics.setX(EnumStaticType.S101.getCode());
 		statistics.setGroupBy("dept_id");
 		statistics.setGroupSelect("dept_id as deptId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
@@ -146,7 +155,7 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 	@Override
 	public Pager<DepartStatisticsItem> queryDepartCostsDetail(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		String sql = "DepartStatisticsDetailMapping.queryDepartCostStaistics";
-		statistics.setX("101");
+		statistics.setX(EnumStaticType.S101.getCode());
 		statistics.setGroupBy("dept_id,type_id");
 		statistics.setGroupSelect("dept_id as deptId,type_id as itemId");
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);

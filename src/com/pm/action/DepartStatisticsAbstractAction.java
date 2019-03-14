@@ -307,6 +307,12 @@ public class DepartStatisticsAbstractAction extends BaseAction {
         Map<String, DepartStatisticsItem> map0 = PubMethod.list2Map(receivedPayments);
         return handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=10"+searchStr,"");
     }
+    protected List<DepartStatisticsItem> getReceivedPayments13(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+        List<DepartStatisticsItem> receivedPayments =
+                departStatisticsService.queryReceivedPayments13(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+        Map<String, DepartStatisticsItem> map0 = PubMethod.list2Map(receivedPayments);
+        return handleStatistics( depts,  map0,0,"/DepartStatisticsAction.do?method=queryCostsDetail&x=13"+searchStr,"");
+    }
 
     /**
      * 项目未确认回款统计

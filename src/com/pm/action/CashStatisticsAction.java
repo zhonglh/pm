@@ -41,7 +41,7 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 	 */
 	@Override
 	protected List<DepartStatisticsItem> getGeneralIncome(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
-		return this.getReceivedPayments10(searchStatistics, depts, userPermit, searchStr);
+		return this.getReceivedPayments13(searchStatistics, depts, userPermit, searchStr);
 	}
 
 

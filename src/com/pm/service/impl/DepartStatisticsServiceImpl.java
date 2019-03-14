@@ -44,6 +44,10 @@ public class DepartStatisticsServiceImpl implements IDepartStatisticsService {
 	public Pager<DepartStatisticsItem> queryReceivedPayments12(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
 		return departStatisticsDao.queryReceivedPayments12(statistics, userPermit, pager);
 	}
+	@Override
+	public Pager<DepartStatisticsItem> queryReceivedPayments13(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		return departStatisticsDao.queryReceivedPayments13(statistics, userPermit, pager);
+	}
 
 	@Override
 	public Pager<DepartStatisticsItem> queryProjectStaffCosts(Statistics statistics, UserPermit userPermit,	Pager<DepartStatisticsItem> pager) {

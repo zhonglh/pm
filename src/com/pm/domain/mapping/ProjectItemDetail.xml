@@ -92,7 +92,29 @@
 		INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id
 		where  receivedPayment.verify_userid is  null
 	</sql>
-	
+
+
+	<!-- 回款 -->
+	<sql id="all_data_13">
+		select receivedPayment.receive_payment_id as obj_id ,
+		project.project_id,project.project_name,project.project_no	,project.deptid as dept_id,
+		'收入' as amount_type, '到款记录' as business_type,	  '10' as business_sort,
+		receivedPayment.receive_payment_amount as amount,
+		DATE_FORMAT(receivedPayment.receive_payment_datetime,'%Y%m') as  use_month,  receivedPayment.receive_payment_datetime as pay_date,
+		dd_rai.dic_data_name as  otherdesc, receivedPayment.description, receivedPayment.payment_unit as business_name	,
+		receivedPayment.receivable_accounts_item_id as type_id 	, receivedPayment.build_datetime  , '' as staff_id
+		from tb_received_payment receivedPayment
+		INNER JOIN vb_project project
+		on receivedPayment.project_id = project.project_id
+		INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id
+		where  receivedPayment.verify_userid is not null
+	</sql>
+
+
+
+
+
+
 	<!-- 结算单 -->
 	<sql id="all_data_20">	
 			SELECT ms.monthly_statement_id as obj_id,
@@ -219,7 +241,8 @@
 		select pe.project_expend_id as obj_id,
 		pe.project_id, project_name,project_no, project.deptid as dept_id,
 		'成本' as amount_type, '项目付款信息' as business_type, '42' as business_sort,
-		pep.actual_cost as amount,DATE_FORMAT(pep.pay_date,'%Y%m'), pep.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
+		pep.actual_cost as amount,DATE_FORMAT(pep.pay_date,'%Y%m') as use_month, pep.pay_date ,
+		pep.invoiceno as  otherdesc,pep.description,
 		sub_contractor_name as business_name	, '' as type_id , pe.build_datetime , '' as staff_id
 		from tb_project_expend_pay pep
 		inner join tb_project_expend pe

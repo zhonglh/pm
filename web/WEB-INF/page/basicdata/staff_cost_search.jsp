@@ -50,11 +50,11 @@
 				<th width="60">员工工号</th>
 				<th width="80">员工名称</th>
 				<th width="110">入职时间</th>
-				<th width="90">人员总成本</th>
+				<%--<th width="90">人员总成本</th>
 				<th width="100">客户最新报价</th>
 				<th width="70">基本工资</th>				
 				<th width="70">岗位工资</th>
-				<th width="70">绩效津贴</th>
+				<th width="70">绩效津贴</th>--%>
 				<th width="70">差价</th>
 				<th width="70">外协人员</th>		
 			</tr>
@@ -75,11 +75,11 @@
 				<td>${staffcost.staff_no }</td>
 				<td>${staffcost.staff_name }</td>
 				<td><fmt:formatDate value="${staffcost.join_datetime }" pattern="yyyy-MM-dd"/></td>
-				<td align="right"><fmt:formatNumber value="${staffcost.totalcost }" type="currency" pattern="###,###,##0.00"/></td>
+				<%--<td align="right"><fmt:formatNumber value="${staffcost.totalcost }" type="currency" pattern="###,###,##0.00"/></td>
 				<td align="right"><fmt:formatNumber value="${staffcost.qustomerquotes }" type="currency" pattern="###,###,##0.00"/></td>
 				<td align="right"><fmt:formatNumber value="${staffcost.basic_salary }" type="currency" pattern="###,###,##0.00"/></td>
 				<td align="right"><fmt:formatNumber value="${staffcost.post_salary }" type="currency" pattern="###,###,##0.00"/></td>
-				<td align="right"><fmt:formatNumber value="${staffcost.performance_allowances }" type="currency" pattern="###,###,##0.00"/></td>			
+				<td align="right"><fmt:formatNumber value="${staffcost.performance_allowances }" type="currency" pattern="###,###,##0.00"/></td>--%>
 				<td align="right" <c:if test="${staffcost.difference < staff_costs_threshold }">style="background:red"</c:if>>
 					<fmt:formatNumber value="${staffcost.difference }" type="currency" pattern="###,###,##0.00"/>
 				</td>

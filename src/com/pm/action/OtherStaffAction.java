@@ -734,7 +734,8 @@ public class OtherStaffAction extends BaseAction{
 
 		processparam(searchOtherStaff,request);
 		searchOtherStaff.setDelete_flag(BusinessUtil.NOT_DELETEED);
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSTAFFVIEW.getId());
+        UserPermit userPermit = this.getAllPermit();
+		//UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHERSTAFFVIEW.getId());
 		Pager<OtherStaff> pager = otherStaffService.queryOtherStaff(searchOtherStaff, userPermit, PubMethod.getPager(request, OtherStaff.class));
 		PubMethod.setRequestPager(request, pager, OtherStaff.class);
 		request.setAttribute("staff_type", EnumStaffType.AdminStaff.name());

@@ -158,7 +158,7 @@
 			INNER JOIN vb_project project 
 			on rc.project_id = project.project_id 			
 			left join ts_dic_data dd_rai on rc.pay_item_id = dd_rai.id
-			left JOIN tb_staff_costs staff 
+			left JOIN vb_all_staff staff
 			on rc.staff_id = staff.staff_id 
 			where rc.delete_flag = '0' and rc.verify_userid is not null
 	</sql>
@@ -178,7 +178,7 @@
 			on rc.project_id = project.project_id 			
 			left join ts_dic_data dd_rai
 			on rc.pay_item_id = dd_rai.id 	
-			INNER JOIN tb_staff_costs staff 
+			INNER JOIN vb_all_staff staff
 			on rc.staff_id = staff.staff_id 
 			where rc.delete_flag = '0' and rc.verify_userid is not null
 	</sql>

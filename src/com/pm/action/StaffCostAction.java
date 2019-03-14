@@ -812,7 +812,7 @@ public class StaffCostAction extends BaseAction {
 	@RequestMapping(params = "method=lookup")
 	public String lookup(StaffCost searchStaffCost,ConditionStaffCost staffCostCondition,HttpServletResponse res,HttpServletRequest request){
 		
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.STAFFVIEW.getId());	
+		UserPermit userPermit = this.getAllPermit();
 		if(searchStaffCost.getDept_id() == null || searchStaffCost.getDept_id().isEmpty()){
 			searchStaffCost.setDept_id(request.getParameter("dept.dept_id"));
 		}

@@ -26,7 +26,7 @@ import java.util.Map;
  * 部门统计抽象类
  * @author Administrator
  */
-public class DepartStatisticsAbstractAction extends BaseAction {
+public abstract class DepartStatisticsAbstractAction extends BaseAction {
 
 
     @Autowired
@@ -43,7 +43,8 @@ public class DepartStatisticsAbstractAction extends BaseAction {
     protected IRoleService roleService;
 
 
-    protected static String unconfirmedItem4RP = "还未核单的结算额";
+
+    protected static String unconfirmedItem4RP = "还未核单的回款";
     protected static String unconfirmedItem4MS = "还未核单的项目收入";
     protected static List<String> items = new ArrayList<String>();
     static{

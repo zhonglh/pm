@@ -272,7 +272,7 @@ public class StaffCost implements Serializable {
 	@EntityAnnotation(item_name="继续教育", item_sort=73,length=8)
 	private double continuing_education;
 
-	//工作状态
+	//工作状态 , 暂时不用
 	private String work_status;
 
 
@@ -413,6 +413,9 @@ public class StaffCost implements Serializable {
 	
 	//人员类型， 0:管理人员 ， 1:普通人员
 	private String staff_type;
+
+	//报价是否正常
+	private String quotes_normal_flag;
 		
 	
 	/**
@@ -1199,5 +1202,21 @@ public class StaffCost implements Serializable {
 
 	public void setTryoutDate2(Timestamp tryoutDate2) {
 		this.tryoutDate2 = tryoutDate2;
+	}
+
+	public String getWork_status() {
+		return work_status;
+	}
+
+	public void setWork_status(String work_status) {
+		this.work_status = work_status;
+	}
+
+	public String getQuotes_normal_flag() {
+		return quotes_normal_flag;
+	}
+
+	public void setQuotes_normal_flag(String quotes_normal_flag) {
+		this.quotes_normal_flag = quotes_normal_flag;
 	}
 }

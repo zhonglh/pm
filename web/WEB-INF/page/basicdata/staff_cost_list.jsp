@@ -70,6 +70,20 @@
 				<input name="leave_job_datetime1" class="date" type="text" size="7" value="${param.leave_job_datetime1 }" readonly="readonly" />
 				<input name="leave_job_datetime2" class="date" type="text" size="7" value="${param.leave_job_datetime2 }" readonly="readonly" />
 			</li>
+
+
+
+
+			<li>
+				<label>报价是否正常：</label>
+
+				<select name="outsource_staff" style="width:153px">
+					<option value="">全部</option>
+					<option value="0" <c:if test="${param.quotes_normal_flag == '0' }">selected</c:if>>否</option>
+					<option value="1" <c:if test="${param.quotes_normal_flag == '1' }">selected</c:if>>是</option>
+				</select>
+
+			</li>
 		</ul>
 
 

@@ -9,6 +9,7 @@ import com.pm.vo.UserPermit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,28 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "CashStatisticsAction.do")
 public class CashStatisticsAction extends DepartStatisticsAction {
+
+
+	protected static List<String> items = new ArrayList<String>();
+	static{
+		items.add("项目含税回款");
+		items.add("项目流转税额");
+		items.add("项目不含税回款");
+		items.add("项目人工成本");
+		items.add("剔除人工成本后项目毛利润额");
+		items.add("项目人工成本占项目收入率");
+		items.add("项目报销占项目收入比率");
+		items.add("销售费用占项目收入比率");
+		items.add("部门管理费用占项目收入比率");
+		items.add("项目报销成本");
+		items.add("项目付款");
+		items.add("销售费用");
+		items.add("部门管理费用");
+		items.add("总部人员成本");
+		items.add("部门现金盈余");
+		items.add("部门投入产出比");
+	}
+
 
 	private final String PERMIT_ID = EnumPermit.CASHSTATISTICS.getId();
 

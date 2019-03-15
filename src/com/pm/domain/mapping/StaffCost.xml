@@ -529,6 +529,21 @@
 		<if test="StaffCost.outsource_staff != null and StaffCost.outsource_staff != ''">
 			AND staff.outsource_staff = #{StaffCost.outsource_staff}
 		</if>
+
+
+		<if test="StaffCost.quotes_normal_flag != null and StaffCost.quotes_normal_flag != ''">
+			<if test="StaffCost.quotes_normal_flag == 1">
+				<![CDATA[
+				AND staff.qustomerquotes >= staff.firstquotes
+				]]>
+			</if>
+
+			<if test="StaffCost.quotes_normal_flag == '0'">
+				<![CDATA[
+				AND staff.qustomerquotes < staff.firstquotes
+				]]>
+			</if>
+		</if>
 		
 		
 		

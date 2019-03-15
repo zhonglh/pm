@@ -244,47 +244,55 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		list.add(list150);
 
 
-		//部门利润目标
-		List<DepartStatisticsItem> list160 = new ArrayList<DepartStatisticsItem>();
-		DepartStatisticsItem departStatisticsItem1 = new DepartStatisticsItem();
-		departStatisticsItem1.setItemFormatter("B");
-		departStatisticsItem1.setItemName(items.get(16));
-		list160.add(departStatisticsItem1);
-		double sum16 = 0;
-		for (Dept dept1 : depts) {
-			DepartStatisticsItem departStatisticsItem = new DepartStatisticsItem();
-			departStatisticsItem.setDeptId(dept1.getDept_id());
-			departStatisticsItem.setVal(dept1.getCurr_profit_objective());
-			departStatisticsItem.setItemFormatter("B");
-			departStatisticsItem.setItemId("");
-			departStatisticsItem.setItemName(items.get(16));
-			sum16 += departStatisticsItem.getVal();
-			list160.add(departStatisticsItem);
-		}
-		if (depts.size() > 1) {
-			DepartStatisticsItem departStatisticsItem2 = new DepartStatisticsItem();
-			departStatisticsItem2.setItemFormatter("B");
-			departStatisticsItem2.setItemName(items.get(16));
-			departStatisticsItem2.setVal(sum16);
-			list160.add(departStatisticsItem2);
-		}
-		list.add(list160);
+		if(this.getPermitId().equals(EnumPermit.DEPARTSTATISTICS.getId())) {
 
-		//目标完成情况
-		List<DepartStatisticsItem> list170 = new ArrayList<DepartStatisticsItem>();
-		index = 0;
-		for (DepartStatisticsItem temp : list160) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(17));
-			double val = departStatisticsItem.getVal();
-			if (val != 0) {
-				val = list140.get(index).getVal() / val * 100;
+			//部门利润目标
+			List<DepartStatisticsItem> list160 = new ArrayList<DepartStatisticsItem>();
+			DepartStatisticsItem departStatisticsItem1 = new DepartStatisticsItem();
+			departStatisticsItem1.setItemFormatter("B");
+			departStatisticsItem1.setItemName(items.get(16));
+			list160.add(departStatisticsItem1);
+			double sum16 = 0;
+			for (Dept dept1 : depts) {
+				DepartStatisticsItem departStatisticsItem = new DepartStatisticsItem();
+				departStatisticsItem.setDeptId(dept1.getDept_id());
+				departStatisticsItem.setVal(dept1.getCurr_profit_objective());
+				departStatisticsItem.setItemFormatter("B");
+				departStatisticsItem.setItemId("");
+				departStatisticsItem.setItemName(items.get(16));
+				sum16 += departStatisticsItem.getVal();
+				list160.add(departStatisticsItem);
 			}
-			departStatisticsItem.setVal(val);
-			departStatisticsItem.setFormatter("%");
-			list170.add(departStatisticsItem);
-			index++;
+			if (depts.size() > 1) {
+				DepartStatisticsItem departStatisticsItem2 = new DepartStatisticsItem();
+				departStatisticsItem2.setItemFormatter("B");
+				departStatisticsItem2.setItemName(items.get(16));
+				departStatisticsItem2.setVal(sum16);
+				list160.add(departStatisticsItem2);
+			}
+			list.add(list160);
+
+			//目标完成情况
+			List<DepartStatisticsItem> list170 = new ArrayList<DepartStatisticsItem>();
+			index = 0;
+			for (DepartStatisticsItem temp : list160) {
+				DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(17));
+				double val = departStatisticsItem.getVal();
+				if (val != 0) {
+					val = list140.get(index).getVal() / val * 100;
+				}
+				departStatisticsItem.setVal(val);
+				departStatisticsItem.setFormatter("%");
+				list170.add(departStatisticsItem);
+				index++;
+			}
+			list.add(list170);
+
 		}
-		list.add(list170);
+
+
+
+
 
 		//项目报销占项目收入比率
 		index = 0;

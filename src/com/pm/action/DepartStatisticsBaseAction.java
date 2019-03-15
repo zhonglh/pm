@@ -25,11 +25,18 @@ public abstract class DepartStatisticsBaseAction extends DepartStatisticsAbstrac
     protected String getClassName(){
         return this.getClass().getSimpleName();
     }
-    
+
     protected abstract String getPermitId() ;
 
 
     protected abstract List<List<DepartStatisticsItem>> getDepartStatisticsList(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit) ;
+
+
+
+
+
+
+
 
 
         /**

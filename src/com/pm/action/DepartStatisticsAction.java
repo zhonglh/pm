@@ -106,7 +106,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		//处理项目项目流转税额
 		List<DepartStatisticsItem> list10 = new ArrayList<DepartStatisticsItem>();
 		for (DepartStatisticsItem temp : list0) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(1));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(1));
 			departStatisticsItem.setVal(departStatisticsItem.getVal() * searchStatistics.getTax_rate());
 			departStatisticsItem.setVal(PubMethod.getNumberFormatByDouble(departStatisticsItem.getVal()));
 			list10.add(departStatisticsItem);
@@ -116,7 +116,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		//项目不含税收入
 		List<DepartStatisticsItem> list20 = new ArrayList<DepartStatisticsItem>();
 		for (DepartStatisticsItem temp : list0) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(2));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(2));
 			double val = departStatisticsItem.getVal();
 			val = val * (1 - searchStatistics.getTax_rate());
 			departStatisticsItem.setVal(val);
@@ -135,7 +135,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		List<DepartStatisticsItem> list40 = new ArrayList<DepartStatisticsItem>();
 		int index = 0;
 		for (DepartStatisticsItem temp : list20) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(4));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(4));
 			departStatisticsItem.setItemFormatter("B");
 			double val = departStatisticsItem.getVal();
 			val = val - list30.get(index).getVal();
@@ -151,7 +151,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		List<DepartStatisticsItem> list50 = new ArrayList<DepartStatisticsItem>();
 		index = 0;
 		for (DepartStatisticsItem temp : list20) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(5));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(5));
 			departStatisticsItem.setItemFormatter("B");
 			double val = departStatisticsItem.getVal();
 			if (val != 0) {
@@ -169,7 +169,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		List<DepartStatisticsItem> list60 = new ArrayList<DepartStatisticsItem>();
 		index = 0;
 		for (DepartStatisticsItem temp : list20) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(6));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(6));
 			departStatisticsItem.setItemFormatter("B");
 			departStatisticsItem.setFormatter("%");
 			list60.add(departStatisticsItem);
@@ -182,7 +182,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		List<DepartStatisticsItem> list70 = new ArrayList<DepartStatisticsItem>();
 		index = 0;
 		for (DepartStatisticsItem temp : list20) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(7));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(7));
 			departStatisticsItem.setItemFormatter("B");
 			departStatisticsItem.setFormatter("%");
 			list70.add(departStatisticsItem);
@@ -194,7 +194,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		List<DepartStatisticsItem> list80 = new ArrayList<DepartStatisticsItem>();
 		index = 0;
 		for (DepartStatisticsItem temp : list20) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(8));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(8));
 			departStatisticsItem.setItemFormatter("B");
 			departStatisticsItem.setFormatter("%");
 			list80.add(departStatisticsItem);
@@ -243,7 +243,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		List<DepartStatisticsItem> list140 = new ArrayList<DepartStatisticsItem>();
 		index = 0;
 		for (DepartStatisticsItem temp : list20) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(14));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(14));
 			departStatisticsItem.setItemFormatter("B");
 			double val = departStatisticsItem.getVal();
 			val = val - list30.get(index).getVal() - list90.get(index).getVal() -
@@ -258,7 +258,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 		List<DepartStatisticsItem> list150 = new ArrayList<DepartStatisticsItem>();
 		index = 0;
 		for (DepartStatisticsItem temp : list30) {
-			DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(15));
+			DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(15));
 			double val = departStatisticsItem.getVal();
 			val = val + list90.get(index).getVal() +
 					list100.get(index).getVal() + list110.get(index).getVal() + list120.get(index).getVal() + list130.get(index).getVal();
@@ -279,7 +279,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 			List<DepartStatisticsItem> list160 = new ArrayList<DepartStatisticsItem>();
 			DepartStatisticsItem departStatisticsItem1 = new DepartStatisticsItem();
 			departStatisticsItem1.setItemFormatter("B");
-			departStatisticsItem1.setItemName(items.get(16));
+			departStatisticsItem1.setItemName(getTitles().get(16));
 			list160.add(departStatisticsItem1);
 			double sum16 = 0;
 			for (Dept dept1 : depts) {
@@ -288,14 +288,14 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 				departStatisticsItem.setVal(dept1.getCurr_profit_objective());
 				departStatisticsItem.setItemFormatter("B");
 				departStatisticsItem.setItemId("");
-				departStatisticsItem.setItemName(items.get(16));
+				departStatisticsItem.setItemName(getTitles().get(16));
 				sum16 += departStatisticsItem.getVal();
 				list160.add(departStatisticsItem);
 			}
 			if (depts.size() > 1) {
 				DepartStatisticsItem departStatisticsItem2 = new DepartStatisticsItem();
 				departStatisticsItem2.setItemFormatter("B");
-				departStatisticsItem2.setItemName(items.get(16));
+				departStatisticsItem2.setItemName(getTitles().get(16));
 				departStatisticsItem2.setVal(sum16);
 				list160.add(departStatisticsItem2);
 			}
@@ -305,7 +305,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 			List<DepartStatisticsItem> list170 = new ArrayList<DepartStatisticsItem>();
 			index = 0;
 			for (DepartStatisticsItem temp : list160) {
-				DepartStatisticsItem departStatisticsItem = temp.copy("", items.get(17));
+				DepartStatisticsItem departStatisticsItem = temp.copy("", getTitles().get(17));
 				double val = departStatisticsItem.getVal();
 				if (val != 0) {
 					val = list140.get(index).getVal() / val * 100;

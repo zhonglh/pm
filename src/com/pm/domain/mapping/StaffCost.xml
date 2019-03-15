@@ -538,7 +538,7 @@
 				]]>
 			</if>
 
-			<if test="StaffCost.quotes_normal_flag == '0'">
+			<if test="StaffCost.quotes_normal_flag == 0">
 				<![CDATA[
 				AND staff.qustomerquotes < staff.firstquotes
 				]]>

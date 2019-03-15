@@ -559,9 +559,10 @@
 				<thead>
 					<tr>
 						<th width="180">时间段</th>
-						<th width="200">项目名称</th>
+						<th width="250">项目名称</th>
+						<th width="80">技术费用</th>
 						<th width="120">客户所在部门</th>
-						<th width="300">说明</th>	
+						<th width="200">说明</th>
 					</tr>												
 				</thead>
 				<tbody>								
@@ -570,6 +571,7 @@
 						
 						<td>${project_staff.start_end_dates }</td>
 						<td>${project_staff.project_name }</td>
+						<td><fmt:formatNumber value="${project_staff.technical_cost }" type="currency" pattern="###,###,##0.00"/></td>
 						<td>${project_staff.client_dept }</td>
 						<td title="${project_staff.description }">${project_staff.description }</td>
 					</tr>

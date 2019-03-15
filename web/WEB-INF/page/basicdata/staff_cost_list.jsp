@@ -77,7 +77,7 @@
 			<li>
 				<label>报价是否正常：</label>
 
-				<select name="outsource_staff" style="width:153px">
+				<select name="quotes_normal_flag" style="width:153px">
 					<option value="">全部</option>
 					<option value="0" <c:if test="${param.quotes_normal_flag == '0' }">selected</c:if>>否</option>
 					<option value="1" <c:if test="${param.quotes_normal_flag == '1' }">selected</c:if>>是</option>

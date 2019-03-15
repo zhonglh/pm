@@ -29,6 +29,16 @@ import java.util.Map;
 public abstract class DepartStatisticsAbstractAction extends BaseAction {
 
 
+    protected static String unconfirmedItem4RP = "还未核单的回款";
+    protected static String unconfirmedItem4MS = "还未核单的项目收入";
+
+    /**
+     * 获取标题列表
+     * @return
+     */
+    protected abstract List<String> getTitles() ;
+
+
     @Autowired
     protected IDepartStatisticsService departStatisticsService;
 
@@ -44,29 +54,6 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
 
 
 
-    protected static String unconfirmedItem4RP = "还未核单的回款";
-    protected static String unconfirmedItem4MS = "还未核单的项目收入";
-    protected static List<String> items = new ArrayList<String>();
-    static{
-        items.add("项目含税收入");
-        items.add("项目流转税额");
-        items.add("项目不含税收入");
-        items.add("项目人工成本");
-        items.add("剔除人工成本后项目毛利润额");
-        items.add("项目人工成本占项目收入率");
-        items.add("项目报销占项目收入比率");
-        items.add("销售费用占项目收入比率");
-        items.add("部门管理费用占项目收入比率");
-        items.add("项目报销成本");
-        items.add("项目付款");
-        items.add("销售费用");
-        items.add("部门管理费用");
-        items.add("总部人员成本");
-        items.add("部门利润");
-        items.add("部门投入产出比");
-        items.add("部门利润目标");
-        items.add("目标完成情况");
-    }
 
     /**
      * 处理查询条件
@@ -140,7 +127,7 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
 
         //处理第一列
         DepartStatisticsItem temp1 = new DepartStatisticsItem();
-        temp1.setItemName(items.get(index));
+        temp1.setItemName(getTitles().get(index));
         temp1.setItemFormatter(itemFormatter);
         list1.add(temp1);
 
@@ -156,7 +143,7 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
                 }
             }
             departStatisticsItem.setItemId("");
-            departStatisticsItem.setItemName(items.get(index));
+            departStatisticsItem.setItemName(getTitles().get(index));
             sum1 += departStatisticsItem.getVal();
 
             departStatisticsItem.setItemFormatter(itemFormatter);
@@ -167,7 +154,7 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
             DepartStatisticsItem last1 = new DepartStatisticsItem();
             last1.setDeptId("");
             last1.setItemId("");
-            last1.setItemName(items.get(index));
+            last1.setItemName(getTitles().get(index));
             last1.setVal(sum1);
             last1.setUrl(url);
             last1.setItemFormatter(itemFormatter);

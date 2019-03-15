@@ -37,6 +37,35 @@ import com.pm.vo.UserPermit;
 public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 
 
+
+
+	protected static List<String> items = new ArrayList<String>();
+	static{
+		items.add("项目含税收入");
+		items.add("项目流转税额");
+		items.add("项目不含税收入");
+		items.add("项目人工成本");
+		items.add("剔除人工成本后项目毛利润额");
+		items.add("项目人工成本占项目收入率");
+		items.add("项目报销占项目收入比率");
+		items.add("销售费用占项目收入比率");
+		items.add("部门管理费用占项目收入比率");
+		items.add("项目报销成本");
+		items.add("项目付款");
+		items.add("销售费用");
+		items.add("部门管理费用");
+		items.add("总部人员成本");
+		items.add("部门利润");
+		items.add("部门投入产出比");
+		items.add("部门利润目标");
+		items.add("目标完成情况");
+	}
+
+
+	protected  List<String> getTitles() {
+		return items;
+	}
+
 	private final String PERMIT_ID = EnumPermit.DEPARTSTATISTICS.getId();
 
 

@@ -43,6 +43,11 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 	}
 
 
+	protected  List<String> getTitles() {
+		return items;
+	}
+
+
 	private final String PERMIT_ID = EnumPermit.CASHSTATISTICS.getId();
 
 

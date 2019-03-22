@@ -15,7 +15,7 @@
 	</select>
 
 	<sql id="queryXStaisticsSql">	
-		select sum(amount) as  amount
+		select sum(amount) as  amount , min(build_time ) as build_time
 
 		<if test="AnalysisSearch.groupSelect != null and AnalysisSearch.groupSelect  != ''">
 		,${AnalysisSearch.groupSelect}

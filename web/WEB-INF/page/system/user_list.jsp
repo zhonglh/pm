@@ -52,6 +52,11 @@
 			<c:if test="${operation_update != null && operation_update != '' }">
 				<li><a class="edit" href="${webroot}/UserAction.do?method=toEdit&user_id={sid_user}" mask="true" width="850"  height="350" rel="update_user" target="dialog" warn="请选择一条数据"><span>修改用户</span></a></li>
 			</c:if>
+
+
+			<c:if test="${operation_update != null && operation_update != '' }">
+				<li><a class="edit" href="${webroot}/UserAction.do?method=toManageDept&user_id={sid_user}" mask="true" width="850"  height="350" rel="update_user" target="dialog" warn="请选择一条数据"><span>分配管理部门</span></a></li>
+			</c:if>
 			
 			<c:if test="${operation_changepwd != null && operation_changepwd != '' }">
 				<li><a class="edit" href="${webroot}/UserAction.do?method=toAdminUpdatePassword&user_id={sid_user}" mask="true" width="450"  height="200" rel="update_admin_password" target="dialog" warn="请选择一条数据"><span>修改密码</span></a></li>

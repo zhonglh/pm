@@ -80,7 +80,7 @@
 		]]>
 		</if>
 		
-		<include refid="StaffCostMapping.permission"/>	 
+		<include refid="ProjectAuthMapping.permission"/>
 		
 		order by dept.dept_no, project.project_id, sc.build_datetime, ps.join_project_datetime
 	
@@ -160,7 +160,7 @@
 		</if>
 		
 
-		<include refid="StaffCostMapping.permission"/>	 
+		<include refid="ProjectAuthMapping.permission"/>
 		
 		order by dept.dept_no, project.project_id, sc.build_datetime, ps.leave_project_datetime
 		

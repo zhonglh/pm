@@ -8,6 +8,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.common.enums.EnumYesNo;
+import com.pm.domain.system.UserManageDept;
+import com.pm.service.IDeptService;
+import com.pm.service.IUserManageDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +40,16 @@ public class UserAction extends BaseAction {
 	
 	@Autowired
 	private IUserService userService;
-	
+
+
 	@Autowired
 	private IRoleService roleService;
+
+	@Autowired
+	private IUserManageDeptService userManageDeptService;
+
+	@Autowired
+	private IDeptService deptService;
 	
 
 
@@ -189,8 +200,9 @@ public class UserAction extends BaseAction {
 		else return this.ajaxForwardError(request, "用户登录名重复或数据格式错误！", true);
 		
 		
-	}	
-	
+	}
+
+
 
 	@RequestMapping(params = "method=toEdit")
 	public String toEdit(User user , HttpServletResponse res,HttpServletRequest request){
@@ -326,6 +338,89 @@ public class UserAction extends BaseAction {
 		}
 		return this.ajaxForwardSuccess(request,rel,false);
 	}
+
+
+
+
+
+
+	/**
+	 * 到管理部门页面
+	 * @param user
+	 * @param res
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(params = "method=toManageDept")
+	public String toManageDept(User user , HttpServletResponse res,HttpServletRequest request){
+
+		User user1 = null;
+
+
+		if(user != null && user.getUser_id()!=null){
+			request.setAttribute("next_operation", "update");
+			user1 = userService.getUserById(user.getUser_id());
+
+			if("1".equals(user1.getUser_id())){
+				return this.ajaxForwardError(request, "系统用户不允许修改！",true);
+			}else if("1".equals(user1.getDelete_flag())){
+				return this.ajaxForwardError(request, "该用户已经删除，不能再操作！",true);
+			}
+
+		}else {
+			return this.ajaxForwardError(request, "系统出现错误！",true);
+		}
+
+
+		UserPermit userPermit = this.getAllPermit();
+		Dept dept = new Dept();
+		dept.setDelete_flag(EnumYesNo.No.getCode());
+		List<Dept> depts = deptService.getAllDept(dept, userPermit);
+
+		if(depts == null) depts = new ArrayList<Dept>();
+
+		UserManageDept userManageDept = new UserManageDept();
+		userManageDept.setUser_id(user.getUser_id());
+		Pager<UserManageDept> pager = userManageDeptService.queryUserManageDept(userManageDept , null  , PubMethod.getPagerByAll(UserManageDept.class));
+
+		if(pager != null && pager.getResultList() != null && !pager.getResultList().isEmpty()){
+			Map<String,UserManageDept> map = new HashMap<String,UserManageDept>();
+			for(UserManageDept umd : pager.getResultList()){
+				map.put(umd.getDept_id(), umd);
+			}
+			for(Dept d : depts){
+				if(map.containsKey(d.getDept_id())){
+					d.setSelected(true);
+				}
+			}
+		}
+
+		request.setAttribute("user1", user1);
+		request.setAttribute("depts", depts);
+		return "system/manage_dept_edit";
+	}
+
+
+	@RequestMapping(params = "method=saveManageDept")
+	public String saveManageDept(User user,HttpServletResponse res,HttpServletRequest request){
+
+
+		paramprocess(user,request);
+
+		List<String> dept_ids = PubMethod.getList(request.getParameterValues("dept_id"), String.class);
+
+
+
+
+		try{
+			userManageDeptService.saveUserManageDep(user.getUser_id() , dept_ids);
+			return this.ajaxForwardSuccess(request, rel, true);
+		}catch(Exception e){
+			return this.ajaxForwardError(request, "出现错误！", true);
+		}
+	}
+
+
 	
 	
 	private String permission(HttpServletRequest request,User user1){

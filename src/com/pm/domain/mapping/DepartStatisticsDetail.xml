@@ -406,7 +406,7 @@
 		<if test="Statistics.month2 != 0">
 			<![CDATA[
 			AND use_month <= #{Statistics.month2}
-		]]>
+			]]>
 		</if>
 		<include refid="DepartItemDetailMapping.departPermission"/>
 		order by use_month desc ,build_datetime desc

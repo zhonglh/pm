@@ -661,7 +661,7 @@
 
 		
 		
-		<include refid="permission"/>	
+		<include refid="ProjectAuthMapping.permission"/>
 		
 		
 		
@@ -682,62 +682,6 @@
 	
 	
 
-	
 
-	<sql id="permission">		
-		
-		<if test="UserPermit != null and UserPermit.range != null and UserPermit.range != ''">
-			
-			<if test="UserPermit.range == 1">
-				
-			</if>
-			<if test="UserPermit.range == 2">
-					<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
-							and (dept.dept_id =  #{UserPermit.user_deptid}) 
-					</if>
-					<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">						
-						<if test="UserPermit.staff_id != null and UserPermit.staff_id != ''">						
-							and ( 
-								project.sales_userid = #{UserPermit.staff_id} or 
-								project.recruitment_userid = #{UserPermit.staff_id} or 
-								project.sales_userid = #{UserPermit.staff_id} or 
-								project.info_sources_userid = #{UserPermit.staff_id} or 
-								project.manage_userid = #{UserPermit.staff_id} or 
-								project.sales_after_userid = #{UserPermit.staff_id} or
-								project.approve_user_id = #{UserPermit.staff_id}
-							) 
-						</if>
-						
-						<if test="UserPermit.staff_id == null or UserPermit.staff_id == ''">	
-							and 1=2 
-						</if>
-					</if>
-			</if>
-			<if test="UserPermit.range == 3">
-					<if test="UserPermit.staff_id != null and UserPermit.staff_id != ''">
-						and ( 
-							project.sales_userid = #{UserPermit.staff_id} or 
-							project.recruitment_userid = #{UserPermit.staff_id} or 
-							project.sales_userid = #{UserPermit.staff_id} or 
-							project.info_sources_userid = #{UserPermit.staff_id} or 
-							project.manage_userid = #{UserPermit.staff_id} or 
-							project.sales_after_userid = #{UserPermit.staff_id} or
-							project.approve_user_id = #{UserPermit.staff_id}
-						) 
-					</if>
-					
-					<if test="UserPermit.staff_id == null or UserPermit.staff_id == ''">	
-						and 1=2 
-					</if>
-			</if>
-			
-		</if>
-		
-		<if test="UserPermit == null or UserPermit.range == null or UserPermit.range == ''">
-			and 1=2 
-		</if>
-		
-	
-	</sql>	 
 
 </mapper>

@@ -145,7 +145,7 @@
 
             </if>
             <if test="UserPermit.range == 2">
-                and dept.dept_id = #{UserPermit.user_deptid}
+                and (dept.dept_id = #{UserPermit.user_deptid} or dept.dept_id in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id}))
             </if>
             <if test="UserPermit.range == 3">
                 and 1 = 2

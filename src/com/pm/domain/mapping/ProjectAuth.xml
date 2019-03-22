@@ -12,7 +12,19 @@
 			</if>
 			<if test="UserPermit.range == 2">
 					<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
-							and (project.sales_amount_deptid =  #{UserPermit.user_deptid} or project.exec_amount_deptid =  #{UserPermit.user_deptid} or project.deptid =  #{UserPermit.user_deptid}) 
+							and (
+								project.sales_amount_deptid =  #{UserPermit.user_deptid} or
+								project.exec_amount_deptid =  #{UserPermit.user_deptid}  or
+								project.deptid =  #{UserPermit.user_deptid} or
+								project.sales_userid = #{UserPermit.staff_id} or
+								project.recruitment_userid = #{UserPermit.staff_id} or
+								project.sales_userid = #{UserPermit.staff_id} or
+								project.info_sources_userid = #{UserPermit.staff_id} or
+								project.manage_userid = #{UserPermit.staff_id} or
+								project.sales_after_userid = #{UserPermit.staff_id} or
+								project.approve_user_id = #{UserPermit.staff_id} or
+								project.deptid in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id})
+							)
 					</if>
 					<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">						
 						<if test="UserPermit.staff_id != null and UserPermit.staff_id != ''">						
@@ -23,12 +35,13 @@
 								project.info_sources_userid = #{UserPermit.staff_id} or 
 								project.manage_userid = #{UserPermit.staff_id} or 
 								project.sales_after_userid = #{UserPermit.staff_id} or
-								project.approve_user_id = #{UserPermit.staff_id}
+								project.approve_user_id = #{UserPermit.staff_id} or
+								project.deptid in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id})
 							) 
 						</if>
 						
 						<if test="UserPermit.staff_id == null or UserPermit.staff_id == ''">	
-							and 1!=1
+							and project.deptid in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id})
 						</if>
 					</if>
 			</if>

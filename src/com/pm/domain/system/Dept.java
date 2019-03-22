@@ -46,6 +46,9 @@ public class Dept implements Serializable {
 
 	@EntityAnnotation(item_name="部门领导")
 	private String lead_name;
+
+
+	private boolean  selected = false;
 	
 	
 	private int curr_years = PubMethod.getCurrentYear();
@@ -165,8 +168,13 @@ public class Dept implements Serializable {
 	public void setStatisticsed(String statisticsed) {
 		this.statisticsed = statisticsed;
 	}
-	
 
 
+	public boolean isSelected() {
+		return selected;
+	}
 
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 }

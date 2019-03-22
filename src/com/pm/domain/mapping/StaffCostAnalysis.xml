@@ -34,14 +34,16 @@
 				) as profit 
 
 				 from (
-				
-					select staff.*, other_staff.staff_name as recruiter_name, data1.type,
-					sum(case when type = '1'   	then amount else 0 end) as technical_income,
-					sum(case when type != '1'   	then amount else 0 end) as technical_cost,
-					sum(case when type = '1'   	then 1 else 0 end) months  ,
-					sum(case when type = '2'   	then 1 else 0 end) months2  
+					SELECT staff.*,   data1.project_name,data1.technical_income, data1.technical_cost,
+					data1.months, data1.months2,
+					other_staff.staff_name AS recruiter_name
 					from tb_staff_costs staff 						 join (	
-						select * from (		
+						select staff_id , project_name ,
+						sum(case when type = '1'   	then amount else 0 end) as technical_income,
+						sum(case when type != '1'   	then amount else 0 end) as technical_cost,
+						sum(case when type = '1'   	then 1 else 0 end) months  ,
+						sum(case when type = '2'   	then 1 else 0 end) months2
+		 				from (
 							select * from (		
 								select a.project_id, p.project_name, b.staff_id, '1' as type,
 							  	a.statement_month as month1,
@@ -85,9 +87,12 @@
 							<![CDATA[	
 								AND dd.month1 <= #{StaffCost.month2} 
 							]]>
-						</if>							
-								
-					) data1 on staff.staff_id = data1.staff_id 
+						</if>
+
+
+						group by staff_id , project_name
+
+				) data1 on staff.staff_id = data1.staff_id
 					left join tb_other_staff other_staff
 					on staff.recruiter = other_staff.staff_id 
 					where 1=1 	
@@ -115,8 +120,7 @@
 					<if test="StaffCost.recruiter_name != null and StaffCost.recruiter_name != ''">
 						AND other_staff.staff_name like concat('%',TRIM(#{StaffCost.recruiter_name}),'%')   
 					</if>
-					
-					 group by staff.staff_id  
+
 					 
 				) xx 	
 			

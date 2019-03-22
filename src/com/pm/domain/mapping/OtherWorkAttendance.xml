@@ -236,10 +236,10 @@
 			</if>
 			<if test="UserPermit.range == 2">
 				<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
-					and wa.dept_id =  #{UserPermit.user_deptid}
+					and (wa.dept_id =  #{UserPermit.user_deptid} or wa.staff_id =  #{UserPermit.staff_id} or wa.dept_id in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id})  )
 				</if>
 				<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">
-					and wa.staff_id =  #{UserPermit.staff_id}
+					and ( wa.staff_id =  #{UserPermit.staff_id} or wa.dept_id in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id}) )
 				</if>
 			</if>
 			<if test="UserPermit.range == 3">

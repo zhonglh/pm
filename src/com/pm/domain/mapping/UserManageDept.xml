@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="UserManageDeptMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.system.UserManageDept" id="userManageDeptMap" />
+
+
+	<select id="getUserManageDept" parameterType="com.pm.domain.system.UserManageDept" resultMap="userManageDeptMap">
+		select umd.*
+		from ts_user_manage_dept umd
+		where umd.id = #{id}
+	</select>
+
+	<insert id="addUserManageDept" parameterType="com.pm.domain.system.UserManageDept" >
+		insert into  ts_user_manage_dept(
+			id,user_id,dept_id
+		)values  (
+			#{id},#{user_id},#{dept_id}
+		)
+	</insert>
+
+
+	<delete id="deleteUserManageDept" parameterType="com.pm.domain.system.UserManageDept" >
+		delete from  ts_user_manage_dept
+		where id=#{id}
+	</delete>
+
+	<delete id="deleteUserManageDeptByUser" parameterType="com.pm.domain.system.UserManageDept" >
+		delete from  ts_user_manage_dept
+		where user_id=#{user_id}
+	</delete>
+
+
+
+
+
+	<select id="queryUserManageDeptByPager_mysql" parameterType="map"  resultMap="userManageDeptMap" >
+		<include refid="userManageDeptPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryUserManageDeptByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="userManageDeptPagerSql"/> )c
+	</select>
+
+	<sql id="userManageDeptPagerSql">
+		select umd.*, dept.dept_no,dept.dept_name,dept.description
+		from ts_user_manage_dept umd
+		INNER JOIN  ts_dept dept
+		on umd.dept_id = dept.dept_id
+		WHERE umd.user_id = #{UserManageDept.user_id}
+	</sql>
+
+</mapper>

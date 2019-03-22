@@ -181,7 +181,17 @@
 			<if test="UserPermit.range == 1">
 				
 			</if>
-			<if test="UserPermit.range == 2 or UserPermit.range == 3">
+
+			<if test="UserPermit.range == 2">
+				<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+					and (dept.dept_id = #{UserPermit.user_deptid} or dept.dept_id in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id}))
+				</if>
+				<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">
+					and dept.dept_id in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id})
+				</if>
+			</if>
+
+			<if test="UserPermit.range == 3">
 					<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
 							and dept.dept_id =  #{UserPermit.user_deptid} 
 					</if>

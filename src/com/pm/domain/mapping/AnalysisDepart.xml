@@ -105,7 +105,7 @@
 	</select>
 
 	<sql id="queryAllCostSql">
-		select sum(amount) as  amount
+		select sum(amount) as  amount , min(build_time ) as build_time
 
 		<if test="AnalysisSearch.groupSelect != null and AnalysisSearch.groupSelect  != ''">
 			,${AnalysisSearch.groupSelect}
@@ -149,6 +149,7 @@
 			group by ${AnalysisSearch.groupBy}
 		</if>
 
+		order by build_time
 
 	</sql>
 

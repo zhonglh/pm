@@ -24,8 +24,8 @@
 			
 			<li>
 				<label>时间段：</label>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="month1" value="${param.month1}"/>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="month2" value="${param.month2}"/>
+				<input type="text" class="digits date month"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" size="7" name="month1" value="${param.month1}"/>
+				<input type="text" class="digits date month"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" size="7" name="month2" value="${param.month2}"/>
 			
 			</li>
 

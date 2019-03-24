@@ -34,8 +34,8 @@
 					
 			<li>
 				<label>凭证月份：</label>
-				<input  type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="months1" value="${param.months1}"/>
-				<input  type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="months2" value="${param.months2}"/>
+				<input  type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" name="months1" value="${param.months1}"/>
+				<input  type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" name="months2" value="${param.months2}"/>
 			</li>
 			
 

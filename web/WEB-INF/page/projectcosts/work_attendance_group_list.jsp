@@ -29,8 +29,8 @@
 
 			<li>
 				<label>考勤月份：</label>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" size="7" format="yyyyMM" name="attendance_month1" value="${param.attendance_month1}"/>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" size="7" format="yyyyMM" name="attendance_month2" value="${param.attendance_month2}"/>
+				<input type="text" class="digits date month"  autocomplete="off" maxlength="6" minlength="6"  size="7" format="yyyyMM" name="attendance_month1" value="${param.attendance_month1}"/>
+				<input type="text" class="digits date month"  autocomplete="off" maxlength="6" minlength="6"  size="7" format="yyyyMM" name="attendance_month2" value="${param.attendance_month2}"/>
 			
 			
 			</li>

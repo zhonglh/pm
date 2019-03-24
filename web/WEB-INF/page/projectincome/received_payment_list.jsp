@@ -38,8 +38,8 @@
 		<ul class="searchContent">		
 			<li>
 				<label>到款所属月份：</label>
-				<input  type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM"  name="receive_payment_month1" value="${param.receive_payment_month1}"/>
-				<input  type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM"  name="receive_payment_month2" value="${param.receive_payment_month2}"/>
+				<input  type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM"  name="receive_payment_month1" value="${param.receive_payment_month1}"/>
+				<input  type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM"  name="receive_payment_month2" value="${param.receive_payment_month2}"/>
 			</li>
 			
 			<li>

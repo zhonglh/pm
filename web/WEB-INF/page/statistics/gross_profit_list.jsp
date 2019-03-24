@@ -22,8 +22,8 @@
 			
 			<li>
 				<label>时间范围：</label>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" name="month1" size="7" value="${param.month1}"/>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" name="month2" size="7" value="${param.month2}"/>
+				<input type="text" class="digits date month" autocomplete="off"   maxlength="6" minlength="6"  format="yyyyMM" name="month1" size="7" value="${param.month1}"/>
+				<input type="text" class="digits date month" autocomplete="off"   maxlength="6" minlength="6"  format="yyyyMM" name="month2" size="7" value="${param.month2}"/>
 				
 				
 			</li>										

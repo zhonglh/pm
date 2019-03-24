@@ -40,8 +40,8 @@
 		
 			<li>
 				<label>结算单月份：</label>
-				<input  type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="statement_month1" value="${param.statement_month1}"/>
-				<input  type="text" class="digits date month" size="7" maxlength="6" minlength="6" format="yyyyMM" name="statement_month2" value="${param.statement_month2}"/>
+				<input  type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" name="statement_month1" value="${param.statement_month1}"/>
+				<input  type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" name="statement_month2" value="${param.statement_month2}"/>
 			</li>
 			
 			<li>

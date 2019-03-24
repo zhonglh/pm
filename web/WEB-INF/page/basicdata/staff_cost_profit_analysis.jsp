@@ -59,8 +59,8 @@
 
 			<li>
 				<label>时间段：</label>
-				<input name="month1" class="date month" type="text" size="5" maxlength="6" minlength="6" format="yyyyMM" value="${param.month1 }" readonly="readonly" />
-				<input name="month2" class="date month" type="text" size="5" maxlength="6" minlength="6" format="yyyyMM" value="${param.month2 }" readonly="readonly" />
+				<input name="month1" class="date month" type="text" size="5"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" value="${param.month1 }" readonly="readonly" />
+				<input name="month2" class="date month" type="text" size="5"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" value="${param.month2 }" readonly="readonly" />
 			</li>
 			
 			<li>

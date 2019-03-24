@@ -47,8 +47,8 @@
 			
 			<li>
 				<label>支付日期：</label>							
-				<input type="text" class="date" maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date1" value="${param.pay_date1}"/>
-				<input type="text" class="date" maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date2" value="${param.pay_date2}"/>
+				<input type="text" class="date"  autocomplete="off" maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date1" value="${param.pay_date1}"/>
+				<input type="text" class="date"  autocomplete="off" maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date2" value="${param.pay_date2}"/>
 			</li>
 			
 			

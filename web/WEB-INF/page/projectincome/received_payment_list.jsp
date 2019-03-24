@@ -44,8 +44,8 @@
 			
 			<li>
 				<label>到款日期：</label>
-				<input name="date1" class="date" type="text" size="7" value="${param.date1 }" />
-				<input name="date2" class="date" type="text" size="7" value="${param.date2 }" />
+				<input name="date1" class="date" type="text" size="7" autocomplete="off"  maxlength="10" minlength="10"  value="${param.date1 }" />
+				<input name="date2" class="date" type="text" size="7" autocomplete="off"  maxlength="10" minlength="10"  value="${param.date2 }" />
 			</li>
 			
 			<li>

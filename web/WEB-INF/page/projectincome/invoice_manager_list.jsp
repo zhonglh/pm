@@ -46,8 +46,8 @@
 			
 			<li>
 				<label>开票日期：</label>
-				<input type="text" class="date" name="date1" size="7" value="${param.date1 }"/>
-				<input type="text" class="date" name="date2" size="7" value="${param.date2 }"/>
+				<input type="text" class="date" name="date1" size="7" autocomplete="off"  autocomplete="off" maxlength="10" minlength="10" value="${param.date1 }"/>
+				<input type="text" class="date" name="date2" size="7" autocomplete="off"  autocomplete="off" maxlength="10" minlength="10" value="${param.date2 }"/>
 			</li>
 			
 					

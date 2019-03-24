@@ -269,7 +269,7 @@
 		on pep.project_expend_id = pe.project_expend_id
 		INNER JOIN vb_project project
 		on pe.project_id = project.project_id
-		WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pep.pay_date is not null
+		WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pep.verify_userid is not null
 	</sql>
 
 

@@ -80,7 +80,7 @@ public class AnalysisDaoImpl extends BatisDao implements IAnalysisDao{
         map.put(AnalysisSearch.class.getSimpleName() , analysisSearch);
         map.put(UserPermit.class.getSimpleName() , userPermit);
         String sql = "AnalysisMapping.queryXStaisticsAnalysis";
-        analysisSearch.setX(EnumStaticType.S42.getCode());
+        analysisSearch.setX(EnumStaticType.S40.getCode());
         return this.querySingle(sql, AnalysisVo.class, map);
     }
 

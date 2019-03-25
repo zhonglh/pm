@@ -271,7 +271,7 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
         art.setLabel( tableName.get(2) );
 
         double rate = computeTaxRate();
-        AnalysisResult ar10 = analysisService.queryReceivedPayments(analysisSearch ,userPermit );
+        AnalysisResult ar10 = analysisService.queryMonthlyStatements(analysisSearch ,userPermit );
         ar10.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(ar10.getPre_statistics_amount() * ( 1- rate)));
         ar10.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(ar10.getCurr_statistics_amount() * ( 1- rate)));
         AnalysisUtil.processesult(ar10);

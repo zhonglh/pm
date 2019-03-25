@@ -10,19 +10,6 @@
 	<resultMap type="com.pm.domain.business.Statistics" id="statisticsMap" />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<select id="queryByQuarterByPager_mysql" parameterType="map"   resultMap="statisticsMap">
 		<include refid="queryQuarterPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
 	</select>
@@ -83,45 +70,45 @@
 		select project.project_name,pe.* 
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
 		inner join 	(
-				select project_id,  (use_month-use_month%100+(floor(use_month%100/4)+1)) as quarter,
-				sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end)*-1 amount  ,
+				select project_id,  (pay_month-pay_month%100+(floor(pay_month%100/4)+1)) as quarter,
+				sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end)*-1 amount ,
 				0 as total_amount
-				from tb_project_expend where delete_flag = '0' 
+				from vb_project_expend_pay where delete_flag = '0' 
 				and verify_userid is not NULL 
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
-					AND use_month >= #{Statistics.month1} 
+					AND pay_month >= #{Statistics.month1} 
 				]]>
 				</if> 			
 				<if test="Statistics.month2 != 0">
 				<![CDATA[	
-					AND use_month <= #{Statistics.month2} 
+					AND pay_month <= #{Statistics.month2} 
 				]]>
 				</if>			
-				group by project_id,  (use_month-use_month%100+(floor(use_month%100/4)+1)) 
+				group by project_id,  (pay_month-pay_month%100+(floor(pay_month%100/4)+1)) 
 		)pe 
 		on project.project_id = pe.project_id 
 		union all
 		select project.project_name,rc.* 
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
 		inner join 	(
-				select project_id,  (use_month-use_month%100+(floor(use_month%100/4)+1)) as quarter,
+				select project_id,  (pay_month-pay_month%100+(floor(pay_month%100/4)+1)) as quarter,
 				sum(case when amount is NULL  then 0 else amount end)*-1 as amount  ,
 				0 as total_amount
-				from tb_reimburse_costs  where delete_flag = '0' 
-				and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+				from vb_reimburse_costs  where delete_flag = '0' 
+				and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 				and verify_userid is not NULL  
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
-					AND use_month >= #{Statistics.month1} 
+					AND pay_month >= #{Statistics.month1}
 				]]>
 				</if> 			
 				<if test="Statistics.month2 != 0">
 				<![CDATA[	
-					AND use_month <= #{Statistics.month2} 
+					AND pay_month <= #{Statistics.month2}
 				]]>
 				</if>				
-				group by project_id,  (use_month-use_month%100+(floor(use_month%100/4)+1)) 
+				group by project_id,  (pay_month-pay_month%100+(floor(pay_month%100/4)+1))
 		)rc 
 		on project.project_id = rc.project_id 
 	) a group by quarter 
@@ -188,43 +175,43 @@
 		select project.project_name,pe.* 
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
 		inner join 	(
-				select project_id, floor(use_month/100) year1,sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end)*-1 amount  ,
+				select project_id, floor(pay_month/100) year1,sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end)*-1 amount  ,
 				0 as total_amount
-				from tb_project_expend where delete_flag = '0' 
+				from vb_project_expend_pay where delete_flag = '0' 
 				and verify_userid is not NULL 
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
-					AND use_month >= #{Statistics.month1} 
+					AND pay_month >= #{Statistics.month1} 
 				]]>
 				</if> 			
 				<if test="Statistics.month2 != 0">
 				<![CDATA[	
-					AND use_month <= #{Statistics.month2} 
+					AND pay_month <= #{Statistics.month2} 
 				]]>
 				</if>			
-				group by project_id, floor(use_month/100)
+				group by project_id, floor(pay_month/100)
 		)pe 
 		on project.project_id = pe.project_id 
 		union all 
 		select project.project_name,rc.* 
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 		
 		inner join 	(
-				select project_id, floor(use_month/100) year1,sum(case when amount is NULL  then 0 else amount end)*-1 as amount  ,
+				select project_id, floor(pay_month/100) year1,sum(case when amount is NULL  then 0 else amount end)*-1 as amount  ,
 				0 as total_amount
-				from tb_reimburse_costs  where delete_flag = '0' 
-				and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+				from vb_reimburse_costs  where delete_flag = '0' 
+				and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 				and verify_userid is not NULL  
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
-					AND use_month >= #{Statistics.month1} 
+					AND pay_month >= #{Statistics.month1}
 				]]>
 				</if> 			
 				<if test="Statistics.month2 != 0">
 				<![CDATA[	
-					AND use_month <= #{Statistics.month2} 
+					AND pay_month <= #{Statistics.month2}
 				]]>
 				</if>				
-				group by project_id, floor(use_month/100)
+				group by project_id, floor(pay_month/100)
 		)rc 
 		on project.project_id = rc.project_id 
 	) a group by year1 
@@ -296,17 +283,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -314,16 +301,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>				
 			group by project_id
@@ -397,17 +384,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -415,16 +402,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>				
 			group by project_id
@@ -502,17 +489,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -520,16 +507,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>				
 			group by project_id
@@ -605,17 +592,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -623,16 +610,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>				
 			group by project_id
@@ -708,17 +695,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -726,16 +713,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>				
 			group by project_id
@@ -812,17 +799,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -830,16 +817,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>				
 			group by project_id
@@ -917,17 +904,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -935,16 +922,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>				
 			group by project_id
@@ -1023,17 +1010,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -1041,16 +1028,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>				
 			group by project_id
@@ -1137,17 +1124,17 @@
 		on project.project_id = psc.project_id 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
-			from tb_reimburse_costs where  delete_flag = '0' 
-			and not EXISTS (select 1 from vb_begin_data2 vba where tb_reimburse_costs.reimburse_id = vba.reimburse_id)
+			from vb_reimburse_costs where  delete_flag = '0' 
+			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
 			and verify_userid is not NULL  
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1}
 			]]>
 			</if> 			
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2}
 			]]>
 			</if>					
 			group by project_id
@@ -1155,16 +1142,16 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(case when (actual_cost is NULL OR actual_cost = 0) then amount else actual_cost end) amount
-			from tb_project_expend where  delete_flag = '0' 
+			from vb_project_expend_pay where  delete_flag = '0' 
 			and verify_userid is not NULL 
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
-				AND use_month >= #{Statistics.month1} 
+				AND pay_month >= #{Statistics.month1} 
 			]]>
 			</if>
 			<if test="Statistics.month2 != 0">
 			<![CDATA[	
-				AND use_month <= #{Statistics.month2} 
+				AND pay_month <= #{Statistics.month2} 
 			]]>
 			</if>
 			group by project_id

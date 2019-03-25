@@ -19,10 +19,18 @@ public class AnalysisUtil {
      * @return
      */
     public static AnalysisSearch preYearSearch(AnalysisSearch analysisSearch){
+
+        boolean haveDate = analysisSearch.getDate1() != null;
+
         AnalysisSearch temp = new AnalysisSearch();
         BeanUtils.copyProperties(analysisSearch , temp);
         temp.setMonth1(temp.getMonth1() - 100);
         temp.setMonth2(temp.getMonth2() - 100);
+
+        if(!haveDate){
+            temp.setDate1(null);
+            temp.setDate2(null);
+        }
         return temp;
     }
 

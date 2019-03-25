@@ -29,10 +29,10 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 		items.add("项目不含税回款");
 		items.add("项目人工成本");
 		items.add("剔除人工成本后项目毛利润额");
-		items.add("项目人工成本占项目收入率");
-		items.add("项目报销占项目收入比率");
-		items.add("销售费用占项目收入比率");
-		items.add("部门管理费用占项目收入比率");
+		items.add("项目人工成本占项目回款比率");
+		items.add("项目报销占项目回款比率");
+		items.add("销售费用占项目回款比率");
+		items.add("部门管理费用占项目回款比率");
 		items.add("项目报销成本");
 		items.add("项目付款");
 		items.add("销售费用");
@@ -59,7 +59,7 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 
 
 	/**
-	 * 项目总收入
+	 * 项目总回款
 	 *
 	 * @param searchStatistics
 	 * @param depts
@@ -74,7 +74,7 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 
 
 	/**
-	 * 未确认收入
+	 * 未确认回款
 	 *
 	 * @param searchStatistics
 	 * @param depts

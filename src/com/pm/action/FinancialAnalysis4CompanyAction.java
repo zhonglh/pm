@@ -1,14 +1,14 @@
 package com.pm.action;
 
 import com.common.actions.BaseAction;
+import com.common.beans.Pager;
 import com.common.utils.DateKit;
 import com.common.utils.DateUtils;
 import com.common.utils.NumberKit;
-import com.pm.service.IAnalysisService;
-import com.pm.service.IDeptService;
-import com.pm.service.IDicDataService;
-import com.pm.service.IRoleService;
+import com.pm.domain.business.Statistics;
+import com.pm.service.*;
 import com.pm.util.AnalysisUtil;
+import com.pm.util.PubMethod;
 import com.pm.util.constant.EnumPermit;
 import com.pm.util.excel.exports.BusinessExExcel;
 import com.pm.util.excel.Column;
@@ -43,10 +43,14 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
     @Autowired
     private IRoleService roleService;
 
-    ;
+
 
     @Autowired
     private IAnalysisService analysisService;
+
+
+    @Autowired
+    private IReceivablesStatisticsService receivablesStatisticsService;
 
 
     private static List<String> tableName = new ArrayList<String>();
@@ -58,7 +62,7 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
     static{
         tableName.add("");
         tableName.add("流动资产负债分析");
-        tableName.add("公司利润表分析");
+        tableName.add("公司账面利润分析");
         tableName.add("现金流分析");
         tableName.add("管理费用分析");
 
@@ -210,10 +214,21 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
 
         AnalysisResult ar10 = analysisService.queryMonthlyStatements(analysisSearch ,userPermit );
         AnalysisResult ar20 = analysisService.queryReceivedPayments(analysisSearch ,userPermit );
-        AnalysisResult ar30 = new AnalysisResult();
 
-        ar30.setCurr_statistics_amount(ar10.getCurr_statistics_amount() - ar20.getCurr_statistics_amount());
-        ar30.setPre_statistics_amount(ar10.getPre_statistics_amount() - ar20.getPre_statistics_amount());
+
+        Statistics statistics = new Statistics();
+        statistics.setMonth2(analysisSearch.getMonth2());
+        Pager<Statistics> all1 = receivablesStatisticsService.queryByAll(statistics , userPermit , PubMethod.getPagerByAll( Statistics.class));
+
+
+        statistics.setMonth2(analysisSearch.getMonth2()-100);
+        Pager<Statistics> all2 = receivablesStatisticsService.queryByAll(statistics , userPermit , PubMethod.getPagerByAll( Statistics.class));
+
+
+
+        AnalysisResult ar30 = new AnalysisResult();
+        ar30.setCurr_statistics_amount(all1.getResultList().get(0).getStatistics_amount());
+        ar30.setPre_statistics_amount(all2.getResultList().get(0).getStatistics_amount());
         AnalysisUtil.processesult(ar30);
 
 
@@ -239,10 +254,18 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
 
 
     /**
-     * 公司利润表分析
+     * 公司账面利润分析
+     * 按照月份查询
      * @return
      */
     private AnalysisResultTable getAnalysis2(AnalysisSearch analysisSearch, UserPermit userPermit){
+
+
+        Date date1 = analysisSearch.getDate1();
+        Date date2 = analysisSearch.getDate2();
+
+        analysisSearch.setDate1(null);
+        analysisSearch.setDate2(null);
 
         AnalysisResultTable art = new AnalysisResultTable();
         art.setLabel( tableName.get(2) );
@@ -318,6 +341,11 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
             ar.setItem_name(items20.get(index++));
             ar.setAnalysis_type(art.getLabel());
         }
+
+
+
+        analysisSearch.setDate1(date1);
+        analysisSearch.setDate2(date2);
 
         return art;
     }

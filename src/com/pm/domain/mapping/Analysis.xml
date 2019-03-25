@@ -151,6 +151,19 @@
 			]]>
 			</if>
 
+
+			<if test="AnalysisSearch.month1 != null and AnalysisSearch.month1 != 0">
+				<![CDATA[
+					AND use_month >= #{AnalysisSearch.month1}
+				]]>
+			</if>
+			<if test="AnalysisSearch.month2 != null and AnalysisSearch.month2 != 0">
+				<![CDATA[
+					AND use_month <= #{AnalysisSearch.month2}
+				]]>
+			</if>
+
+
 			<include refid="analysisPermission"/>	
 		) a
 

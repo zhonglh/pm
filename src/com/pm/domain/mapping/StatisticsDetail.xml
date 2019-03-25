@@ -112,7 +112,7 @@
 		FROM (<include refid="ProjectItemDetailMapping.all_data"/>) business
 		inner join vb_project project
 		on business.project_id = project.project_id
-		where 1=1 and business.business_sort in ('11','30','40','51')
+		where 1=1 and business.business_sort in ('11','30','42','51')
 		and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
 
 		<if test="Statistics.project_id != null and Statistics.project_id != ''">
@@ -121,12 +121,18 @@
 
 		<if test="Statistics.month1 != 0">
 			<![CDATA[
-			AND use_month >= #{Statistics.month1}
+			AND (
+					(  (business_sort = '11' or business_sort = '51') and use_month >= #{Statistics.month1}) or
+					(  (business_sort = '30' or business_sort = '42') and DATE_FORMAT(pay_date,'%Y%m') >= #{Statistics.month1})
+				)
 		]]>
 		</if>
 		<if test="Statistics.month2 != 0">
 			<![CDATA[
-			AND use_month <= #{Statistics.month2}
+			AND (
+					(  (business_sort = '11' or business_sort = '51') and use_month <= #{Statistics.month2}) or
+					(  (business_sort = '30' or business_sort = '42') and DATE_FORMAT(pay_date,'%Y%m') <= #{Statistics.month2})
+				)
 		]]>
 		</if>
 

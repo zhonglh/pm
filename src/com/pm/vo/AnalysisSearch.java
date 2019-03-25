@@ -88,6 +88,13 @@ public class AnalysisSearch implements Serializable {
         return date2;
     }
 
+    public void setDate1(Date date1) {
+        this.date1 = date1;
+    }
+
+    public void setDate2(Date date2) {
+        this.date2 = date2;
+    }
 
     public String getDept_id() {
         return dept_id;

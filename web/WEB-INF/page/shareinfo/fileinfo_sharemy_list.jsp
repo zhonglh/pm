@@ -6,8 +6,8 @@
 </form>
 
 <div class="pageHeader">
-	<c:if test="${empty fileInfo1.top_id }">共享文件</c:if>
-	<c:if test="${not empty fileInfo1.top_id }"><a style="cursor:pointer;" class="sharefile" id="">共享文件</a><c:forEach var="item" items="${parents}">  /  <a  style="cursor:pointer;"  class="sharefile" id="${item.id }" top_id="${top_id}">${item.show_name }</a></c:forEach></c:if>
+	<c:if test="${empty top_id }">共享文件</c:if>
+	<c:if test="${not empty top_id }"><a style="cursor:pointer;" class="sharefile" id="">共享文件</a><c:forEach var="item" items="${parents}">  /  <a  style="cursor:pointer;"  class="sharefile" id="${item.id }" top_id="${top_id}">${item.show_name }</a></c:forEach></c:if>
 </div>
 
 

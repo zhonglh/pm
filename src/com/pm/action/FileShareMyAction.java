@@ -60,6 +60,7 @@ public class FileShareMyAction extends BaseAction {
 		if(StringUtils.isEmpty(top_id)){
 			top_id = "";
 		}
+		request.setAttribute("top_id", top_id);
 
 		paramprocess(request,fileInfo);
 		
@@ -68,6 +69,7 @@ public class FileShareMyAction extends BaseAction {
 		Pager<FileInfo> pager = null;
 
 		if(StringUtils.isEmpty(top_id)) {
+			fileInfo.setBuild_userid(sessionUser.getUser_id());
 			pager = fileInfoService.queryFileShareMyInfo(fileInfo, userPermit, PubMethod.getPager(request, FileInfo.class));
 		}else {
 
@@ -80,6 +82,10 @@ public class FileShareMyAction extends BaseAction {
 					parents.add(0,parentFile);
 					parentId = parentFile.getParent_id();
 				}
+
+				FileInfo topFile =fileInfoService.get(top_id);
+				parents.add(0,topFile);
+
 				request.setAttribute("parents", parents);
 			}
 

@@ -71,8 +71,9 @@ public class FileInfoDaoImpl extends BatisDao implements IFileInfoDao  {
 		
 		return pager1;
 	}
-	
 
+
+	@Override
 	public Pager<FileInfo> queryFileShareInfo(FileInfo fileInfo,  UserPermit userPermit,Pager<FileInfo> pager) {
 
 		String sql = "FileInfoMapping.queryFileShareInfo"; 
@@ -80,8 +81,9 @@ public class FileInfoDaoImpl extends BatisDao implements IFileInfoDao  {
 		
 		return pager1;
 	}
-	
 
+
+	@Override
 	public Pager<FileInfo> queryFileShareMyInfo(FileInfo fileInfo,  UserPermit userPermit,Pager<FileInfo> pager) {
 		String sql = "FileInfoMapping.queryFileShareMyInfo"; 
 		Pager<FileInfo> pager1 =  this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql,FileInfo.class, fileInfo,userPermit); 

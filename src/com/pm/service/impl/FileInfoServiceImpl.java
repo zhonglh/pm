@@ -173,14 +173,16 @@ public class FileInfoServiceImpl implements  IFileInfoService {
 
 		return fileInfoDao.queryFileInfo(fileInfo, userPermit, pager);
 	}
-	
 
+
+	@Override
 	public Pager<FileInfo> queryFileShareInfo(FileInfo fileInfo,  UserPermit userPermit,Pager<FileInfo> pager){
 
 		return fileInfoDao.queryFileShareInfo(fileInfo, userPermit, pager);
 	}
-	
 
+
+	@Override
 	public Pager<FileInfo> queryFileShareMyInfo(FileInfo fileInfo,  UserPermit userPermit,Pager<FileInfo> pager){
 
 		return fileInfoDao.queryFileShareMyInfo(fileInfo, userPermit, pager);

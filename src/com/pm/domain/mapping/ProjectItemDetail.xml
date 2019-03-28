@@ -43,8 +43,8 @@
 	
 	
 	
-	
-	
+
+
 	<!-- 回款 -->
 	<sql id="all_data_10">
 			<![CDATA[
@@ -55,16 +55,16 @@
 			receivedPayment.receive_payment_month as use_month,  receivedPayment.receive_payment_datetime as pay_date,
 			dd_rai.dic_data_name as  otherdesc, receivedPayment.description, receivedPayment.payment_unit as business_name	,
 			receivedPayment.receivable_accounts_item_id as type_id 	, receivedPayment.build_datetime  , '' as staff_id
-			from tb_received_payment receivedPayment 
-			INNER JOIN vb_project project 
-			on receivedPayment.project_id = project.project_id 
-			INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id 			
+			from tb_received_payment receivedPayment
+			INNER JOIN vb_project project
+			on receivedPayment.project_id = project.project_id
+			INNER join ts_dic_data dd_rai on receivedPayment.receivable_accounts_item_id = dd_rai.id
 			where  receivedPayment.verify_userid is not null and receivedPayment.receive_payment_month >= 201501
 			]]>
 	</sql>
 
 
-	<!-- 金额为回款， 时间为结算单 -->all_data_11
+	<!-- 金额为回款， 时间为结算单 -->
 	<sql id="all_data_11">
 		<![CDATA[
 		select rp.receive_payment_id as obj_id ,
@@ -109,7 +109,7 @@
 		<![CDATA[
 		select receivedPayment.receive_payment_id as obj_id ,
 		project.project_id,project.project_name,project.project_no	,project.deptid as dept_id,
-		'收入' as amount_type, '到款记录' as business_type,	  '10' as business_sort,
+		'收入' as amount_type, '到款记录' as business_type,	  '13' as business_sort,
 		receivedPayment.receive_payment_amount as amount,
 		DATE_FORMAT(receivedPayment.receive_payment_datetime,'%Y%m') as  use_month,  receivedPayment.receive_payment_datetime as pay_date,
 		dd_rai.dic_data_name as  otherdesc, receivedPayment.description, receivedPayment.payment_unit as business_name	,
@@ -155,8 +155,8 @@
 			'' as  otherdesc, ms.description,
 			(case when statement_type='1'   	then '外包结算' when statement_type='2'   	then '外派结算' when statement_type='3'   	then '历史结算' else '其它结算' end)  as business_name,
 			''  as type_id 	 , ms.build_datetime , '' as    staff_id
-			FROM tb_monthly_statement ms 
-			inner join vb_project project 
+			FROM tb_monthly_statement ms
+			inner join vb_project project
 			on ms.project_id = project.project_id
 			left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'MONTHLY_STATEMENT' group by data_id) aa
 			on ms.monthly_statement_id = aa.data_id
@@ -168,7 +168,6 @@
 	<!-- 结算单明细 -->
 	<sql id="all_data_21">
 
-			<![CDATA[
 			SELECT ms.monthly_statement_id as obj_id,
 			project.project_id,project.project_name, project.project_no ,  project.deptid as dept_id,
 			'收入' as amount_type, '月度结算单' as business_type, '21' as business_sort,
@@ -176,11 +175,13 @@
 			'' as  otherdesc, ms.description,
 			(case when statement_type='1'   	then '外包结算' when statement_type='2'   	then '外派结算' when statement_type='3'   	then '历史结算' else '其它结算' end)  as business_name,
 			detail.staff_id  as type_id 	 , ms.build_datetime , '' as    staff_id
-			FROM tb_monthly_statement ms 
+
+			<![CDATA[
+			FROM tb_monthly_statement ms
 			inner join tb_monthly_statement_detail detail
-			on ms.monthly_statement_id = detail.monthly_statement_id 
-			inner join vb_project project 
-			on ms.project_id = project.project_id			
+			on ms.monthly_statement_id = detail.monthly_statement_id
+			inner join vb_project project
+			on ms.project_id = project.project_id
 			where   ms.verify_userid is not null and ms.statement_month >= 201501
 			]]>
 	</sql>
@@ -217,12 +218,12 @@
 			rc.amount,rc.use_month, rc.pay_date,  dd_rai.dic_data_name as  otherdesc, rc.description,
 			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
 			rc.pay_item_id  as type_id, rc.build_datetime ,   rc.staff_id
-			from tb_reimburse_costs rc 
-			INNER JOIN vb_project project 
-			on rc.project_id = project.project_id 			
+			from tb_reimburse_costs rc
+			INNER JOIN vb_project project
+			on rc.project_id = project.project_id
 			left join ts_dic_data dd_rai on rc.pay_item_id = dd_rai.id
 			left JOIN tb_staff_costs staff
-			on rc.staff_id = staff.staff_id 
+			on rc.staff_id = staff.staff_id
 			where rc.delete_flag = '0' and rc.verify_userid is not null  and rc.use_month >= 201501
 			]]>
 	</sql>
@@ -238,17 +239,17 @@
 			rc.amount,rc.use_month, rc.pay_date,  dd_rai.dic_data_name as  otherdesc, rc.description,
 			(case when staff.staff_name is NULL   	then rc.staff_id else staff.staff_name end)  as business_name,
 			staff.staff_id  as type_id, rc.build_datetime ,   rc.staff_id
-			from tb_reimburse_costs rc 
-			INNER JOIN vb_project project 
-			on rc.project_id = project.project_id 			
+			from tb_reimburse_costs rc
+			INNER JOIN vb_project project
+			on rc.project_id = project.project_id
 			left join ts_dic_data dd_rai
-			on rc.pay_item_id = dd_rai.id 	
+			on rc.pay_item_id = dd_rai.id
 			INNER JOIN tb_staff_costs staff
-			on rc.staff_id = staff.staff_id 
+			on rc.staff_id = staff.staff_id
 			where rc.delete_flag = '0' and rc.verify_userid is not null and rc.use_month >= 201501
 			]]>
 	</sql>
-	
+
 	<!-- 付款信息 -->
 	<sql id="all_data_40">
 			<![CDATA[
@@ -258,9 +259,9 @@
 			pe.amount,
 			pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
 			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime , '' as staff_id
-			from tb_project_expend pe 
-			INNER JOIN vb_project project 
-			on pe.project_id = project.project_id 
+			from tb_project_expend pe
+			INNER JOIN vb_project project
+			on pe.project_id = project.project_id
 			WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pe.use_month >= 201501
 			]]>
 	</sql>
@@ -274,9 +275,9 @@
 			'成本' as amount_type, '项目付款信息' as business_type, '41' as business_sort,
 			pe.actual_cost as amount,pe.use_month, pe.pay_date , pe.sub_contractor_no as  otherdesc,pe.description,
 			sub_contractor_name as business_name	, '' as type_id , pe.build_datetime , '' as staff_id
-			from tb_project_expend pe 
-			INNER JOIN vb_project project 
-			on pe.project_id = project.project_id 
+			from tb_project_expend pe
+			INNER JOIN vb_project project
+			on pe.project_id = project.project_id
 			WHERE pe.delete_flag = '0' and pe.verify_userid is not null and pay_date is not null and pe.use_month >= 201501
 			]]>
 	</sql>
@@ -307,14 +308,14 @@
 			select psc.project_staffcost_id as obj_id,
 			psc.project_id ,project.project_name,project.project_no, project.deptid as dept_id,
 			'成本' as amount_type, '项目人员成本' as business_type,  '50' as business_sort,
-			 psc.amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
+			 psc.amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,
 			staff.staff_name  as business_name	, '' as type_id, psc.build_datetime , psc.staff_id
-			from tb_project_staff_cost psc 
-			INNER JOIN vb_project project 
-			on psc.project_id = project.project_id 
+			from tb_project_staff_cost psc
+			INNER JOIN vb_project project
+			on psc.project_id = project.project_id
 			inner join tb_staff_costs staff
 			on psc.staff_id = staff.staff_id
-			where  psc.use_month >= 201501
+			where  psc.work_month >= 201501
 		]]>
 	</sql>
 
@@ -325,17 +326,17 @@
 			select psc.project_staffcost_id as obj_id,
 			psc.project_id ,project.project_name,project.project_no,project.deptid as dept_id,
 			'成本' as amount_type, '项目人员成本' as business_type,  '51' as business_sort,
-			 psc.all_amount as amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,	
+			 psc.all_amount as amount, psc.work_month as use_month ,psc.pay_date, '' as otherdesc, '' as description,
 			staff.staff_name  as business_name	, '' as type_id , psc.build_datetime , psc.staff_id
-			from tb_project_staff_cost psc 
-			INNER JOIN vb_project project 
-			on psc.project_id = project.project_id 
+			from tb_project_staff_cost psc
+			INNER JOIN vb_project project
+			on psc.project_id = project.project_id
 			inner join tb_staff_costs staff
 			on psc.staff_id = staff.staff_id
-			where  psc.use_month >= 201501
+			where  psc.work_month >= 201501
 		]]>
 	</sql>
-	
+
 	<!-- 工资 -->
 	<sql id="all_data_60">
 			<![CDATA[
@@ -347,16 +348,16 @@
 				psc.losejob_insurance_bycompany+psc.maternity_insurance_bycompany+psc.jobharm_insurance_bycompany+
 				psc.reservefund_bypcompany+psc.overdue_tax_salary+psc.actual_bonus
 			) as amount,  psc.salary_month as use_month ,
-			DATE_ADD(str_to_date(psc.salary_month*100+20,'%Y%m%d'),INTERVAL 1 month) as pay_date, 
-			'' as otherdesc, psc.description as description,	
+			DATE_ADD(str_to_date(psc.salary_month*100+20,'%Y%m%d'),INTERVAL 1 month) as pay_date,
+			'' as otherdesc, psc.description as description,
 			staff.staff_name  as business_name	, psc.staff_id as type_id , psc.build_datetime  , psc.staff_id
-			from tb_salary psc 
-			INNER JOIN vb_project project 
-			on psc.project_id = project.project_id 
+			from tb_salary psc
+			INNER JOIN vb_project project
+			on psc.project_id = project.project_id
 			inner join tb_staff_costs staff
-			on psc.staff_id = staff.staff_id	
+			on psc.staff_id = staff.staff_id
 			and psc.verify_userid is not null
-			and   psc.use_month >= 201501
+			and   psc.salary_month >= 201501
 			]]>
 	</sql>
 
@@ -385,6 +386,6 @@
 
 
 
-	 
+
 
 </mapper>

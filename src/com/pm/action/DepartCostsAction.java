@@ -99,11 +99,13 @@ public class DepartCostsAction extends BaseAction {
 		paramprocess(request,departCosts);
 		
 
-		if(departCosts.getDept_id() == null || departCosts.getDept_id().isEmpty())
-		departCosts.setDept_id(request.getParameter("dept.dept_id"));		
+		if(departCosts.getDept_id() == null || departCosts.getDept_id().isEmpty()) {
+			departCosts.setDept_id(request.getParameter("dept.dept_id"));
+		}
 		
-		if(departCosts.getDept_name() == null || departCosts.getDept_name().isEmpty())
-		departCosts.setDept_name(request.getParameter("dept.dept_name"));	
+		if(departCosts.getDept_name() == null || departCosts.getDept_name().isEmpty()) {
+			departCosts.setDept_name(request.getParameter("dept.dept_name"));
+		}
 		
 		
 		Pager<DepartCosts> pager = departCostsService.queryDepartCosts(departCosts, userPermit, PubMethod.getPager(request, DepartCosts.class));
@@ -138,18 +140,21 @@ public class DepartCostsAction extends BaseAction {
 		departCosts.setProject_no(request.getParameter("project.project_no"));
 		
 		departCosts.setStaff_id(request.getParameter("staff.staff_id"));		
-		if(departCosts.getStaff_name() == null || departCosts.getStaff_name().isEmpty() )
-		departCosts.setStaff_name(request.getParameter("staff.staff_name"));		
+		if(departCosts.getStaff_name() == null || departCosts.getStaff_name().isEmpty() ) {
+			departCosts.setStaff_name(request.getParameter("staff.staff_name"));
+		}
 		departCosts.setStaff_no(request.getParameter("staff.staff_no"));
 		
 		
 	
 		
 		
-		if(departCosts.getPay_item_id() == null || departCosts.getPay_item_id().isEmpty())
-		departCosts.setPay_item_id(request.getParameter("dc.id"));
-		if(departCosts.getPay_item_name() == null || departCosts.getPay_item_name().isEmpty())
-		departCosts.setPay_item_name(request.getParameter("dc.dic_data_name"));
+		if(departCosts.getPay_item_id() == null || departCosts.getPay_item_id().isEmpty()) {
+			departCosts.setPay_item_id(request.getParameter("dc.id"));
+		}
+		if(departCosts.getPay_item_name() == null || departCosts.getPay_item_name().isEmpty()) {
+			departCosts.setPay_item_name(request.getParameter("dc.dic_data_name"));
+		}
 			
 	}	
 	
@@ -163,10 +168,9 @@ public class DepartCostsAction extends BaseAction {
 	
 
 	@RequestMapping(params = "method=downloadtemplet")
-	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/departcost.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "部门费用模板.xlsx" ,response,false);  		
+	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception {
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/departcost.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "部门费用模板.xlsx" ,response,false);
 		return null;  
 	}  	
 	
@@ -414,8 +418,9 @@ public class DepartCostsAction extends BaseAction {
 		
 		
 		
-		if(departCosts.getErrorInfo() != null && !departCosts.getErrorInfo().isEmpty())
+		if(departCosts.getErrorInfo() != null && !departCosts.getErrorInfo().isEmpty()) {
 			b = false;
+		}
 		
 		return b;
 	}
@@ -423,7 +428,7 @@ public class DepartCostsAction extends BaseAction {
 	
 	/**
 	 * 导出Excel(普通方式导出)
-	 * @param searchStaffCost
+	 * @param departCosts
 	 * @param res
 	 * @param request
 	 */
@@ -542,8 +547,9 @@ public class DepartCostsAction extends BaseAction {
 		if(departCosts.getDept_id() == null || departCosts.getDept_id().isEmpty())
 		departCosts.setDept_id(request.getParameter("staff.dept_id"));		
 		
-		if(departCosts.getDept_name() == null || departCosts.getDept_name().isEmpty())
-		departCosts.setDept_name(request.getParameter("staff.dept_name"));	
+		if(departCosts.getDept_name() == null || departCosts.getDept_name().isEmpty()) {
+			departCosts.setDept_name(request.getParameter("staff.dept_name"));
+		}
 		
 		if(StringUtils.isNotEmpty(departCosts.getStaff_id())){
 			OtherStaff os = otherStaffService.getOtherStaff(departCosts.getStaff_id());
@@ -574,8 +580,12 @@ public class DepartCostsAction extends BaseAction {
 		}catch(Exception e){
 			
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "数据格式错误！", true);
+		if(count == 1) 		{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "数据格式错误！", true);
+		}
 		
 	}
 	
@@ -591,12 +601,13 @@ public class DepartCostsAction extends BaseAction {
 		if(departCosts.getDept_id() == null || departCosts.getDept_id().isEmpty())
 		departCosts.setDept_id(request.getParameter("staff.dept_id"));		
 		
-		if(departCosts.getDept_name() == null || departCosts.getDept_name().isEmpty())
-		departCosts.setDept_name(request.getParameter("staff.dept_name"));
+		if(departCosts.getDept_name() == null || departCosts.getDept_name().isEmpty()) {
+			departCosts.setDept_name(request.getParameter("staff.dept_name"));
+		}
 		
 		if(StringUtils.isNotEmpty(departCosts.getStaff_id())){
 			OtherStaff os = otherStaffService.getOtherStaff(departCosts.getStaff_id());
-			if(!os.getStaff_name().equals(departCosts.getStaff_name())){
+			if(os!= null && !os.getStaff_name().equals(departCosts.getStaff_name())){
 				departCosts.setStaff_id(departCosts.getStaff_name());
 				departCosts.setStaff_no(null);
 			}
@@ -610,8 +621,12 @@ public class DepartCostsAction extends BaseAction {
 		}catch(Exception e){
 			
 		}
-		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
-		else return this.ajaxForwardError(request, "数据格式错误！", true);
+		if(count == 1) 	{
+			return this.ajaxForwardSuccess(request, rel, true);
+		}
+		else {
+			return this.ajaxForwardError(request, "数据格式错误！", true);
+		}
 		
 	}	
 	

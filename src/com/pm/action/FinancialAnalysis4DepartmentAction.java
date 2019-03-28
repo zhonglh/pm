@@ -225,7 +225,9 @@ public class FinancialAnalysis4DepartmentAction extends FinancialAnalysisAbstrac
 
         List<AnalysisResult> ars1 = new ArrayList<AnalysisResult>();
         if(art1 != null && art1.getResult() != null) {
-            for(AnalysisResult temp : art1.getResult()) {
+            AnalysisResult temp = null;
+            for( int index = 0 ; index < art1.getResult().size() -1 ; index ++  ) {
+                temp = art1.getResult().get(index);
                 AnalysisResult ar = new AnalysisResult();
                 BeanKit.copyProperties(temp, ar);
                 ars1.add(ar);
@@ -234,7 +236,9 @@ public class FinancialAnalysis4DepartmentAction extends FinancialAnalysisAbstrac
 
         List<AnalysisResult> ars2 = new ArrayList<AnalysisResult>();
         if(art2 != null && art2.getResult() != null) {
-            for(AnalysisResult temp : art2.getResult()) {
+            AnalysisResult temp = null;
+            for( int index = 0 ; index < art2.getResult().size() -1 ; index ++  ) {
+                temp = art2.getResult().get(index);
                 AnalysisResult ar = new AnalysisResult();
                 BeanKit.copyProperties(temp, ar);
                 ars2.add(ar);

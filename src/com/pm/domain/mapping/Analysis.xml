@@ -144,7 +144,7 @@
 				and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id)
 				and not EXISTS (select 1 from vb_staffcost_reimburse vsr where business.obj_id = vsr.reimburse_id)
 			</if>
-			
+
 
 			
 			<if test="AnalysisSearch.dept_id != null and AnalysisSearch.dept_id != ''">

@@ -1,5 +1,7 @@
 package com.pm.domain.business;
 
+import java.util.Date;
+
 @SuppressWarnings("serial")
 public class Statistics extends Project {
 
@@ -21,6 +23,10 @@ public class Statistics extends Project {
 	 * 统计口径
 	 */
 	private String statistics_caliber;
+
+
+	private Date date1;
+	private Date date2;
 	
 	/**
 	 * 查询起始月
@@ -211,7 +217,19 @@ public class Statistics extends Project {
 		this.staff_id = staff_id;
 	}
 
+	public Date getDate1() {
+		return date1;
+	}
 
-	
+	public void setDate1(Date date1) {
+		this.date1 = date1;
+	}
 
+	public Date getDate2() {
+		return date2;
+	}
+
+	public void setDate2(Date date2) {
+		this.date2 = date2;
+	}
 }

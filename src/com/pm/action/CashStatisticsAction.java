@@ -43,6 +43,7 @@ public class CashStatisticsAction extends DepartStatisticsAction {
 	}
 
 
+	@Override
 	protected  List<String> getTitles() {
 		return items;
 	}

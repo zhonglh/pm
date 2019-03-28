@@ -105,9 +105,21 @@
 			<![CDATA[	
 				AND use_month <= #{Statistics.month2} 
 			]]>
-			</if>	
-			
-			<include refid="ProjectAuthMapping.permission"/>	
+			</if>
+
+
+			<if test="Statistics.date1 != null">
+				<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+			</if>
+			<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+			</if>
+
+		<include refid="ProjectAuthMapping.permission"/>
 		) a group by ${Statistics.groupBy}	
 	</sql>
 	 
@@ -199,7 +211,19 @@
 		<![CDATA[	
 			AND use_month <= #{Statistics.month2} 
 		]]>
-		</if>	
+		</if>
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
 		
 		<include refid="ProjectAuthMapping.permission"/>	
 		
@@ -260,7 +284,22 @@
 		<![CDATA[	
 			AND use_month <= #{Statistics.month2} 
 		]]>
-		</if>	
+		</if>
+
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
+
+
 		<include refid="DepartItemDetailMapping.departPermission"/>	
 		) a group by ${Statistics.groupBy}
 	</sql>
@@ -317,7 +356,20 @@
 		<![CDATA[	
 			AND use_month <= #{Statistics.month2} 
 		]]>
-		</if>	
+		</if>
+
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
 		
 		<include refid="DepartItemDetailMapping.departPermission"/>			
 		
@@ -363,6 +415,19 @@
 			AND use_month <= #{Statistics.month2}
 		]]>
 		</if>
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
+
 		<include refid="DepartItemDetailMapping.departPermission"/>
 		) a group by ${Statistics.groupBy}
 	</sql>
@@ -408,6 +473,21 @@
 			AND use_month <= #{Statistics.month2}
 			]]>
 		</if>
+
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
+
+
 		<include refid="DepartItemDetailMapping.departPermission"/>
 		order by use_month desc ,build_datetime desc
 	</sql>

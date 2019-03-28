@@ -62,6 +62,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 	}
 
 
+	@Override
 	protected  List<String> getTitles() {
 		return items;
 	}

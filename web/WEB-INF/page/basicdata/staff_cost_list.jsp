@@ -60,15 +60,15 @@
 
 			<li>
 				<label>入职时间：</label>
-				<input name="join_datetime1" class="date" type="text" size="7" value="${param.join_datetime1 }" readonly="readonly" />
-				<input name="join_datetime2" class="date" type="text" size="7" value="${param.join_datetime2 }" readonly="readonly" />
+				<input name="join_datetime1"  class="date" autocomplete="off"  type="text" size="7" value="${param.join_datetime1 }" readonly="readonly" />
+				<input name="join_datetime2"  class="date" autocomplete="off"  type="text" size="7" value="${param.join_datetime2 }" readonly="readonly" />
 			</li>
 
 
 			<li>
 				<label>离职时间：</label>
-				<input name="leave_job_datetime1" class="date" type="text" size="7" value="${param.leave_job_datetime1 }" readonly="readonly" />
-				<input name="leave_job_datetime2" class="date" type="text" size="7" value="${param.leave_job_datetime2 }" readonly="readonly" />
+				<input name="leave_job_datetime1"  class="date" autocomplete="off"  type="text" size="7" value="${param.leave_job_datetime1 }" readonly="readonly" />
+				<input name="leave_job_datetime2"  class="date" autocomplete="off"  type="text" size="7" value="${param.leave_job_datetime2 }" readonly="readonly" />
 			</li>
 
 
@@ -96,8 +96,8 @@
 
 			<li>
 				<label>时间段：</label>
-				<input name="date1" class="date" type="text" size="7" value="${param.date1 }" readonly="readonly" />
-				<input name="date2" class="date" type="text" size="7" value="${param.date2 }" readonly="readonly" />
+				<input name="date1"  class="date" autocomplete="off"  type="text" size="7" value="${param.date1 }" readonly="readonly" />
+				<input name="date2"  class="date" autocomplete="off"  type="text" size="7" value="${param.date2 }" readonly="readonly" />
 			</li>
 
 			<li>

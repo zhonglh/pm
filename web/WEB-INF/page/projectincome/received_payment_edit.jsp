@@ -30,7 +30,7 @@
 
 			<p>
 				<label>到款所属月份：</label>
-				<input  type="text" class="digits required date month"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM"  size="30" name="receive_payment_month" value="${receivedPayment1.receive_payment_month}"/>
+				<input  type="text" class="digits required date month"   maxlength="6" minlength="6"  format="yyyyMM"  size="30" name="receive_payment_month" value="${receivedPayment1.receive_payment_month}"/>
 			</p>
 			
 			

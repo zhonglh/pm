@@ -35,7 +35,7 @@
 			
 			<p>
 				<label>开票日期：</label>
-				<input name="invoice_date" class="date" type="text" size="30" value="<fmt:formatDate value="${invoice1.invoice_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="invoice_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${invoice1.invoice_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>	
 
 		

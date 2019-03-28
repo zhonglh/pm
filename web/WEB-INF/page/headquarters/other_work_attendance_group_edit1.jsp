@@ -8,7 +8,7 @@
 
 			<p>
 				<label>考勤月份：</label>
-				<input name="attendance_month" class="digits date required month" readonly format="yyyyMM" minlength="6" maxlength="6" type="text" size="30" value="${attendance_month}" />
+				<input name="attendance_month" class="digits date required month" autocomplete="off"  readonly format="yyyyMM" minlength="6" maxlength="6" type="text" size="30" value="${attendance_month}" />
 			</p>
 			
 			<p>

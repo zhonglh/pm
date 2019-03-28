@@ -50,8 +50,8 @@
 			
 			<li>
 				<label>咨询时间：</label>
-				<input type="text" class="date" name="date1" size="7" value="${param.date1 }"/>
-				<input type="text" class="date" name="date2" size="7" value="${param.date2 }"/>
+				<input type="text"  class="date" autocomplete="off"  name="date1" size="7" value="${param.date1 }"/>
+				<input type="text"  class="date" autocomplete="off"  name="date2" size="7" value="${param.date2 }"/>
 			</li>
 			<li>
 				<div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div>

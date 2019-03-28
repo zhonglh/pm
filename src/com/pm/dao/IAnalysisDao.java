@@ -70,12 +70,22 @@ public interface IAnalysisDao {
 
 
     /**
-     * 供应商付款
+     * 供应商付款(应付)
      * @param analysisSearch
      * @param userPermit
      * @return
      */
     public AnalysisVo queryProjectExpends(AnalysisSearch analysisSearch, UserPermit userPermit);
+
+
+
+    /**
+     * 供应商付款(实付)
+     * @param analysisSearch
+     * @param userPermit
+     * @return
+     */
+    public AnalysisVo queryProjectExpendsPay(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
     /**

@@ -8,7 +8,7 @@
 
 			<p>
 				<label>工资月份：</label>
-				<input name="salary_month" class="digits date required month" readonly format="yyyyMM" minlength="6" maxlength="6" type="text" size="30" value="${salary_month }" />
+				<input name="salary_month" class="digits date required month" autocomplete="off"  readonly format="yyyyMM" minlength="6" maxlength="6" type="text" size="30" value="${salary_month }" />
 			</p>
 
 

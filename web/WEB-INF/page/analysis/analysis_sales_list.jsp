@@ -13,8 +13,8 @@
             <ul class="searchContent">
                 <li>
                     <label>时间段：</label>
-                    <input type="text" class="digits date month required" readonly  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" size="7" name="month1" value="${analysisSearch.month1}"/>
-                    <input type="text" class="digits date month required" readonly  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" size="7" name="month2" value="${analysisSearch.month2}"/>
+                    <input type="text" class="digits date month required" readonly   maxlength="6" minlength="6"  format="yyyyMM" size="7" name="month1" value="${analysisSearch.month1}"/>
+                    <input type="text" class="digits date month required" readonly   maxlength="6" minlength="6"  format="yyyyMM" size="7" name="month2" value="${analysisSearch.month2}"/>
 
                 </li>
 

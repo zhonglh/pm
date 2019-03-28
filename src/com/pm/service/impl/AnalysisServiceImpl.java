@@ -125,6 +125,24 @@ public class AnalysisServiceImpl implements IAnalysisService {
         return ar;
     }
 
+
+    @Override
+    public AnalysisResult queryProjectExpendsByPay(AnalysisSearch analysisSearch, UserPermit userPermit){
+
+        AnalysisResult ar = new AnalysisResult();
+        AnalysisVo av = analysisDao.queryProjectExpendsPay(analysisSearch,userPermit);
+        if(av != null) {
+            ar.setCurr_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
+        AnalysisSearch preAnalysisSearch = AnalysisUtil.preYearSearch(analysisSearch);
+        av = analysisDao.queryProjectExpendsPay(preAnalysisSearch,userPermit);
+        if(av != null) {
+            ar.setPre_statistics_amount(NumberKit.getNumberFormatByDouble(av.getAmount()));
+        }
+        AnalysisUtil.processesult(ar);
+        return ar;
+    }
+
     @Override
     public AnalysisResult querySalseCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
         AnalysisResult ar = new AnalysisResult();

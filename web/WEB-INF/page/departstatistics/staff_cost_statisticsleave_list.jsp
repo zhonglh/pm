@@ -51,8 +51,8 @@
 			
 			<li>
 				<label>时间段：</label>
-				<input name="date1" class="date" type="text" size="7" value="${param.date1 }" />
-				<input name="date2" class="date" type="text" size="7" value="${param.date2 }" />
+				<input name="date1"  class="date" autocomplete="off"  type="text" size="7" value="${param.date1 }" />
+				<input name="date2"  class="date" autocomplete="off"  type="text" size="7" value="${param.date2 }" />
 			</li>
 
 			

@@ -118,11 +118,11 @@
 
 			<p>
 				<label>合同开始时间：</label>
-				<input name="contract_start_date" class="date" type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.contract_start_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="contract_start_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.contract_start_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 			<p>
 				<label>合同结束时间：</label>
-				<input name="contract_end_date" class="date" type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.contract_end_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="contract_end_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.contract_end_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 
 			<p>
@@ -158,7 +158,7 @@
 
 			<p>
 				<label>毕业时间：</label>
-				<input name="graduation_date" class="date" type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.graduation_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="graduation_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.graduation_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 
 
@@ -182,18 +182,18 @@
 
 			<p>
 				<label>入职时间：</label>
-				<input name="join_datetime" class="date" type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.join_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="join_datetime"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.join_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 
 			<p>
 				<label>离职时间：</label>
-				<input name="leave_job_datetime" class="date" type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.leave_job_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="leave_job_datetime"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.leave_job_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 
 
 			<p>
 				<label>转正日期：</label>
-				<input name="confirmation_date" class="date" type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.confirmation_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="confirmation_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${ otherStaff1.confirmation_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 
 			<p>
@@ -474,7 +474,7 @@
 				<tr>
 					<th width="120" type="lookup" notLookUpBut="1" fieldClass="required" name="items[#index#].dept.dept_name" lookupGroup="items[#index#].dept" suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup"   lookupPk="dept_id" size="12">部门</th>
 					<th width="100" type="date" postField="join_dept_datetime" defaultVal="${currDate }"  name="items[#index#].join_dept_datetime"  size="10" fieldClass="date required">加入部门日期</th>
-					<th width="100" type="date" postField="leave_dept_datetime"   name="items[#index#].leave_dept_datetime"  size="10" fieldClass="date">离开部门日期</th>
+					<th width="100" type="date" postField="leave_dept_datetime"   name="items[#index#].leave_dept_datetime"  size="10" field class="date" autocomplete="off" >离开部门日期</th>
 					<th width="350" type="text" postField="description"  name="items[#index#].description" maxlength="100" size="38" fieldClass="text">说明</th>
 					<th type="del" >操作</th>
 				</tr>

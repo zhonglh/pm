@@ -18,7 +18,7 @@
 									<th width="180" type="label" >项目名称</th>
 									<th width="120" type="date" postField="join_project_datetime" defaultVal="${currDate }"  name="items[#index#].join_project_datetime"  size="12" fieldClass="date required">入场日期</th>
 									<th width="120" type="date" postField="leave_project_datetime" defaultVal="${currDate }"  name="items[#index#].leave_project_datetime"  size="12" fieldClass="date required">离场日期</th>
-									<!-- <th type="date" postField="leave_project_datetime"  name="items[#index#].leave_project_datetime"  size="12" fieldClass="date">离场日期</th> -->
+									<!-- <th type="date" postField="leave_project_datetime"  name="items[#index#].leave_project_datetime"  size="12" field class="date" autocomplete="off" >离场日期</th> -->
 									<th width="120" type="number" postField="technical_cost"  name="items[#index#].staff.technical_cost" defaultVal="0"  maxlength="12" size="12" fieldClass="number">技术费用</th>
 									<th width="300" type="label" >说明</th>
 								</tr>												

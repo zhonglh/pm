@@ -93,11 +93,11 @@
 			
 			<p>
 				<label>合同开始时间：</label>
-				<input name="contract_start_date" class="date" type="text" size="30" value="<fmt:formatDate value="${staffCost1.contract_start_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="contract_start_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${staffCost1.contract_start_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>	
 			<p>
 				<label>合同结束时间：</label>
-				<input name="contract_end_date" class="date" type="text" size="30" value="<fmt:formatDate value="${staffCost1.contract_end_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="contract_end_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${staffCost1.contract_end_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>				
 			
 			<p>
@@ -133,7 +133,7 @@
 			
 			<p>
 				<label>毕业时间：</label>
-				<input name="graduation_date" class="date" type="text" size="30" value="<fmt:formatDate value="${staffCost1.graduation_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="graduation_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${staffCost1.graduation_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 			
 			
@@ -157,12 +157,12 @@
 			
 			<p>
 				<label>入职时间：</label>
-				<input name="join_datetime" class="date" type="text" size="30" value="<fmt:formatDate value="${staffCost1.join_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="join_datetime"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${staffCost1.join_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>			
 						
 			<p>
 				<label>离职时间：</label>
-				<input name="leave_job_datetime" class="date" type="text" size="30" value="<fmt:formatDate value="${staffCost1.leave_job_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="leave_job_datetime"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${staffCost1.leave_job_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 			
 			<p>
@@ -183,7 +183,7 @@
 					
 			<p>
 				<label>转正日期：</label>
-				<input name="confirmation_date" class="date" type="text" size="30" value="<fmt:formatDate value="${staffCost1.confirmation_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="confirmation_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${staffCost1.confirmation_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 			
 			<p>

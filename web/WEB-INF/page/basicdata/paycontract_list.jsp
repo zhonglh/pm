@@ -23,8 +23,8 @@
 
 				<li>
 					<label>提交日期：</label>
-					<input type="text" class="date" name="date1" size="7" value="${param.date1 }"/>
-					<input type="text" class="date" name="date2" size="7" value="${param.date2 }"/>
+					<input type="text"  class="date" autocomplete="off"  name="date1" size="7" value="${param.date1 }"/>
+					<input type="text"  class="date" autocomplete="off"  name="date2" size="7" value="${param.date2 }"/>
 				</li>
 
 

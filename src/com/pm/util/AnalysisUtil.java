@@ -1,5 +1,6 @@
 package com.pm.util;
 
+import com.common.utils.DateKit;
 import com.common.utils.NumberKit;
 import com.pm.vo.AnalysisResult;
 import com.pm.vo.AnalysisSearch;
@@ -20,16 +21,18 @@ public class AnalysisUtil {
      */
     public static AnalysisSearch preYearSearch(AnalysisSearch analysisSearch){
 
-        boolean haveDate = analysisSearch.getDate1() != null;
 
         AnalysisSearch temp = new AnalysisSearch();
         BeanUtils.copyProperties(analysisSearch , temp);
-        temp.setMonth1(temp.getMonth1() - 100);
-        temp.setMonth2(temp.getMonth2() - 100);
 
-        if(!haveDate){
-            temp.setDate1(null);
-            temp.setDate2(null);
+        if(temp.getMonth1() != 0 && temp.getMonth2() != 0 ) {
+            temp.setMonth1(temp.getMonth1() - 100);
+            temp.setMonth2(temp.getMonth2() - 100);
+        }
+
+        if(analysisSearch.getDate1() != null && analysisSearch.getDate2() != null ){
+            temp.setDate1(DateKit.addYear(analysisSearch.getDate1() , -1));
+            temp.setDate2(DateKit.addYear(analysisSearch.getDate2() , -1));
         }
         return temp;
     }

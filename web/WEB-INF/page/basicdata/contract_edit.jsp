@@ -45,12 +45,12 @@
 			</p>
 			<p>
 				<label>合同签订日期：</label>
-				<input name="signing_date" class="date" type="text" size="30" value="<fmt:formatDate value="${contract1.signing_date }" pattern="yyyy-MM-dd"/>" />
+				<input name="signing_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${contract1.signing_date }" pattern="yyyy-MM-dd"/>" />
 			</p>
 			<p>
 				<label>合同有效期：</label>
-				<input name="validity_date1" class="date" type="text" size="12" value="<fmt:formatDate value="${contract1.validity_date1 }" pattern="yyyy-MM-dd"/>" />
-				<input name="validity_date2" class="date" type="text" size="12" value="<fmt:formatDate value="${contract1.validity_date2 }" pattern="yyyy-MM-dd"/>" />
+				<input name="validity_date1"  class="date" autocomplete="off"  type="text" size="12" value="<fmt:formatDate value="${contract1.validity_date1 }" pattern="yyyy-MM-dd"/>" />
+				<input name="validity_date2"  class="date" autocomplete="off"  type="text" size="12" value="<fmt:formatDate value="${contract1.validity_date2 }" pattern="yyyy-MM-dd"/>" />
 			</p>
 			<p>
 				<label>销售负责人：</label>
@@ -69,7 +69,7 @@
 			</p>
 			<p>
 				<label>提交日期：</label>
-				<input name="submit_date" class="date" type="text" size="30" value="<fmt:formatDate value="${contract1.submit_date }" pattern="yyyy-MM-dd"/>" />
+				<input name="submit_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${contract1.submit_date }" pattern="yyyy-MM-dd"/>" />
 			</p>
 			<p>
 				<label>合同份数：</label>

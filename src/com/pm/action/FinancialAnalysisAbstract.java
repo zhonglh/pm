@@ -1,8 +1,10 @@
 package com.pm.action;
 
 import com.common.actions.BaseAction;
+import com.common.utils.DateKit;
 import com.pm.vo.AnalysisResult;
 import com.pm.vo.AnalysisResultTable;
+import com.pm.vo.AnalysisSearch;
 
 /**
  * 财务分析公共类
@@ -13,6 +15,16 @@ public abstract class FinancialAnalysisAbstract extends BaseAction {
 
 
     public static final String COUNT_STR = "总计";
+
+
+    protected void putSearchDate(AnalysisSearch analysisSearch, int month1, int month2) {
+        analysisSearch.setMonth1(0);
+        analysisSearch.setMonth2(0);
+        String strDate1 = String.valueOf(month1)+"01";
+        analysisSearch.setDate1(  DateKit.fmtShortYMTStrToDate(strDate1) );
+        String strDate2 = String.valueOf(month2)+"01";
+        analysisSearch.setDate2( DateKit.getLastDayOfMonth(DateKit.fmtShortYMTStrToDate(strDate2)) );
+    }
 
 
     protected void processResult(AnalysisResultTable art) {

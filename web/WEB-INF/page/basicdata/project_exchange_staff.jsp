@@ -39,7 +39,7 @@
 				</div>
 				<div class="unit">
 					<label>入场日期：</label>
-					<input name="join_project_datetime" class="date" type="text" size="30" value="<fmt:formatDate value="${projectStaff.leave_project_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+					<input name="join_project_datetime"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${projectStaff.leave_project_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 				</div>
 				<div class="unit">
 					<label>技术费用：</label>

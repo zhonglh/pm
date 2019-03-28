@@ -99,7 +99,7 @@
 			
 			<p>
 				<label>项目开始时间：</label>
-				<input name="start_date" class="date" type="text" size="30" value="<fmt:formatDate value="${project1.start_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="start_date"  class="date" autocomplete="off"  type="text" size="30" value="<fmt:formatDate value="${project1.start_date }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>
 			
 			<p>

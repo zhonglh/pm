@@ -208,6 +208,11 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
      */
     private AnalysisResultTable getAnalysis1(AnalysisSearch analysisSearch, UserPermit userPermit){
 
+        int month1 = analysisSearch.getMonth1();
+        int month2 = analysisSearch.getMonth2();
+        putSearchDate(analysisSearch, month1, month2);
+
+
         AnalysisResultTable art = new AnalysisResultTable();
         art.setLabel( tableName.get(1) );
 
@@ -217,11 +222,11 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
 
 
         Statistics statistics = new Statistics();
-        statistics.setMonth2(analysisSearch.getMonth2());
+        statistics.setMonth2(month2);
         Pager<Statistics> all1 = receivablesStatisticsService.queryByAll(statistics , userPermit , PubMethod.getPagerByAll( Statistics.class));
 
 
-        statistics.setMonth2(analysisSearch.getMonth2()-100);
+        statistics.setMonth2(month2-100);
         Pager<Statistics> all2 = receivablesStatisticsService.queryByAll(statistics , userPermit , PubMethod.getPagerByAll( Statistics.class));
 
 
@@ -249,8 +254,12 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
             ar.setAnalysis_type(art.getLabel());
         }
 
+        analysisSearch.setMonth1(month1);
+        analysisSearch.setMonth2(month2);
+
         return art;
     }
+
 
 
     /**
@@ -259,10 +268,6 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
      * @return
      */
     private AnalysisResultTable getAnalysis2(AnalysisSearch analysisSearch, UserPermit userPermit){
-
-
-        Date date1 = analysisSearch.getDate1();
-        Date date2 = analysisSearch.getDate2();
 
         analysisSearch.setDate1(null);
         analysisSearch.setDate2(null);
@@ -344,8 +349,6 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
 
 
 
-        analysisSearch.setDate1(date1);
-        analysisSearch.setDate2(date2);
 
         return art;
     }
@@ -357,6 +360,11 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
      */
     private AnalysisResultTable getAnalysis3(AnalysisResultTable art2,AnalysisSearch analysisSearch, UserPermit userPermit){
 
+
+        int month1 = analysisSearch.getMonth1();
+        int month2 = analysisSearch.getMonth2();
+        putSearchDate(analysisSearch, month1, month2);
+
         AnalysisResultTable art = new AnalysisResultTable();
         art.setLabel( tableName.get(3) );
 
@@ -365,8 +373,23 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
         AnalysisResult ar20 = new AnalysisResult();
         AnalysisResult departCost = art2.getResult().get(7);
         AnalysisResult commonCost = art2.getResult().get(9);
-        ar20.setCurr_statistics_amount(departCost.getCurr_statistics_amount() + commonCost.getCurr_statistics_amount());
-        ar20.setPre_statistics_amount(departCost.getPre_statistics_amount() + commonCost.getPre_statistics_amount());
+
+        //应付
+        AnalysisResult shouldPay = art2.getResult().get(3);
+
+        //实付
+        AnalysisResult actualPay = analysisService.queryProjectExpendsByPay(analysisSearch ,userPermit );
+
+        ar20.setCurr_statistics_amount(departCost.getCurr_statistics_amount() +
+                commonCost.getCurr_statistics_amount()-
+                shouldPay.getCurr_statistics_amount() +
+                actualPay.getCurr_statistics_amount()
+        );
+        ar20.setPre_statistics_amount(departCost.getPre_statistics_amount() +
+                        commonCost.getPre_statistics_amount()-
+                        shouldPay.getPre_statistics_amount() +
+                        actualPay.getPre_statistics_amount()
+                );
         AnalysisUtil.processesult(ar20);
 
 
@@ -394,6 +417,10 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
             ar.setAnalysis_type(art.getLabel());
         }
 
+
+        analysisSearch.setMonth1(month1);
+        analysisSearch.setMonth2(month2);
+
         return art;
     }
 
@@ -403,6 +430,7 @@ public class FinancialAnalysis4CompanyAction extends FinancialAnalysisAbstract {
      * 管理费用对比分析
      * @return
      */
+    @Deprecated
     private AnalysisResultTable getAnalysis4(AnalysisSearch analysisSearch, UserPermit userPermit){
 
         AnalysisResultTable art = new AnalysisResultTable();

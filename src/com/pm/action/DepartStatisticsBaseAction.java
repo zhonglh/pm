@@ -39,14 +39,14 @@ public abstract class DepartStatisticsBaseAction extends DepartStatisticsAbstrac
 
 
 
-        /**
-         * 明细界面
-         *
-         * @param statistics
-         * @param res
-         * @param request
-         * @return
-         */
+    /**
+     * 明细界面
+     *
+     * @param statistics
+     * @param res
+     * @param request
+     * @return
+     */
     @RequestMapping(params = "method=queryCostsDetail")
     public String queryCostsDetail(Statistics statistics, HttpServletResponse res, HttpServletRequest request) {
         UserPermit userPermit = this.getUserPermit(request, roleService, getPermitId());

@@ -84,6 +84,19 @@ public class AnalysisDaoImpl extends BatisDao implements IAnalysisDao{
         return this.querySingle(sql, AnalysisVo.class, map);
     }
 
+
+
+    @Override
+    public AnalysisVo queryProjectExpendsPay(AnalysisSearch analysisSearch, UserPermit userPermit){
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put(AnalysisSearch.class.getSimpleName() , analysisSearch);
+        map.put(UserPermit.class.getSimpleName() , userPermit);
+        String sql = "AnalysisMapping.queryXStaisticsAnalysis";
+        analysisSearch.setX(EnumStaticType.S42.getCode());
+        return this.querySingle(sql, AnalysisVo.class, map);
+    }
+
     @Override
     public AnalysisVo querySalseCosts(AnalysisSearch analysisSearch, UserPermit userPermit) {
 

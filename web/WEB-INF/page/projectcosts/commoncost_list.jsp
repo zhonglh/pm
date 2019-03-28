@@ -34,8 +34,8 @@
 
 			<li>
 				<label>月份：</label>
-				<input type="text" class="digits date month"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" size="7" name="use_month1" value="${param.use_month1}"/>
-				<input type="text" class="digits date month"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" size="7" name="use_month2" value="${param.use_month2}"/>
+				<input type="text" class="digits date month"  autocomplete="off"   maxlength="6" minlength="6"  format="yyyyMM" size="7" name="use_month1" value="${param.use_month1}"/>
+				<input type="text" class="digits date month"  autocomplete="off"   maxlength="6" minlength="6"  format="yyyyMM" size="7" name="use_month2" value="${param.use_month2}"/>
 			</li>
 
 
@@ -52,8 +52,8 @@
 
 			<li>
 				<label>支付日期：</label>
-				<input type="text" class="date"  autocomplete="off" maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date1" value="${param.pay_date1}"/>
-				<input type="text" class="date"  autocomplete="off" maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date2" value="${param.pay_date2}"/>
+				<input type="text"  class="date" autocomplete="off"    maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date1" value="${param.pay_date1}"/>
+				<input type="text"  class="date" autocomplete="off"    maxlength="10" minlength="10" format="yyyy-MM-dd" size="7" name="pay_date2" value="${param.pay_date2}"/>
 			</li>
 			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
 		</ul>

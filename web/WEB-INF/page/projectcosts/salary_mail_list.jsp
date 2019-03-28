@@ -48,8 +48,8 @@
 		
 			<li>
 				<label>工资月份：</label>
-				<input type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" name="salary_month1" value="${param.salary_month1}"/>
-				<input type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM" name="salary_month2" value="${param.salary_month2}"/>
+				<input type="text" class="digits date month"  autocomplete="off" size="7"   maxlength="6" minlength="6"  format="yyyyMM" name="salary_month1" value="${param.salary_month1}"/>
+				<input type="text" class="digits date month"  autocomplete="off" size="7"   maxlength="6" minlength="6"  format="yyyyMM" name="salary_month2" value="${param.salary_month2}"/>
 			</li>
 
 			<li>

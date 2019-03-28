@@ -564,8 +564,12 @@ public class DateKit extends DateUtils{
      */
     public static Date getTenDaysEnd(Date date){
         Calendar cdate = dateToCalendar (date);
-        if (cdate.get (Calendar.DAY_OF_MONTH) / 10 == 2 && cdate.get (Calendar.DAY_OF_MONTH) != 20) return getLastDayOfMonth (date);
-        else return addDay (getTenDaysStart (addDay (date, 10)), -1);
+        if (cdate.get (Calendar.DAY_OF_MONTH) / 10 == 2 && cdate.get (Calendar.DAY_OF_MONTH) != 20) {
+            return getLastDayOfMonth (date);
+        }
+        else {
+            return addDay (getTenDaysStart (addDay (date, 10)), -1);
+        }
     }
 
     /**

@@ -71,12 +71,21 @@ public interface IAnalysisService {
 
 
     /**
-     * 供应商付款
+     * 供应商付款(应付)
      * @param analysisSearch
      * @param userPermit
      * @return
      */
     public AnalysisResult queryProjectExpends(AnalysisSearch analysisSearch, UserPermit userPermit);
+
+
+    /**
+     * 供应商付款(实付)
+     * @param analysisSearch
+     * @param userPermit
+     * @return
+     */
+    public AnalysisResult queryProjectExpendsByPay(AnalysisSearch analysisSearch, UserPermit userPermit);
 
 
     /**

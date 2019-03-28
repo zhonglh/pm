@@ -64,8 +64,8 @@ public class AnalysisSearch implements Serializable {
     }
 
     public void setMonth1(int month1) {
-        String strDate1 = String.valueOf(month1)+"01";
-        this.date1 = DateKit.fmtShortYMTStrToDate(strDate1);
+        //String strDate1 = String.valueOf(month1)+"01";
+        //this.date1 = DateKit.fmtShortYMTStrToDate(strDate1);
         this.month1 = month1;
     }
 
@@ -74,8 +74,8 @@ public class AnalysisSearch implements Serializable {
     }
 
     public void setMonth2(int month2) {
-        String strDate2 = String.valueOf(month2)+"01";
-        this.date2 = DateKit.getLastDayOfMonth(DateKit.fmtShortYMTStrToDate(strDate2));
+        //String strDate2 = String.valueOf(month2)+"01";
+        //this.date2 = DateKit.getLastDayOfMonth(DateKit.fmtShortYMTStrToDate(strDate2));
         this.month2 = month2;
     }
 

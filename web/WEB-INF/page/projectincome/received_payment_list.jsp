@@ -38,14 +38,14 @@
 		<ul class="searchContent">		
 			<li>
 				<label>到款所属月份：</label>
-				<input  type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM"  name="receive_payment_month1" value="${param.receive_payment_month1}"/>
-				<input  type="text" class="digits date month" size="7"  autocomplete="off" maxlength="6" minlength="6"  format="yyyyMM"  name="receive_payment_month2" value="${param.receive_payment_month2}"/>
+				<input  type="text" class="digits date month"  autocomplete="off" size="7"   maxlength="6" minlength="6"  format="yyyyMM"  name="receive_payment_month1" value="${param.receive_payment_month1}"/>
+				<input  type="text" class="digits date month"  autocomplete="off" size="7"   maxlength="6" minlength="6"  format="yyyyMM"  name="receive_payment_month2" value="${param.receive_payment_month2}"/>
 			</li>
 			
 			<li>
 				<label>到款日期：</label>
-				<input name="date1" class="date" type="text" size="7" autocomplete="off"  maxlength="10" minlength="10"  value="${param.date1 }" />
-				<input name="date2" class="date" type="text" size="7" autocomplete="off"  maxlength="10" minlength="10"  value="${param.date2 }" />
+				<input name="date1"  class="date" autocomplete="off"  type="text" size="7"   maxlength="10" minlength="10"  value="${param.date1 }" />
+				<input name="date2"  class="date" autocomplete="off"  type="text" size="7"   maxlength="10" minlength="10"  value="${param.date2 }" />
 			</li>
 			
 			<li>

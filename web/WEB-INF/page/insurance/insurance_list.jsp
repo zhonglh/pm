@@ -22,8 +22,8 @@
 	
 				<li>
 				<label>时间段：</label>
-				<input name="salary_month1" class="date" format="yyyyMM" type="text" size="7" value="${param.salary_month1 }" readonly="readonly" />
-				<input name="salary_month2" class="date" format="yyyyMM" type="text" size="7" value="${param.salary_month2 }" readonly="readonly" />
+				<input name="salary_month1"  class="date" autocomplete="off"  format="yyyyMM" type="text" size="7" value="${param.salary_month1 }" readonly="readonly" />
+				<input name="salary_month2"  class="date" autocomplete="off"  format="yyyyMM" type="text" size="7" value="${param.salary_month2 }" readonly="readonly" />
 				</li>
 			
 			

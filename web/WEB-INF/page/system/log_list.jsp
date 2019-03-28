@@ -40,11 +40,11 @@
 		<ul class="searchContent">
 			<li>
 				<label>开始时间：</label>
-				<input type="text" name="operation_time1" value="${param.operation_time1}" class="date" readonly="true"/>
+				<input type="text" name="operation_time1" value="${param.operation_time1}"  class="date" autocomplete="off"  readonly="true"/>
 			</li>
 			<li>
 				<label>结束时间：</label>
-				<input type="text" name="operation_time2" value="${param.operation_time2}" class="date" readonly="true"/>
+				<input type="text" name="operation_time2" value="${param.operation_time2}"  class="date" autocomplete="off"  readonly="true"/>
 			</li>
 			<li>
 				<div class="buttonActive">

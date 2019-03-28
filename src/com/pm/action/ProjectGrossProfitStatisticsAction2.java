@@ -36,7 +36,7 @@ import com.pm.vo.UserPermit;
 
 
 /**
- * 项目毛利统计(账面毛利)
+ * 项目账面毛利统计(账面毛利)
  * @author zhonglh
  *
  */

@@ -926,7 +926,9 @@ public class WorkAttendanceGroupAction extends BaseAction {
 		
 
 		List<WorkAttendance> newlist = computeWorkAttendance(workAttendance);
-		if(newlist == null) newlist = new ArrayList<WorkAttendance>();		
+		if(newlist == null) {
+			newlist = new ArrayList<WorkAttendance>();
+		}
 		for(WorkAttendance wa : list){
 			boolean have = false;
 			for(WorkAttendance nwa :  newlist){

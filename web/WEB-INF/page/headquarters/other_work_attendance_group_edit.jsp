@@ -16,7 +16,7 @@
 			</p>	
 			
 			<p>
-				<label>项目名称：</label>
+				<label>部门名称：</label>
 				<input type="hidden"   name="dept_id" value="${otherWorkAttendance1.dept_id }"/>
 				<input name="dept_name" type="hidden" value="${otherWorkAttendance1.dept_name }"  />
 				<label>${otherWorkAttendance1.dept_name }</label>
@@ -107,10 +107,9 @@
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-				<!--
+
 				<li><div class="buttonActive"><div class="buttonContent"><button type="button" onClick="dialogJumpURL(this.form, '${webroot }/OtherWorkAttendanceGroupAction.do?method=toReCompute')">重新计算</button></div></div></li>
-				-->
-				
+
 				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">修改</button></div></div></li>
 				<li>
 					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>

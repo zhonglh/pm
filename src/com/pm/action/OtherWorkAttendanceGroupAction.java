@@ -801,7 +801,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 	
 	
 	/**
-	 * 根据项目和人员关系，重新计算考勤中项目人员
+	 * 根据部门和人员关系，重新计算考勤中部门人员
 	 * @param res
 	 * @param request
 	 * @return
@@ -880,7 +880,7 @@ public class OtherWorkAttendanceGroupAction extends BaseAction {
 		
 
 		request.setAttribute("list", list);
-		request.setAttribute("workAttendance1", pager.getResultList().get(0));
+		request.setAttribute("otherWorkAttendance1", pager.getResultList().get(0));
 		request.setAttribute("next_operation", "updateWorkAttendanceGroup");
 		
 		String checked = pager.getResultList().get(0).getVerify_userid();

@@ -153,6 +153,11 @@ public class FinancialAnalysis4SalesAction extends FinancialAnalysisAbstract {
      */
     private List<AnalysisResultTable> getAnalysisSalesList(AnalysisSearch analysisSearch, UserPermit userPermit) {
 
+
+        int month1 = analysisSearch.getMonth1();
+        int month2 = analysisSearch.getMonth2();
+        putSearchDate(analysisSearch, month1, month2);
+
         List<AnalysisResultTable> arts = new ArrayList<AnalysisResultTable>();
 
         AnalysisResultTable ar1 = getAnalysis1(analysisSearch , userPermit);
@@ -164,6 +169,9 @@ public class FinancialAnalysis4SalesAction extends FinancialAnalysisAbstract {
         AnalysisResultTable ar3 = getAnalysis3(ar1,ar2 );
         arts.add(ar3);
 
+
+        analysisSearch.setMonth1(month1);
+        analysisSearch.setMonth2(month2);
 
         return arts;
     }

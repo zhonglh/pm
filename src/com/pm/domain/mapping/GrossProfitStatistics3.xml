@@ -30,8 +30,10 @@
 		inner join 			(
 				select project_id,(statement_month-statement_month%100+(floor(statement_month%100/4)+1)) as quarter,
 				sum(case when amount is NULL   	then 0 else amount*(1-${Statistics.tax_rate}) end) as amount ,
-				sum(case when amount is NULL   	then 0 else amount end) as total_amount 
+				sum(case when amount is NULL   	then 0 else amount end) as total_amount
+				<![CDATA[
 				from vb_received_payment_monthly where 1=1 and statement_month >= 201501
+				]]>
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND statement_month >= #{Statistics.month1} 
@@ -52,7 +54,10 @@
 				select project_id, (work_month-work_month%100+(floor(work_month%100/4)+1)) as quarter,
 				sum(case when all_amount is NULL  then 0 else all_amount end)*-1 as amount  ,
 				0 as total_amount
+
+				<![CDATA[
 				from tb_project_staff_cost where 1=1 and  work_month >= 201501
+				]]>
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND work_month >= #{Statistics.month1} 
@@ -73,8 +78,10 @@
 				select project_id,  (pay_month-pay_month%100+(floor(pay_month%100/4)+1)) as quarter,
 				sum(actual_cost)*-1 amount ,
 				0 as total_amount
+				<![CDATA[
 				from vb_project_expend_pay where delete_flag = '0' and pay_month >= 201501
-				and verify_userid is not NULL 
+				and verify_userid is not NULL
+				]]>
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND pay_month >= #{Statistics.month1} 
@@ -95,9 +102,12 @@
 				select project_id,  (pay_month-pay_month%100+(floor(pay_month%100/4)+1)) as quarter,
 				sum(case when amount is NULL  then 0 else amount end)*-1 as amount  ,
 				0 as total_amount
+
+				<![CDATA[
 				from vb_reimburse_costs  where delete_flag = '0' and pay_month >= 201501
 				and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-				and verify_userid is not NULL  
+				and verify_userid is not NULL
+				]]>
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND pay_month >= #{Statistics.month1}
@@ -136,8 +146,12 @@
 		inner join 			(
 				select project_id,floor(statement_month/100) year1,
 				sum(case when amount is NULL   	then 0 else amount*(1-${Statistics.tax_rate}) end) as amount ,
-				sum(case when amount is NULL   	then 0 else amount end) as total_amount 
+				sum(case when amount is NULL   	then 0 else amount end) as total_amount
+
+				<![CDATA[
 				from vb_received_payment_monthly  	where 1=1 and statement_month >= 201501
+				]]>
+
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND statement_month >= #{Statistics.month1} 
@@ -157,7 +171,10 @@
 		inner join 	(
 				select project_id, floor(work_month/100) year1,sum(case when all_amount is NULL  then 0 else all_amount end)*-1 as amount  ,
 				0 as total_amount
+
+				<![CDATA[
 				from tb_project_staff_cost where 1=1  and  work_month >= 201501
+				]]>
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND work_month >= #{Statistics.month1} 
@@ -177,8 +194,11 @@
 		inner join 	(
 				select project_id, floor(pay_month/100) year1,sum(actual_cost)*-1 amount  ,
 				0 as total_amount
+
+				<![CDATA[
 				from vb_project_expend_pay where delete_flag = '0' and pay_month >= 201501
-				and verify_userid is not NULL 
+				and verify_userid is not NULL
+				]]>
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND pay_month >= #{Statistics.month1} 
@@ -198,9 +218,13 @@
 		inner join 	(
 				select project_id, floor(pay_month/100) year1,sum(case when amount is NULL  then 0 else amount end)*-1 as amount  ,
 				0 as total_amount
+
+				<![CDATA[
 				from vb_reimburse_costs  where delete_flag = '0' and pay_month >= 201501
 				and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-				and verify_userid is not NULL  
+				and verify_userid is not NULL
+				]]>
+
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND pay_month >= #{Statistics.month1}
@@ -250,8 +274,11 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+
+			<![CDATA[
 			from vb_received_payment_monthly  		 where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -282,10 +309,12 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -301,8 +330,10 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 
@@ -351,8 +382,11 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+
+			<![CDATA[
 			from vb_received_payment_monthly  		 where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -367,8 +401,11 @@
 		) rp
 		on project.project_id = rp.project_id
 		left join (
-			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount 
+			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount
+
+			<![CDATA[
 			from tb_project_staff_cost where 1=1 and  work_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND work_month >= #{Statistics.month1} 
@@ -383,10 +420,13 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -402,8 +442,10 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 
@@ -456,8 +498,11 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+
+			<![CDATA[
 			from vb_received_payment_monthly  	where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -472,8 +517,11 @@
 		) rp
 		on project.project_id = rp.project_id
 		left join (
-			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount 
+			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount
+
+			<![CDATA[
 			from tb_project_staff_cost where 1=1 and  work_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND work_month >= #{Statistics.month1} 
@@ -488,10 +536,13 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -507,8 +558,10 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 
@@ -559,8 +612,10 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+			<![CDATA[
 			from vb_received_payment_monthly  	 where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -575,8 +630,11 @@
 		) rp
 		on project.project_id = rp.project_id
 		left join (
-			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount 
+			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount
+
+			<![CDATA[
 			from tb_project_staff_cost where 1=1  and  work_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND work_month >= #{Statistics.month1} 
@@ -591,10 +649,13 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -610,8 +671,11 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 
@@ -662,8 +726,10 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+			<![CDATA[
 			from vb_received_payment_monthly  		where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -678,8 +744,10 @@
 		) rp
 		on project.project_id = rp.project_id
 		left join (
-			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount 
+			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount
+			<![CDATA[
 			from tb_project_staff_cost where 1=1 and  work_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND work_month >= #{Statistics.month1} 
@@ -694,10 +762,12 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -713,8 +783,10 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 
@@ -766,8 +838,10 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+			<![CDATA[
 			from vb_received_payment_monthly  		 where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -782,8 +856,10 @@
 		) rp
 		on project.project_id = rp.project_id
 		left join (
-			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount 
+			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount
+			<![CDATA[
 			from tb_project_staff_cost where 1=1  and  work_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND work_month >= #{Statistics.month1} 
@@ -798,10 +874,12 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -817,8 +895,10 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 
@@ -871,8 +951,10 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+			<![CDATA[
 			from vb_received_payment_monthly  		where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -887,8 +969,10 @@
 		) rp
 		on project.project_id = rp.project_id
 		left join (
-			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount 
+			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount
+			<![CDATA[
 			from tb_project_staff_cost where 1=1 and  work_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND work_month >= #{Statistics.month1} 
@@ -903,10 +987,12 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -922,8 +1008,10 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 
@@ -977,8 +1065,10 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+			<![CDATA[
 			from vb_received_payment_monthly  	where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -993,8 +1083,10 @@
 		) rp
 		on project.project_id = rp.project_id
 		left join (
-			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount 
+			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount
+			<![CDATA[
 			from tb_project_staff_cost where 1=1 and  work_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND work_month >= #{Statistics.month1} 
@@ -1009,10 +1101,12 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -1028,8 +1122,10 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 
@@ -1091,8 +1187,11 @@
 		left join (
 			select project_id, 
 			sum(case when amount is NULL  then 0 else amount*(1-${Statistics.tax_rate}) end) amount ,
-			sum(case when amount is NULL  then 0 else amount end) as total_amount 			
+			sum(case when amount is NULL  then 0 else amount end) as total_amount
+
+			<![CDATA[
 			from vb_received_payment_monthly  		where 1=1 and statement_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -1107,8 +1206,11 @@
 		) rp
 		on project.project_id = rp.project_id
 		left join (
-			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount 
+			select project_id, sum(case when all_amount is NULL  then 0 else all_amount end) amount
+
+			<![CDATA[
 			from tb_project_staff_cost where 1=1 and  work_month >= 201501
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND work_month >= #{Statistics.month1} 
@@ -1123,10 +1225,13 @@
 		) psc
 		on project.project_id = psc.project_id 
 		left join (
-			select project_id, sum(case when amount is NULL  then 0 else amount end) amount 
+			select project_id, sum(case when amount is NULL  then 0 else amount end) amount
+
+			<![CDATA[
 			from vb_reimburse_costs where  delete_flag = '0' and pay_month >= 201501
 			and not EXISTS (select 1 from vb_begin_data2 vba where vb_reimburse_costs.reimburse_id = vba.reimburse_id)
-			and verify_userid is not NULL  
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1}
@@ -1142,8 +1247,10 @@
 		on project.project_id = rc.project_id 
 		left join (
 			select project_id, sum(actual_cost) amount
+			<![CDATA[
 			from vb_project_expend_pay where  delete_flag = '0' and pay_month >= 201501
-			and verify_userid is not NULL 
+			and verify_userid is not NULL
+			]]>
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND pay_month >= #{Statistics.month1} 

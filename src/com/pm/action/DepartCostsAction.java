@@ -554,9 +554,13 @@ public class DepartCostsAction extends BaseAction {
 		
 		if(StringUtils.isNotEmpty(departCosts.getStaff_id())){
 			OtherStaff os = otherStaffService.getOtherStaff(departCosts.getStaff_id());
-			if(!os.getStaff_name().equals(departCosts.getStaff_name())){
+			if(os != null) {
+				if (!os.getStaff_name().equals(departCosts.getStaff_name())) {
+					departCosts.setStaff_id(departCosts.getStaff_name());
+					departCosts.setStaff_no(null);
+				}
+			}else {
 				departCosts.setStaff_id(departCosts.getStaff_name());
-				departCosts.setStaff_no(null);
 			}
 		}else {
 			departCosts.setStaff_id(departCosts.getStaff_name());
@@ -605,12 +609,17 @@ public class DepartCostsAction extends BaseAction {
 		if(departCosts.getDept_name() == null || departCosts.getDept_name().isEmpty()) {
 			departCosts.setDept_name(request.getParameter("staff.dept_name"));
 		}
-		
+
+
 		if(StringUtils.isNotEmpty(departCosts.getStaff_id())){
 			OtherStaff os = otherStaffService.getOtherStaff(departCosts.getStaff_id());
-			if(os!= null && !os.getStaff_name().equals(departCosts.getStaff_name())){
+			if(os != null) {
+				if (!os.getStaff_name().equals(departCosts.getStaff_name())) {
+					departCosts.setStaff_id(departCosts.getStaff_name());
+					departCosts.setStaff_no(null);
+				}
+			}else {
 				departCosts.setStaff_id(departCosts.getStaff_name());
-				departCosts.setStaff_no(null);
 			}
 		}else {
 			departCosts.setStaff_id(departCosts.getStaff_name());

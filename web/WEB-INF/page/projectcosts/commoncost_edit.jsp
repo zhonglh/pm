@@ -30,7 +30,7 @@
 
 			<p>
 				<label>支付日期：</label>
-				<input name="pay_date" class="date required" type="text" size="30" value="<fmt:formatDate value="${commoncost1.pay_date }" pattern="yyyy-MM-dd"/>" />
+				<input name="pay_date" class="date required" autocomplete="off"   type="text" size="30" value="<fmt:formatDate value="${commoncost1.pay_date }" pattern="yyyy-MM-dd"/>" />
 			</p>
 
 

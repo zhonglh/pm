@@ -46,13 +46,13 @@
 			
 			<p>
 				<label>报销月份：</label>
-				<input name="use_month" class="digits required month date" format="yyyyMM" minlength="6" maxlength="6" type="text" size="30" value="${reimburseCosts1.use_month }" />
+				<input name="use_month" class="digits required month date"  autocomplete="off"   format="yyyyMM" minlength="6" maxlength="6" type="text" size="30" value="${reimburseCosts1.use_month }" />
 			</p>
 			
 			
 			<p>
 				<label>实际支付日期：</label>
-				<input name="pay_date" class="date required"  type="text" size="30" value="<fmt:formatDate value="${reimburseCosts1.pay_date }" pattern="yyyy-MM-dd"/>" />
+				<input name="pay_date" class="date required" autocomplete="off"    type="text" size="30" value="<fmt:formatDate value="${reimburseCosts1.pay_date }" pattern="yyyy-MM-dd"/>" />
 			</p>
 			
 			

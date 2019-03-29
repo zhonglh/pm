@@ -10,7 +10,7 @@
 
 			<p>
 				<label>月份：</label>
-				<input name="salary_month" id="salary_month" class="date required" format="yyyyMM" size="30"  minlength="6" maxlength="6" type="text"  value="${insurance1.salary_month }" readonly/>
+				<input name="salary_month" id="salary_month" class="date required" autocomplete="off"   format="yyyyMM" size="30"  minlength="6" maxlength="6" type="text"  value="${insurance1.salary_month }" readonly/>
 			</p>
 
 

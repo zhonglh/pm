@@ -12,7 +12,10 @@
 
 	<select id="getCommonCost" parameterType="com.pm.domain.business.CommonCost" resultMap="commoncostMap">
 		select cc.* , convert(use_month,char)   as str_month ,
-		dd_pii.dic_data_name as pay_item_name , staff.staff_name , staff.staff_no
+		dd_pii.dic_data_name as pay_item_name ,
+
+		case when staff.staff_name is NULL   	then cc.staff_id else staff.staff_name end as staff_name,
+		 staff.staff_no
 		from tb_common_cost cc
 		join ts_dic_data dd_pii on cc.pay_item_id  = dd_pii.id
 		left join tb_other_staff staff on cc.staff_id = staff.staff_id
@@ -83,8 +86,10 @@
 
 	<sql id="commoncostPagerSql">
 		select cc.* , convert(use_month,char)   as str_month ,
-		dd_pii.dic_data_name as pay_item_name , staff.staff_name , staff.staff_no,
-		aa.need_approve
+		dd_pii.dic_data_name as pay_item_name ,
+
+		case when staff.staff_name is NULL   	then cc.staff_id else staff.staff_name end as staff_name,
+		staff.staff_no, aa.need_approve
 		from tb_common_cost cc
 		join ts_dic_data dd_pii on cc.pay_item_id  = dd_pii.id
 		left join tb_other_staff staff on cc.staff_id = staff.staff_id

@@ -544,8 +544,9 @@ public class DepartCostsAction extends BaseAction {
 		paramprocess(request,departCosts);
 		
 
-		if(departCosts.getDept_id() == null || departCosts.getDept_id().isEmpty())
-		departCosts.setDept_id(request.getParameter("staff.dept_id"));		
+		if(departCosts.getDept_id() == null || departCosts.getDept_id().isEmpty()) {
+			departCosts.setDept_id(request.getParameter("staff.dept_id"));
+		}
 		
 		if(departCosts.getDept_name() == null || departCosts.getDept_name().isEmpty()) {
 			departCosts.setDept_name(request.getParameter("staff.dept_name"));

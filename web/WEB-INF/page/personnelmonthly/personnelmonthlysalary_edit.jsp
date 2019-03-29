@@ -47,7 +47,7 @@
 			</p>
 			<p>
 				<label>调薪时间：</label>
-				<input name="change_time" class="date required" type="text" size="30" maxlength="30" value="<fmt:formatDate value="${personnelMonthlySalary1.change_time }" pattern="yyyy-MM-dd"/>" />
+				<input name="change_time" class="date required" autocomplete="off"   type="text" size="30" maxlength="30" value="<fmt:formatDate value="${personnelMonthlySalary1.change_time }" pattern="yyyy-MM-dd"/>" />
 			</p>
 
 

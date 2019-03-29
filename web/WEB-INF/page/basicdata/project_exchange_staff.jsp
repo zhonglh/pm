@@ -11,7 +11,7 @@
 
 			<div class="unit">
 				<label>离场日期：</label>
-				<input name="leave_project_datetime" class="date required" type="text" size="30" value="<fmt:formatDate value="${projectStaff.leave_project_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="leave_project_datetime" class="date required" autocomplete="off"   type="text" size="30" value="<fmt:formatDate value="${projectStaff.leave_project_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</div>
 				
 

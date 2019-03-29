@@ -168,6 +168,16 @@ public class CommonCostAction extends BaseAction {
 		commoncost.setBuild_username(sessionUser.getUser_name());
 		int count = 0;
 		try{
+			if(StringUtils.isNotEmpty(addCommonCost.getStaff_id())){
+				OtherStaff os = otherStaffService.getOtherStaff(addCommonCost.getStaff_id());
+				if(os!= null && !os.getStaff_name().equals(addCommonCost.getStaff_name())){
+					addCommonCost.setStaff_id(addCommonCost.getStaff_name());
+					addCommonCost.setStaff_no(null);
+				}
+			}else {
+				addCommonCost.setStaff_id(addCommonCost.getStaff_name());
+			}
+
 			count = commoncostService.addCommonCost(commoncost);
 			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.COMMONCOST.name(), commoncost.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
@@ -189,6 +199,17 @@ public class CommonCostAction extends BaseAction {
 		int count = 0;
 		try{
 			commoncost.setStr_month(String.valueOf(updateCommonCost.getUse_month()));
+
+			if(StringUtils.isNotEmpty(updateCommonCost.getStaff_id())){
+				OtherStaff os = otherStaffService.getOtherStaff(updateCommonCost.getStaff_id());
+				if(os!= null && !os.getStaff_name().equals(updateCommonCost.getStaff_name())){
+					updateCommonCost.setStaff_id(updateCommonCost.getStaff_name());
+					updateCommonCost.setStaff_no(null);
+				}
+			}else {
+				updateCommonCost.setStaff_id(updateCommonCost.getStaff_name());
+			}
+
 			count = commoncostService.updateCommonCost(commoncost);	
 		}catch(Exception e){
 		}
@@ -319,7 +340,9 @@ public class CommonCostAction extends BaseAction {
 		Map<String, Map<String, DicData>> allDicData = dicDataService.queryAllDicData();
 
 		for(CommonCost commoncost : commoncosts){
-			 checkCommonCost(commoncost , allDicData , otherStaffMap );
+			if(StringUtils.isEmpty(commoncost.getErrorInfo()) ) {
+				checkCommonCost(commoncost, allDicData, otherStaffMap);
+			}
 		}
 		User sessionUser = PubMethod.getUser(request);
 		boolean isAllOK = true;
@@ -368,6 +391,11 @@ public class CommonCostAction extends BaseAction {
 			commoncost.setErrorInfo(commoncost.getErrorInfo() + "月份不能为空;");
 			b = false;
 		}else {
+
+
+			if(commoncost.getStr_month().length() > 6){
+				commoncost.setStr_month(commoncost.getStr_month().substring(0,6));
+			}
 			if(commoncost.getStr_month().length() != 6) {
 				commoncost.setErrorInfo(commoncost.getErrorInfo() + "月份格式错误;");
 				b = false;
@@ -383,16 +411,9 @@ public class CommonCostAction extends BaseAction {
 		}
 
 
-		if(commoncost.getPay_date() == null){
+		if(commoncost.getPay_date() == null && date1 != null){
 			commoncost.setPay_date(new Timestamp(date1.getTime()));
 		}
-
-		if(commoncost.getAmount() <= 0){
-			commoncost.setErrorInfo(commoncost.getErrorInfo() + "金额数据错误;");
-			b = false;
-		}
-
-
 
 
 		if(commoncost.getPay_item_name() == null ||  commoncost.getPay_item_name().isEmpty()){
@@ -414,8 +435,7 @@ public class CommonCostAction extends BaseAction {
 		if(commoncost.getStaff_name() != null && commoncost.getStaff_name().length() > 0){
 			OtherStaff otherStaff = otherStaffMap.get(commoncost.getStaff_name());
 			if(otherStaff == null){
-				commoncost.setErrorInfo(commoncost.getErrorInfo() + "报销人姓名错误;");
-				b = false;
+				commoncost.setStaff_id(commoncost.getStaff_name());
 			}else {
 				commoncost.setStaff_id(otherStaff.getStaff_id());
 				commoncost.setStaff_name(otherStaff.getStaff_name());

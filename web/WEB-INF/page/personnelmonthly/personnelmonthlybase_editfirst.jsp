@@ -8,7 +8,7 @@
 
 			<p>
 				<label>报表月份：</label>
-				<input name="the_month" id="the_month" class="digits required month date" format="yyyyMM" size="30"  minlength="6" maxlength="6" type="text"  value="${the_month }" readonly/>
+				<input name="the_month" id="the_month" class="digits required month date"  autocomplete="off"   format="yyyyMM" size="30"  minlength="6" maxlength="6" type="text"  value="${the_month }" readonly/>
 			</p>
 			
 			<p>

@@ -16,7 +16,7 @@
 		select rc.* ,project.project_name,project.project_no,
 		staff.staff_no, dept.dept_name , 
 		dc.dic_data_name as pay_item_name,		
-		if(staff.staff_id = null or staff.staff_id = '' , rc.staff_id , staff.staff_name) as staff_name 
+		if(staff.staff_id is null or staff.staff_id = '' , rc.staff_id , staff.staff_name) as staff_name
 		from tb_depart_costs rc
 		left JOIN vb_project project 
 		on rc.project_id = project.project_id 
@@ -113,7 +113,7 @@
 		select rc.* ,project.project_name,project.project_no,
 		staff.staff_no, dept.dept_name ,
 		dc.dic_data_name as pay_item_name,		
-		if(staff.staff_id = null or staff.staff_id = '' , rc.staff_id , staff.staff_name) as staff_name ,
+		if(staff.staff_id is null or staff.staff_id = '' , rc.staff_id , staff.staff_name) as staff_name ,
 		aa.need_approve 
 		from tb_depart_costs rc
 		left JOIN vb_project project 

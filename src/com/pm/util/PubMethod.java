@@ -578,6 +578,9 @@ public class PubMethod {
 		if(val == null || val.trim().isEmpty()) {
 			return null;
 		}
+
+		System.out.println(column.getName());
+		System.out.println(val);
 		val = val.trim();
 		
 		Field field = column.getField();

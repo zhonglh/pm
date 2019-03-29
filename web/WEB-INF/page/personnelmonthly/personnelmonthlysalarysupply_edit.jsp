@@ -48,7 +48,7 @@
 			
 			<p>
 				<label>工资补充时间：</label>
-				<input name="supply_time" class="date required" type="text" readonly size="30" maxlength="30" value="<fmt:formatDate value="${personnelMonthlySalarySupply1.supply_time }" pattern="yyyy-MM-dd"/>" />
+				<input name="supply_time" class="date required" autocomplete="off"   type="text" readonly size="30" maxlength="30" value="<fmt:formatDate value="${personnelMonthlySalarySupply1.supply_time }" pattern="yyyy-MM-dd"/>" />
 			</p>
 			
 			<p>

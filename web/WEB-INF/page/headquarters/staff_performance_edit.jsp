@@ -10,7 +10,7 @@
 
 			<p>
 				<label>月份：</label>
-				<input name="the_month" id="the_month" class="date required" format="yyyyMM" size="30"  minlength="6" maxlength="6" type="text" <c:if test="${staffPerformance1.the_month>0}">value="${staffPerformance1.the_month }"</c:if>  readonly/>
+				<input name="the_month" id="the_month" class="date required" autocomplete="off"   format="yyyyMM" size="30"  minlength="6" maxlength="6" type="text" <c:if test="${staffPerformance1.the_month>0}">value="${staffPerformance1.the_month }"</c:if>  readonly/>
 			</p>
 
 

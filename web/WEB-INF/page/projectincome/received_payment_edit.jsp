@@ -41,7 +41,7 @@
 			
 			<p>
 				<label>到款日期：</label>
-				<input name="receive_payment_datetime" class="date required" type="text" size="30" value="<fmt:formatDate value="${receivedPayment1.receive_payment_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
+				<input name="receive_payment_datetime" class="date required" autocomplete="off"   type="text" size="30" value="<fmt:formatDate value="${receivedPayment1.receive_payment_datetime }" pattern="yyyy-MM-dd"/>" readonly="readonly" />
 			</p>			
 			
 

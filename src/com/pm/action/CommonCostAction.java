@@ -170,9 +170,13 @@ public class CommonCostAction extends BaseAction {
 		try{
 			if(StringUtils.isNotEmpty(addCommonCost.getStaff_id())){
 				OtherStaff os = otherStaffService.getOtherStaff(addCommonCost.getStaff_id());
-				if(os!= null && !os.getStaff_name().equals(addCommonCost.getStaff_name())){
+				if(os != null) {
+					if (!os.getStaff_name().equals(addCommonCost.getStaff_name())) {
+						addCommonCost.setStaff_id(addCommonCost.getStaff_name());
+						addCommonCost.setStaff_no(null);
+					}
+				}else {
 					addCommonCost.setStaff_id(addCommonCost.getStaff_name());
-					addCommonCost.setStaff_no(null);
 				}
 			}else {
 				addCommonCost.setStaff_id(addCommonCost.getStaff_name());
@@ -202,9 +206,13 @@ public class CommonCostAction extends BaseAction {
 
 			if(StringUtils.isNotEmpty(updateCommonCost.getStaff_id())){
 				OtherStaff os = otherStaffService.getOtherStaff(updateCommonCost.getStaff_id());
-				if(os!= null && !os.getStaff_name().equals(updateCommonCost.getStaff_name())){
-					updateCommonCost.setStaff_id(updateCommonCost.getStaff_name());
-					updateCommonCost.setStaff_no(null);
+				if(os != null) {
+					if ( !os.getStaff_name().equals(updateCommonCost.getStaff_name())) {
+						updateCommonCost.setStaff_id(updateCommonCost.getStaff_name());
+						updateCommonCost.setStaff_no(null);
+					}else {
+						updateCommonCost.setStaff_id(updateCommonCost.getStaff_name());
+					}
 				}
 			}else {
 				updateCommonCost.setStaff_id(updateCommonCost.getStaff_name());

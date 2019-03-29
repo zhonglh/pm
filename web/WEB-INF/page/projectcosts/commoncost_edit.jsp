@@ -25,7 +25,7 @@
 
 			<p>
 				<label>金额：</label>
-				<input name="amount" class="number required" type="text" size="30" min="0.01" maxlength="10" value="<fmt:formatNumber value="${commoncost1.amount }" type="number" pattern="####0.00#"/>" />
+				<input name="amount" class="number required" type="text" size="30"  maxlength="10" value="<fmt:formatNumber value="${commoncost1.amount }" type="number" pattern="####0.00#"/>" />
 			</p>
 
 			<p>

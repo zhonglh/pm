@@ -51,7 +51,7 @@
 			<li>
 				<label>成本中心：</label>
 
-				<select name="cost_center" style="width:185px">
+				<select name="cost_center" style="width:153px">
 					<option value=""></option>
 					<option value="1" <c:if test="${param.cost_center == '1' }">selected</c:if>><spring:message code="cost.center.1"/></option>
 					<option value="2" <c:if test="${param.cost_center == '2' }">selected</c:if>><spring:message code="cost.center.2"/></option>

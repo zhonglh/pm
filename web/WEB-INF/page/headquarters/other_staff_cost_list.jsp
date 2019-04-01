@@ -46,6 +46,19 @@
 				<input type="text" class="digits date month"  autocomplete="off" size="7"   maxlength="6" minlength="6"  format="yyyyMM" name="work_month1" value="${param.work_month1}"/>
 				<input type="text" class="digits date month"  autocomplete="off" size="7"   maxlength="6" minlength="6"  format="yyyyMM" name="work_month2" value="${param.work_month2}"/>
 			</li>
+
+
+			<li>
+				<label>成本中心：</label>
+
+				<select name="cost_center" style="width:185px">
+					<option value=""></option>
+					<option value="1" <c:if test="${param.cost_center == '1' }">selected</c:if>><spring:message code="cost.center.1"/></option>
+					<option value="2" <c:if test="${param.cost_center == '2' }">selected</c:if>><spring:message code="cost.center.2"/></option>
+					<option value="3" <c:if test="${param.cost_center == '3' }">selected</c:if>><spring:message code="cost.center.3"/></option>
+				</select>
+			</li>
+
 			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
 			
 		</ul>

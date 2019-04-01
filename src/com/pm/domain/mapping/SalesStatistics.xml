@@ -32,7 +32,7 @@
 		inner join 			(
 				select project_id,(statement_month-statement_month%100+(floor(statement_month%100/4)+1)) as quarter,
 				sum(case when amount is NULL  then 0 else amount end) as amount 
-				from tb_monthly_statement where verify_userid is not NULL 			
+				from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND statement_month >= #{Statistics.month1} 
@@ -71,7 +71,7 @@
 		inner join 			(
 				select project_id,floor(statement_month/100) year1,
 				sum(case when amount is NULL  then 0 else amount end) as amount 
-				from tb_monthly_statement where verify_userid is not NULL 			
+				from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND statement_month >= #{Statistics.month1} 
@@ -109,7 +109,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -143,7 +143,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -181,7 +181,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -218,7 +218,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -254,7 +254,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -291,7 +291,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -328,7 +328,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -367,7 +367,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -408,7 +408,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL and statement_month >= 201501	  			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 

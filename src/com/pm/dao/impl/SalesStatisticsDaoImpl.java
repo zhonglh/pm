@@ -37,12 +37,14 @@ public class SalesStatisticsDaoImpl extends BatisDao implements ISalesStatistics
 	
 
 
-	public Pager<Statistics> queryByInfoSource(Statistics statistics,UserPermit userPermit,Pager<Statistics> pager){
+	@Override
+    public Pager<Statistics> queryByInfoSource(Statistics statistics, UserPermit userPermit, Pager<Statistics> pager){
 		String sql = "SalesStatisticsMapping.queryByInfoSource";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);		
 	}
 
-	public Pager<Statistics> queryByClient(Statistics statistics,UserPermit userPermit,Pager<Statistics> pager){
+	@Override
+	public Pager<Statistics> queryByClient(Statistics statistics, UserPermit userPermit, Pager<Statistics> pager){
 		String sql = "SalesStatisticsMapping.queryByClient";
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, Statistics.class, userPermit,statistics);
 	}

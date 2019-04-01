@@ -30,7 +30,7 @@
 		inner join(
 				select project_id,(statement_month-statement_month%100+(floor(statement_month%100/4)+1)) as quarter,
 				sum(case when amount is NULL  then 0 else amount end) as amount 
-				from tb_monthly_statement where verify_userid is not NULL 			
+				from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 				<if test="Statistics.month1 != 0">
 				<![CDATA[	
 					AND statement_month >= #{Statistics.month1} 
@@ -49,7 +49,7 @@
 		inner join (
 			select project_id,(year(receive_payment_datetime)*100+quarter(receive_payment_datetime)) as quarter,
 			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end)*-1 as amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -88,7 +88,7 @@
 		inner join(
 			select project_id,floor(statement_month/100) year1,
 			sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -108,7 +108,7 @@
 			inner join (
 			select project_id,year(receive_payment_datetime) year1,
 			sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end)*-1 as amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -150,7 +150,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -166,7 +166,7 @@
 		on project.project_id = ms.project_id 
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -204,7 +204,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -220,7 +220,7 @@
 		on project.project_id = ms.project_id
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -262,7 +262,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -278,7 +278,7 @@
 		on project.project_id = ms.project_id
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -319,7 +319,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -335,7 +335,7 @@
 		on project.project_id = ms.project_id
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -375,7 +375,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -391,7 +391,7 @@
 		on project.project_id = ms.project_id
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -432,7 +432,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -448,7 +448,7 @@
 		on project.project_id = ms.project_id
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -489,7 +489,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -505,7 +505,7 @@
 		on project.project_id = ms.project_id
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -548,7 +548,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -564,7 +564,7 @@
 		on project.project_id = ms.project_id
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 
@@ -609,7 +609,7 @@
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project
 		left join (
 			select project_id, sum(case when amount is NULL  then 0 else amount end) as amount 
-			from tb_monthly_statement where verify_userid is not NULL 			
+			from tb_monthly_statement where verify_userid is not NULL  and statement_month >=201501			
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND statement_month >= #{Statistics.month1} 
@@ -625,7 +625,7 @@
 		on project.project_id = ms.project_id 
 		left join (
 			select project_id, sum(case when receive_payment_amount is NULL  then 0 else receive_payment_amount end) receive_payment_amount 
-			from tb_received_payment where verify_userid is not NULL 			
+			from tb_received_payment where verify_userid is not NULL 	and receive_payment_month >= 201501		
 			<if test="Statistics.month1 != 0">
 			<![CDATA[	
 				AND DATE_FORMAT(receive_payment_datetime,'%Y%m') >= #{Statistics.month1} 

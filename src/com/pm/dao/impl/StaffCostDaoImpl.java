@@ -169,7 +169,8 @@ public class StaffCostDaoImpl extends BatisDao implements IStaffCostDao {
 		return pager1;		
 	}
 	
-	public Pager<StatisticsDetail> queryAnalysisDetails(Statistics statistics, UserPermit userPermit,Pager<StatisticsDetail> pager){
+	@Override
+    public Pager<StatisticsDetail> queryAnalysisDetails(Statistics statistics, UserPermit userPermit, Pager<StatisticsDetail> pager){
 		
 		String sql = "StaffCostAnalysisMapping.queryProfitAnalysisDetailIncome";
 		if(statistics.getX().equals("cost")){

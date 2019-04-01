@@ -50,8 +50,9 @@
 								case when b.total_cost is NULL  then 0 else b.total_cost*(1-${StaffCost.tax_rate}) end amount 
 								from tb_monthly_statement a, tb_monthly_statement_detail b ,
 								vb_project p 
-								where a.verify_userid is not NULL 	
-								and a.monthly_statement_id = b.monthly_statement_id 
+								where a.verify_userid is not NULL
+								and statement_month >= 201501
+								and a.monthly_statement_id = b.monthly_statement_id
 								and a.project_id = p.project_id 	
 							) a
 							union all
@@ -74,7 +75,8 @@
 								from tb_reimburse_costs a ,	vb_project p , tb_staff_costs c
 								where a.verify_userid is not NULL 	
 								and a.project_id = p.project_id 
-								and a.staff_id = c.staff_id 
+								and a.staff_id = c.staff_id
+								and a.use_month >= 201501
 							) c		
 						) dd 	
 						where 1=1 

@@ -4,6 +4,9 @@ import com.common.beans.Pager;
 import com.pm.domain.business.Statistics;
 import com.pm.vo.UserPermit;
 
+/**
+ * @author zhonglh
+ */
 public interface ISalesStatisticsDao {
 
 

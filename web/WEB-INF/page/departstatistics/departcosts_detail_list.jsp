@@ -9,6 +9,11 @@
 	
 	<input type="hidden" name="month1" value="${param.month1}" />
 	<input type="hidden" name="month2" value="${param.month2}" />
+
+
+
+	<input type="hidden" name="date1" value="${param.date1}" />
+	<input type="hidden" name="date2" value="${param.date2}" />
 	
 	
 	<input type="hidden" name="x" value="${param.x}" />

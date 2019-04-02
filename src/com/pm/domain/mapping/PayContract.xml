@@ -115,6 +115,13 @@
 
 
 
+		<if test="PayContract.company_name != null and PayContract.company_name != ''">
+			AND pc.company_name like concat('%',TRIM(#{PayContract.company_name}),'%')
+		</if>
+
+
+
+
 		<if test="PayContract.date1 != null ">
 			<![CDATA[
 				and pc.submit_date >= #{PayContract.date1}

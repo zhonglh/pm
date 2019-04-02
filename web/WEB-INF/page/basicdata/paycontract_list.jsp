@@ -28,10 +28,24 @@
 				</li>
 
 
+			</ul>
+
+			<ul class="searchContent">
+
+				<li>
+					<label>公司名称：</label>
+					<input name="company_name" class="text" type="text" value="${param.company_name }" />
+				</li>
+
+
+
+
 				<li style="width:40px">
 					<div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div>
 				</li>
 			</ul>
+
+
 		</div>
 	</form>
 </div>
@@ -65,7 +79,7 @@
 			</c:if>		
 		</ul>
 	</div>
-	<table class="table" width="1600" layoutH="113">
+	<table class="table" width="1600" layoutH="135">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>

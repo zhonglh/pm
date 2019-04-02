@@ -124,6 +124,12 @@
 		<if test="Contract.contract_no != null and Contract.contract_no != ''">
 			AND contract.contract_no like concat('%',TRIM(#{Contract.contract_no}),'%')  
 		</if>
+
+
+		<if test="Contract.project_client_name != null and Contract.project_client_name != ''">
+			AND client.client_name like concat('%',TRIM(#{Contract.project_client_name}),'%')
+		</if>
+
 		
 		
 		

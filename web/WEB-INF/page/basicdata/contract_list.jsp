@@ -32,10 +32,23 @@
 			</li>
 			
 			
+
+		</ul>
+
+		<ul class="searchContent">
+
+			<li>
+				<label>客户名称：</label>
+				<input name="project_client_name" class="text" type="text" value="${param.project_client_name }" />
+			</li>
+
+
+
+
 			<li style="width:40px">
 				<div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div>
 			</li>
-		</ul>	
+		</ul>
 	</div>
 	</form>
 </div>
@@ -69,7 +82,7 @@
 		</ul>
 	</div>
 	
-	<table class="table" width="1700" layoutH="112">
+	<table class="table" width="1700" layoutH="135">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>

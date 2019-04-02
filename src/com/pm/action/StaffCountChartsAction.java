@@ -1,40 +1,25 @@
 package com.pm.action;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.alibaba.fastjson.JSON;
 import com.common.actions.BaseAction;
 import com.common.beans.Pager;
-import com.pm.domain.business.StaffExEntity;
 import com.pm.service.IStaffChartsService;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.BusinessUtil;
-import com.pm.util.constant.EnumPermit;
 import com.pm.vo.UserPermit;
 import com.pm.vo.echarts.Option;
-import com.pm.vo.echarts.base.Grid;
-import com.pm.vo.echarts.base.InRange;
-import com.pm.vo.echarts.base.OutRange;
-import com.pm.vo.echarts.base.SplitLine;
-import com.pm.vo.echarts.base.TextStyle;
-import com.pm.vo.echarts.base.VisualMap;
-import com.pm.vo.echarts.base.VisualMapByContinuous;
-import com.pm.vo.echarts.base.VisualMapByPiecewise;
-import com.pm.vo.echarts.base.Xaxis;
-import com.pm.vo.echarts.base.Yaxis;
+import com.pm.vo.echarts.base.*;
 import com.pm.vo.echarts.series.Scatter;
 import com.pm.vo.echarts.title.Title;
 import com.pm.vo.echarts.tooltip.Tooltip;
 import com.pm.vo.reports.StaffCountVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 人员统计图表
@@ -70,7 +55,6 @@ public class StaffCountChartsAction extends BaseAction {
 
 	/**
 	 * 人员收支统计图表
-	 * @param staffExEntity
 	 * @param res
 	 * @param request
 	 * @return

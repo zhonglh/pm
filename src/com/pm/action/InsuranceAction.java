@@ -38,7 +38,9 @@ import com.pm.util.constant.EnumPermit;
 import com.pm.util.excel.exports.BusinessExcel;
 import com.pm.vo.UserPermit;
 
-
+/**
+ * 保险
+ */
 @Controller
 @RequestMapping("InsuranceAction.do")
 public class InsuranceAction extends BaseAction {

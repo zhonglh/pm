@@ -20,7 +20,7 @@
 				<label>人员名称：</label>	
 				<input type="hidden" size="2" name="staff.staff_id" value="${personnelMonthlyBase.staff_id }"/>
 				<input name="staff.staff_name" id="staff_name" class="text" size="15" type="text" value="${personnelMonthlyBase.staff_name }" readonly />
-				<a class="btnLook" href="${webroot }/StaffCostAction.do?method=lookup" lookupGroup="staff" lookupPk="staff_id" width="970">选择</a>
+				<a class="btnLook" href="${webroot }/OtherStaffAction.do?method=lookup" lookupGroup="staff" lookupPk="staff_id" width="970">选择</a>
 			
 			</li>	
 		

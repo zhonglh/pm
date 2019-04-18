@@ -32,9 +32,8 @@ public class OtherPersonnelMonthlyBaseServiceImpl implements IOtherPersonnelMont
 	@Autowired IOtherPersonnelMonthlyReserveFundService personnelMonthlyReserveFundService;
 	@Autowired IOtherPersonnelMonthlySalaryService personnelMonthlySalaryService;
 	@Autowired IOtherPersonnelMonthlySalarySupplyService personnelMonthlySalarySupplyService;
-	
-	@Autowired IStaffCostDao staffCostDao;
-	@Autowired IStaffCostExService staffCostExService;
+
+	@Autowired IOtherStaffExService otherStaffExService;
 	
 
 	@Override
@@ -47,29 +46,29 @@ public class OtherPersonnelMonthlyBaseServiceImpl implements IOtherPersonnelMont
 		if(size == 1){
 			if(EnumPersonnelMonthlyType.Bonus.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyBonus bonus = personnelMonthlyBonusService.getPersonnelMonthlyBonus(base.getId());
-				staffCostExService.checkBonus(bonus);
+				otherStaffExService.checkBonus(bonus);
 			}else if(EnumPersonnelMonthlyType.AddInsurance.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyInsurance insurance = personnelMonthlyInsuranceService.getPersonnelMonthlyInsurance(base.getId());
-				staffCostExService.checkInsurance(insurance);
+				otherStaffExService.checkInsurance(insurance);
 			}else if(EnumPersonnelMonthlyType.DecrInsurance.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyInsurance insurance = personnelMonthlyInsuranceService.getPersonnelMonthlyInsurance(base.getId());
-				staffCostExService.checkInsurance(insurance);
+				otherStaffExService.checkInsurance(insurance);
 			}else if(EnumPersonnelMonthlyType.AddReserveFund.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyReserveFund reservefund = personnelMonthlyReserveFundService.getPersonnelMonthlyReserveFund(base.getId());
-				staffCostExService.checkReserveFund(reservefund);
+				otherStaffExService.checkReserveFund(reservefund);
 			}else if(EnumPersonnelMonthlyType.DecrInsurance.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyReserveFund reservefund = personnelMonthlyReserveFundService.getPersonnelMonthlyReserveFund(base.getId());
-				staffCostExService.checkReserveFund(reservefund);
+				otherStaffExService.checkReserveFund(reservefund);
 			}else if(EnumPersonnelMonthlyType.Official.getId().equals(base.getMonthly_type())){
 				//todo 将转正日期 正式工资赋值到人员成本表中
 				;
 			}else if(EnumPersonnelMonthlyType.AddSalary.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlySalary salary = personnelMonthlySalaryService.getPersonnelMonthlySalary(base.getId());
-				staffCostExService.checkAddSalary(salary);
+				otherStaffExService.checkAddSalary(salary);
 				//todo 将加薪后的工资赋值到人员成本表中
 			}else if(EnumPersonnelMonthlyType.DecrSalary.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlySalary salary = personnelMonthlySalaryService.getPersonnelMonthlySalary(base.getId());
-				staffCostExService.checkDecrSalary(salary);
+				otherStaffExService.checkDecrSalary(salary);
 				//todo 将减薪后的工资赋值到人员成本表中
 			}else if(EnumPersonnelMonthlyType.SalarySupply.getId().equals(base.getMonthly_type())){
 				;
@@ -87,27 +86,27 @@ public class OtherPersonnelMonthlyBaseServiceImpl implements IOtherPersonnelMont
 		if(size == 1){
 			if(EnumPersonnelMonthlyType.Bonus.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyBonus bonus = personnelMonthlyBonusService.getPersonnelMonthlyBonus(base.getId());
-				staffCostExService.unCheckBonus(bonus);
+				otherStaffExService.unCheckBonus(bonus);
 			}else if(EnumPersonnelMonthlyType.AddInsurance.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyInsurance insurance = personnelMonthlyInsuranceService.getPersonnelMonthlyInsurance(base.getId());
-				staffCostExService.unCheckInsurance(insurance);
+				otherStaffExService.unCheckInsurance(insurance);
 			}else if(EnumPersonnelMonthlyType.DecrInsurance.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyInsurance insurance = personnelMonthlyInsuranceService.getPersonnelMonthlyInsurance(base.getId());
-				staffCostExService.unCheckInsurance(insurance);
+				otherStaffExService.unCheckInsurance(insurance);
 			}else if(EnumPersonnelMonthlyType.AddReserveFund.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyReserveFund reservefund = personnelMonthlyReserveFundService.getPersonnelMonthlyReserveFund(base.getId());
-				staffCostExService.unCheckReserveFund(reservefund);
+				otherStaffExService.unCheckReserveFund(reservefund);
 			}else if(EnumPersonnelMonthlyType.DecrInsurance.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlyReserveFund reservefund = personnelMonthlyReserveFundService.getPersonnelMonthlyReserveFund(base.getId());
-				staffCostExService.unCheckReserveFund(reservefund);
+				otherStaffExService.unCheckReserveFund(reservefund);
 			}else if(EnumPersonnelMonthlyType.Official.getId().equals(base.getMonthly_type())){
 				
 			}else if(EnumPersonnelMonthlyType.AddSalary.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlySalary salary = personnelMonthlySalaryService.getPersonnelMonthlySalary(base.getId());
-				staffCostExService.unCheckAddSalary(salary);
+				otherStaffExService.unCheckAddSalary(salary);
 			}else if(EnumPersonnelMonthlyType.DecrSalary.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlySalary salary = personnelMonthlySalaryService.getPersonnelMonthlySalary(base.getId());
-				staffCostExService.unCheckDecrSalary(salary);
+				otherStaffExService.unCheckDecrSalary(salary);
 			}else if(EnumPersonnelMonthlyType.SalarySupply.getId().equals(base.getMonthly_type())){
 				;
 			}

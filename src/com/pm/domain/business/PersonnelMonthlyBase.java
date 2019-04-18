@@ -46,9 +46,9 @@ public class PersonnelMonthlyBase extends IdEntity implements Serializable {
 	private String monthly_type_name;
 	
 
-	//@EntityAnnotation(item_name="部门" ,item_sort=5) 
+	//@EntityAnnotation(item_name="部门名称" ,item_sort=3)
 	private String dept_name;
-	
+
 
 	@EntityAnnotation(item_name="项目名称" ,item_sort=3) 
 	private String project_name;

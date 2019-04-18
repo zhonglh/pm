@@ -357,6 +357,11 @@
 		<if test="OtherStaff.dept_id != null and OtherStaff.dept_id != ''">
 			and staff.dept_id = #{OtherStaff.dept_id}
 		</if>
+
+
+		<if test="OtherStaff.staff_id != null and OtherStaff.staff_id != ''">
+			and staff.staff_id = #{OtherStaff.staff_id}
+		</if>
 				
 		<if test="OtherStaff.staff_name != null and OtherStaff.staff_name != ''">
 			and staff.staff_name like concat('%',TRIM(#{OtherStaff.staff_name}),'%') 

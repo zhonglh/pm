@@ -768,7 +768,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 	@RequestMapping(params = "method=downloadtemplet")
 	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception {
 		String sourceFile = this.getClass().getClassLoader().getResource("/templet/personnelmonthlybase.xlsx").getPath();
-		DownloadBaseUtil.download(  sourceFile,  "人事月报模板.xlsx" ,response,false);
+		DownloadBaseUtil.download(  sourceFile,  "总部人事月报模板.xlsx" ,response,false);
 		return null;  
 	}  	
 
@@ -789,7 +789,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 		}
 		
 		try{
-			String header = " 华路时代人事月表";
+			String header = " 华路时代总部人事月表";
 			if(personnelMonthlyBase.getThe_month() > 0) {
 				String the_month =  String.valueOf(personnelMonthlyBase.getThe_month());
 				StringBuilder sb = new StringBuilder();

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="OtherPersonnelMonthlyBonusMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PersonnelMonthlyBonus" id="personnelMonthlyBonusMap" />
+
+
+	<select id="getPersonnelMonthlyBonus" parameterType="com.pm.domain.business.PersonnelMonthlyBonus" resultMap="personnelMonthlyBonusMap">
+		select pmb.* ,dept.dept_name,dept.dept_no ,sc.staff_no,sc.staff_name,
+		pmbs.join_datetime,pmbs.change_time,pmbs.amount,pmbs.description
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_bonus pmbs
+		on pmb.id = pmbs.id
+		inner join tb_other_staff sc
+		on pmb.staff_id = sc.staff_id
+		left JOIN ts_dept dept
+		on pmb.dept_id = dept.dept_id
+		where pmb.id = #{id}
+	</select>
+
+	<insert id="addPersonnelMonthlyBonus" parameterType="com.pm.domain.business.PersonnelMonthlyBonus" >
+		insert into  personnel_monthly_bonus(
+			id,join_datetime,change_time,amount,
+			description
+		)values  (
+			#{id},#{join_datetime},#{change_time},#{amount},
+			#{description}
+		)
+	</insert>
+
+	<update id="updatePersonnelMonthlyBonus" parameterType="com.pm.domain.business.PersonnelMonthlyBonus" >
+		update  personnel_monthly_bonus set 
+		join_datetime=#{join_datetime},
+		change_time=#{change_time},
+		amount=#{amount},
+		description=#{description}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deletePersonnelMonthlyBonus" parameterType="com.pm.domain.business.PersonnelMonthlyBonus" >
+		delete from  personnel_monthly_bonus
+		where id=#{id}
+	</delete>
+
+	<select id="queryPersonnelMonthlyBonusTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="personnelMonthlyBonusPagerSql"/>
+		) c
+	</select>
+
+	<select id="queryPersonnelMonthlyBonusByPager_mysql" parameterType="map"  resultMap="personnelMonthlyBonusMap" >
+		<include refid="personnelMonthlyBonusPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPersonnelMonthlyBonusByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="personnelMonthlyBonusPagerSql"/> )c
+	</select>
+
+	<sql id="personnelMonthlyBonusPagerSql">
+		select pmb.* ,dept.dept_name,dept.dept_no ,sc.staff_no,sc.staff_name,aa.need_approve,
+		pmbs.join_datetime,pmbs.change_time,pmbs.amount,pmbs.description
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_bonus pmbs
+		on pmb.id = pmbs.id
+		inner join tb_other_staff sc
+		on pmb.staff_id = sc.staff_id
+		left JOIN ts_dept dept
+		on pmb.dept_id = dept.dept_id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'PERSONNELMONTHLYBASE' group by data_id) aa
+		on pmb.id = aa.data_id	
+		WHERE 1=1 
+		
+		<if test="PersonnelMonthlyBonus.the_month != 0 ">
+			<![CDATA[
+			AND pmb.the_month = #{PersonnelMonthlyBonus.the_month} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlyBonus.staff_id != null and PersonnelMonthlyBonus.staff_id != ''">
+			<![CDATA[
+			AND pmb.staff_id = #{PersonnelMonthlyBonus.staff_id} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlyBonus.monthly_type != null and PersonnelMonthlyBonus.monthly_type != ''">
+			<![CDATA[
+			AND pmb.monthly_type = #{PersonnelMonthlyBonus.monthly_type} 
+			]]>
+		</if>
+		
+		
+		<if test="PersonnelMonthlyBonus.verify_flag != null and PersonnelMonthlyBonus.verify_flag != ''">
+			<if test="PersonnelMonthlyBonus.verify_flag == 1">
+					and pmb.verify_userid is not null 
+			</if>
+			<if test="PersonnelMonthlyBonus.verify_flag == 0">			
+					and pmb.verify_userid is null 
+			</if>
+		</if>		
+		
+		<include refid="OtherStaffAuthMapping.permission" />
+		order by pmb.monthly_type, pmb.the_month,pmb.build_datetime , pmb.import_order 
+	</sql>
+
+</mapper>

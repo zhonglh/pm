@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OtherStaffAuthMapping">
+
+	<sql id="permission">
+
+		<if test="UserPermit.range != null and UserPermit.range != ''">
+
+			<if test="UserPermit.range == 1">
+
+			</if>
+			<if test="UserPermit.range == 2">
+				<if test="UserPermit.user_deptid != null and UserPermit.user_deptid != ''">
+					and (sc.dept_id = #{UserPermit.user_deptid} or sc.staff_id =  #{UserPermit.staff_id} or sc.dept_id in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id}))
+				</if>
+				<if test="UserPermit.user_deptid == null or UserPermit.user_deptid == ''">
+					and (sc.staff_id =  #{UserPermit.staff_id} or sc.dept_id in (select dept_id from ts_user_manage_dept where user_id = #{UserPermit.user_id})  )
+				</if>
+			</if>
+			<if test="UserPermit.range == 3">
+				and sc.staff_id =   #{UserPermit.staff_id}
+			</if>
+
+		</if>
+
+		<if test="UserPermit.range == null or UserPermit.range == ''">
+			and 1 != 1
+		</if>
+
+
+	</sql>
+	 
+
+</mapper>

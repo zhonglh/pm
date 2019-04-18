@@ -15,42 +15,42 @@ import com.common.daos.BatisDao;
 import com.common.beans.Pager;
 
 @Component
-public class PersonnelMonthlyBaseDaoImpl extends BatisDao implements IPersonnelMonthlyBaseDao {
+public class OtherPersonnelMonthlyBaseDaoImpl extends BatisDao implements IOtherPersonnelMonthlyBaseDao {
 
 	@Override
 	public int addPersonnelMonthlyBase(PersonnelMonthlyBase personnelMonthlyBase) {
-		String sql = "PersonnelMonthlyBaseMapping.addPersonnelMonthlyBase";
+		String sql = "OtherPersonnelMonthlyBaseMapping.addPersonnelMonthlyBase";
 		return this.insert(sql, personnelMonthlyBase);
 	}
 
 	@Override
 	public int updatePersonnelMonthlyBase(PersonnelMonthlyBase personnelMonthlyBase) {
-		String sql = "PersonnelMonthlyBaseMapping.updatePersonnelMonthlyBase";
+		String sql = "OtherPersonnelMonthlyBaseMapping.updatePersonnelMonthlyBase";
 		return this.update(sql, personnelMonthlyBase);
 	}
 
 	@Override
 	public int deletePersonnelMonthlyBase(PersonnelMonthlyBase personnelMonthlyBase) {
-		String sql = "PersonnelMonthlyBaseMapping.deletePersonnelMonthlyBase";
+		String sql = "OtherPersonnelMonthlyBaseMapping.deletePersonnelMonthlyBase";
 		return this.delete(sql, personnelMonthlyBase);
 	}
 
 	@Override
 	public int verifyPersonnelMonthlyBase(PersonnelMonthlyBase personnelMonthlyBase) {
-		String sql = "PersonnelMonthlyBaseMapping.verifyPersonnelMonthlyBase";
+		String sql = "OtherPersonnelMonthlyBaseMapping.verifyPersonnelMonthlyBase";
 		return this.update(sql, personnelMonthlyBase);
 	}
 
 	@Override
 	public int unVerifyPersonnelMonthlyBase(PersonnelMonthlyBase personnelMonthlyBase) {
-		String sql = "PersonnelMonthlyBaseMapping.unVerifyPersonnelMonthlyBase";
+		String sql = "OtherPersonnelMonthlyBaseMapping.unVerifyPersonnelMonthlyBase";
 		return this.update(sql, personnelMonthlyBase);
 	}
 
 	@Override
 	public PersonnelMonthlyBase getPersonnelMonthlyBase(String id) {
 
-		String sql = "PersonnelMonthlyBaseMapping.getPersonnelMonthlyBase"; 
+		String sql = "OtherPersonnelMonthlyBaseMapping.getPersonnelMonthlyBase"; 
 		PersonnelMonthlyBase personnelMonthlyBase = new PersonnelMonthlyBase(); 
 		personnelMonthlyBase.setId(id); 
 		List<PersonnelMonthlyBase> list = this.query(sql, PersonnelMonthlyBase.class, personnelMonthlyBase); 
@@ -62,7 +62,7 @@ public class PersonnelMonthlyBaseDaoImpl extends BatisDao implements IPersonnelM
 
 	@Override
 	public int getNotCheckNumByWorkAttendance(PersonnelMonthlyBase personnelMonthlyBase) {
-		String sql = "PersonnelMonthlyBaseMapping.getNotCheckNumByWorkAttendance"; 
+		String sql = "OtherPersonnelMonthlyBaseMapping.getNotCheckNumByWorkAttendance"; 
 		return this.query4Int(sql, personnelMonthlyBase);
 	}
 
@@ -72,9 +72,9 @@ public class PersonnelMonthlyBaseDaoImpl extends BatisDao implements IPersonnelM
 		UserPermit userPermit,
 		Pager<PersonnelMonthlyBase> pager){
 
-		String sql = "PersonnelMonthlyBaseMapping.queryPersonnelMonthlyBase"; 
+		String sql = "OtherPersonnelMonthlyBaseMapping.queryPersonnelMonthlyBase"; 
 		Pager<PersonnelMonthlyBase> pager1 =  this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql,PersonnelMonthlyBase.class, personnelMonthlyBase,userPermit); 
-		//sql = "PersonnelMonthlyBaseMapping.queryPersonnelMonthlyBaseTotalAmount";
+		//sql = "OtherPersonnelMonthlyBaseMapping.queryPersonnelMonthlyBaseTotalAmount";
 		//Map<String,Object> map = new HashMap<String,Object>();
 		//if(personnelMonthlyBase != null) map.put(personnelMonthlyBase.getClass().getSimpleName(), personnelMonthlyBase);
 		//if(userPermit != null) map.put(userPermit.getClass().getSimpleName(), userPermit);

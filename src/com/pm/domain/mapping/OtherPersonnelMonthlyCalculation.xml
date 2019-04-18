@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<!-- 该文件不和表对应， 用于工资计算 -->
+<mapper namespace="OtherPersonnelMonthlyCalculationMapping">
+
+	
+	<!-- 用于计算工资 -->
+	<!-- 根据考勤的项目ID和月份 获取 转正和加减薪信息里的当月薪资和备注信息 -->
+	<select id="getCurrSalaryByWorkAttendance" parameterType="com.pm.domain.business.Salary" resultMap="PersonnelMonthlySalaryMapping.personnelMonthlySalaryMap">
+			select staff_id, the_month,curr_salary, description  from (
+			select * from (
+				select base.*, official.curr_salary ,
+				CONCAT('转正当月工资为',CAST(official.curr_salary AS char)) as description ,
+				CONCAT(base.staff_id,CAST(base.the_month AS char),CAST(official.curr_salary AS char)) as ak
+				from personnel_monthly_base base 
+				join personnel_monthly_official official 
+				on base.id = official.id 
+				where base.verify_userid is not null and base.the_month = #{salary_month}
+				and base.staff_id in(
+					select staff_id from tb_other_work_attendance
+					where attendance_month = #{salary_month}
+					and dept_id = #{dept_id} and delete_flag ='0'
+				)
+				union 
+				select base.*, salary.curr_salary,
+				case when salary.description is null then CONCAT(IF(old_salary > new_salary,'减薪当月工资为','加薪当月工资为'),CAST(salary.curr_salary AS char)) else salary.description end description,
+				CONCAT(base.staff_id,CAST(base.the_month AS char),CAST(salary.curr_salary AS char)) as ak 
+				from personnel_monthly_base base 
+				join personnel_monthly_salary salary 
+				on base.id = salary.id 
+				where base.verify_userid is not null  and base.the_month = #{salary_month}
+				and base.staff_id in(
+					select staff_id from tb_other_work_attendance
+					where attendance_month = #{salary_month}
+					and dept_id = #{dept_id} and delete_flag ='0'
+				)
+			) aaa where ak in
+			(			
+				select 
+				CONCAT(staff_id,CAST(the_month AS char),CAST(max(curr_salary) AS char)) as ak
+				from (
+					select base.*, official.curr_salary 			
+					from personnel_monthly_base base 
+					join personnel_monthly_official official 
+					on base.id = official.id 
+					where base.verify_userid is not null   and base.the_month = #{salary_month}
+					and base.staff_id in(
+						select staff_id from tb_other_work_attendance
+						where attendance_month = #{salary_month}
+						and dept_id = #{dept_id} and delete_flag ='0'
+					)
+					union 
+					select base.*, salary.curr_salary from personnel_monthly_base base 
+					join personnel_monthly_salary salary 
+					on base.id = salary.id 
+				 	where base.verify_userid is not null   and base.the_month = #{salary_month}
+					and base.staff_id in(
+						select staff_id from tb_other_work_attendance
+						where attendance_month = #{salary_month}
+						and dept_id = #{dept_id} and delete_flag ='0'
+					)
+				) a group by staff_id , the_month			
+			)		
+		) tddd group by staff_id , the_month
+		
+	</select>	
+
+</mapper>

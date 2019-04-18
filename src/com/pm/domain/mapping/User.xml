@@ -43,7 +43,7 @@
 
 
 	<select id="getUserByLoginName" parameterType="com.pm.domain.system.User" resultMap="userMap">
-	   select * from ts_user where user_loginname = #{user_loginname}
+	   select * from ts_user where user_loginname = #{user_loginname} order by delete_flag
 	</select>
 	
 	

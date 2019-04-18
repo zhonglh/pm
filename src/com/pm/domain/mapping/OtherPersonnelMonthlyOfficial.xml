@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="OtherPersonnelMonthlyOfficialMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.PersonnelMonthlyOfficial" id="personnelMonthlyOfficialMap" />
+
+
+	<select id="getPersonnelMonthlyOfficial" parameterType="com.pm.domain.business.PersonnelMonthlyOfficial" resultMap="personnelMonthlyOfficialMap">
+		select pmb.* ,dept.dept_name,dept.dept_no ,sc.staff_no,sc.staff_name,
+		pmo.join_datetime,pmo.confirmation_date,pmo.tryout_salary,pmo.official_salary,pmo.curr_salary,
+		pmo.work_days,pmo.tryout_days,pmo.official_days
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_official pmo  
+		on pmb.id = pmo.id
+		inner join tb_other_staff sc
+		on pmb.staff_id = sc.staff_id
+		left JOIN ts_dept dept
+		on pmb.dept_id = dept.dept_id
+		where pmo.id = #{id}
+	</select>
+
+	<insert id="addPersonnelMonthlyOfficial" parameterType="com.pm.domain.business.PersonnelMonthlyOfficial" >
+		insert into  personnel_monthly_official(
+			id,join_datetime,
+			work_days,tryout_days,official_days,
+			confirmation_date,tryout_salary,
+			official_salary,curr_salary
+		)values  (
+			#{id},#{join_datetime},
+			#{work_days},#{tryout_days},#{official_days},
+			#{confirmation_date},#{tryout_salary},
+			#{official_salary},#{curr_salary}
+		)
+	</insert>
+
+	<update id="updatePersonnelMonthlyOfficial" parameterType="com.pm.domain.business.PersonnelMonthlyOfficial" >
+		update  personnel_monthly_official set 
+		join_datetime=#{join_datetime},
+
+		work_days=#{work_days},
+		tryout_days=#{tryout_days},
+		official_days=#{official_days},
+
+		confirmation_date=#{confirmation_date},
+		tryout_salary=#{tryout_salary},
+		official_salary=#{official_salary},
+		curr_salary=#{curr_salary}
+		where id=#{id} 
+	</update>
+
+
+	<delete id="deletePersonnelMonthlyOfficial" parameterType="com.pm.domain.business.PersonnelMonthlyOfficial" >
+		delete from  personnel_monthly_official
+		where id=#{id}
+	</delete>
+
+	<select id="queryPersonnelMonthlyOfficialTotalAmount" parameterType="map"  resultType="double" >
+		SELECT sum(amount) FROM (
+			<include refid="personnelMonthlyOfficialPagerSql"/>
+		) c
+	</select>
+
+	<select id="queryPersonnelMonthlyOfficialByPager_mysql" parameterType="map"  resultMap="personnelMonthlyOfficialMap" >
+		<include refid="personnelMonthlyOfficialPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryPersonnelMonthlyOfficialByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (<include refid="personnelMonthlyOfficialPagerSql"/> )c
+	</select>
+
+	<sql id="personnelMonthlyOfficialPagerSql">
+		select pmb.* ,dept.dept_name,dept.dept_no ,sc.staff_no,sc.staff_name, aa.need_approve,
+		pmo.join_datetime,pmo.confirmation_date,pmo.tryout_salary,pmo.official_salary,pmo.curr_salary,
+		pmo.work_days,pmo.tryout_days,pmo.official_days
+		from personnel_monthly_base pmb  
+		inner join personnel_monthly_official pmo  
+		on pmb.id = pmo.id
+		inner join tb_other_staff sc
+		on pmb.staff_id = sc.staff_id
+		left JOIN ts_dept dept
+		on pmb.dept_id = dept.dept_id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'PERSONNELMONTHLYBASE' group by data_id) aa
+		on pmb.id = aa.data_id		
+		WHERE 1=1 
+		
+		<if test="PersonnelMonthlyOfficial.the_month != 0 ">
+			<![CDATA[
+			AND pmb.the_month = #{PersonnelMonthlyOfficial.the_month} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlyOfficial.staff_id != null and PersonnelMonthlyOfficial.staff_id != ''">
+			<![CDATA[
+			AND pmb.staff_id = #{PersonnelMonthlyOfficial.staff_id} 
+			]]>
+		</if>
+		
+		<if test="PersonnelMonthlyOfficial.monthly_type != null and PersonnelMonthlyOfficial.monthly_type != ''">
+			<![CDATA[
+			AND pmb.monthly_type = #{PersonnelMonthlyOfficial.monthly_type} 
+			]]>
+		</if>
+		
+		
+		<if test="PersonnelMonthlyOfficial.verify_flag != null and PersonnelMonthlyOfficial.verify_flag != ''">
+			<if test="PersonnelMonthlyOfficial.verify_flag == 1">
+					and pmb.verify_userid is not null 
+			</if>
+			<if test="PersonnelMonthlyOfficial.verify_flag == 0">			
+					and pmb.verify_userid is null 
+			</if>
+		</if>		
+		
+		
+		<include refid="OtherStaffAuthMapping.permission" />
+		order by pmb.monthly_type, pmb.the_month,pmb.build_datetime , pmb.import_order 
+	</sql>
+
+</mapper>

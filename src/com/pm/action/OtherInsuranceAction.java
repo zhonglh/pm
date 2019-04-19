@@ -49,7 +49,7 @@ public class OtherInsuranceAction extends BaseAction {
 	private IOtherStaffService otherStaffService;
 
 	@Autowired
-	@Qualifier("otherInsuranceService")
+	@Qualifier("otherInsuranceServiceImpl")
 	private IInsuranceService otherInsuranceService;
 
 

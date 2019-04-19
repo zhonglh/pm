@@ -2,6 +2,7 @@ package com.pm.service.impl;
 
 import com.pm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.pm.util.constant.EnumEntityType;
@@ -44,8 +45,12 @@ public class CommonServiceImpl implements ICommonService {
 	private IOtherPersonnelMonthlyBaseService otherPersonnelMonthlyBaseService;
 
 	@Autowired
-	private IInsuranceService insuranceService;
+	@Qualifier("otherInsuranceServiceImpl")
+	private IInsuranceService otherInsuranceService;
 
+	@Autowired
+	@Qualifier("insuranceServiceImpl")
+	private IInsuranceService insuranceService;
 
 	@Autowired
 	private IOtherSalaryService otherSalaryService;
@@ -81,6 +86,8 @@ public class CommonServiceImpl implements ICommonService {
 			return departCostsService;
 		}else if(EnumEntityType.INSURANCE.name().equals(type)){
 			return insuranceService;
+		}else if(EnumEntityType.OTHER_INSURANCE.name().equals(type)){
+			return otherInsuranceService;
 		}else if(EnumEntityType.OTHER_SALARY.name().equals(type)){
 			return otherSalaryService;
 		}else if(EnumEntityType.STAFF_PERFORMANCE.name().equals(type)){

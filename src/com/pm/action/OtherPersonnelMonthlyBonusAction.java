@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.domain.system.Dept;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -73,16 +74,16 @@ public class OtherPersonnelMonthlyBonusAction extends OtherPersonnelMonthlyBaseA
 		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEUNCHECK.getId());
 		request.setAttribute(EnumOperationType.UNCHECK.getKey(), userPermit1.getPermit_id());
 		User sessionUser = PubMethod.getUser(request);
-		Project project = projectService.getProject( personnelMonthlyBonus.getProject_id());
-		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlyBonus.getId());
-		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.PERSONNELMONTHLYBASE.name(),  personnelMonthlyBonus.getId());
+		Dept dept = deptService.getDept( personnelMonthlyBonus.getDept_id());
+		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlyBonus.getId());
+		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(),  personnelMonthlyBonus.getId());
 		request.setAttribute("infos", infos);
 		request.setAttribute("applyApprove", applyApprove);
-		request.setAttribute("project", project);
+		request.setAttribute("dept", dept);
 		request.setAttribute("sessionUser", sessionUser);
 		request.setAttribute("verify_userid", personnelMonthlyBonus.getVerify_userid());
 		request.setAttribute("data_id", personnelMonthlyBonus.getId());
-		request.setAttribute("data_type", EnumEntityType.PERSONNELMONTHLYBASE.name());
+		request.setAttribute("data_type", EnumEntityType.OTHERPERSONNELMONTHLYBASE.name());
 		return "headquarters/other_personnelmonthlybonus_view";
 	}
 
@@ -104,7 +105,7 @@ public class OtherPersonnelMonthlyBonusAction extends OtherPersonnelMonthlyBaseA
 		try{
 			if(!validate(personnelMonthlyBonus)) return this.ajaxForwardError(request, "奖惩时间和月报月份不符！", true);
 			count = personnelMonthlyBonusService.addPersonnelMonthlyBonus(personnelMonthlyBonus);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlyBonus.getId(), sessionUser);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlyBonus.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}catch(Exception e){
 		}

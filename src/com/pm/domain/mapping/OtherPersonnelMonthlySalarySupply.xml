@@ -73,7 +73,7 @@
 		on pmb.staff_id = sc.staff_id
 		left JOIN ts_dept dept
 		on pmb.dept_id = dept.dept_id
-		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'PERSONNELMONTHLYBASE' group by data_id) aa
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'OTHERPERSONNELMONTHLYBASE' group by data_id) aa
 		on pmb.id = aa.data_id	
 		WHERE 1=1 
 		

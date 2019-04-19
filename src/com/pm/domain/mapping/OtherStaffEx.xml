@@ -11,7 +11,6 @@
 	<update id="checkAddSalary1" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
 		update tb_other_staff set 
 		performance_allowances = performance_allowances + (#{new_salary} - #{old_salary}),
-		totalcost = totalcost + (#{new_salary} - #{old_salary}),
 		official_salary = #{new_salary}, 
 		version_no = version_no + 1
 		where staff_id = #{staff_id}   
@@ -37,7 +36,6 @@
 	<update id="unCheckAddSalary1" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
 		update tb_other_staff set 
 		performance_allowances = performance_allowances - (#{new_salary} - #{old_salary}),
-		totalcost = totalcost - (#{new_salary} - #{old_salary}),
 		official_salary = #{old_salary}, 
 		version_no = version_no + 1
 		where staff_id = #{staff_id}   
@@ -67,7 +65,6 @@
 	<update id="checkDecrSalary1" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
 		update tb_other_staff set 
 		performance_allowances = performance_allowances + (#{new_salary} - #{old_salary}),
-		totalcost = totalcost + (#{new_salary} - #{old_salary}),
 		official_salary = #{new_salary}, 
 		version_no = version_no + 1
 		where staff_id = #{staff_id}   
@@ -93,7 +90,6 @@
 	<update id="unCheckDecrSalary1" parameterType="com.pm.domain.business.PersonnelMonthlySalary">
 		update tb_other_staff set 
 		performance_allowances = performance_allowances - (#{new_salary} - #{old_salary}),
-		totalcost = totalcost - (#{new_salary} - #{old_salary}),
 		official_salary = #{old_salary}, 
 		version_no = version_no + 1
 		where staff_id = #{staff_id}   

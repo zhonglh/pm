@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.domain.system.Dept;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -72,16 +73,16 @@ public class OtherPersonnelMonthlyOfficialAction extends OtherPersonnelMonthlyBa
 		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEUNCHECK.getId());
 		request.setAttribute(EnumOperationType.UNCHECK.getKey(), userPermit1.getPermit_id());
 		User sessionUser = PubMethod.getUser(request);
-		Project project = projectService.getProject( personnelMonthlyOfficial.getProject_id());
-		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlyOfficial.getId());
-		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.PERSONNELMONTHLYBASE.name(),  personnelMonthlyOfficial.getId());
+		Dept dept = deptService.getDept( personnelMonthlyOfficial.getDept_id());
+		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlyOfficial.getId());
+		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(),  personnelMonthlyOfficial.getId());
 		request.setAttribute("infos", infos);
 		request.setAttribute("applyApprove", applyApprove);
-		request.setAttribute("project", project);
+		request.setAttribute("dept", dept);
 		request.setAttribute("sessionUser", sessionUser);
 		request.setAttribute("verify_userid", personnelMonthlyOfficial.getVerify_userid());
 		request.setAttribute("data_id", personnelMonthlyOfficial.getId());
-		request.setAttribute("data_type", EnumEntityType.PERSONNELMONTHLYBASE.name());
+		request.setAttribute("data_type", EnumEntityType.OTHERPERSONNELMONTHLYBASE.name());
 		return "headquarters/other_personnelmonthlyofficial_view";
 	}
 
@@ -108,7 +109,7 @@ public class OtherPersonnelMonthlyOfficialAction extends OtherPersonnelMonthlyBa
 		try{
 			if(!validate(personnelMonthlyOfficial)) return this.ajaxForwardError(request, "转正日期和月报月份不符！", true);
 			count = personnelMonthlyOfficialService.addPersonnelMonthlyOfficial(personnelMonthlyOfficial);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlyOfficial.getId(), sessionUser);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlyOfficial.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}catch(Exception e){
 		}

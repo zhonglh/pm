@@ -27,6 +27,13 @@ public class OtherStaffDaoImpl extends BatisDao implements IOtherStaffDao {
 		return this.update(sql, otherStaff);
 	}
 
+
+	@Override
+	public int updateStaffCostSecurtyUnit(OtherStaff otherStaff) {
+		String sql = "OtherStaffMapping.updateStaffCostSecurtyUnit";
+		return this.update(sql, otherStaff);
+	}
+
 	@Override
 	public void deleteOtherStaff(OtherStaff otherStaff) {
 		String sql = "OtherStaffMapping.deleteOtherStaff";

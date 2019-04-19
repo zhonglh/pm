@@ -55,7 +55,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 	protected static final String rel = "rel90";
 
 	@Autowired
-	protected IProjectService projectService;
+	protected IDeptService deptService;
 	
 	@Autowired
 	protected IOtherPersonnelMonthlyBaseService personnelMonthlyBaseService;
@@ -98,7 +98,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 	 */
 	public List<PersonnelMonthlyStaffCost> getJoinStaff(PersonnelMonthlyBase personnelMonthlyBase,HttpServletRequest request){
 		
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEVIEW.getId());		
 		
 		OtherStaff searchStaffCost = new OtherStaff();
 		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
@@ -155,7 +155,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 	 */
 	public List<PersonnelMonthlyStaffCost> getLeaveStaff(PersonnelMonthlyBase personnelMonthlyBase,HttpServletRequest request){
 		
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEVIEW.getId());		
 		
 		OtherStaff searchStaffCost = new OtherStaff();
 		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
@@ -221,7 +221,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 	 */
 	public List<PersonnelMonthlyStaffCost> getContrctExpirationStaff(PersonnelMonthlyBase personnelMonthlyBase,HttpServletRequest request){
 
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEVIEW.getId());
 
 		OtherStaff searchStaffCost = new OtherStaff();
 		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
@@ -275,7 +275,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 	 */
 	public List<PersonnelMonthlyStaffCost> getTryoutStaff(PersonnelMonthlyBase personnelMonthlyBase,HttpServletRequest request){
 
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEVIEW.getId());
 
 		OtherStaff searchStaffCost = new OtherStaff();
 		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
@@ -326,18 +326,18 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 	@RequestMapping(params = "method=list")
 	public String list(PersonnelMonthlyBase personnelMonthlyBase,HttpServletResponse res,HttpServletRequest request){
 
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEVIEW.getId());
 		getList(personnelMonthlyBase,userPermit, request);
 		
 		request.setAttribute("personnelMonthlyBase", personnelMonthlyBase);
 		request.setAttribute(EnumOperationType.READ.getKey(), userPermit.getPermit_id());	
-		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEADD.getId());
+		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEADD.getId());
 		request.setAttribute(EnumOperationType.INSERT.getKey(), userPermit1.getPermit_id());
-		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEUPDATE.getId());
+		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEUPDATE.getId());
 		request.setAttribute(EnumOperationType.UPDATE.getKey(), userPermit1.getPermit_id());
-		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEDELETE.getId());
+		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEDELETE.getId());
 		request.setAttribute(EnumOperationType.DELETE.getKey(), userPermit1.getPermit_id());
-		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASECHECK.getId());
+		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASECHECK.getId());
 		request.setAttribute(EnumOperationType.CHECK.getKey(), userPermit1.getPermit_id());
 
 		return "headquarters/other_personnelmonthlybase_list";
@@ -681,7 +681,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 
 		synchronized(this){
 			personnelMonthlyBaseService.verifyPersonnelMonthlyBase(personnelMonthlyBase);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlyBase.getId(), sessionUser);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlyBase.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}
 		return this.ajaxForwardSuccess(request, rel, true);
@@ -703,7 +703,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 				personnelMonthlyBase.setVerify_username(sessionUser.getUser_name());
 				personnelMonthlyBase.setId(id);
 				personnelMonthlyBaseService.verifyPersonnelMonthlyBase(personnelMonthlyBase);
-				ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlyBase.getId(), sessionUser);
+				ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlyBase.getId(), sessionUser);
 				applyApproveService.addApplyApprove(applyApprove);
 			}
 		}
@@ -777,7 +777,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 	public void export(PersonnelMonthlyBase personnelMonthlyBase,HttpServletResponse res,HttpServletRequest request){
 
 
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEVIEW.getId());
 		List<List<?>> lists = getList(personnelMonthlyBase,userPermit, request);
 		
 		for(List<?> list : lists){

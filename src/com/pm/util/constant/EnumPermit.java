@@ -227,6 +227,9 @@ public enum EnumPermit {
 	PERSONNELMONTHLYBASEDELETE("50003","permit.personnelmonthly.delete"),	
 	PERSONNELMONTHLYBASECHECK("50004","permit.personnelmonthly.check"),	
 	PERSONNELMONTHLYBASEUNCHECK("50005","permit.personnelmonthly.uncheck"),
+
+
+
 	
 	
 	
@@ -271,6 +274,26 @@ public enum EnumPermit {
 	STAFFPERFORMANCEDELETE("10903","permit.staff.performance.delete"),
 	STAFFPERFORMANCECHECK("10904","permit.staff.performance.check"),
 	STAFFPERFORMANCEUNCHECK("10909","permit.staff.performance.uncheck"),
+
+
+
+	OTHER_PERSONNELMONTHLYBASEVIEW("10920","permit.personnelmonthly.view"),
+	OTHER_PERSONNELMONTHLYBASEADD("10921","permit.personnelmonthly.add"),
+	OTHER_PERSONNELMONTHLYBASEUPDATE("10922","permit.personnelmonthly.update"),
+	OTHER_PERSONNELMONTHLYBASEDELETE("10923","permit.personnelmonthly.delete"),
+	OTHER_PERSONNELMONTHLYBASECHECK("10924","permit.personnelmonthly.check"),
+	OTHER_PERSONNELMONTHLYBASEUNCHECK("10925","permit.personnelmonthly.uncheck"),
+
+
+
+
+
+	OTHER_INSURANCEVIEW("10930","permit.insurance.view"),
+	OTHER_INSURANCEADD("10931","permit.insurance.add"),
+	OTHER_INSURANCEUPDATE("10932","permit.insurance.update"),
+	OTHER_INSURANCEDELETE("10933","permit.insurance.delete"),
+	OTHER_INSURANCECHECK("10934","permit.insurance.check"),
+	OTHER_INSURANCEUNCHECK("10935","permit.insurance.uncheck"),
 
 
 	;

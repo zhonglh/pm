@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.domain.system.Dept;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,16 +76,16 @@ public class OtherPersonnelMonthlyInsuranceAction extends OtherPersonnelMonthlyB
 		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEUNCHECK.getId());
 		request.setAttribute(EnumOperationType.UNCHECK.getKey(), userPermit1.getPermit_id());
 		User sessionUser = PubMethod.getUser(request);
-		Project project = projectService.getProject( personnelMonthlyInsurance.getProject_id());
-		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlyInsurance.getId());
-		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.PERSONNELMONTHLYBASE.name(),  personnelMonthlyInsurance.getId());
+		Dept dept = deptService.getDept( personnelMonthlyInsurance.getDept_id());
+		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlyInsurance.getId());
+		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(),  personnelMonthlyInsurance.getId());
 		request.setAttribute("infos", infos);
 		request.setAttribute("applyApprove", applyApprove);
-		request.setAttribute("project", project);
+		request.setAttribute("dept", dept);
 		request.setAttribute("sessionUser", sessionUser);
 		request.setAttribute("verify_userid", personnelMonthlyInsurance.getVerify_userid());
 		request.setAttribute("data_id", personnelMonthlyInsurance.getId());
-		request.setAttribute("data_type", EnumEntityType.PERSONNELMONTHLYBASE.name());
+		request.setAttribute("data_type", EnumEntityType.OTHERPERSONNELMONTHLYBASE.name());
 		return "headquarters/other_personnelmonthlyinsurance_view";
 	}
 	
@@ -127,7 +128,7 @@ public class OtherPersonnelMonthlyInsuranceAction extends OtherPersonnelMonthlyB
 		int count = 0;
 		try{
 			count = personnelMonthlyInsuranceService.addPersonnelMonthlyInsurance(personnelMonthlyInsurance);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlyInsurance.getId(), sessionUser);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlyInsurance.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}catch(Exception e){
 			e.printStackTrace();

@@ -40,6 +40,8 @@ public class CommonServiceImpl implements ICommonService {
 
 	@Autowired
 	private IPersonnelMonthlyBaseService personnelMonthlyBaseService;
+	@Autowired
+	private IOtherPersonnelMonthlyBaseService otherPersonnelMonthlyBaseService;
 
 	@Autowired
 	private IInsuranceService insuranceService;
@@ -73,6 +75,8 @@ public class CommonServiceImpl implements ICommonService {
 			return receivedPaymentService;
 		}else if(EnumEntityType.PERSONNELMONTHLYBASE.name().equals(type)){
 			return personnelMonthlyBaseService;
+		}else if(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name().equals(type)){
+			return otherPersonnelMonthlyBaseService;
 		}else if(EnumEntityType.DEPART_COSTS.name().equals(type)){
 			return departCostsService;
 		}else if(EnumEntityType.INSURANCE.name().equals(type)){

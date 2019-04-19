@@ -65,11 +65,9 @@ public class OtherPersonnelMonthlyBaseServiceImpl implements IOtherPersonnelMont
 			}else if(EnumPersonnelMonthlyType.AddSalary.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlySalary salary = personnelMonthlySalaryService.getPersonnelMonthlySalary(base.getId());
 				otherStaffExService.checkAddSalary(salary);
-				//todo 将加薪后的工资赋值到人员成本表中
 			}else if(EnumPersonnelMonthlyType.DecrSalary.getId().equals(base.getMonthly_type())){
 				PersonnelMonthlySalary salary = personnelMonthlySalaryService.getPersonnelMonthlySalary(base.getId());
 				otherStaffExService.checkDecrSalary(salary);
-				//todo 将减薪后的工资赋值到人员成本表中
 			}else if(EnumPersonnelMonthlyType.SalarySupply.getId().equals(base.getMonthly_type())){
 				;
 			}

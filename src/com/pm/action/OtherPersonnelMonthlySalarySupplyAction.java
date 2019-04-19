@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pm.domain.system.Dept;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -64,16 +65,16 @@ public class OtherPersonnelMonthlySalarySupplyAction extends OtherPersonnelMonth
 		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEUNCHECK.getId());
 		request.setAttribute(EnumOperationType.UNCHECK.getKey(), userPermit1.getPermit_id());
 		User sessionUser = PubMethod.getUser(request);
-		Project project = projectService.getProject( personnelMonthlySalarySupply.getProject_id());
-		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlySalarySupply.getId());
-		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.PERSONNELMONTHLYBASE.name(),  personnelMonthlySalarySupply.getId());
+		Dept dept = deptService.getDept( personnelMonthlySalarySupply.getDept_id());
+		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlySalarySupply.getId());
+		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(),  personnelMonthlySalarySupply.getId());
 		request.setAttribute("infos", infos);
 		request.setAttribute("applyApprove", applyApprove);
-		request.setAttribute("project", project);
+		request.setAttribute("dept", dept);
 		request.setAttribute("sessionUser", sessionUser);
 		request.setAttribute("verify_userid", personnelMonthlySalarySupply.getVerify_userid());
 		request.setAttribute("data_id", personnelMonthlySalarySupply.getId());
-		request.setAttribute("data_type", EnumEntityType.PERSONNELMONTHLYBASE.name());
+		request.setAttribute("data_type", EnumEntityType.OTHERPERSONNELMONTHLYBASE.name());
 		return "headquarters/other_personnelmonthlysalarysupply_view";
 	}
 
@@ -94,7 +95,7 @@ public class OtherPersonnelMonthlySalarySupplyAction extends OtherPersonnelMonth
 		try{
 			if(!validate(personnelMonthlySalarySupply)) return this.ajaxForwardError(request, "工资补充日期和月报月份不符！", true);
 			count = personnelMonthlySalarySupplyService.addPersonnelMonthlySalarySupply(personnelMonthlySalarySupply);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.PERSONNELMONTHLYBASE.name(), personnelMonthlySalarySupply.getId(), sessionUser);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.OTHERPERSONNELMONTHLYBASE.name(), personnelMonthlySalarySupply.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}catch(Exception e){
 		}

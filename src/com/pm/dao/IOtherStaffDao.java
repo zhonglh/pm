@@ -12,7 +12,11 @@ public interface IOtherStaffDao {
 	public int addOtherStaff(OtherStaff otherStaff) ;
 	
 
-	public int updateOtherStaff(OtherStaff otherStaff) ; 
+	public int updateOtherStaff(OtherStaff otherStaff) ;
+
+
+	public int updateStaffCostSecurtyUnit(OtherStaff otherStaff) ;
+
 	
 
 	public void deleteOtherStaff(OtherStaff otherStaff) ;

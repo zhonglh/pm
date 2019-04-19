@@ -224,9 +224,16 @@
 		where staff_id = #{staff_id}
 		and delete_flag = '0'  and version_no = #{version_no}
 	</update>
-		
-		
-		
+
+
+	<update id="updateStaffCostSecurtyUnit" parameterType="com.pm.domain.business.OtherStaff">
+		update tb_other_staff set
+		securty_unit = #{securty_unit},
+		version_no = version_no + 1
+		where staff_id = #{staff_id}
+	</update>
+
+
 	<update id="deleteOtherStaff" parameterType="com.pm.domain.business.OtherStaff">		
 		update tb_other_staff set 
 		delete_flag = '1',

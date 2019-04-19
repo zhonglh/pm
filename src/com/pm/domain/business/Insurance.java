@@ -87,6 +87,7 @@ public class Insurance extends IdEntity implements Serializable {
 
 
 	private String project_id ;
+	private String dept_id ;
 	
 	//1: 已核单，  2:未核单
 	private String verify_flag;
@@ -382,12 +383,11 @@ public class Insurance extends IdEntity implements Serializable {
 	}
 
 
+	public String getDept_id() {
+		return dept_id;
+	}
 
-
-	
-	
-	
-	
-
-
+	public void setDept_id(String dept_id) {
+		this.dept_id = dept_id;
+	}
 }

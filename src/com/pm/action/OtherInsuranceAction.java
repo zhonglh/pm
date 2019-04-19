@@ -1,13 +1,22 @@
 package com.pm.action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.common.actions.BaseAction;
+import com.common.beans.Pager;
+import com.common.utils.DateKit;
+import com.common.utils.IDKit;
+import com.common.utils.file.download.DownloadBaseUtil;
+import com.pm.domain.business.ApplyApprove;
+import com.pm.domain.business.Insurance;
+import com.pm.domain.business.OtherStaff;
+import com.pm.domain.system.User;
+import com.pm.service.IApplyApproveService;
+import com.pm.service.IInsuranceService;
+import com.pm.service.IRoleService;
+import com.pm.service.IOtherStaffService;
+import com.pm.util.PubMethod;
+import com.pm.util.constant.*;
+import com.pm.util.excel.exports.BusinessExcel;
+import com.pm.vo.UserPermit;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,46 +26,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.common.actions.BaseAction;
-import com.common.beans.Pager;
-import com.common.utils.DateKit;
-import com.common.utils.IDKit;
-import com.common.utils.file.download.DownloadBaseUtil;
-import com.pm.domain.business.ApplyApprove;
-import com.pm.domain.business.Insurance;
-import com.pm.domain.business.StaffCost;
-import com.pm.domain.system.User;
-import com.pm.service.IApplyApproveService;
-import com.pm.service.IInsuranceService;
-import com.pm.service.IRoleService;
-import com.pm.service.IStaffCostService;
-import com.pm.util.PubMethod;
-import com.pm.util.constant.BusinessUtil;
-import com.pm.util.constant.EnumApplyApproveType;
-import com.pm.util.constant.EnumEntityType;
-import com.pm.util.constant.EnumOperationType;
-import com.pm.util.constant.EnumPermit;
-import com.pm.util.excel.exports.BusinessExcel;
-import com.pm.vo.UserPermit;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * 保险
+ * 总部保险
+ * @author zhonglh
  */
 @Controller
-@RequestMapping("InsuranceAction.do")
-public class InsuranceAction extends BaseAction {
+@RequestMapping("OtherInsuranceAction.do")
+public class OtherInsuranceAction extends BaseAction {
 
 	private static final String sessionAttr = "Insurances";
 
-	private static final String rel = "rel98";
+	private static final String rel = "rel07";
 
 	@Autowired
-	private IStaffCostService staffCostService;
+	private IOtherStaffService otherStaffService;
 
 	@Autowired
-
-	@Qualifier("insuranceServiceImpl")
-	private IInsuranceService insuranceService;
+	@Qualifier("otherInsuranceService")
+	private IInsuranceService otherInsuranceService;
 
 
 	@Autowired
@@ -70,22 +64,22 @@ public class InsuranceAction extends BaseAction {
 	@RequestMapping(params = "method=list")
 	public String list(Insurance insurance,HttpServletResponse res,HttpServletRequest request){
 
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.INSURANCEVIEW.getId());
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCEVIEW.getId());
 
 		
 
-		Pager<Insurance> pager = insuranceService.queryInsurance(insurance, userPermit, PubMethod.getPager(request, Insurance.class));
+		Pager<Insurance> pager = otherInsuranceService.queryInsurance(insurance, userPermit, PubMethod.getPager(request, Insurance.class));
 		PubMethod.setRequestPager(request, pager,Insurance.class);	
 
 		request.setAttribute("insurance", insurance);
 		request.setAttribute(EnumOperationType.READ.getKey(), userPermit.getPermit_id());	
-		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.INSURANCEADD.getId());
+		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCEADD.getId());
 		request.setAttribute(EnumOperationType.INSERT.getKey(), userPermit1.getPermit_id());
-		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.INSURANCEUPDATE.getId());
+		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCEUPDATE.getId());
 		request.setAttribute(EnumOperationType.UPDATE.getKey(), userPermit1.getPermit_id());
-		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.INSURANCEDELETE.getId());
+		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCEDELETE.getId());
 		request.setAttribute(EnumOperationType.DELETE.getKey(), userPermit1.getPermit_id());
-		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.INSURANCECHECK.getId());
+		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCECHECK.getId());
 		request.setAttribute(EnumOperationType.CHECK.getKey(), userPermit1.getPermit_id());
 
 		return "insurance/insurance_list";
@@ -104,7 +98,7 @@ public class InsuranceAction extends BaseAction {
 		Insurance insurance = null;
 		if(searchInsurance != null && searchInsurance.getId()!=null){
 			request.setAttribute("next_operation", "updateInsurance");
-			insurance = insuranceService.getInsurance(searchInsurance.getId());	
+			insurance = otherInsuranceService.getInsurance(searchInsurance.getId());	
 			if(insurance.getVerify_userid() != null && insurance.getVerify_userid().length() > 0){
 				return this.ajaxForwardError(request, "单据已经核实， 不能够再更改了！", true);
 			}
@@ -126,21 +120,21 @@ public class InsuranceAction extends BaseAction {
 
 	@RequestMapping(params = "method=toView")
 	public String toView(Insurance searchInsurance,HttpServletResponse res,HttpServletRequest request){
-		Insurance insurance = insuranceService.getInsurance(searchInsurance.getId());
+		Insurance insurance = otherInsuranceService.getInsurance(searchInsurance.getId());
 		request.setAttribute("insurance1", insurance);
-		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.INSURANCECHECK.getId());
+		UserPermit userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCECHECK.getId());
 		request.setAttribute(EnumOperationType.CHECK.getKey(), userPermit1.getPermit_id());
-		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.INSURANCEUNCHECK.getId());
+		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCEUNCHECK.getId());
 		request.setAttribute(EnumOperationType.UNCHECK.getKey(), userPermit1.getPermit_id());
 		User sessionUser = PubMethod.getUser(request);
-		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.INSURANCE.name(), insurance.getId());
-		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.INSURANCE.name(),  insurance.getId());
+		List<ApplyApprove>  infos = applyApproveService.queryByDataId(EnumEntityType.OTHER_INSURANCE.name(), insurance.getId());
+		ApplyApprove applyApprove = applyApproveService.needHandle(EnumEntityType.OTHER_INSURANCE.name(),  insurance.getId());
 		request.setAttribute("infos", infos);
 		request.setAttribute("applyApprove", applyApprove);
 		request.setAttribute("sessionUser", sessionUser);
 		request.setAttribute("verify_userid", insurance.getVerify_userid());
 		request.setAttribute("data_id", insurance.getId());
-		request.setAttribute("data_type", EnumEntityType.INSURANCE.name());
+		request.setAttribute("data_type", EnumEntityType.OTHER_INSURANCE.name());
 		return "insurance/insurance_view";
 	}
 
@@ -156,8 +150,8 @@ public class InsuranceAction extends BaseAction {
 		insurance.setBuild_username(sessionUser.getUser_name());
 		int count = 0;
 		try{
-			count = insuranceService.addInsurance(insurance);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.INSURANCE.name(), insurance.getId(), sessionUser);
+			count = otherInsuranceService.addInsurance(insurance);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.BUILD.getKey(), EnumEntityType.OTHER_INSURANCE.name(), insurance.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}catch(Exception e){
 		}
@@ -172,7 +166,7 @@ public class InsuranceAction extends BaseAction {
 		paramprocess(request,insurance);	
 		int count = 0;
 		try{
-			count = insuranceService.updateInsurance(insurance);	
+			count = otherInsuranceService.updateInsurance(insurance);	
 		}catch(Exception e){
 		}
 		if(count == 1) 		return this.ajaxForwardSuccess(request, rel, true);
@@ -183,12 +177,12 @@ public class InsuranceAction extends BaseAction {
 	@RequestMapping(params = "method=verifyInsurance")
 	public String verifyInsurance(Insurance insurance,HttpServletResponse res,HttpServletRequest request){
 		User sessionUser = PubMethod.getUser(request);
-		insurance = this.insuranceService.getInsurance(insurance.getId());
+		insurance = this.otherInsuranceService.getInsurance(insurance.getId());
 		insurance.setVerify_datetime(PubMethod.getCurrentDate());
 		insurance.setVerify_userid(sessionUser.getUser_id());
 		insurance.setVerify_username(sessionUser.getUser_name());
-		insuranceService.verifyInsurance(insurance);
-		ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.INSURANCE.name(), insurance.getId(), sessionUser);
+		otherInsuranceService.verifyInsurance(insurance);
+		ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.OTHER_INSURANCE.name(), insurance.getId(), sessionUser);
 		applyApproveService.addApplyApprove(applyApprove);
 		return this.ajaxForwardSuccess(request, rel, true);
 	}
@@ -202,13 +196,13 @@ public class InsuranceAction extends BaseAction {
 			this.ajaxForwardError(request, "请先选择单据！", false);
 		}
 		for(String id : ids){
-			Insurance insurance = this.insuranceService.getInsurance(id);
+			Insurance insurance = this.otherInsuranceService.getInsurance(id);
 			insurance.setVerify_datetime(PubMethod.getCurrentDate());
 			insurance.setVerify_userid(sessionUser.getUser_id());
 			insurance.setVerify_username(sessionUser.getUser_name());
 			insurance.setId(id);
-			insuranceService.verifyInsurance(insurance);
-			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.INSURANCE.name(), insurance.getId(), sessionUser);
+			otherInsuranceService.verifyInsurance(insurance);
+			ApplyApprove applyApprove = applyApproveService.buildApplyApprove(EnumApplyApproveType.CHECK.getKey(), EnumEntityType.OTHER_INSURANCE.name(), insurance.getId(), sessionUser);
 			applyApproveService.addApplyApprove(applyApprove);
 		}
 		return this.ajaxForwardSuccess(request, rel, false);
@@ -230,25 +224,24 @@ public class InsuranceAction extends BaseAction {
 				index ++ ;
 			}
 			if(insurances != null && insurances.length > 0)
-			insuranceService.deleteInsurance(insurances);
+			otherInsuranceService.deleteInsurance(insurances);
 		}
 		return this.ajaxForwardSuccess(request,rel,false);
 	}	
 
 
 	@RequestMapping(params = "method=downloadtemplet")
-	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception { 
-		DownloadBaseUtil downloadBaseUtil = new DownloadBaseUtil();
-		String sourceFile = this.getClass().getClassLoader().getResource("/templet/insurance.xlsx").getPath();		
-		downloadBaseUtil.download(  sourceFile,  "保险.xlsx" ,response,false); 
+	public ModelAndView downloadtemplet(HttpServletRequest request,  HttpServletResponse response) throws Exception {
+		String sourceFile = this.getClass().getClassLoader().getResource("/templet/insurance.xlsx").getPath();
+		DownloadBaseUtil.download(  sourceFile,  "总部保险.xlsx" ,response,false);
 		return null;  
 	}  	
 
 
 	@RequestMapping(params = "method=export")
 	public void export(Insurance insurance,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.INSURANCEVIEW.getId());		
-		Pager<Insurance> pager = insuranceService.queryInsurance(insurance, userPermit, PubMethod.getPagerByAll(request, Insurance.class));
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCEVIEW.getId());		
+		Pager<Insurance> pager = otherInsuranceService.queryInsurance(insurance, userPermit, PubMethod.getPagerByAll(request, Insurance.class));
 		try{
 			BusinessExcel.export(res, null, pager.getResultList(), Insurance.class,false);
 		}catch(Exception e){
@@ -276,19 +269,19 @@ public class InsuranceAction extends BaseAction {
 		int ths_month = Integer.parseInt(salary_month);
 
 
-		Pager<StaffCost> staffCosts = staffCostService.queryStaffCost(new StaffCost(), null, userPermit, PubMethod.getPagerByAll(StaffCost.class));
-		Map<String,StaffCost>  staffCostNoMap = new HashMap<String,StaffCost>();
-		Map<String,List<StaffCost>>  staffCostNameMap = new HashMap<String,List<StaffCost>>();
-		if(staffCosts.getResultList() != null) {
-			for(StaffCost staffCost : staffCosts.getResultList()){
-				staffCostNoMap.put(staffCost.getStaff_no(), staffCost);	
-				if(staffCostNameMap.containsKey(staffCost.getStaff_name())){
-					List<StaffCost> scs = staffCostNameMap.get(staffCost.getStaff_name());
-					scs.add(staffCost);
+		Pager<OtherStaff> OtherStaffs = otherStaffService.queryOtherStaff(new OtherStaff(),  userPermit, PubMethod.getPagerByAll(OtherStaff.class));
+		Map<String,OtherStaff>  OtherStaffNoMap = new HashMap<String,OtherStaff>();
+		Map<String,List<OtherStaff>>  OtherStaffNameMap = new HashMap<String,List<OtherStaff>>();
+		if(OtherStaffs.getResultList() != null) {
+			for(OtherStaff OtherStaff : OtherStaffs.getResultList()){
+				OtherStaffNoMap.put(OtherStaff.getStaff_no(), OtherStaff);	
+				if(OtherStaffNameMap.containsKey(OtherStaff.getStaff_name())){
+					List<OtherStaff> scs = OtherStaffNameMap.get(OtherStaff.getStaff_name());
+					scs.add(OtherStaff);
 				}else {
-					List<StaffCost> scs = new ArrayList<StaffCost>();
-					scs.add(staffCost);
-					staffCostNameMap.put(staffCost.getStaff_name(), scs);	
+					List<OtherStaff> scs = new ArrayList<OtherStaff>();
+					scs.add(OtherStaff);
+					OtherStaffNameMap.put(OtherStaff.getStaff_name(), scs);	
 				}
 			}
 		}
@@ -296,7 +289,7 @@ public class InsuranceAction extends BaseAction {
 		
 		for(Insurance insurance : insurances){
 			insurance.setSalary_month(ths_month);
-			checkInsurance(insurance,staffCostNoMap,staffCostNameMap);
+			checkInsurance(insurance,OtherStaffNoMap,OtherStaffNameMap);
 		}
 		User sessionUser = PubMethod.getUser(request);
 		boolean isAllOK = true;
@@ -307,7 +300,7 @@ public class InsuranceAction extends BaseAction {
 					insurance.setBuild_datetime(PubMethod.getCurrentDate());
 					insurance.setBuild_userid(sessionUser.getUser_id());
 					insurance.setBuild_username(sessionUser.getUser_name());
-					int count = insuranceService.addInsurance(insurance);
+					int count = otherInsuranceService.addInsurance(insurance);
 					if(count == 0){
 						insurance.setErrorInfo("已经有此记录");
 						isAllOK = false;
@@ -333,28 +326,28 @@ public class InsuranceAction extends BaseAction {
 
 
 	private boolean checkInsurance(Insurance insurance,	
-			Map<String,StaffCost>  staffCostNoMap , 
-			Map<String,List<StaffCost>>  staffCostNameMap){
+			Map<String,OtherStaff>  OtherStaffNoMap , 
+			Map<String,List<OtherStaff>>  OtherStaffNameMap){
 		boolean b = true;
 		
 		
-		StaffCost staffCost = null;
+		OtherStaff OtherStaff = null;
 		if(StringUtils.isEmpty(insurance.getStaff_no()) && StringUtils.isEmpty(insurance.getStaff_name())){
 			insurance.setErrorInfo(insurance.getErrorInfo() + "先输入工号或者姓名;");
 		}else if(!StringUtils.isEmpty(insurance.getStaff_no())){
-			staffCost = staffCostNoMap.get(insurance.getStaff_no());
-			if(staffCost == null) insurance.setErrorInfo(insurance.getErrorInfo() + "工号错误;");
+			OtherStaff = OtherStaffNoMap.get(insurance.getStaff_no());
+			if(OtherStaff == null) insurance.setErrorInfo(insurance.getErrorInfo() + "工号错误;");
 		}else if(!StringUtils.isEmpty(insurance.getStaff_name())){
-			List<StaffCost> scs = staffCostNameMap.get(insurance.getStaff_name());
+			List<OtherStaff> scs = OtherStaffNameMap.get(insurance.getStaff_name());
 			if(scs == null || scs.isEmpty())  insurance.setErrorInfo(insurance.getErrorInfo() + "姓名错误;");
 			else if(scs.size() > 1)  insurance.setErrorInfo(insurance.getErrorInfo() + "姓名有重名;");
-			else staffCost = scs.get(0);
+			else OtherStaff = scs.get(0);
 		}
 				
-		if(staffCost != null){
-			insurance.setStaff_id(staffCost.getStaff_id());
-			insurance.setStaff_no(staffCost.getStaff_no());
-			insurance.setStaff_name(staffCost.getStaff_name());	
+		if(OtherStaff != null){
+			insurance.setStaff_id(OtherStaff.getStaff_id());
+			insurance.setStaff_no(OtherStaff.getStaff_no());
+			insurance.setStaff_name(OtherStaff.getStaff_name());	
 		}
 		
 		if(insurance.getErrorInfo() != null && !insurance.getErrorInfo().isEmpty())

@@ -61,8 +61,12 @@ public enum EnumEntityType {
 	
 	PERSONNELMONTHLYBASE("personnel.monthly.entity","personnel.monthly"),
 
+
+	OTHERPERSONNELMONTHLYBASE("other.personnel.monthly.entity","other.personnel.monthly"),
+
 	INSURANCE("insurance.entity","insurance"),
-	
+
+	OTHER_INSURANCE("other.insurance.entity","other.insurance"),
 
 	PARAM("set.param","set.param"),
 	PARAMEX("set.paramex","set.paramex"),

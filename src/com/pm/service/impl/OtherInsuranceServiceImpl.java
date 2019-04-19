@@ -1,28 +1,27 @@
 package com.pm.service.impl;
 
-import java.util.List;
-
+import com.common.beans.Pager;
+import com.pm.dao.IInsuranceDao;
+import com.pm.dao.IOtherStaffDao;
+import com.pm.domain.business.Insurance;
+import com.pm.domain.business.OtherStaff;
+import com.pm.service.IInsuranceService;
+import com.pm.vo.UserPermit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.common.beans.Pager;
-import com.pm.dao.IInsuranceDao;
-import com.pm.dao.IStaffCostDao;
-import com.pm.domain.business.Insurance;
-import com.pm.domain.business.StaffCost;
-import com.pm.service.IInsuranceService;
-import com.pm.vo.UserPermit;
+import java.util.List;
 
 @Component
-public class InsuranceServiceImpl implements  IInsuranceService {
+public class OtherInsuranceServiceImpl implements  IInsuranceService {
 
 	@Autowired
-	@Qualifier("insuranceDaoImpl")
+	@Qualifier("otherInsuranceDaoImpl")
 	private IInsuranceDao insuranceDao;
 
 	@Autowired
-	private IStaffCostDao staffCostDao;
+	private IOtherStaffDao otherStaffDao;
 	
 	
 	@Override
@@ -46,10 +45,10 @@ public class InsuranceServiceImpl implements  IInsuranceService {
 	public void verifyInsurance(Insurance insurance) {
 		insuranceDao.verifyInsurance(insurance);
 		if(insurance.getSecurty_unit() != null && insurance.getSecurty_unit().length()>0){
-			StaffCost staffCost = new StaffCost();
-			staffCost.setStaff_id(insurance.getStaff_id());
-			staffCost.setSecurty_unit(insurance.getSecurty_unit());
-			staffCostDao.updateStaffCostSecurtyUnit(staffCost);
+			OtherStaff otherStaff = new OtherStaff();
+			otherStaff.setStaff_id(insurance.getStaff_id());
+			otherStaff.setSecurty_unit(insurance.getSecurty_unit());
+			otherStaffDao.updateStaffCostSecurtyUnit(otherStaff);
 		}
 	}
 

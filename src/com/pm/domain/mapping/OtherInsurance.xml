@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+
+	<mapper namespace="OtherInsuranceMapping">
+
+
+	<resultMap type="java.util.Map" id="map" />
+	<resultMap type="com.pm.domain.business.Insurance" id="insuranceMap" />
+
+
+	<select id="getInsurance" parameterType="com.pm.domain.business.Insurance" resultMap="insuranceMap">
+		select ti.* ,sc.staff_no,sc.staff_name
+		from tb_Insurance ti		
+		inner join tb_other_staff sc 
+		on ti.staff_id = sc.staff_id	
+		where ti.id = #{id}
+	</select>
+
+	<insert id="addInsurance" parameterType="com.pm.domain.business.Insurance" >
+		insert into  tb_Insurance(
+			staff_id,salary_month,endowment_insurance_bycompany,endowment_insurance_bypersonal,losejob_insurance_bycompany,losejob_insurance_bypersonal,
+			jobharm_insurance_bycompany,maternity_insurance_bycompany,medical_insurance_bycompany,medical_insurance_bypersonal,reservefund_bypcompany,
+			reservefund_bypersonal,securty_unit,build_datetime,build_userid,build_username,
+			verify_username,verify_userid,verify_datetime,id
+		)values  (
+			#{staff_id},#{salary_month},#{endowment_insurance_bycompany},#{endowment_insurance_bypersonal},#{losejob_insurance_bycompany},#{losejob_insurance_bypersonal},
+			#{jobharm_insurance_bycompany},#{maternity_insurance_bycompany},#{medical_insurance_bycompany},#{medical_insurance_bypersonal},#{reservefund_bypcompany},
+			#{reservefund_bypersonal},#{securty_unit},#{build_datetime},#{build_userid},#{build_username},
+			#{verify_username},#{verify_userid},#{verify_datetime},#{id}
+		)
+	</insert>
+
+	<update id="updateInsurance" parameterType="com.pm.domain.business.Insurance" >
+		update  tb_Insurance set 
+		staff_id=#{staff_id},
+		salary_month=#{salary_month},
+		endowment_insurance_bycompany=#{endowment_insurance_bycompany},
+		endowment_insurance_bypersonal=#{endowment_insurance_bypersonal},
+		losejob_insurance_bycompany=#{losejob_insurance_bycompany},
+		losejob_insurance_bypersonal=#{losejob_insurance_bypersonal},
+		jobharm_insurance_bycompany=#{jobharm_insurance_bycompany},
+		maternity_insurance_bycompany=#{maternity_insurance_bycompany},
+		medical_insurance_bycompany=#{medical_insurance_bycompany},
+		medical_insurance_bypersonal=#{medical_insurance_bypersonal},
+		reservefund_bypcompany=#{reservefund_bypcompany},
+		reservefund_bypersonal=#{reservefund_bypersonal},
+		securty_unit=#{securty_unit}		
+		where id=#{id} 
+		and verify_userid is null 
+	</update>
+
+	<update id="verifyInsurance" parameterType="com.pm.domain.business.Insurance" >
+		update  tb_Insurance set 
+		verify_userid = #{verify_userid}, 
+		verify_username =  #{verify_username}, 
+		verify_datetime = #{verify_datetime} 
+		where id=#{id}
+		and verify_userid is null
+	</update>
+
+	<update id="unVerifyInsurance" parameterType="com.pm.domain.business.Insurance" >
+		update  tb_Insurance set 
+		verify_userid = null, 
+		verify_username = null, 
+		verify_datetime = null
+		where id=#{id}
+	</update>
+
+	<delete id="deleteInsurance" parameterType="com.pm.domain.business.Insurance" >
+		delete from  tb_Insurance
+		where id=#{id}
+		and verify_userid is null
+	</delete>
+
+	<select id="queryInsuranceByWorkAttendance" parameterType="com.pm.domain.business.Insurance" resultMap="insuranceMap" >
+		select ti.* 
+		from tb_Insurance ti  
+		WHERE 1=1 	
+		<if test="dept_id != null and dept_id != ''">
+		AND ti.staff_id in(select staff_id from tb_other_work_attendance where attendance_month = #{salary_month} and dept_id = #{dept_id} )
+		</if>
+		and ti.salary_month = #{salary_month} 
+		and ti.verify_userid is not null 			
+	</select>
+	
+	
+	
+	
+	
+	<select id="queryInsuranceSum" parameterType="map"  resultMap="insuranceMap" >
+		select sum(endowment_insurance_bycompany ) as endowment_insurance_bycompany ,
+		sum(endowment_insurance_bypersonal ) as endowment_insurance_bypersonal ,
+		sum(losejob_insurance_bycompany ) as losejob_insurance_bycompany ,
+		sum(losejob_insurance_bypersonal ) as losejob_insurance_bypersonal ,
+		sum(jobharm_insurance_bycompany ) as jobharm_insurance_bycompany ,
+		sum(maternity_insurance_bycompany ) as maternity_insurance_bycompany ,
+		sum(medical_insurance_bycompany ) as medical_insurance_bycompany ,
+		sum(medical_insurance_bypersonal ) as medical_insurance_bypersonal ,
+		sum(reservefund_bypcompany ) as reservefund_bypcompany,  
+		sum(reservefund_bypersonal ) as reservefund_bypersonal 		
+		from (
+		<include refid="insurancePagerSql"/>
+		) c
+	</select>
+	
+
+	<select id="queryInsuranceByPager_mysql" parameterType="map"  resultMap="insuranceMap" >
+		<include refid="insurancePagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryInsuranceByCount_mysql" parameterType="map"  resultType="map" >
+		SELECT COUNT(*) as COUNT1,
+		sum(
+			endowment_insurance_bycompany +  endowment_insurance_bypersonal + losejob_insurance_bycompany +
+			losejob_insurance_bypersonal +  jobharm_insurance_bycompany + maternity_insurance_bycompany +
+			medical_insurance_bycompany + medical_insurance_bypersonal + reservefund_bypcompany + reservefund_bypersonal
+		) as SUM1 
+		FROM (<include refid="insurancePagerSql"/> )c
+	</select>
+
+	<sql id="insurancePagerSql">
+		select ti.* ,sc.staff_no,sc.staff_name ,aa.need_approve 
+		from tb_Insurance ti  
+		inner join tb_other_staff sc 
+		on ti.staff_id = sc.staff_id
+		left join ts_dept dept on sc.dept_id = dept.dept_id
+		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'INSURANCE' group by data_id) aa
+		on ti.ID = aa.data_id
+		WHERE 1=1 
+		
+		
+		<if test="Insurance.staff_no != null and Insurance.staff_no != ''">
+			AND sc.staff_no like concat('%',TRIM(#{Insurance.staff_no}),'%')   
+		</if>
+		
+		<if test="Insurance.staff_name != null and Insurance.staff_name != ''">
+			AND sc.staff_name like concat('%',TRIM(#{Insurance.staff_name}),'%')   
+		</if>
+		
+		
+		
+		<if test="Insurance.securty_unit != null and Insurance.securty_unit != ''">
+			AND ti.securty_unit like concat('%',TRIM(#{Insurance.securty_unit}),'%')  
+		</if>
+		
+		
+		<if test="Insurance.verify_flag != null and Insurance.verify_flag != ''">
+			<if test="Insurance.verify_flag == 1">
+					and ti.verify_userid is not null 
+			</if>
+			<if test="Insurance.verify_flag == 2">			
+					and ti.verify_userid is null
+			</if>
+		</if>	
+		
+		
+		
+		<if test="Insurance.salary_month1 != null and Insurance.salary_month1 != 0 ">
+			<![CDATA[
+			AND ti.salary_month >=  #{Insurance.salary_month1}  
+			]]>
+		</if>
+		
+		
+		<if test="Insurance.salary_month2 != null and Insurance.salary_month2 != 0 ">
+			<![CDATA[
+			AND ti.salary_month <=  #{Insurance.salary_month2}  
+			]]>
+		</if>
+		
+		<include refid="OtherStaffAuthMapping.permission"/>
+		order by ti.salary_month desc , sc.build_datetime ,sc.import_order
+	</sql>
+
+</mapper>

@@ -2,6 +2,7 @@ package com.pm.dao;
 
 import java.util.List;
 
+import com.pm.domain.business.OtherSalary;
 import com.pm.domain.business.PersonnelMonthlySalary;
 import com.pm.domain.business.Salary;
 
@@ -13,6 +14,6 @@ public interface IOtherPersonnelMonthlyCalculationDao {
 	 * @param search
 	 * @return
 	 */
-	public List<PersonnelMonthlySalary> getCurrSalaryByWorkAttendance(Salary search);
+	public List<PersonnelMonthlySalary> getCurrSalaryByWorkAttendance(OtherSalary search);
 
 }

@@ -4,6 +4,7 @@ import com.common.beans.Pager;
 import com.common.exceptions.CommonErrorConstants;
 import com.common.exceptions.PMException;
 import com.common.utils.IDKit;
+import com.pm.dao.IOtherPersonnelMonthlyCalculationDao;
 import com.pm.dao.IOtherSalaryDao;
 import com.pm.dao.IPersonnelMonthlyCalculationDao;
 import com.pm.dao.ISalaryDao;
@@ -34,7 +35,13 @@ public class OtherSalaryServiceImpl implements IOtherSalaryService {
 	@Autowired
 	private IOtherStaffCostService otherStaffCostService;
 
-	
+
+	@Autowired
+	private IOtherPersonnelMonthlyCalculationDao otherPersonnelMonthlyCalculationDao;
+
+
+
+
 
 	@Override
 	public Pager<OtherSalary> querySalaryGroup(OtherSalary salary, UserPermit userPermit, Pager<OtherSalary> pager){
@@ -166,10 +173,10 @@ public class OtherSalaryServiceImpl implements IOtherSalaryService {
 		return salaryDao.getAccumulatedSalary(startSalaryMonth,endSalaryMonth,staffCostIds);
 	}
 
-	/*@Override
+	@Override
 	public List<PersonnelMonthlySalary> getCurrSalaryByWorkAttendance(OtherSalary search){
-		return personnelMonthlyCalculationDao.getCurrSalaryByWorkAttendance(search);
-	}*/
+		return otherPersonnelMonthlyCalculationDao.getCurrSalaryByWorkAttendance(search);
+	}
 
 		
 

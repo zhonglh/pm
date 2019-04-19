@@ -54,7 +54,6 @@ public class InsuranceAction extends BaseAction {
 	private IStaffCostService staffCostService;
 
 	@Autowired
-
 	@Qualifier("insuranceServiceImpl")
 	private IInsuranceService insuranceService;
 

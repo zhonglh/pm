@@ -55,7 +55,7 @@ public interface IOtherSalaryService extends IBaseService{
 	 * @param
 	 * @return
 	 */
-	//public List<PersonnelMonthlySalary> getCurrSalaryByWorkAttendance(OtherSalary search);
+	public List<PersonnelMonthlySalary> getCurrSalaryByWorkAttendance(OtherSalary search);
 	
 	
 

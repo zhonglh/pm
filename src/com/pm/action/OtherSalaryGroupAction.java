@@ -17,6 +17,7 @@ import com.pm.util.excel.exports.BusinessExcel;
 import com.pm.vo.UserPermit;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -55,6 +56,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 
 
 	@Autowired
+	@Qualifier("otherInsuranceServiceImpl")
 	protected IInsuranceService insuranceService;
 
 	@Autowired
@@ -674,8 +676,8 @@ public class OtherSalaryGroupAction extends BaseAction {
 			return new ArrayList<OtherSalary>();
 		}
 
-		/*Insurance searchInsurance = new Insurance();
-		searchInsurance.setDept_id(salary1.getProject_id());
+		Insurance searchInsurance = new Insurance();
+		searchInsurance.setDept_id(salary1.getDept_id());
 		searchInsurance.setSalary_month(salary1.getSalary_month());
 		List<Insurance> insurances = insuranceService.queryInsuranceByWorkAttendance(searchInsurance);
 
@@ -684,7 +686,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 			for(Insurance insurance : insurances){
 				insuranceMap.put(insurance.getStaff_id(), insurance);
 			}
-		}*/
+		}
 
 		//查询出人员绩效
 		StaffPerformance searchStaffPerformance = new StaffPerformance();
@@ -692,33 +694,43 @@ public class OtherSalaryGroupAction extends BaseAction {
 		searchStaffPerformance.setThe_month(salary1.getSalary_month());
 		searchStaffPerformance.setVerify_flag(EnumYesNo.Yes.getCode());
 		List<StaffPerformance> staffPerformances = staffPerformanceService.getStaffPerformanceList(searchStaffPerformance);
-		Map<String,StaffPerformance> map = new HashMap<String,StaffPerformance>();
+		Map<String,StaffPerformance> staffPerformanceMap = new HashMap<String,StaffPerformance>();
 		if(staffPerformances != null){
 			for(StaffPerformance staffPerformance : staffPerformances){
-				map.put(staffPerformance.getStaff_id(), staffPerformance);
+				staffPerformanceMap.put(staffPerformance.getStaff_id(), staffPerformance);
 			}
 		}
 
-		for(OtherSalary tempSalary : list) {
-			StaffPerformance staffPerformance = map.get(tempSalary.getStaff_id());
+
+		//查询出人事月报
+		List<PersonnelMonthlySalary> personnelMonthlySalarys = otherSalaryService.getCurrSalaryByWorkAttendance(salary1);
+		Map<String,PersonnelMonthlySalary> personnelMonthlyMap = new HashMap<String,PersonnelMonthlySalary>();
+		if(personnelMonthlySalarys != null){
+			for(PersonnelMonthlySalary personnelMonthlySalary : personnelMonthlySalarys){
+				personnelMonthlyMap.put(personnelMonthlySalary.getStaff_id(), personnelMonthlySalary);
+			}
+		}
+
+
+		for(OtherSalary tempSalary : list){
+
+
+			StaffPerformance staffPerformance = staffPerformanceMap.get(tempSalary.getStaff_id());
 			if (staffPerformance != null) {
 				tempSalary.setPerformance_allowances(staffPerformance.getPerformance_salary());
-			}
-		}
+			}else {
+				PersonnelMonthlySalary personnelMonthlySalary = personnelMonthlyMap.get(tempSalary.getStaff_id());
+				if (personnelMonthlySalary != null) {
+					double performance_allowances = personnelMonthlySalary.getCurr_salary() - tempSalary.getBasic_salary() - tempSalary.getPost_salary();
+					performance_allowances = PubMethod.getNumberFormatByDouble(performance_allowances);
+					tempSalary.setPerformance_allowances(performance_allowances);
 
-		/**
-		for(OtherSalary tempSalary : list){
-			PersonnelMonthlySalary personnelMonthlySalary = map.get(tempSalary.getStaff_id());
-			if(personnelMonthlySalary != null) {
-				double performance_allowances =  personnelMonthlySalary.getCurr_salary() - tempSalary.getBasic_salary() - tempSalary.getPost_salary();
-				performance_allowances = PubMethod.getNumberFormatByDouble(performance_allowances);
-				tempSalary.setPerformance_allowances(performance_allowances);
-
-				if(StringUtils.isNotEmpty(personnelMonthlySalary.getDescription())){
-					if(StringUtils.isEmpty(tempSalary.getDescription())){
-						tempSalary.setDescription(personnelMonthlySalary.getDescription());
-					}else {
-						tempSalary.setDescription(tempSalary.getDescription()+" "+personnelMonthlySalary.getDescription());
+					if (StringUtils.isNotEmpty(personnelMonthlySalary.getDescription())) {
+						if (StringUtils.isEmpty(tempSalary.getDescription())) {
+							tempSalary.setDescription(personnelMonthlySalary.getDescription());
+						} else {
+							tempSalary.setDescription(tempSalary.getDescription() + " " + personnelMonthlySalary.getDescription());
+						}
 					}
 				}
 			}
@@ -750,7 +762,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 				tempSalary.setReservefund_bypcompany(0);
 			}
 		}
-		*/
+
 
 		computeBeforeInfo(date1, list);
 

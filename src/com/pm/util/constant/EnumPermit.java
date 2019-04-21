@@ -247,6 +247,8 @@ public enum EnumPermit {
 	COMPANYFINANCIALANALYSISVIEW("61000","permit.company.financial.analysis.view"),
 	DEPARTMENTFINANCIALANALYSISVIEW("61001","permit.department.financial.analysis.view"),
 	SALESFINANCIALANALYSISVIEW("61002","permit.sales.financial.analysis.view"),
+	COMMONCOSTINANCIALANALYSISVIEW("61003","permit.common.cost.analysis.view"),
+
 
 
 

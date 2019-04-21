@@ -82,7 +82,7 @@ public class OtherInsuranceAction extends BaseAction {
 		userPermit1 = this.getUserPermit(request, roleService, EnumPermit.OTHER_INSURANCECHECK.getId());
 		request.setAttribute(EnumOperationType.CHECK.getKey(), userPermit1.getPermit_id());
 
-		return "insurance/insurance_list";
+		return "headquarters/other_insurance_list";
 	}
 
 
@@ -114,7 +114,7 @@ public class OtherInsuranceAction extends BaseAction {
 			insurance.setSalary_month(Integer.parseInt(salary_month));
 		}
 		request.setAttribute("insurance1", insurance);
-		return "insurance/insurance_edit";
+		return "headquarters/other_insurance_edit";
 	}
 
 
@@ -135,7 +135,7 @@ public class OtherInsuranceAction extends BaseAction {
 		request.setAttribute("verify_userid", insurance.getVerify_userid());
 		request.setAttribute("data_id", insurance.getId());
 		request.setAttribute("data_type", EnumEntityType.OTHER_INSURANCE.name());
-		return "insurance/insurance_view";
+		return "headquarters/other_insurance_view";
 	}
 
 
@@ -255,7 +255,7 @@ public class OtherInsuranceAction extends BaseAction {
 	public String toExcel(HttpServletResponse res,HttpServletRequest request){
 		String the_month = DateKit.fmtDateToStr(DateKit.addMonth(new java.util.Date(), -1),"yyyyMM");
 		request.setAttribute("salary_month", the_month);
-		return "insurance/insurance_upload";		
+		return "headquarters/other_insurance_upload";		
 	}	
 
 
@@ -361,7 +361,7 @@ public class OtherInsuranceAction extends BaseAction {
 		List<Insurance> list = (List<Insurance>)request.getSession().getAttribute(sessionAttr);
 		request.getSession().removeAttribute(sessionAttr);
 		request.setAttribute("list", list);
-		return "insurance/insurance_excel_list";
+		return "headquarters/other_insurance_excel_list";
 	}
 
 

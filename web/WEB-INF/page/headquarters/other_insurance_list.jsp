@@ -55,30 +55,30 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<c:if test="${operation_insert != null && operation_insert != '' }">
-				<li><a class="add" href="${webroot}/InsuranceAction.do?method=toEdit" mask="true" width="900" height="400" rel="add_insurance"  target="dialog"><span>添加员工保险</span></a></li>
+				<li><a class="add" href="${webroot}/OtherInsuranceAction.do?method=toEdit" mask="true" width="900" height="400" rel="add_insurance"  target="dialog"><span>添加员工保险</span></a></li>
 			</c:if>
 			<c:if test="${operation_delete != null && operation_delete != '' }">
-				<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${webroot}/InsuranceAction.do?method=deleteInsurance" class="delete"><span>删除</span></a></li> 
+				<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${webroot}/OtherInsuranceAction.do?method=deleteInsurance" class="delete"><span>删除</span></a></li> 
 		</c:if>
 			<c:if test="${operation_update != null && operation_update != '' }">
-				<li><a class="edit" href="${webroot}/InsuranceAction.do?method=toEdit&id={sid}" mask="true" width="900"  height="400" rel="update_insurance" target="dialog" warn="请选择一条数据"><span>修改员工保险</span></a></li>
+				<li><a class="edit" href="${webroot}/OtherInsuranceAction.do?method=toEdit&id={sid}" mask="true" width="900"  height="400" rel="update_insurance" target="dialog" warn="请选择一条数据"><span>修改员工保险</span></a></li>
 			</c:if>
 			<c:if test="${operation_read != null && operation_read != '' }">
-				<li><a class="edit" href="${webroot}/InsuranceAction.do?method=toView&id={sid}" mask="true" width="900"  height="480" rel="view_insurance" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
+				<li><a class="edit" href="${webroot}/OtherInsuranceAction.do?method=toView&id={sid}" mask="true" width="900"  height="480" rel="view_insurance" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>
 			</c:if>	
 			<c:if test="${operation_check != null && operation_check != '' }">
-				<li><a title="确定已经批量核实了这些单据吗?" target="selectedTodo" rel="ids" href="${webroot}/InsuranceAction.do?method=batchVerifyInsurance" class="delete"><span>批量核单</span></a></li> 
+				<li><a title="确定已经批量核实了这些单据吗?" target="selectedTodo" rel="ids" href="${webroot}/OtherInsuranceAction.do?method=batchVerifyInsurance" class="delete"><span>批量核单</span></a></li> 
 			</c:if>		
 			<li class="line">line</li>
 			<c:if test="${operation_read != null && operation_read != '' }">
-				<li><a class="icon" href="${webroot}/InsuranceAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+				<li><a class="icon" href="${webroot}/OtherInsuranceAction.do?method=export" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
 			</c:if>	
 			<li class="line">line</li>
 			<c:if test="${operation_insert != null && operation_insert != '' }">
-				<li><a class="add" href="${webroot }/InsuranceAction.do?method=toExcel" mask="true" width="550" height="480" rel="add_insurance" target="dialog"><span>导入EXCEL</span></a></li>
+				<li><a class="add" href="${webroot }/OtherInsuranceAction.do?method=toExcel" mask="true" width="550" height="480" rel="add_insurance" target="dialog"><span>导入EXCEL</span></a></li>
 			</c:if>
 			<c:if test="${operation_insert != null && operation_insert != '' }">	
-				<li><a class="icon" href="${webroot }/InsuranceAction.do?method=downloadtemplet" target="dwzExport" targetType="navTab" title="确定要导出这模板吗?"><span>下载模板</span></a></li>
+				<li><a class="icon" href="${webroot }/OtherInsuranceAction.do?method=downloadtemplet" target="dwzExport" targetType="navTab" title="确定要导出这模板吗?"><span>下载模板</span></a></li>
 			</c:if>		
 		</ul>
 	</div>

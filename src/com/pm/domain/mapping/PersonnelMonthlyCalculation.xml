@@ -63,7 +63,7 @@
 					)
 				) a group by staff_id , the_month			
 			)		
-		) tddd group by staff_id , the_month
+		) tddd group by staff_id , the_month , curr_salary, description
 		
 	</select>	
 

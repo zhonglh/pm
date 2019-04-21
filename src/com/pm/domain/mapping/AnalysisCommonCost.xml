@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AnalysisCommonCostMapping">
+	
+	
+	<resultMap type="java.util.Map" id="map" />
+
+	
+	<resultMap type="com.pm.vo.AnalysisCommonCostVo" id="analysisCommonCostMap" />
+
+
+
+
+	<select id="queryCommonCost" parameterType="map"  resultMap="analysisCommonCostMap" >
+		<include refid="queryCommonCostSql"/>
+	</select>
+
+	<sql id="queryCommonCostSql">
+		select sum(amount) as  amount , cc.pay_item_id item_id ,dd_pii.dic_data_name item_name
+		from tb_common_cost cc
+		join ts_dic_data dd_pii on cc.pay_item_id  = dd_pii.id
+		left join tb_other_staff staff on cc.staff_id = staff.staff_id
+		where verify_userid is not null
+
+
+		<if test="AnalysisSearch.date1 != null">
+			<![CDATA[
+				AND pay_date >= #{AnalysisSearch.date1}
+			]]>
+		</if>
+		<if test="AnalysisSearch.date2 != null">
+			<![CDATA[
+				AND pay_date <= #{AnalysisSearch.date2}
+			]]>
+		</if>
+
+		group by item_id , item_name
+		order by dd_pii.build_datetime
+
+	</sql>
+
+
+	 
+
+</mapper>

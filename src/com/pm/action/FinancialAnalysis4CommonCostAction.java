@@ -1,5 +1,6 @@
 package com.pm.action;
 
+import com.alibaba.fastjson.JSON;
 import com.common.beans.Pager;
 import com.common.utils.DateKit;
 import com.common.utils.DateUtils;
@@ -17,6 +18,8 @@ import com.pm.vo.AnalysisResult;
 import com.pm.vo.AnalysisResultTable;
 import com.pm.vo.AnalysisSearch;
 import com.pm.vo.UserPermit;
+import com.pm.vo.echarts.Option;
+import com.pm.vo.echarts.Option4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +37,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "FinancialAnalysis4CommonCostAction.do")
-public class FinancialAnalysis4CommonCostAction extends FinancialAnalysisAbstract {
+public class FinancialAnalysis4CommonCostAction extends FinancialAnalysisChart {
 
     @Autowired
     IDeptService deptService;
@@ -49,6 +52,40 @@ public class FinancialAnalysis4CommonCostAction extends FinancialAnalysisAbstrac
 
     @Autowired
     private IAnalysisCommonCostService analysisCommonCostService;
+
+
+
+
+    @RequestMapping(params = "method=toChart")
+    public String toChart(AnalysisSearch analysisSearch, HttpServletResponse res, HttpServletRequest request){
+
+        UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.COMMONCOSTINANCIALANALYSISVIEW.getId());
+
+        if(analysisSearch.getMonth1() == 0 || analysisSearch.getMonth2() == 0) {
+            //初始化查询月份
+            Date date2 = new Date();
+            Date date1 = DateKit.getYearStart(date2) ;
+            analysisSearch.setMonth1(Integer.parseInt(DateKit.fmtDateToStr(date1 , "yyyyMM")));
+            analysisSearch.setMonth2(Integer.parseInt(DateKit.fmtDateToStr(date2 , "yyyyMM")));
+        }
+
+        String startTimeQuantum = DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2());
+        String endTimeQuantum = DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100);
+        request.setAttribute("startTimeQuantum", startTimeQuantum);
+        List<AnalysisResultTable> arts = getAnalysisList(analysisSearch, userPermit);
+        request.setAttribute("endTimeQuantum", endTimeQuantum);
+        request.setAttribute("analysisSearch", analysisSearch);
+
+
+        Option4 option =  toOption(startTimeQuantum , endTimeQuantum , arts.get(0));
+
+        String o = JSON.toJSONString(option).replaceAll("xaxis", "xAxis").replaceAll("yaxis", "yAxis");
+
+
+        request.setAttribute("o", o);
+
+        return "analysis/analysis_commoncost_chart";
+    }
 
 
     @RequestMapping(params = "method=export")
@@ -156,6 +193,8 @@ public class FinancialAnalysis4CommonCostAction extends FinancialAnalysisAbstrac
 
 
         AnalysisResultTable art = new AnalysisResultTable();
+
+        art.setLabel("部门公共费用分析");
 
 
         List<AnalysisResult> ars = analysisCommonCostService.queryCommonCostCosts(analysisSearch,userPermit);

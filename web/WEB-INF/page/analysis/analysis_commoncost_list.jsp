@@ -42,9 +42,7 @@
 
 
                 <thead>
-                <tr>
-                    <th height="30px" colspan="5"><h1 style="margin-top: 5px;margin-bottom : 3px;font-size: 15px">${analysisTable.label}</h1></th>
-                </tr>
+               
                 <tr>
                     <th  width="120">类别</th>
                     <th  width="120">${ startTimeQuantum }</th>

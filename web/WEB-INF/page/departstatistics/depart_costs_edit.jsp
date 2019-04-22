@@ -31,7 +31,7 @@
 				<label>所属部门：</label>
 				<input name="staff.dept_id" class="text" type="hidden"  value="${departCosts1.dept_id }" />
 				<input name="staff.dept_name" class="text required" type="text" size="30"  value="${departCosts1.dept_name }" readonly="readonly" lookupPk="dept_id"
-				suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup&statisticsed=1" lookupGroup="staff" />		
+				suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup" lookupGroup="staff" />
 			</p>
 			
 			<p>

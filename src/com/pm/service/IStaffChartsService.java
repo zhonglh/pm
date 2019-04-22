@@ -52,7 +52,6 @@ public interface IStaffChartsService {
 	 * @param marketMap
 	 * @param staffExEntity
 	 * @param staffCost
-	 * @param itemDefines
 	 * @return
 	 */
 	public Series getOriginalModel1(double taxRate,Map<String, Object> ctx,Map<String,Object> marketMap,
@@ -99,7 +98,6 @@ public interface IStaffChartsService {
 	 * @param marketMap
 	 * @param staffExEntity
 	 * @param staffCost
-	 * @param itemDefines
 	 * @return
 	 */
 	public Series getMarketModel1(double taxRate,Map<String, Object> ctx,Map<String,Object> marketMap,
@@ -111,7 +109,6 @@ public interface IStaffChartsService {
 	 * @param ctx
 	 * @param marketMap
 	 * @param staffExEntity
-	 * @param pager
 	 * @return
 	 */
 	public Series getMarketModel2(double taxRate,Map<String, Object> ctx,Map<String,Object> marketMap,

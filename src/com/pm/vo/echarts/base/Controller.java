@@ -1,6 +1,6 @@
 package com.pm.vo.echarts.base;
 
-public class Controller {
+public class Controller implements java.io.Serializable{
 	
 	private InRange inRange;
 	private OutRange outRange;

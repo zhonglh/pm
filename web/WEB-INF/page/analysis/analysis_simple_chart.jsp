@@ -14,7 +14,7 @@
 
 <body>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main" style="border:1px solid red;width:900px;height:600px;margin-left:18%;"></div>
+<div id="main" style="width:100%;height:400px;"></div>
 </body>
 
 
@@ -24,7 +24,7 @@
 
 	var myChart = echarts.init(document.getElementById('main'));
 
-    var waterMarkText = 'ECHARTS';
+    var waterMarkText = '华路时代';
 	var canvas = document.createElement('canvas');
 	var ctx = canvas.getContext('2d');
 	canvas.width = canvas.height = 100;

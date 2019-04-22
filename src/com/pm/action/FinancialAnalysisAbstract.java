@@ -2,6 +2,7 @@ package com.pm.action;
 
 import com.common.actions.BaseAction;
 import com.common.utils.DateKit;
+import com.pm.util.AnalysisUtil;
 import com.pm.vo.AnalysisResult;
 import com.pm.vo.AnalysisResultTable;
 import com.pm.vo.AnalysisSearch;
@@ -42,11 +43,9 @@ public abstract class FinancialAnalysisAbstract extends BaseAction {
                 countAdr.setPre_statistics_amount(countAdr.getPre_statistics_amount() + ar.getPre_statistics_amount());
                 countAdr.setCurr_statistics_amount(countAdr.getCurr_statistics_amount() + ar.getCurr_statistics_amount());
 
-
-                countAdr.setChange_ratio(countAdr.getChange_ratio() + ar.getChange_ratio());
-                countAdr.setIncrease_or_decrease(countAdr.getIncrease_or_decrease() + ar.getIncrease_or_decrease());
-
             }
+
+            AnalysisUtil.processesult(countAdr);
 
             art.getResult().add(countAdr);
         }

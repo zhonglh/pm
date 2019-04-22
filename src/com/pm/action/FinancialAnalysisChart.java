@@ -26,13 +26,13 @@ public abstract class FinancialAnalysisChart extends FinancialAnalysisAbstract {
         String[] dataTitles = new String[analysisResultTable.getResult().size()];
         int index = 0;
         for(AnalysisResult result : analysisResultTable.getResult()){
-            dataTitles[index] = result.getItem_name();
+            dataTitles[index] = ( result.getItem_name() == null ? "" : result.getItem_name() );
             index ++ ;
         }
         return dataTitles;
     }
 
-    public List<Bar4> toBars(String startTime , String endTime ,AnalysisResultTable analysisResultTable){
+    public List<Bar4> toBars(String startTime , String endTime ,AnalysisResultTable analysisResultTable ){
         List<Bar4> bars = new ArrayList<Bar4>();
 
         Bar4 bar1 = new Bar4();
@@ -61,12 +61,17 @@ public abstract class FinancialAnalysisChart extends FinancialAnalysisAbstract {
     public List<Pie> toPies(String startTime , String endTime , AnalysisResultTable analysisResultTable){
         List<Pie> pies = new ArrayList<Pie>();
 
+        //Tooltip tooltip = new Tooltip();
+        //tooltip.setTrigger("axis");
+
         Pie pie1 = new Pie();
         Pie pie2 = new Pie();
+        pie1.setTooltip(new Tooltip());
+        pie2.setTooltip(new Tooltip());
         pie1.setName(startTime);
         pie2.setName(endTime);
-        pie1.setCenter(new String[]{"25%" , "25%"});
-        pie2.setCenter(new String[]{"75%" , "25%"});
+        pie1.setCenter(new String[]{"25%" , "35%"});
+        pie2.setCenter(new String[]{"75%" , "35%"});
         pie1.setRadius(new String[]{"0%","25%"});
         pie2.setRadius(new String[]{"0%","25%"});
         Data[] barData1 = new Data[analysisResultTable.getResult().size()];
@@ -86,7 +91,7 @@ public abstract class FinancialAnalysisChart extends FinancialAnalysisAbstract {
         return pies;
     }
 
-    public Option4 toOption(String startTime , String endTime , AnalysisResultTable analysisResultTable){
+    public Option4 toOption(String startTime , String endTime , AnalysisResultTable analysisResultTable  , boolean  isAddPie ){
         Option4 option = new Option4();
         option.setBackgroundColor(new BackgroundColor4());
 
@@ -105,23 +110,32 @@ public abstract class FinancialAnalysisChart extends FinancialAnalysisAbstract {
 
         Title title1 = new Title();
         title1.setText(analysisResultTable.getLabel());
+        Title[] titles = null;
 
-        /*Title title2 = new Title();
-        title2.setLeft("25%");
-        title2.setText(startTime);
-        title2.setTextAlign("center");
+        if(isAddPie) {
+            Title title2 = new Title();
+            title2.setLeft("25%");
+            title2.setSubtext(startTime);
+            title2.setTextAlign("center");
 
-        Title title3 = new Title();
-        title3.setLeft("75%");
-        title3.setText(endTime);
-        title3.setTextAlign("center");*/
+            Title title3 = new Title();
+            title3.setLeft("75%");
+            title3.setSubtext(endTime);
+            title3.setTextAlign("center");
 
-        Title[] titles = new Title[]{title1 };
+            titles = new Title[]{title1, title2, title3};
+        }else {
+            titles = new Title[]{title1};
+        }
         option.setTitle(titles);
 
 
         Grid grid = new Grid();
-        grid.setTop("50%");
+        if(isAddPie) {
+            grid.setTop("50%");
+        }else {
+            grid.setTop("5%");
+        }
         grid.setLeft("10");
         Grid[] grids = new Grid[]{grid};
         option.setGrid(grids);
@@ -140,16 +154,25 @@ public abstract class FinancialAnalysisChart extends FinancialAnalysisAbstract {
         option.setXaxis(xaxiss);
 
         Bar4[] bars =  toBars(startTime,endTime,analysisResultTable).toArray(new Bar4[2]);
-        Pie[] pies = toPies(startTime,endTime,analysisResultTable).toArray(new Pie[2]);
-
-        option.setSeries(new Series[bars.length + pies.length]);
         int index = 0;
-        for(Bar4 bar4 : bars) {
-            option.getSeries()[index ++] = bar4;
+        if(isAddPie) {
+            Pie[] pies = toPies(startTime, endTime, analysisResultTable).toArray(new Pie[2]);
+            option.setSeries(new Series[bars.length + pies.length]);
+            for(Bar4 bar4 : bars) {
+                option.getSeries()[index ++] = bar4;
+            }
+            for(Pie pie : pies) {
+                option.getSeries()[index ++] = pie;
+            }
+        }else {
+            option.setSeries(new Series[bars.length]);
+            for(Bar4 bar4 : bars) {
+                option.getSeries()[index ++] = bar4;
+            }
         }
-        for(Pie pie : pies) {
-            option.getSeries()[index ++] = pie;
-        }
+
+
+
 
         return option;
     }

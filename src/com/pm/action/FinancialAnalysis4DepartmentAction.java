@@ -1,5 +1,6 @@
 package com.pm.action;
 
+import com.alibaba.fastjson.JSON;
 import com.common.actions.BaseAction;
 import com.common.utils.BeanKit;
 import com.common.utils.DateKit;
@@ -11,6 +12,7 @@ import com.pm.util.excel.Column;
 import com.pm.util.excel.EnumCellFormat;
 import com.pm.util.excel.ThreadLocalModifyColumn;
 import com.pm.vo.*;
+import com.pm.vo.echarts.Option4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +30,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "FinancialAnalysis4DepartmentAction.do")
-public class FinancialAnalysis4DepartmentAction extends FinancialAnalysisAbstract {
+public class FinancialAnalysis4DepartmentAction extends FinancialAnalysisChart {
 
 
     @Autowired
@@ -52,12 +54,55 @@ public class FinancialAnalysis4DepartmentAction extends FinancialAnalysisAbstrac
         tableName.add("部门项目收款表分析");
         tableName.add("部门项目支出表分析");
         tableName.add("部门项目现金流分析");
-
-
-
     }
 
 
+
+    @RequestMapping(params = "method=toChart1")
+    public String toChart1(AnalysisSearch analysisSearch, HttpServletResponse res, HttpServletRequest request){
+
+        String startTimeQuantum = DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2());
+        String endTimeQuantum =  DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100);
+        List<AnalysisResultTable> arts = (List<AnalysisResultTable>)request.getSession().getAttribute(this.getClass().getSimpleName());
+        AnalysisResultTable art = arts.get(0);
+        art.getResult().remove(art.getResult().size()-1);
+        Option4 option =  toOption(startTimeQuantum , endTimeQuantum , art, true);
+        String o = JSON.toJSONString(option).replaceAll("xaxis", "xAxis").replaceAll("yaxis", "yAxis");
+        request.setAttribute("o", o);
+        return "analysis/analysis_all_chart";
+    }
+
+
+
+    @RequestMapping(params = "method=toChart2")
+    public String toChart2(AnalysisSearch analysisSearch, HttpServletResponse res, HttpServletRequest request){
+
+        String startTimeQuantum = DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2());
+        String endTimeQuantum =  DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100);
+        List<AnalysisResultTable> arts = (List<AnalysisResultTable>)request.getSession().getAttribute(this.getClass().getSimpleName());
+        AnalysisResultTable art = arts.get(1);
+        art.getResult().remove(art.getResult().size()-1);
+        Option4 option =  toOption(startTimeQuantum , endTimeQuantum , art , true);
+        String o = JSON.toJSONString(option).replaceAll("xaxis", "xAxis").replaceAll("yaxis", "yAxis");
+        request.setAttribute("o", o);
+        return "analysis/analysis_all_chart";
+    }
+
+
+
+    @RequestMapping(params = "method=toChart3")
+    public String toChart3(AnalysisSearch analysisSearch, HttpServletResponse res, HttpServletRequest request){
+
+        String startTimeQuantum = DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2());
+        String endTimeQuantum =  DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100);
+        List<AnalysisResultTable> arts = (List<AnalysisResultTable>)request.getSession().getAttribute(this.getClass().getSimpleName());
+        AnalysisResultTable art = arts.get(2);
+        art.getResult().remove(art.getResult().size()-1);
+        Option4 option =  toOption(startTimeQuantum , endTimeQuantum , art , true);
+        String o = JSON.toJSONString(option).replaceAll("xaxis", "xAxis").replaceAll("yaxis", "yAxis");
+        request.setAttribute("o", o);
+        return "analysis/analysis_all_chart";
+    }
 
     @RequestMapping(params = "method=export")
     public void export(AnalysisSearch analysisSearch, HttpServletResponse res, HttpServletRequest request){
@@ -132,6 +177,7 @@ public class FinancialAnalysis4DepartmentAction extends FinancialAnalysisAbstrac
         request.setAttribute("startTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1(),analysisSearch.getMonth2()));
         List<AnalysisResultTable> arts = getAnalysisDepartList(analysisSearch, userPermit);
         request.setAttribute("arts", arts);
+        request.getSession().setAttribute(this.getClass().getSimpleName() , arts);
         request.setAttribute("endTimeQuantum", DateUtils.getTimeQuantum(analysisSearch.getMonth1()-100,analysisSearch.getMonth2()-100));
 
 

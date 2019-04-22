@@ -100,7 +100,7 @@
 	<!-- 用于导出 -->
 	<sql id="queryMonthlyStatementDetail">
 		select b.*, p.project_name, p.project_no,c.staff_name ,a.statement_month ,join_project_datetime,
-		case when leave_project_datetime>='2099-12-31' then null else  leave_project_datetime end as leave_project_datetime 
+		case when (leave_project_datetime is null or leave_project_datetime>='2099-12-31') then null else  leave_project_datetime end as leave_project_datetime
 		from tb_monthly_statement a 
 		inner join tb_monthly_statement_detail b 
 		on a.monthly_statement_id = b.monthly_statement_id
@@ -108,16 +108,16 @@
 		on b.staff_id = c.staff_id	
 		inner join vb_project p 
 		on a.project_id = p.project_id
-		inner join (
+		left join (
 			select min(join_project_datetime)as join_project_datetime , max(leave_project_datetime) as leave_project_datetime,project_id,staff_id
 			from (
 			select project_id,staff_id,join_project_datetime,
-			case when leave_project_datetime is null then STR_TO_DATE('2099-12-31','%Y-%m-%d') ELSE 
+			case when leave_project_datetime is null then STR_TO_DATE('2099-12-31','%Y-%m-%d') ELSE
 			leave_project_datetime end as leave_project_datetime
 			from tb_project_staff
 			)aa group by project_id,staff_id
-		)projecttime 
-		on p.project_id = projecttime.project_id 
+		)projecttime
+		on p.project_id = projecttime.project_id
 		and b.staff_id = projecttime.staff_id
 		where a.monthly_statement_id in(
 				select monthly_statement_id from (<include refid="monthlyStatementPagerSql"/>) axx

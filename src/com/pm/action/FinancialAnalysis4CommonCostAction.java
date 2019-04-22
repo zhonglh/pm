@@ -77,14 +77,14 @@ public class FinancialAnalysis4CommonCostAction extends FinancialAnalysisChart {
         request.setAttribute("analysisSearch", analysisSearch);
 
 
-        Option4 option =  toOption(startTimeQuantum , endTimeQuantum , arts.get(0));
+        Option4 option =  toOption(startTimeQuantum , endTimeQuantum , arts.get(0) , true);
 
         String o = JSON.toJSONString(option).replaceAll("xaxis", "xAxis").replaceAll("yaxis", "yAxis");
 
 
         request.setAttribute("o", o);
 
-        return "analysis/analysis_commoncost_chart";
+        return "analysis/analysis_all_chart";
     }
 
 

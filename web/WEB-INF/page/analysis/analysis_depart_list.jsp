@@ -38,7 +38,7 @@
     </div>
 
     <table class="list" width="99%" layoutH="60">
-        <c:forEach var="analysisTable" items="${arts}">
+        <c:forEach var="analysisTable" items="${arts}" varStatus="index">
 
 
                 <thead>
@@ -64,6 +64,11 @@
                         <td align="right"><fmt:formatNumber value="${item.change_ratio * 100}" type="currency" pattern="###,###,##0.00"/>%</td>
                     </tr>
                 </c:forEach>
+
+                <tr>
+                    <td align="center" colspan="5" height="820px"><iframe style="width:100%;height: 100%;" src="${webroot}/FinancialAnalysis4DepartmentAction.do?method=toChart${index.index+1}&month1=${analysisSearch.month1}&month2=${analysisSearch.month2}"></iframe></td>
+                </tr>
+
                 </tbody>
 
 

@@ -23,10 +23,18 @@
 
 	<sql id="queryGrossProfit1DetailPagerSql">
 		SELECT business.*
-		FROM (<include refid="ProjectItemDetailMapping.all_data"/>) business
+		FROM (
+			<include refid="ProjectItemDetailMapping.all_data_10"/>
+			union all
+			<include refid="ProjectItemDetailMapping.all_data_30"/>
+			union all
+			<include refid="ProjectItemDetailMapping.all_data_41"/>
+			union all
+			<include refid="ProjectItemDetailMapping.all_data_50"/>
+		) business
 		inner join vb_project project 
 		on business.project_id = project.project_id
-		where 1=1 and business.business_sort in ('10','30','41','50')
+		where 1=1
 		and not EXISTS (select 1 from vb_begin_data1 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
 				
 		<if test="Statistics.project_id != null and Statistics.project_id != ''">
@@ -66,10 +74,19 @@
 
 	<sql id="queryGrossProfit2DetailPagerSql">
 		SELECT business.*
-		FROM (<include refid="ProjectItemDetailMapping.all_data"/>) business
+		FROM (
+		<include refid="ProjectItemDetailMapping.all_data_20"/>
+		union all
+		<include refid="ProjectItemDetailMapping.all_data_30"/>
+		union all
+		<include refid="ProjectItemDetailMapping.all_data_40"/>
+		union all
+		<include refid="ProjectItemDetailMapping.all_data_51"/>
+
+		) business
 		inner join vb_project project 
 		on business.project_id = project.project_id
-		where 1=1 and business.business_sort in ('20','30','40','51')
+		where 1=1
 		and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
 				
 		<if test="Statistics.project_id != null and Statistics.project_id != ''">
@@ -109,10 +126,18 @@
 
 	<sql id="queryGrossProfit3DetailPagerSql">
 		SELECT business.*
-		FROM (<include refid="ProjectItemDetailMapping.all_data"/>) business
+		FROM (
+			<include refid="ProjectItemDetailMapping.all_data_11"/>
+			union all
+			<include refid="ProjectItemDetailMapping.all_data_30"/>
+			union all
+			<include refid="ProjectItemDetailMapping.all_data_42"/>
+			union all
+			<include refid="ProjectItemDetailMapping.all_data_51"/>
+		) business
 		inner join vb_project project
 		on business.project_id = project.project_id
-		where 1=1 and business.business_sort in ('11','30','42','51')
+		where 1=1
 		and not EXISTS (select 1 from vb_begin_data2 vba where business.obj_id = vba.reimburse_id and business.business_sort='30')
 
 		<if test="Statistics.project_id != null and Statistics.project_id != ''">
@@ -157,11 +182,10 @@
 
 	<sql id="querySalesDetailPagerSql">
 		SELECT business.*
-		FROM (<include refid="ProjectItemDetailMapping.all_data"/>) business
+		FROM (<include refid="ProjectItemDetailMapping.all_data_20"/>) business
 		inner join vb_project project 
 		on business.project_id = project.project_id
-		where 1=1 and business.business_sort in ('20')
-				
+		where 1=1
 		<if test="Statistics.project_id != null and Statistics.project_id != ''">
 			AND project.project_id = #{Statistics.project_id}
 		</if>
@@ -198,10 +222,14 @@
 
 	<sql id="queryReceivablesDetailPagerSql">
 		SELECT business.*
-		FROM (<include refid="ProjectItemDetailMapping.all_data"/>) business
+		FROM (
+			<include refid="ProjectItemDetailMapping.all_data_10"/>
+			union all
+			<include refid="ProjectItemDetailMapping.all_data_20"/>
+		) business
 		inner join vb_project project 
 		on business.project_id = project.project_id
-		where 1=1 and business.business_sort in ('10','20')
+		where 1=1
 				
 		<if test="Statistics.project_id != null and Statistics.project_id != ''">
 			AND project.project_id = #{Statistics.project_id}
@@ -220,7 +248,7 @@
 		
 		<include refid="ProjectAuthMapping.permission"/>	
 		
-		order by business_sort, use_month desc ,project.project_id,build_datetime desc 
+		order by business_sort, use_month desc ,project.project_id,build_datetime desc
 	</sql>	
 								
 

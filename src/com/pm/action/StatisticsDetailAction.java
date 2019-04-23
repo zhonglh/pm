@@ -150,7 +150,11 @@ public class StatisticsDetailAction extends BaseAction {
 	public String queryReceivablesDetail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFITVIEW.getId());		
 		Pager<StatisticsDetail> pager = statisticsDetailService.queryReceivablesDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
-		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);	
+		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);
+
+		logger.info("\r\n queryReceivablesDetail pager.getTotalRows: "+pager.getTotalRows());
+		logger.debug("\r\n queryReceivablesDetail pager.getTotalRows: "+pager.getTotalRows());
+		System.out.println("\r\n queryReceivablesDetail pager.getTotalRows: "+pager.getTotalRows());
 		request.setAttribute("excelMethod", "excelReceivablesDetail");
 		request.setAttribute("themethod", "queryReceivablesDetail");
 		return "statistics/statistics_detail_list";

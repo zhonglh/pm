@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.common.enums.EnumYesNo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -245,6 +246,7 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());
 
 		StaffCost searchStaffCost = new StaffCost();
+		searchStaffCost.setDelete_flag(EnumYesNo.No.getCode());
 		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
 		if(personnelMonthlyBase.getThe_month() != 0){
 			Date d1 = DateKit.fmtStrToDate(String.valueOf(personnelMonthlyBase.getThe_month()+"01"),"yyyyMMdd");
@@ -299,6 +301,7 @@ public class PersonnelMonthlyBaseAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.PERSONNELMONTHLYBASEVIEW.getId());
 
 		StaffCost searchStaffCost = new StaffCost();
+		searchStaffCost.setDelete_flag(EnumYesNo.No.getCode());
 		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
 		if(personnelMonthlyBase.getThe_month() != 0){
 			Date d1 = DateKit.fmtStrToDate(String.valueOf(personnelMonthlyBase.getThe_month()+"01"),"yyyyMMdd");

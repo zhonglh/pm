@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.common.enums.EnumYesNo;
 import com.pm.domain.business.*;
 import com.pm.excel.otherpersoonnelmonthly.*;
 import com.pm.service.*;
@@ -224,6 +225,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEVIEW.getId());
 
 		OtherStaff searchStaffCost = new OtherStaff();
+		searchStaffCost.setDelete_flag(EnumYesNo.No.getCode());
 		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
 		if(personnelMonthlyBase.getThe_month() != 0){
 			Date d1 = DateKit.fmtStrToDate(String.valueOf(personnelMonthlyBase.getThe_month()+"01"),"yyyyMMdd");
@@ -278,6 +280,7 @@ public class OtherPersonnelMonthlyBaseAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.OTHER_PERSONNELMONTHLYBASEVIEW.getId());
 
 		OtherStaff searchStaffCost = new OtherStaff();
+		searchStaffCost.setDelete_flag(EnumYesNo.No.getCode());
 		searchStaffCost.setStaff_id(personnelMonthlyBase.getStaff_id());
 		if(personnelMonthlyBase.getThe_month() != 0){
 			Date d1 = DateKit.fmtStrToDate(String.valueOf(personnelMonthlyBase.getThe_month()+"01"),"yyyyMMdd");

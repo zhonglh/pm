@@ -119,7 +119,7 @@ public class StatisticsDetailAction extends BaseAction {
 
 	@RequestMapping(params = "method=querySalesDetail")
 	public String querySalesDetail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFITVIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.SALESVIEW.getId());
 		Pager<StatisticsDetail> pager = statisticsDetailService.querySalesDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
 		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);	
 		request.setAttribute("excelMethod", "excelSalesDetail");
@@ -130,7 +130,7 @@ public class StatisticsDetailAction extends BaseAction {
 
 	@RequestMapping(params = "method=excelSalesDetail")
 	public void excelSalesDetail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFITVIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.SALESVIEW.getId());
 		Pager<StatisticsDetail> pager = statisticsDetailService.querySalesDetail(statistics, userPermit, PubMethod.getPagerByAll(request, StatisticsDetail.class));
 		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);	
 
@@ -148,7 +148,7 @@ public class StatisticsDetailAction extends BaseAction {
 
 	@RequestMapping(params = "method=queryReceivablesDetail")
 	public String queryReceivablesDetail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFITVIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.RECEIVABLESVIEW.getId());
 		Pager<StatisticsDetail> pager = statisticsDetailService.queryReceivablesDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
 		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);
 
@@ -163,7 +163,7 @@ public class StatisticsDetailAction extends BaseAction {
 
 	@RequestMapping(params = "method=excelReceivablesDetail")
 	public void excelReceivablesDetail(Statistics statistics,HttpServletResponse res,HttpServletRequest request){
-		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.GROSSPROFITVIEW.getId());		
+		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.RECEIVABLESVIEW.getId());
 		Pager<StatisticsDetail> pager = statisticsDetailService.queryReceivablesDetail(statistics, userPermit, PubMethod.getPagerByAll(request, StatisticsDetail.class));
 		PubMethod.setRequestPager(request, pager,StatisticsDetail.class);	
 

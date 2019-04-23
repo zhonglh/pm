@@ -398,7 +398,7 @@ public class DepartStatisticsAction extends DepartStatisticsBaseAction {
 	 * @return
 	 */
 	protected List<DepartStatisticsItem> getProjectExpends(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
-		return super.getProjectExpends40(searchStatistics, depts, userPermit, searchStr);
+		return super.getProjectExpends41(searchStatistics, depts, userPermit, searchStr);
 	}
 
 

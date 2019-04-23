@@ -34,7 +34,9 @@ public class ExcelProcessOfficial extends AbstractPMExcel<PersonnelMonthlyOffici
 		
 		if(staffCost != null){
 			base.setJoin_datetime(staffCost.getJoin_datetime());
-			base.setConfirmation_date(staffCost.getConfirmation_date());
+			if(staffCost.getConfirmation_date() != null) {
+				base.setConfirmation_date(staffCost.getConfirmation_date());
+			}
 			base.setTryout_salary(staffCost.getTryout_salary());
 			base.setOfficial_salary(staffCost.getOfficial_salary());
 			if(base.getCurr_salary() > staffCost.getOfficial_salary() || base.getCurr_salary() < staffCost.getTryout_salary()){

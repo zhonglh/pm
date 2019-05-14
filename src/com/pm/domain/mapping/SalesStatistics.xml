@@ -138,7 +138,8 @@
 		
 	</select>
 	
-	<sql id="queryByDeptPagerSql">	
+	<sql id="queryByDeptPagerSql">
+	select * from (
 		select project.deptid,project.deptname ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
@@ -157,8 +158,9 @@
 			group by project_id
 		) ms				
 		on project.project_id = ms.project_id
-		group by project.deptid,project.deptname 
-		order by project.deptname 			
+		group by project.deptid,project.deptname
+	) ddd where statistics_amount != 0
+	order by statistics_amount desc
 	</sql>			
 	
 	
@@ -176,7 +178,8 @@
 	</select>
 	
 
-	<sql id="queryByExecDeptPagerSql">	
+	<sql id="queryByExecDeptPagerSql">
+	select * from (
 		select project.exec_amount_deptid,project.exec_amount_deptname ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
@@ -195,8 +198,10 @@
 			group by project_id
 		) ms				
 		on project.project_id = ms.project_id
-		group by project.exec_amount_deptid,project.exec_amount_deptname 
-		order by project.exec_amount_deptname 		
+		group by project.exec_amount_deptid,project.exec_amount_deptname
+
+	) ddd where statistics_amount != 0
+	order by statistics_amount desc
 	</sql>			
 	
 	
@@ -213,7 +218,8 @@
 	</select>
 	
 	
-	<sql id="queryBySalesDeptPagerSql">	
+	<sql id="queryBySalesDeptPagerSql">
+	select * from (
 		select project.sales_amount_deptid,project.sales_amount_deptname ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
@@ -232,8 +238,10 @@
 			group by project_id
 		) ms				
 		on project.project_id = ms.project_id
-		group by project.sales_amount_deptid,project.sales_amount_deptname 
-		order by project.sales_amount_deptname 		
+		group by project.sales_amount_deptid,project.sales_amount_deptname
+
+	) ddd where statistics_amount != 0
+	order by statistics_amount desc
 	</sql>		
 	
 	
@@ -249,7 +257,8 @@
 	</select>
 	
 
-	<sql id="queryByClientPagerSql">		
+	<sql id="queryByClientPagerSql">
+	select * from (
 		select project.project_client_id,project.project_client_name ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
@@ -268,8 +277,9 @@
 			group by project_id
 		) ms				
 		on project.project_id = ms.project_id
-		group by project.project_client_id,project.project_client_name 
-		order by project.project_client_name 	
+		group by project.project_client_id,project.project_client_name
+	) ddd where statistics_amount != 0
+	order by statistics_amount desc
 	</sql>		
 	
 	
@@ -286,7 +296,8 @@
 	</select>
 	
 	
-	<sql id="queryByInfoSourcePagerSql">			
+	<sql id="queryByInfoSourcePagerSql">
+	select * from (
 		select project.info_sources_userid,project.info_sources_username ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
@@ -305,8 +316,9 @@
 			group by project_id
 		) ms				
 		on project.project_id = ms.project_id
-		group by project.info_sources_userid,project.info_sources_username 
-		order by project.info_sources_username 		
+		group by project.info_sources_userid,project.info_sources_username
+	) ddd where statistics_amount != 0
+	order by statistics_amount desc
 	</sql>		
 	
 	
@@ -323,7 +335,8 @@
 	
 
 
-	<sql id="queryByManagerPagerSql">				
+	<sql id="queryByManagerPagerSql">
+	select * from (
 		select project.manage_userid,project.manage_username ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
@@ -342,8 +355,9 @@
 			group by project_id
 		) ms				
 		on project.project_id = ms.project_id
-		group by project.manage_userid,project.manage_username 
-		order by project.manage_username 	
+		group by project.manage_userid,project.manage_username
+	) ddd where statistics_amount != 0
+	order by statistics_amount desc
 	</sql>		
 
 		
@@ -362,7 +376,8 @@
 	
 
 
-	<sql id="queryBySalesPagerSql">				
+	<sql id="queryBySalesPagerSql">
+	select * from (
 		select project.sales_userid,project.sales_username ,sum(case when ms.amount is NULL  then 0 else ms.amount end) as statistics_amount
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
@@ -381,8 +396,10 @@
 			group by project_id
 		) ms				
 		on project.project_id = ms.project_id
-		group by project.sales_userid,project.sales_username 
-		order by project.sales_username 	
+		group by project.sales_userid,project.sales_username
+
+	) ddd where statistics_amount != 0
+	order by statistics_amount desc
 	</sql>		
 	
 	
@@ -403,7 +420,7 @@
    
 
 	<sql id="queryByProjectPagerSql">	
-	
+	select * from (
 		select project.*,ms.amount as statistics_amount
 		from (<include refid="StatisticsCommonMapping.projectSQL"/>) project 
 		left join (
@@ -422,7 +439,9 @@
 			group by project_id
 		) ms				
 		on project.project_id = ms.project_id
-		order by project.build_datetime
+
+	) ddd where statistics_amount != 0
+	order by statistics_amount desc
 				
 	
 	</sql>	

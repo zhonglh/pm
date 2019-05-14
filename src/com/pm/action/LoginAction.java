@@ -46,7 +46,7 @@ public class LoginAction extends BaseAction {
 		}catch(Exception e){
 			
 		}
-		return "toAjaxLogin";  
+		return "toAjaxLogin";
 	}	
 	
 	@RequestMapping(params = "method=login")

@@ -37,6 +37,8 @@
         </ul>
     </div>
 
+
+
     <table class="list" width="99%" layoutH="60">
         <c:forEach var="analysisTable" items="${arts}" varStatus="index">
 

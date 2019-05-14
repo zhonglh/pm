@@ -47,7 +47,7 @@
 						
 			<p>
 				<label>本次实付金额：</label>
-				<input name="pay_amount" class="number required" min="0.01" type="text" size="30" onchange="computeActualCost(this.form)" value="<fmt:formatNumber value="${projectExpendpay1.pay_amount }"  type="number" pattern="####0.00#"/>" />
+				<input name="pay_amount" class="number required" type="text" size="30" onchange="computeActualCost(this.form)" value="<fmt:formatNumber value="${projectExpendpay1.pay_amount }"  type="number" pattern="####0.00#"/>" />
 			</p>
 
 
@@ -58,7 +58,7 @@
 			</p>
 			<p>
 				<label>本次实际成本：</label>
-				<input name="actual_cost" class="number required" readonly min="0.00" type="text" size="30" value="<fmt:formatNumber value="${projectExpendpay1.actual_cost }" type="number" pattern="####0.00#"/>" />
+				<input name="actual_cost" class="number required" readonly type="text" size="30" value="<fmt:formatNumber value="${projectExpendpay1.actual_cost }" type="number" pattern="####0.00#"/>" />
 
 			</p>
 			

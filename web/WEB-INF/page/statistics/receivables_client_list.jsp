@@ -49,7 +49,12 @@
 		
 		
 		<ul class="searchContent">
-		
+
+			<li>
+				<label>项目名称：</label>
+				<input type="text" name="project_name" value="${param.project_name}"/>
+			</li>
+
 			<li>
 				<label>统计口径：</label>
 				<select id="statisticsby" name="statisticsby" style="width:153px">

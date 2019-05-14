@@ -282,6 +282,11 @@
 		<if test="MonthlyStatement.sales_userid != null and MonthlyStatement.sales_userid != ''">
 			AND project.sales_userid = #{MonthlyStatement.sales_userid}
 		</if>
+
+
+		<if test="MonthlyStatement.project_type != null and MonthlyStatement.project_type != ''">
+			AND project.project_type = #{MonthlyStatement.project_type}
+		</if>
 		
 		
 		<if test="MonthlyStatement.statement_type != null and MonthlyStatement.statement_type != ''">

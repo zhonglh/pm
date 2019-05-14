@@ -53,10 +53,18 @@
 					</c:forEach>
 				</select>
 			</li>
-
-
-
 			<li>
+				<label>项目类型：</label>
+				<select name="project_type" id="projecct_type" style="width:153px">
+					<option value=""><spring:message code="project.type." /></option>
+					<option value="1" <c:if test="${param.project_type == '1' }">selected</c:if> ><spring:message code="project.type.1" /></option>
+					<option value="2" <c:if test="${param.project_type == '2' }">selected</c:if> ><spring:message code="project.type.2" /></option>
+					<option value="3" <c:if test="${param.project_type == '3' }">selected</c:if> ><spring:message code="project.type.3" /></option>
+				</select>
+			</li>
+
+
+			<%--<li>
 				<label>结算单类型：</label>
 				<select id="statement_type" name="statement_type" style="width:153px">
 					<option value="">全部</option>
@@ -66,7 +74,7 @@
 					<option value="4" <c:if test="${param.statement_type == '4' }">selected</c:if> ><spring:message code="statement.type.4"/></option>
 				</select>
 
-			</li>
+			</li>--%>
 
 			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
 

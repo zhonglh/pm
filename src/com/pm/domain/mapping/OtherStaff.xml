@@ -243,6 +243,17 @@
 		where staff_id = #{staff_id} 
 		and delete_flag = '0' 
 	</update>
+
+	<update id="autoUpdateWorkinfLife">
+		update tb_other_staff set working_life = working_life + 1/12 , version_no = version_no + 1
+	</update>
+
+
+	<update id="autoUpdateSalary">
+			update tb_other_staff
+			set performance_allowances = official_salary - basic_salary - post_salary,
+			tryout_performance_allowances = tryout_salary - tryout_basic_salary - tryout_post_salary
+	</update>
 	
 	
 

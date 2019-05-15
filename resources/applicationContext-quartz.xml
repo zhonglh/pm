@@ -4,13 +4,13 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd ">
-	
-	
+
+
     <bean id="staffCostAutoRun" class="com.pm.autorun.StaffCostAutoRun" />
 
     <bean id="monthJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="staffCostAutoRun" />
-        <property name="targetMethod" value="autoAddWorkingLife" />
+        <property name="targetMethod" value="autoCompute" />
     </bean>
     
     

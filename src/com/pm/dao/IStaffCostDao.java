@@ -36,7 +36,8 @@ public interface IStaffCostDao {
 
 	
 
-	public void updateWorkinfLife() ;
+	public void autoUpdateWorkinfLife() ;
+	public void autoUpdateSalary();
 	
 	
 	public int updateStaffFirstquotes(StaffCost staffCost) ; 

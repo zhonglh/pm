@@ -36,4 +36,10 @@ public interface IOtherStaffDao {
 
 	public List<OtherStaff> queryOtherStaffByProjectSales(OtherStaff otherStaff,UserPermit userPermit);
 
+
+
+
+	public void autoUpdateWorkinfLife() ;
+	public void autoUpdateSalary();
+
 }

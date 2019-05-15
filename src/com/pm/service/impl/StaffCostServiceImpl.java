@@ -164,8 +164,13 @@ public class StaffCostServiceImpl implements IStaffCostService {
 	
 
 	@Override
-	public void updateWorkinfLife() {
-		staffCostDao.updateWorkinfLife();		
+	public void autoUpdateWorkinfLife() {
+		staffCostDao.autoUpdateWorkinfLife();
+	}
+
+	@Override
+	public void autoUpdateSalary() {
+		staffCostDao.autoUpdateSalary();
 	}
 
 	@Override

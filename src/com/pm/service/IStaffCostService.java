@@ -43,7 +43,8 @@ public interface IStaffCostService {
 	public void deleteStaffCost(StaffCost[] staffCosts) ;
 	
 	//自动增加工作年限
-	public void updateWorkinfLife() ;
+	public void autoUpdateWorkinfLife() ;
+	public void autoUpdateSalary();
 	
 	
 	public StaffCost getStaffCost(String staff_id) ;

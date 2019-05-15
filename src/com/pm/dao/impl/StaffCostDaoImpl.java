@@ -33,19 +33,22 @@ public class StaffCostDaoImpl extends BatisDao implements IStaffCostDao {
 		String sql = "StaffCostMapping.updateStaffCost";
 		return this.update(sql, staffCost);
 	}
-	
 
+
+	@Override
 	public int updateStaffCostSecurtyUnit(StaffCost staffCost) {
 		String sql = "StaffCostMapping.updateStaffCostSecurtyUnit";
 		return this.update(sql, staffCost);
 	}
 
 
+	@Override
 	public int updateStaffCostAdditionalDeduction(StaffCost staffCost) {
 		String sql = "StaffCostMapping.updateStaffCostAdditionalDeduction";
 		return this.update(sql, staffCost);
 	}
-	
+
+	@Override
 	public int updateStaffQustomerQuotes(StaffCost staffCost) {
 		String sql = "StaffCostMapping.updateStaffQustomerQuotes";
 		return this.update(sql, staffCost);
@@ -53,12 +56,19 @@ public class StaffCostDaoImpl extends BatisDao implements IStaffCostDao {
 	
 	
 
-	public void updateWorkinfLife() {
-		String sql = "StaffCostMapping.updateWorkinfLife";
+	@Override
+	public void autoUpdateWorkinfLife() {
+		String sql = "StaffCostMapping.autoUpdateWorkinfLife";
 		this.update(sql);
 	}
-	
 
+	@Override
+	public void autoUpdateSalary() {
+		String sql = "StaffCostMapping.autoUpdateSalary";
+		this.update(sql);
+	}
+
+	@Override
 	public int updateStaffFirstquotes(StaffCost staffCost) {
 		String sql = "StaffCostMapping.updateStaffFirstquotes";
 		return this.update(sql, staffCost);

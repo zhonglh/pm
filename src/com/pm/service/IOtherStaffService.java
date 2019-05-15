@@ -44,6 +44,10 @@ public interface IOtherStaffService {
 	
 	
 	public List<OtherStaff> queryOtherStaffByProjectSales(OtherStaff otherStaff,UserPermit userPermit);
-	
 
+
+
+	//自动增加工作年限
+	public void autoUpdateWorkinfLife() ;
+	public void autoUpdateSalary();
 }

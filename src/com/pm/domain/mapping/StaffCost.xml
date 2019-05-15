@@ -163,9 +163,17 @@
 	
 	
 	
-	<update id="updateWorkinfLife">
-		update tb_staff_costs set working_life = working_life + 1/12 , version_no = version_no + 1 ;
+	<update id="autoUpdateWorkinfLife">
+		update tb_staff_costs set working_life = working_life + 1/12 , version_no = version_no + 1
 	</update>
+
+
+	<update id="autoUpdateSalary">
+			update tb_staff_costs
+			set performance_allowances = official_salary - basic_salary - post_salary,
+			tryout_performance_allowances = tryout_salary - tryout_basic_salary - tryout_post_salary
+	</update>
+
 	
 	
 	<update id="updateStaffCostSecurtyUnit" parameterType="com.pm.domain.business.StaffCost">

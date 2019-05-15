@@ -226,4 +226,18 @@ public class OtherStaffServiceImpl implements IOtherStaffService {
 		return otherStaffDao.queryOtherStaffByProjectSales(otherStaff,userPermit);
 	}
 
+
+
+
+	@Override
+	public void autoUpdateWorkinfLife() {
+		otherStaffDao.autoUpdateWorkinfLife();
+	}
+
+	@Override
+	public void autoUpdateSalary() {
+		otherStaffDao.autoUpdateSalary();
+	}
+
+
 }

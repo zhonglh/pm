@@ -74,6 +74,20 @@ public class OtherStaffDaoImpl extends BatisDao implements IOtherStaffDao {
 		}
 	}
 
+
+
+	@Override
+	public void autoUpdateWorkinfLife() {
+		String sql = "OtherStaffMapping.autoUpdateWorkinfLife";
+		this.update(sql);
+	}
+
+	@Override
+	public void autoUpdateSalary() {
+		String sql = "OtherStaffMapping.autoUpdateSalary";
+		this.update(sql);
+	}
+
 	@Override
 	public Pager<OtherStaff> queryOtherStaff(OtherStaff otherStaff, UserPermit userPermit,Pager<OtherStaff> pager){
 		String sql = "OtherStaffMapping.queryOtherStaff";

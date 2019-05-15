@@ -140,8 +140,16 @@ public class SalaryGroupAction extends BaseAction {
 		
 		boolean b = personnelMonthlyBaseService.isExistNotCheckByWorkAttendance(searchSalary.getProject_id(), searchSalary.getSalary_month());
 		if(b){			
-			return this.ajaxForwardConfirm(request, "该项目成员的人事月报数据有些还没有核实，是否确定要继续？");
+			return this.ajaxForwardConfirm(request, "对应的人事月报数据有些还没有核实，是否确定要继续？");
 		}
+
+		/*Insurance insurance = new Insurance();
+		insurance.setProject_id(searchSalary.getProject_id());
+		insurance.setSalary_month(searchSalary.getSalary_month());
+		b = insuranceService.isExistNotCheckByWorkAttendance(insurance);
+		if(b){
+			return this.ajaxForwardConfirm(request, "对应的保险数据有些还没有核实，是否确定要继续？");
+		}*/
 		
 		return this.ajaxForwardSuccess(request);
 	}

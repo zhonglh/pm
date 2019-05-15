@@ -1,6 +1,7 @@
 package com.pm.service;
 
 import com.pm.domain.business.PersonnelMonthlyBase;
+import com.pm.util.constant.EnumStaffType;
 import com.pm.vo.UserPermit;
 import com.common.beans.Pager;
 import com.pm.util.constant.LogConstant;
@@ -16,7 +17,7 @@ public interface IPersonnelMonthlyBaseService extends  IBaseService,IGeneralLogS
 	
 
 
-	public boolean isExistNotCheckByWorkAttendance (String project_id , int the_month) ;	
+	public boolean isExistNotCheckByWorkAttendance (String project_id , int the_month) ;
 
 	public Pager<PersonnelMonthlyBase> queryPersonnelMonthlyBase(PersonnelMonthlyBase personnelMonthlyBase,  UserPermit userPermit,Pager<PersonnelMonthlyBase> pager);
 

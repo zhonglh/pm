@@ -20,7 +20,10 @@ public interface IInsuranceDao {
 
 	public void unVerifyInsurance(Insurance insurance) ;
 
-	public Insurance getInsurance(String id) ;	
+	public Insurance getInsurance(String id) ;
+
+
+	public int getNotCheckNumByWorkAttendance(Insurance insurance);
 	
 
 	public List<Insurance> queryInsuranceByWorkAttendance(Insurance insurance);

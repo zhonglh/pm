@@ -50,14 +50,7 @@ public class StaffPerformanceServiceImpl implements IStaffPerformanceService {
         return staffPerformanceDao.getStaffPerformance(id);
     }
 
-    @Override
-    public boolean isExistNotCheckByWorkAttendance(String dept_id, int the_month) {
-        StaffPerformance sp = new StaffPerformance();
-        sp.setDept_id(dept_id);
-        sp.setThe_month(the_month);
-        int size = staffPerformanceDao.getNotCheckNumByWorkAttendance(sp);
-        return size != 0 ;
-    }
+
 
 
     @Override

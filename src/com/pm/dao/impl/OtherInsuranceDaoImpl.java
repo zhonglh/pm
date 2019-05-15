@@ -59,7 +59,14 @@ public class OtherInsuranceDaoImpl extends BatisDao implements IInsuranceDao {
     }
 
 
+    @Override
+    public int getNotCheckNumByWorkAttendance(Insurance insurance){
+        String sql = "OtherInsuranceMapping.getNotCheckNumByWorkAttendance";
+        return this.query4Int(sql , insurance);
+    }
 
+
+    @Override
     public List<Insurance> queryInsuranceByWorkAttendance(Insurance insurance){
         String sql = "OtherInsuranceMapping.queryInsuranceByWorkAttendance";
         return this.query(sql, Insurance.class, insurance);
@@ -67,6 +74,7 @@ public class OtherInsuranceDaoImpl extends BatisDao implements IInsuranceDao {
 
 
 
+    @Override
     public Insurance queryInsuranceSum(Insurance insurance,  UserPermit userPermit) {
         String sql = "OtherInsuranceMapping.queryInsuranceSum";
         Map<String , Object> map = new HashMap<String , Object>();

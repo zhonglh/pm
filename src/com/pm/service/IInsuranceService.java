@@ -22,9 +22,10 @@ public interface IInsuranceService extends IGeneralLogService , IBaseService {
 	@LogAnnotation(operation_type=LogConstant.OPERATION_CHECK,entity_type=LogConstant.ENTITY_INSURANCE)
 	public void verifyInsurance(Insurance insurance) ;	
 
-	public Insurance getInsurance(String id) ;	
-	
-	
+	public Insurance getInsurance(String id) ;
+
+
+	public boolean isExistNotCheckByWorkAttendance(Insurance insurance);
 
 	public List<Insurance> queryInsuranceByWorkAttendance(Insurance insurance);
 

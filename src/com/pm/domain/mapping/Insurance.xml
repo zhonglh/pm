@@ -84,9 +84,23 @@
 		and ti.salary_month = #{salary_month} 
 		and ti.verify_userid is not null 			
 	</select>
-	
-	
-	
+
+
+
+
+	<select id="getNotCheckNumByWorkAttendance" parameterType="com.pm.domain.business.Insurance" resultType="int" >
+		select count(*) c
+		from tb_Insurance ti
+		where ti.salary_month = #{salary_month}
+		and ti.verify_userid is null
+		and ti.staff_id in (
+		select staff_id from tb_work_attendance
+		where attendance_month = #{salary_month}
+		<if test="project_id != null and project_id != ''">
+			and project_id = #{project_id}
+		</if>
+		)
+	</select>
 	
 	
 	<select id="queryInsuranceSum" parameterType="map"  resultMap="insuranceMap" >

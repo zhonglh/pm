@@ -64,19 +64,6 @@
 	</select>
 	
 
-	<select id="getNotCheckNumByWorkAttendance" parameterType="com.pm.domain.business.StaffPerformance" resultType="int" >
-		select count(*) c
-		from tb_staff_performance sp
-		where sp.the_month = #{the_month}
-		and sp.verify_userid is null
-		<if test="dept_id != null and dept_id != ''">
-		and sp.staff_id in (
-			select staff_id from tb_other_work_attendance
-			where attendance_month = #{the_month}			
-			and dept_id = #{dept_id}
-		)
-		</if>
-	</select>
 	
 	
 

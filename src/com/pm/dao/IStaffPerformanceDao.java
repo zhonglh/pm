@@ -23,7 +23,6 @@ public interface IStaffPerformanceDao {
 
 	public StaffPerformance getStaffPerformance(String id) ;	
 
-	public int getNotCheckNumByWorkAttendance(StaffPerformance staffPerformance) ;
 
 
 	public List<StaffPerformance> getStaffPerformanceList(StaffPerformance staffPerformance);

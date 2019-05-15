@@ -63,6 +63,10 @@ public class OtherSalaryGroupAction extends BaseAction {
 	protected IStaffPerformanceService staffPerformanceService;
 
 
+	@Autowired
+	protected IOtherPersonnelMonthlyBaseService otherPersonnelMonthlyBaseService;
+
+
 	/**
 	 * 导出Excel
 	 * @param searchSalary
@@ -140,10 +144,18 @@ public class OtherSalaryGroupAction extends BaseAction {
 		}
 
 
-		boolean b = staffPerformanceService.isExistNotCheckByWorkAttendance(searchSalary.getDept_id(), searchSalary.getSalary_month());
+		boolean b = otherPersonnelMonthlyBaseService.isExistNotCheckByWorkAttendance(searchSalary.getDept_id(), searchSalary.getSalary_month());
 		if(b){
-			return this.ajaxForwardConfirm(request, "该部门的绩效数据有些还没有核实，是否确定要继续？");
+			return this.ajaxForwardConfirm(request, "绩效数据有些还没有核实，是否确定要继续？");
 		}
+
+		/*Insurance insurance = new Insurance();
+		insurance.setDept_id(searchSalary.getDept_id());
+		insurance.setSalary_month(searchSalary.getSalary_month());
+		b = insuranceService.isExistNotCheckByWorkAttendance(insurance);
+		if(b){
+			return this.ajaxForwardConfirm(request, "对应的保险数据有些还没有核实，是否确定要继续？");
+		}*/
 
 		return this.ajaxForwardSuccess(request);
 	}
@@ -229,7 +241,7 @@ public class OtherSalaryGroupAction extends BaseAction {
 		}
 
 		//检查上个月的人员绩效是否有未审核的
-		if(staffPerformanceService.isExistNotCheckByWorkAttendance(null, salary_month)){
+		if(otherPersonnelMonthlyBaseService.isExistNotCheckByWorkAttendance(null, salary_month)){
 			return this.ajaxForwardError(request, "操作错误，该月份的人员绩效还有未审核的！",true);
 		}
 

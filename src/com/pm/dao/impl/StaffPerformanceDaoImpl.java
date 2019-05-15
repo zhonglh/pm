@@ -64,11 +64,6 @@ public class StaffPerformanceDaoImpl extends BatisDao implements IStaffPerforman
 	
 	
 
-	@Override
-	public int getNotCheckNumByWorkAttendance(StaffPerformance staffPerformance) {
-		String sql = "StaffPerformanceMapping.getNotCheckNumByWorkAttendance"; 
-		return this.query4Int(sql, staffPerformance);
-	}
 
 
 

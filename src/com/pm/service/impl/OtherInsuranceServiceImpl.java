@@ -63,9 +63,14 @@ public class OtherInsuranceServiceImpl implements  IInsuranceService {
 	public Insurance getInsurance(String id) {
 		return insuranceDao.getInsurance(id);
 	}
-	
-	
 
+
+
+	@Override
+	public boolean isExistNotCheckByWorkAttendance(Insurance insurance){
+		int size = insuranceDao.getNotCheckNumByWorkAttendance(insurance);
+		return size != 0;
+	}
 	@Override
 	public List<Insurance> queryInsuranceByWorkAttendance(Insurance insurance){
 		return insuranceDao.queryInsuranceByWorkAttendance(insurance);

@@ -25,14 +25,14 @@
 		select count(*) c
 		from personnel_monthly_base pmb
 		where pmb.the_month = #{the_month}
-		and pmb.verify_userid is null 
-		<if test="project_id != null and project_id != ''">
+		and pmb.verify_userid is null
 		and pmb.staff_id in (
 			select staff_id from tb_work_attendance 
-			where attendance_month = #{the_month}			
-			and project_id = #{project_id}  			
+			where attendance_month = #{the_month}
+			<if test="project_id != null and project_id != ''">
+			and project_id = #{project_id}
+			</if>
 		)
-		</if>
 	</select>
 	
 	

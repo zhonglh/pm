@@ -56,16 +56,25 @@ public class InsuranceDaoImpl extends BatisDao implements IInsuranceDao  {
 		if(list == null || list.isEmpty()) return null; 
 		else return list.get(0);	
 	}
-	
+
+
+
+	@Override
+	public int getNotCheckNumByWorkAttendance(Insurance insurance){
+		String sql = "InsuranceMapping.getNotCheckNumByWorkAttendance";
+		return this.query4Int(sql , insurance);
+	}
 	
 
+	@Override
 	public List<Insurance> queryInsuranceByWorkAttendance(Insurance insurance){
 		String sql = "InsuranceMapping.queryInsuranceByWorkAttendance"; 
 		return this.query(sql, Insurance.class, insurance); 
 	}
-	
-	
 
+
+
+	@Override
 	public Insurance queryInsuranceSum(Insurance insurance,  UserPermit userPermit) {
 		String sql = "InsuranceMapping.queryInsuranceSum"; 
 		Map<String , Object>  map = new HashMap<String , Object>();

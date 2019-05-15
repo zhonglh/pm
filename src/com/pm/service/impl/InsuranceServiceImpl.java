@@ -72,6 +72,14 @@ public class InsuranceServiceImpl implements  IInsuranceService {
 		return insuranceDao.queryInsuranceByWorkAttendance(insurance);
 	}
 
+
+
+	@Override
+	public boolean isExistNotCheckByWorkAttendance(Insurance insurance){
+		int size = insuranceDao.getNotCheckNumByWorkAttendance(insurance);
+		return size != 0;
+	}
+
 	@Override
 	public Pager<Insurance> queryInsurance(
 		Insurance insurance,

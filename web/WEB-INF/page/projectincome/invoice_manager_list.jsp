@@ -154,6 +154,7 @@
 				<th width="100">到款日期</th>
 				<th width="80">开票人员</th>
 				<th width="100">发票接收人</th>
+				<th width="200">备注</th>
 				<th width="60">制单人</th>
 				<th width="60">核单人</th>		
 				<th width="120" >申请状态</th>
@@ -198,6 +199,7 @@
 				<td><fmt:formatDate value="${invoice.received_payment_datetime}" pattern="yyyy-MM-dd" /></td>
 				<td>${invoice.invoice_staff_name }</td>
 				<td>${invoice.invoice_receive_name }</td>
+				<td>${invoice.description }</td>
 				<td>${invoice.build_username }</td>
 				<td>${invoice.verify_username }</td>	
 				<td>				

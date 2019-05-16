@@ -86,7 +86,8 @@
 				<th width="100">客户联系人</th>	
 				<th width="100">法定代表人</th>	
 				<th width="100">提交日期</th>	
-				<th width="80">合同份数</th>	
+				<th width="80">合同份数</th>
+				<th width="200">备注</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -107,6 +108,7 @@
 				<td>${contract.corporation }</td>
 				<td><fmt:formatDate value="${contract.submit_date }" pattern="yyyy-MM-dd"/></td>
 				<td align="center"><b><fmt:formatNumber value="${contract.contract_number }" type="number" pattern="###,###,##0"/></b></td>
+				<td>${contract.description }</td>
 				</td>	
 			</tr>
 			</c:forEach>

@@ -24,14 +24,41 @@
 
 			<li>
 				<label>月份：</label>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="use_month1" value="${param.the_month1}"/>
-				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="use_month2" value="${param.the_month2}"/>
+				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="the_month1" value="${param.the_month1}"/>
+				<input type="text" class="digits date month" maxlength="6" minlength="6" format="yyyyMM" size="7" name="the_month2" value="${param.the_month2}"/>
+			</li>
+
+
+			
+		</ul>
+
+
+		<ul class="searchContent">
+
+			<li>
+				<label>所在部门：</label>
+				<input name="staff.dept_id" class="text" type="hidden" size="2"  value="${staffPerformance.dept_id }" />
+				<input name="staff.dept_name" class="text" type="text" value="${staffPerformance.dept_name }" readonly="readonly" lookupPk="dept_id"
+					   suggestFields="dept_name" suggestUrl="${webroot }/DeptAction.do?method=lookup&use=search" lookupGroup="staff"/>
+			</li>
+
+
+
+			<li>
+				<label>核单情况：</label>
+				<select name="verify_flag" style="width:153px">
+					<option value="" <c:if test="${'' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag."/></option>
+					<option value="1" <c:if test="${'1' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.1"/></option>
+					<option value="2" <c:if test="${'2' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.2"/></option>
+					<option value="3" <c:if test="${'3' == param.verify_flag }">selected</c:if>><spring:message code="verify.flag.3"/></option>
+				</select>
 			</li>
 
 
 			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
-			
+
 		</ul>
+
 			
 		</div>
 	</div>
@@ -68,7 +95,7 @@
 			</c:if>		
 		</ul>
 	</div>
-	<table class="table" width="1400" layoutH="135">
+	<table class="table" width="1400" layoutH="138">
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>

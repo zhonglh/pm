@@ -334,10 +334,12 @@
 	 */
 	function neglect_work_salary(field,key,val){
 		var result = 0.0;
-		if(field.should_work_days != 0){
-			result = getCountSalary(field)/field.should_work_days*field.neglect_work_days*2;
-			result = fixed(result);					
-		}
+
+		//if(field.should_work_days != 0){
+			//result = getCountSalary(field)/field.should_work_days*field.neglect_work_days*2;
+			//result = fixed(result);
+		//}
+
 		backFill(field,key,result);		
 	}		
 	

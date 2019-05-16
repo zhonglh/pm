@@ -144,14 +144,14 @@
 	</select>
 
 	<sql id="StaffPerformancePagerSql">
-		select sp.* ,dept.dept_name , staff.staff_no , staff.staff_name
+		select sp.* ,dept.dept_name , staff.staff_no , staff.staff_name , aa.need_approve
 		from tb_staff_performance sp
 		left JOIN ts_dept dept
 		on sp.dept_id = dept.dept_id
 		join tb_other_staff staff
 		on sp.staff_id = staff.staff_id
 		left join (SELECT need_approve,data_id FROM tb_apply_approve  where delete_flag='0' and need_approve='1' and data_type = 'STAFF_PERFORMANCE' group by data_id) aa
-		on invoice.invoice_id = aa.data_id
+		on sp.id = aa.data_id
 		WHERE 1=1 
 		
 		<if test="StaffPerformance.the_month != 0 ">
@@ -166,18 +166,60 @@
 			]]>
 		</if>
 
-		
-		
+		<if test="StaffPerformance.dept_id != null and StaffPerformance.dept_id != ''">
+			<![CDATA[
+			AND sp.dept_id = #{StaffPerformance.dept_id}
+			]]>
+		</if>
+
+
+
+		<if test="StaffPerformance.staff_no != null and StaffPerformance.staff_no != ''">
+			AND staff.staff_no like concat('%',TRIM(#{StaffPerformance.staff_no}),'%')
+		</if>
+
+
+		<if test="StaffPerformance.staff_name != null and StaffPerformance.staff_name != ''">
+			AND staff.staff_name like concat('%',TRIM(#{StaffPerformance.staff_name}),'%')
+		</if>
+
+
+
+
+
+		<if test="StaffPerformance.the_month1 != 0 ">
+			<![CDATA[
+			AND sp.the_month >= #{StaffPerformance.the_month1}
+			]]>
+		</if>
+
+		<if test="StaffPerformance.the_month2 != 0 ">
+			<![CDATA[
+			AND sp.the_month <= #{StaffPerformance.the_month2}
+			]]>
+		</if>
+
+
+
+
+
+
 		<if test="StaffPerformance.verify_flag != null and StaffPerformance.verify_flag != ''">
 			<if test="StaffPerformance.verify_flag == 1">
-					and sp.verify_userid is not null
+				and sp.verify_userid is not null
 			</if>
-			<if test="StaffPerformance.verify_flag == 0">			
-					and sp.verify_userid is null
+			<if test="StaffPerformance.verify_flag == 2">
+				and sp.verify_userid is null
 			</if>
-		</if>		
-		
+			<if test="StaffPerformance.verify_flag == 3">
+				and (sp.verify_userid is not null and aa.need_approve='1')
+			</if>
+		</if>
+
 		<include refid="StaffAuthMapping.permission" />
+
+
+		order by sp.the_month desc , dept.dept_no
 	</sql>
 
 

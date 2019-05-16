@@ -15,7 +15,6 @@ public class StaffPerformance extends IdEntity implements Serializable {
 		
 
 
-	@EntityAnnotation(item_name="月份" ,item_sort=10)
 	private int the_month;		
 
 	
@@ -44,7 +43,12 @@ public class StaffPerformance extends IdEntity implements Serializable {
 	/////////////////////////////////////////////
 	//////////////扩展////////////////////////////
 	/////////////////////////////////////////////
-	
+
+
+
+
+	@EntityAnnotation(item_name="月份" ,item_sort=10  , length = 6)
+	private String the_month_str;
 
 	@EntityAnnotation(item_name="部门" ,item_sort=15)
 	private String dept_name;
@@ -72,6 +76,13 @@ public class StaffPerformance extends IdEntity implements Serializable {
 	
 	
 	private String errorInfo = "";
+
+
+	//查询条件
+
+	private int the_month1;
+	private int the_month2;
+
 	
 	public int getThe_month() {
 		return the_month;
@@ -222,12 +233,34 @@ public class StaffPerformance extends IdEntity implements Serializable {
 		this.performance_salary = performance_salary;
 	}
 
+	public int getThe_month1() {
+		return the_month1;
+	}
+
+	public void setThe_month1(int the_month1) {
+		this.the_month1 = the_month1;
+	}
+
+	public int getThe_month2() {
+		return the_month2;
+	}
+
+	public void setThe_month2(int the_month2) {
+		this.the_month2 = the_month2;
+	}
+
+
+	public String getThe_month_str() {
+		return the_month_str;
+	}
+
+	public void setThe_month_str(String the_month_str) {
+		this.the_month_str = the_month_str;
+	}
+
 	@Override
 	public String toString() {
 		return staff_name+"("+staff_no+")"+the_month+" 绩效";
 	}
-	
-	
-	
-	
+
 }

@@ -70,7 +70,11 @@ public class StaffPerformanceAction extends BaseAction {
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.STAFFPERFORMANCEVIEW.getId());
 		
 		Pager<StaffPerformance> pager = staffPerformanceService.queryStaffPerformance(staffPerformance, userPermit, PubMethod.getPagerByAll(request, StaffPerformance.class));
-
+		if(pager.getResultList() != null && !pager.getResultList().isEmpty()){
+			for(StaffPerformance sp : pager.getResultList()){
+				sp.setThe_month_str(String.valueOf(sp.getThe_month()));
+			}
+		}
 		
 		try{
 			BusinessExcel.export(res, null, pager.getResultList(), StaffPerformance.class,false);
@@ -226,19 +230,30 @@ public class StaffPerformanceAction extends BaseAction {
 		boolean b =true;
 
 
-		Date date1 = null;
-		if(staffPerformance.getThe_month() == 0){
-			staffPerformance.setErrorInfo(staffPerformance.getErrorInfo() + "月份不能为空;");
-			b = false;
-		}else {
-
-			date1 = DateKit.fmtStrToDate(String.valueOf(staffPerformance.getThe_month())+"01","yyyyMMdd");
-			if(date1 == null) {
-				staffPerformance.setErrorInfo(staffPerformance.getErrorInfo() + "月份格式错误;");
-				b = false;
+		try {
+			if (StringUtils.isNotEmpty(staffPerformance.getThe_month_str())) {
+				staffPerformance.setThe_month(Integer.parseInt(staffPerformance.getThe_month_str()));
 			}
 
+
+			Date date1 = null;
+			if(staffPerformance.getThe_month() == 0){
+				staffPerformance.setErrorInfo(staffPerformance.getErrorInfo() + "月份不能为空;");
+				b = false;
+			}else {
+
+				date1 = DateKit.fmtStrToDate(String.valueOf(staffPerformance.getThe_month())+"01","yyyyMMdd");
+				if(date1 == null) {
+					staffPerformance.setErrorInfo(staffPerformance.getErrorInfo() + "月份格式错误;");
+					b = false;
+				}
+
+			}
+		}catch(Exception e ){
+			staffPerformance.setErrorInfo(staffPerformance.getErrorInfo() + "月份格式错误;");
+			b = false;
 		}
+
 		
 		if(staffPerformance.getStaff_no() != null && staffPerformance.getStaff_no().length() > 0){
 			OtherStaff otherStaff = otherStaffMap.get(staffPerformance.getStaff_no());
@@ -307,14 +322,29 @@ public class StaffPerformanceAction extends BaseAction {
 
 	private void paramprocess(HttpServletRequest request,StaffPerformance staffPerformance){		
 		
+		if(StringUtils.isEmpty(staffPerformance.getDept_id())) {
+			staffPerformance.setDept_id(request.getParameter("staff.dept_id"));
+		}
 
-		staffPerformance.setDept_id(request.getParameter("staff.dept_id"));
-		staffPerformance.setDept_name(request.getParameter("staff.dept_name"));
-		
 
-		staffPerformance.setStaff_id(request.getParameter("staff.staff_id"));
-        staffPerformance.setStaff_no(request.getParameter("staff.staff_no"));
-        staffPerformance.setStaff_name(request.getParameter("staff.staff_name"));
+		if(StringUtils.isEmpty(staffPerformance.getDept_name())) {
+			staffPerformance.setDept_name(request.getParameter("staff.dept_name"));
+		}
+
+
+		if(StringUtils.isEmpty(staffPerformance.getStaff_id())) {
+			staffPerformance.setStaff_id(request.getParameter("staff.staff_id"));
+		}
+
+
+		if(StringUtils.isEmpty(staffPerformance.getStaff_no())) {
+			staffPerformance.setStaff_no(request.getParameter("staff.staff_no"));
+		}
+
+
+		if(StringUtils.isEmpty(staffPerformance.getStaff_name())) {
+			staffPerformance.setStaff_name(request.getParameter("staff.staff_name"));
+		}
 	}	
 	
 	

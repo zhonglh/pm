@@ -536,7 +536,7 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
     protected List<DepartStatisticsItem> getSalesStaffCosts(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
         List<DepartStatisticsItem> otherStaffCosts = departStatisticsService.querySalesStaffCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
         Map<String, DepartStatisticsItem> map130 = PubMethod.list2Map(otherStaffCosts);
-        return handleStatistics( depts,  map130,-1,"/DepartStatisticsAction.do?method=querySalesStaffCostDetail"+searchStr,"B");
+        return handleStatistics( depts,  map130,-1,"/DepartStatisticsAction.do?method=querySalesStaffCostDetail"+searchStr,"");
 
 
     }
@@ -553,7 +553,7 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
     protected List<DepartStatisticsItem> getManageStaffCosts(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
         List<DepartStatisticsItem> otherStaffCosts = departStatisticsService.queryManageStaffCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
         Map<String, DepartStatisticsItem> map130 = PubMethod.list2Map(otherStaffCosts);
-        return handleStatistics( depts,  map130,-1,"/DepartStatisticsAction.do?method=queryManageStaffCostDetail"+searchStr,"B");
+        return handleStatistics( depts,  map130,-1,"/DepartStatisticsAction.do?method=queryManageStaffCostDetail"+searchStr,"");
 
 
     }

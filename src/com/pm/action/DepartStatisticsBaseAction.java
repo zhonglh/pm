@@ -151,6 +151,87 @@ public abstract class DepartStatisticsBaseAction extends DepartStatisticsAbstrac
     }
 
 
+
+
+    /**
+     * 销售人员成本明细
+     *
+     * @param statistics
+     * @param res
+     * @param request
+     * @return
+     */
+    @RequestMapping(params = "method=querySalesStaffCostDetail")
+    public String querySalesStaffCostDetail(Statistics statistics, HttpServletResponse res, HttpServletRequest request) {
+        UserPermit userPermit = this.getUserPermit(request, roleService, getPermitId());
+        Pager<StatisticsDetail> pager = departStatisticsService.querySalesStaffCostDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
+        PubMethod.setRequestPager(request, pager, StatisticsDetail.class);
+        request.setAttribute("actionName" , getClassName());
+        return "departstatistics/sales_staff_cost_detail_list";
+    }
+
+
+    /**
+     * 销售人员成本明细导出excel
+     *
+     * @param statistics
+     * @param res
+     * @param request
+     */
+    @RequestMapping(params = "method=excelSalesStaffCostDetail")
+    public void excelSalesStaffCostDetail(Statistics statistics, HttpServletResponse res, HttpServletRequest request) {
+        UserPermit userPermit = this.getUserPermit(request, roleService, getPermitId());
+        Pager<StatisticsDetail> pager = departStatisticsService.querySalesStaffCostDetail(statistics, userPermit, PubMethod.getPagerByAll(StatisticsDetail.class));
+
+        try {
+            BusinessExcel.export(res, null, pager.getResultList(), StatisticsDetail.class);
+        } catch (Exception e) {
+
+        }
+    }
+
+
+
+
+
+    /**
+     * 部门管理人员成本明细
+     *
+     * @param statistics
+     * @param res
+     * @param request
+     * @return
+     */
+    @RequestMapping(params = "method=queryManageStaffCostDetail")
+    public String queryManageStaffCostDetail(Statistics statistics, HttpServletResponse res, HttpServletRequest request) {
+        UserPermit userPermit = this.getUserPermit(request, roleService, getPermitId());
+        Pager<StatisticsDetail> pager = departStatisticsService.queryManageStaffCostDetail(statistics, userPermit, PubMethod.getPager(request, StatisticsDetail.class));
+        PubMethod.setRequestPager(request, pager, StatisticsDetail.class);
+        request.setAttribute("actionName" , getClassName());
+        return "departstatistics/manage_staff_cost_detail_list";
+    }
+
+
+    /**
+     * 销售人员成本明细导出excel
+     *
+     * @param statistics
+     * @param res
+     * @param request
+     */
+    @RequestMapping(params = "method=excelManageStaffCostDetail")
+    public void excelManageStaffCostDetail(Statistics statistics, HttpServletResponse res, HttpServletRequest request) {
+        UserPermit userPermit = this.getUserPermit(request, roleService, getPermitId());
+        Pager<StatisticsDetail> pager = departStatisticsService.queryManageStaffCostDetail(statistics, userPermit, PubMethod.getPagerByAll(StatisticsDetail.class));
+
+        try {
+            BusinessExcel.export(res, null, pager.getResultList(), StatisticsDetail.class);
+        } catch (Exception e) {
+
+        }
+    }
+
+
     @RequestMapping(params = "method=list")
     public String list(Statistics searchStatistics, HttpServletResponse res, HttpServletRequest request) {
 

@@ -219,8 +219,10 @@ public class CashStatisticsAction extends DepartStatisticsBaseAction {
 		List<DepartStatisticsItem> list110 = getSalseCosts(searchStatistics, depts, userPermit, searchStr);
 		list.add(list110);
 
-		//处理销售费用明细
+		//处理部门销售费用明细
 		List<List<DepartStatisticsItem>> salseCostDetails = this.getSalesCostDetails(searchStatistics, depts, userPermit, searchStr);
+		List<DepartStatisticsItem> salesStaffDetails = this.getSalesStaffCosts(searchStatistics, depts, userPermit, searchStr);
+		salseCostDetails.add(salesStaffDetails);
 		list.addAll(salseCostDetails);
 
 		//部门费用
@@ -230,6 +232,8 @@ public class CashStatisticsAction extends DepartStatisticsBaseAction {
 
 		//部门费用明细
 		List<List<DepartStatisticsItem>> departCostDetails = getDepartCostDetails(searchStatistics, depts, userPermit, searchStr);
+		List<DepartStatisticsItem> manageStaffDetails = this.getManageStaffCosts(searchStatistics, depts, userPermit, searchStr);
+		departCostDetails.add(manageStaffDetails);
 		list.addAll(departCostDetails);
 
 		//总部人员成本

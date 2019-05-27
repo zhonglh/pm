@@ -74,6 +74,15 @@
 		order by dicData.dic_sort 
 	</select>
 
+
+
+	<select id="getAllDicDataByType" parameterType="com.pm.domain.business.DicData" resultMap="dicdataMap">
+		select dicData.*
+		from ts_dic_data dicData
+		where dic_type_id = #{dic_type_id }
+		order by dicData.dic_sort
+	</select>
+
 	<select id="getDicData" parameterType="com.pm.domain.business.DicData" resultMap="dicdataMap">
 		select dicData.* , dicType.dic_type_name 
 		from ts_dic_data dicData join ts_dic_type dicType 

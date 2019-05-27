@@ -204,4 +204,45 @@ public class DepartStatisticsDaoImpl extends BatisDao implements IDepartStatisti
 		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, StatisticsDetail.class, statistics,userPermit);
 	}
 
+
+
+
+
+
+	@Override
+	public Pager<DepartStatisticsItem> querySalesStaffCosts(Statistics statistics, UserPermit userPermit, Pager<DepartStatisticsItem> pager){
+
+		String sql = "DepartStatisticsDetailMapping.querySalesStaffCostStaistics";
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+
+	}
+
+
+
+	@Override
+	public Pager<StatisticsDetail> querySalesStaffCostDetail(Statistics statistics, UserPermit userPermit, Pager<StatisticsDetail> pager) {
+		String sql = "DepartStatisticsDetailMapping.querySalesStaffCostDetail";
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, StatisticsDetail.class, statistics,userPermit);
+	}
+
+
+
+
+
+	@Override
+	public Pager<DepartStatisticsItem> queryManageStaffCosts(Statistics statistics, UserPermit userPermit, Pager<DepartStatisticsItem> pager){
+
+		String sql = "DepartStatisticsDetailMapping.queryManageStaffCostStaistics";
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, DepartStatisticsItem.class, statistics,userPermit);
+
+	}
+
+
+
+	@Override
+	public Pager<StatisticsDetail> queryManageStaffCostDetail(Statistics statistics, UserPermit userPermit, Pager<StatisticsDetail> pager) {
+		String sql = "DepartStatisticsDetailMapping.queryManageStaffCostDetail";
+		return this.query4Pager(pager.getPageNo(), pager.getPageSize(), sql, StatisticsDetail.class, statistics,userPermit);
+	}
+
 }

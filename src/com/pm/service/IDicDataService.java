@@ -37,6 +37,8 @@ public interface IDicDataService extends IGeneralLogService{
 	public DicData getDicData(String id) ;	
 	
 	public List<DicData> getDicDataByType(DicData dicdata);
+
+	public List<DicData> getAllDicDataByType(DicData dicdata);
 	
 	public Map<String, Map<String,DicData>> queryAllDicData();
 

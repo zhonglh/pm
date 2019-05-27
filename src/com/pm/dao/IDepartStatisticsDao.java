@@ -153,4 +153,51 @@ public interface IDepartStatisticsDao {
 	 */
 	public Pager<StatisticsDetail> queryOtherStaffCostDetail(Statistics statistics,UserPermit userPermit,Pager<StatisticsDetail> pager) ;
 
+
+
+	/**
+	 * 部门销售人员成本统计
+	 * @param statistics
+	 * @param userPermit
+	 * @param pager
+	 * @return
+	 */
+	public Pager<DepartStatisticsItem> querySalesStaffCosts(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+
+
+
+	/**
+	 * 部门销售成本明细
+	 * @param statistics
+	 * @param userPermit
+	 * @param pager
+	 * @return
+	 */
+	public Pager<StatisticsDetail> querySalesStaffCostDetail(Statistics statistics,UserPermit userPermit,Pager<StatisticsDetail> pager) ;
+
+
+
+
+
+	/**
+	 * 部门管理人员成本统计
+	 * @param statistics
+	 * @param userPermit
+	 * @param pager
+	 * @return
+	 */
+	public Pager<DepartStatisticsItem> queryManageStaffCosts(Statistics statistics,UserPermit userPermit,Pager<DepartStatisticsItem> pager);
+
+
+
+	/**
+	 * 部门管理成本明细
+	 * @param statistics
+	 * @param userPermit
+	 * @param pager
+	 * @return
+	 */
+	public Pager<StatisticsDetail> queryManageStaffCostDetail(Statistics statistics,UserPermit userPermit,Pager<StatisticsDetail> pager) ;
+
+
 }

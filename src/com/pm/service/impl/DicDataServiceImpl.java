@@ -22,6 +22,7 @@ public class DicDataServiceImpl implements  IDicDataService {
 	
 	
 
+	@Override
 	public void preDicData(DicData dicdata){
 		
 		DicData preDicDate = dicdataDao.getDicDataByPre(dicdata);
@@ -36,6 +37,7 @@ public class DicDataServiceImpl implements  IDicDataService {
 		}
 	}
 	
+	@Override
 	public void nextDicData(DicData dicdata){
 		
 		DicData nextDicDate = dicdataDao.getDicDataByNext(dicdata);
@@ -50,9 +52,12 @@ public class DicDataServiceImpl implements  IDicDataService {
 		}
 	}
 	
+	@Override
 	public void initDicDataSort(DicData dicdata){
 		List<DicData> dicDatas = this.getDicDataByType(dicdata);
-		if(dicDatas == null || dicDatas.isEmpty()) return;
+		if(dicDatas == null || dicDatas.isEmpty()) {
+			return;
+		}
 		int count = dicDatas.size();
 		for(int i=0; i < count ; i++){
 			DicData temp = dicDatas.get(i);
@@ -62,10 +67,12 @@ public class DicDataServiceImpl implements  IDicDataService {
 	}
 	
 
+	@Override
 	public List<DicType> getAllDicType(){
 		return dicdataDao.getAllDicType();
-	}	
+	}
 
+	@Override
 	public DicType getDicType(String id){
 		return dicdataDao.getDicType(id);
 	}
@@ -83,8 +90,9 @@ public class DicDataServiceImpl implements  IDicDataService {
 	public int updateDicData(DicData dicdata) {
 		return dicdataDao.updateDicData(dicdata);
 	}
-	
 
+
+	@Override
 	public void recoverDicData(DicData[] dicdatas){
 		for(DicData dicdata : dicdatas){
 			int max = dicdataDao.getMaxDicDataByType(dicdata);
@@ -110,6 +118,17 @@ public class DicDataServiceImpl implements  IDicDataService {
 	public List<DicData> getDicDataByType(DicData dicdata){
 		return dicdataDao.getDicDataByType(dicdata);
 	}
+
+	@Override
+	public List<DicData> getAllDicDataByType(DicData dicdata){
+		List<DicData> list =  dicdataDao.getAllDicDataByType(dicdata);
+		DicData dicData = new DicData();
+		dicData.setId("");
+		dicData.setDic_data_name("未知");
+		list.add(0,dicData);
+		return list;
+	}
+
 	
 	@Override
 	public <T> T get(String id) {		
@@ -132,7 +151,9 @@ public class DicDataServiceImpl implements  IDicDataService {
 		DicData search = new DicData();
 		search.setDelete_flag(BusinessUtil.NOT_DELETEED);
 		Pager<DicData> page1 = dicdataDao.queryDicData(search,  PubMethod.getPagerByAll(DicData.class));
-		if(page1.getResultList() == null) return map;
+		if(page1.getResultList() == null) {
+			return map;
+		}
 		for(DicData dicData: page1.getResultList()){
 			Map<String,DicData> dataMap = map.get(dicData.getDic_type_id());
 			if(dataMap == null){				

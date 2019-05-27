@@ -91,8 +91,8 @@
 			<if test="Statistics.deptId != null and Statistics.deptId != ''">
 				AND project.deptid = #{Statistics.deptId}
 			</if>
-			
-			<if test="Statistics.type_id != null and Statistics.type_id != ''">
+
+			<if test="Statistics.type_id != null ">
 				AND business.type_id = #{Statistics.type_id} 
 			</if>
 			
@@ -197,9 +197,9 @@
 		<if test="Statistics.deptId != null and Statistics.deptId != ''">
 			AND project.deptid = #{Statistics.deptId}
 		</if>
-		
-		<if test="Statistics.type_id != null and Statistics.type_id != ''">
-			AND business.type_id = #{Statistics.type_id} 
+
+		<if test="Statistics.type_id != null">
+			AND business.type_id = #{Statistics.type_id}
 		</if>
 		
 		<if test="Statistics.month1 != 0">
@@ -269,8 +269,8 @@
 		<if test="Statistics.deptId != null and Statistics.deptId != ''">
 			AND dept.dept_id = #{Statistics.deptId} 
 		</if>
-		
-		<if test="Statistics.type_id != null and Statistics.type_id != ''">
+
+		<if test="Statistics.type_id != null ">
 			AND business.type_id = #{Statistics.type_id} 
 		</if>
 		
@@ -341,8 +341,9 @@
 		<if test="Statistics.deptId != null and Statistics.deptId != ''">
 			AND dept.dept_id = #{Statistics.deptId} 
 		</if>
-		
-		<if test="Statistics.type_id != null and Statistics.type_id != ''">
+
+		11111555
+		<if test="Statistics.type_id != null">
 			AND (dc_dic.id = #{Statistics.type_id}    or  dc_dic.dic_type_id = #{Statistics.type_id}   )
 		</if>
 		
@@ -496,6 +497,241 @@
 
 
 
+
+
+
+
+	<select id="querySalesStaffCostStaisticsByPager_mysql" parameterType="map"   resultMap="departStatisticsItemMap">
+		<include refid="querySalesStaffCostStaisticsPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="querySalesStaffCostStaisticsByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (
+		<include refid="querySalesStaffCostStaisticsPagerSql"/>
+		) c
+	</select>
+
+	<sql id="querySalesStaffCostStaisticsPagerSql">
+		select sum(amount) as  val,${Statistics.groupSelect} , '部门销售人员成本' as itemName from (
+		SELECT business.*
+		FROM (
+		<include refid="DepartItemDetailMapping.data_202"/>
+		) business
+		inner join ts_dept dept
+		on business.dept_id = dept.dept_id
+		where dept.statisticsed = '1'
+
+
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND dept.dept_id = #{Statistics.deptId}
+		</if>
+
+
+		<if test="Statistics.month1 != 0">
+			<![CDATA[
+			AND use_month >= #{Statistics.month1}
+		]]>
+		</if>
+		<if test="Statistics.month2 != 0">
+			<![CDATA[
+			AND use_month <= #{Statistics.month2}
+		]]>
+		</if>
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
+
+		<include refid="DepartItemDetailMapping.departPermission"/>
+		) a group by ${Statistics.groupBy}
+	</sql>
+
+
+
+
+
+
+
+	<select id="querySalesStaffCostDetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="querySalesStaffCostDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="querySalesStaffCostDetailByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (
+		<include refid="querySalesStaffCostDetailPagerSql"/>
+		) c
+	</select>
+
+	<sql id="querySalesStaffCostDetailPagerSql">
+		SELECT business.*
+		FROM (
+		<include refid="DepartItemDetailMapping.data_202"/>
+		) business
+		inner join ts_dept dept
+		on business.dept_id = dept.dept_id
+		where dept.statisticsed = '1'
+
+
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND dept.dept_id = #{Statistics.deptId}
+		</if>
+
+
+		<if test="Statistics.month1 != 0">
+			<![CDATA[
+			AND use_month >= #{Statistics.month1}
+		]]>
+		</if>
+		<if test="Statistics.month2 != 0">
+			<![CDATA[
+			AND use_month <= #{Statistics.month2}
+			]]>
+		</if>
+
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
+
+
+		<include refid="DepartItemDetailMapping.departPermission"/>
+		order by use_month desc ,build_datetime desc
+	</sql>
+
+
+
+
+
+
+
+	<select id="queryManageStaffCostStaisticsByPager_mysql" parameterType="map"   resultMap="departStatisticsItemMap">
+		<include refid="queryManageStaffCostStaisticsPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryManageStaffCostStaisticsByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (
+		<include refid="queryManageStaffCostStaisticsPagerSql"/>
+		) c
+	</select>
+
+	<sql id="queryManageStaffCostStaisticsPagerSql">
+		select sum(amount) as  val,${Statistics.groupSelect} , '部门管理人员成本' as itemName from (
+		SELECT business.*
+		FROM (
+		<include refid="DepartItemDetailMapping.data_203"/>
+		) business
+		inner join ts_dept dept
+		on business.dept_id = dept.dept_id
+		where dept.statisticsed = '1'
+
+
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND dept.dept_id = #{Statistics.deptId}
+		</if>
+
+
+		<if test="Statistics.month1 != 0">
+			<![CDATA[
+			AND use_month >= #{Statistics.month1}
+		]]>
+		</if>
+		<if test="Statistics.month2 != 0">
+			<![CDATA[
+			AND use_month <= #{Statistics.month2}
+		]]>
+		</if>
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
+
+		<include refid="DepartItemDetailMapping.departPermission"/>
+		) a group by ${Statistics.groupBy}
+	</sql>
+
+
+
+
+
+
+
+	<select id="queryManageStaffCostDetailByPager_mysql" parameterType="map"   resultMap="statisticsDetailMap">
+		<include refid="queryManageStaffCostDetailPagerSql"/> LIMIT #{page.startRow},#{page.pageSize}
+	</select>
+
+	<select id="queryManageStaffCostDetailByCount_mysql" parameterType="map"  resultType="int" >
+		SELECT COUNT(*) FROM (
+		<include refid="queryManageStaffCostDetailPagerSql"/>
+		) c
+	</select>
+
+	<sql id="queryManageStaffCostDetailPagerSql">
+		SELECT business.*
+		FROM (
+		<include refid="DepartItemDetailMapping.data_203"/>
+		) business
+		inner join ts_dept dept
+		on business.dept_id = dept.dept_id
+		where dept.statisticsed = '1'
+
+
+		<if test="Statistics.deptId != null and Statistics.deptId != ''">
+			AND dept.dept_id = #{Statistics.deptId}
+		</if>
+
+
+		<if test="Statistics.month1 != 0">
+			<![CDATA[
+			AND use_month >= #{Statistics.month1}
+		]]>
+		</if>
+		<if test="Statistics.month2 != 0">
+			<![CDATA[
+			AND use_month <= #{Statistics.month2}
+			]]>
+		</if>
+
+
+
+		<if test="Statistics.date1 != null">
+			<![CDATA[
+						AND pay_date >= #{Statistics.date1}
+					]]>
+		</if>
+		<if test="Statistics.date2 != null">
+			<![CDATA[
+						AND pay_date <= #{Statistics.date2}
+					]]>
+		</if>
+
+
+		<include refid="DepartItemDetailMapping.departPermission"/>
+		order by use_month desc ,build_datetime desc
+	</sql>
 
 
 

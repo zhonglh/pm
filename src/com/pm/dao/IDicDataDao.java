@@ -33,6 +33,8 @@ public interface IDicDataDao {
 
 	public List<DicData> getDicDataByType(DicData dicdata);
 
+	public List<DicData> getAllDicDataByType(DicData dicdata);
+
 	public Pager<DicData> queryDicData(DicData dicdata,  Pager<DicData> pager);
 
 }

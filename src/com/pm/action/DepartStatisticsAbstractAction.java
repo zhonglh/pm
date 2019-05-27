@@ -127,7 +127,11 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
 
         //处理第一列
         DepartStatisticsItem temp1 = new DepartStatisticsItem();
-        temp1.setItemName(getTitles().get(index));
+        if(index >= 0) {
+            temp1.setItemName(getTitles().get(index));
+        }else {
+            temp1.setItemName(map.get(depts.get(0).getDept_id()).getItemName());
+        }
         temp1.setItemFormatter(itemFormatter);
         list1.add(temp1);
 
@@ -143,7 +147,9 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
                 }
             }
             departStatisticsItem.setItemId("");
-            departStatisticsItem.setItemName(getTitles().get(index));
+            if(index >= 0) {
+                departStatisticsItem.setItemName(getTitles().get(index));
+            }
             sum1 += departStatisticsItem.getVal();
 
             departStatisticsItem.setItemFormatter(itemFormatter);
@@ -154,7 +160,9 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
             DepartStatisticsItem last1 = new DepartStatisticsItem();
             last1.setDeptId("");
             last1.setItemId("");
-            last1.setItemName(getTitles().get(index));
+            if(index >= 0) {
+                last1.setItemName(getTitles().get(index));
+            }
             last1.setVal(sum1);
             last1.setUrl(url);
             last1.setItemFormatter(itemFormatter);
@@ -390,7 +398,7 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
     protected List<List<DepartStatisticsItem>> getReimburseCostDetails(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
         DicData searchDicDeta = new DicData();
         searchDicDeta.setDic_type_id(EnumDicType.REIMBURSE_ITEM.name());
-        List<DicData> reimburseCostTypes = dicDataService.getDicDataByType(searchDicDeta);
+        List<DicData> reimburseCostTypes = dicDataService.getAllDicDataByType(searchDicDeta);
         List<DepartStatisticsItem> reimburseCostDetails =
                 departStatisticsService.queryReimburseCostDetails(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
         Map<String, Map<String, DepartStatisticsItem>> maprc = PubMethod.list2Map2(reimburseCostDetails);
@@ -454,7 +462,7 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
     protected List<List<DepartStatisticsItem>> getSalesCostDetails(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
         DicData searchDicDeta = new DicData();
         searchDicDeta.setDic_type_id(EnumDicType.SALES_COSTS.name());
-        List<DicData> salesCostTypes = dicDataService.getDicDataByType(searchDicDeta);
+        List<DicData> salesCostTypes = dicDataService.getAllDicDataByType(searchDicDeta);
         List<DepartStatisticsItem> salesCostDetails =
                 departStatisticsService.querySalseCostsDetail(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
         Map<String, Map<String, DepartStatisticsItem>> mapsc = PubMethod.list2Map2(salesCostDetails);
@@ -489,12 +497,16 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
     protected List<List<DepartStatisticsItem>> getDepartCostDetails(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
         DicData searchDicDeta = new DicData();
         searchDicDeta.setDic_type_id(EnumDicType.DEPART_MANAG_COSTS.name());
-        List<DicData> departCostTypes = dicDataService.getDicDataByType(searchDicDeta);
+        List<DicData> departCostTypes = dicDataService.getAllDicDataByType(searchDicDeta);
         List<DepartStatisticsItem> departCostDetails =
                 departStatisticsService.queryDepartCostsDetail(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
         Map<String, Map<String, DepartStatisticsItem>> mapdc = PubMethod.list2Map2(departCostDetails);
         return handleDetails( depts, departCostTypes, mapdc,"/DepartStatisticsAction.do?method=queryDepartCostsDetail&x=101"+searchStr);
     }
+
+
+
+
 
 
     /**
@@ -509,6 +521,44 @@ public abstract class DepartStatisticsAbstractAction extends BaseAction {
         Map<String, DepartStatisticsItem> map130 = PubMethod.list2Map(otherStaffCosts);
         return handleStatistics( depts,  map130,13,"/DepartStatisticsAction.do?method=queryOtherStaffCostDetail"+searchStr,"B");
     }
+
+
+
+
+    /**
+     * 部门销售成本统计
+     * @param searchStatistics
+     * @param depts
+     * @param userPermit
+     * @param searchStr
+     * @return
+     */
+    protected List<DepartStatisticsItem> getSalesStaffCosts(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+        List<DepartStatisticsItem> otherStaffCosts = departStatisticsService.querySalesStaffCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+        Map<String, DepartStatisticsItem> map130 = PubMethod.list2Map(otherStaffCosts);
+        return handleStatistics( depts,  map130,-1,"/DepartStatisticsAction.do?method=querySalesStaffCostDetail"+searchStr,"B");
+
+
+    }
+
+
+    /**
+     * 部门管理成本统计
+     * @param searchStatistics
+     * @param depts
+     * @param userPermit
+     * @param searchStr
+     * @return
+     */
+    protected List<DepartStatisticsItem> getManageStaffCosts(Statistics searchStatistics, List<Dept> depts, UserPermit userPermit, String searchStr) {
+        List<DepartStatisticsItem> otherStaffCosts = departStatisticsService.queryManageStaffCosts(searchStatistics, userPermit, PubMethod.getPagerByAll(DepartStatisticsItem.class)).getResultList();
+        Map<String, DepartStatisticsItem> map130 = PubMethod.list2Map(otherStaffCosts);
+        return handleStatistics( depts,  map130,-1,"/DepartStatisticsAction.do?method=queryManageStaffCostDetail"+searchStr,"B");
+
+
+    }
+
+
 
 
 }

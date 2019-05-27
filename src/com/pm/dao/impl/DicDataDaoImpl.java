@@ -23,12 +23,14 @@ public class DicDataDaoImpl extends BatisDao implements IDicDataDao  {
 		String sql = "DicDataMapping.getMaxDicDataByType"; 
 		return this.query4Int(sql, dicdata);
 	}
+	@Override
 	public DicData getDicDataByPre(DicData dicdata) {
 		String sql = "DicDataMapping.getDicDataByPre"; 
 		List<DicData> list = this.query(sql, DicData.class, dicdata);
 		if(list == null || list.isEmpty()) return null;
 		else return list.get(0);
 	}
+	@Override
 	public DicData getDicDataByNext(DicData dicdata) {
 
 		String sql = "DicDataMapping.getDicDataByNext"; 
@@ -68,6 +70,7 @@ public class DicDataDaoImpl extends BatisDao implements IDicDataDao  {
 	}
 	
 
+	@Override
 	public int updateDicDataSort(DicData dicdata) {
 		String sql = "DicDataMapping.updateDicDataSort";
 		return this.update(sql, dicdata);		
@@ -97,9 +100,18 @@ public class DicDataDaoImpl extends BatisDao implements IDicDataDao  {
 	}
 	
 
+	@Override
 	public List<DicData> getDicDataByType(DicData dicdata){
 		String sql = "DicDataMapping.getDicDataByType"; 
 		return this.query(sql, DicData.class, dicdata); 
+	}
+
+
+	@Override
+	public List<DicData> getAllDicDataByType(DicData dicdata){
+
+		String sql = "DicDataMapping.getAllDicDataByType";
+		return this.query(sql, DicData.class, dicdata);
 	}
 
 	@Override

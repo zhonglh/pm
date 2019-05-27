@@ -123,5 +123,35 @@ public class DepartStatisticsServiceImpl implements IDepartStatisticsService {
 	public Pager<StatisticsDetail> queryOtherStaffCostDetail(Statistics statistics,UserPermit userPermit,Pager<StatisticsDetail> pager){
 		return departStatisticsDao.queryOtherStaffCostDetail(statistics, userPermit, pager);
 	}
+
+
+
+
+	@Override
+	public Pager<DepartStatisticsItem> querySalesStaffCosts(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		return departStatisticsDao.querySalesStaffCosts(statistics, userPermit, pager);
+	}
+
+
+
+	@Override
+	public Pager<StatisticsDetail> querySalesStaffCostDetail(Statistics statistics,UserPermit userPermit,Pager<StatisticsDetail> pager){
+		return departStatisticsDao.querySalesStaffCostDetail(statistics, userPermit, pager);
+	}
+
+
+
+
+	@Override
+	public Pager<DepartStatisticsItem> queryManageStaffCosts(Statistics statistics, UserPermit userPermit,Pager<DepartStatisticsItem> pager) {
+		return departStatisticsDao.queryManageStaffCosts(statistics, userPermit, pager);
+	}
+
+
+
+	@Override
+	public Pager<StatisticsDetail> queryManageStaffCostDetail(Statistics statistics,UserPermit userPermit,Pager<StatisticsDetail> pager){
+		return departStatisticsDao.queryManageStaffCostDetail(statistics, userPermit, pager);
+	}
 	
 }

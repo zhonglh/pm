@@ -87,7 +87,7 @@
 				<tbody>
 				<c:forEach var="contractAttachment"  varStatus="status1" items="${contractAttachments}">
 					<tr>
-						<td><a href="${webroot }/ContractAttachmentAction.do?method=printAttach&contract_id=${contract1.id }&attachment_id=${contractAttachment.attachment_id}">${contractAttachment.attachment_name }</a></td>
+						<td><a href="${webroot }/ContractAttachmentAction.do?method=printAttach&contract_id=${payContract1.id }&attachment_id=${contractAttachment.attachment_id}">${contractAttachment.attachment_name }</a></td>
 					</tr>
 				</c:forEach>
 				</tbody>

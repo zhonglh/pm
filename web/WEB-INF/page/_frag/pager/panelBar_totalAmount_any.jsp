@@ -17,7 +17,7 @@
 		<span>&nbsp;&nbsp;&nbsp;&nbsp;  总金额: <b><font color="red"><fmt:formatNumber value="${total_amount }" type="currency" pattern="###,###,##0.00"/></font></b></span>
 	
 		<c:if test="${not empty resultObj && resultObj != '' }">
-		<span id="more1" class="btn-outline-msg" title="${fn:replace( resultObj , '<br>', '&#10;')}" msg111="${ resultObj }">&nbsp;&nbsp;&nbsp;&nbsp;  <b>  <font size="16" color="green">更多信息</font> </b></span>
+		<span id="more1" class="btn-outline-msg" title="${fn:replace( resultObj , '<br>', '&#10;')}" >&nbsp;&nbsp;&nbsp;&nbsp;  <b style="size: 16; color: green"> 更多信息 </b></span>
 		</c:if>
 	
 	</div>

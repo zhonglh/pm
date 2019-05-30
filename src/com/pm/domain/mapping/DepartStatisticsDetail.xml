@@ -600,13 +600,13 @@
 
 		<if test="Statistics.date1 != null">
 			<![CDATA[
-						AND pay_date >= #{Statistics.date1}
-					]]>
+				AND pay_date >= #{Statistics.date1}
+			]]>
 		</if>
 		<if test="Statistics.date2 != null">
 			<![CDATA[
-						AND pay_date <= #{Statistics.date2}
-					]]>
+				AND pay_date <= #{Statistics.date2}
+			]]>
 		</if>
 
 

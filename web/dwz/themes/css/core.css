@@ -496,7 +496,7 @@ body { overflow:hidden;}
 .pageForm { display:block; overflow:auto;}
 .pageFormContent { display:block; overflow:auto; padding:10px 5px; position:relative;}
 .pageFormContent div.unit {display:block; margin:0; padding:5px 0; position:relative;clear:both;}
-.pageFormContent p { float:left; display:block; width:380px; height:21px; margin:0; padding:5px 0; position:relative;}
+.pageFormContent p { float:left; display:block; width:380px; min-height:21px; max-height: 300px; margin:0; padding:5px 0; position:relative;}
 .pageFormContent p.nowrap { height:auto;}
 .pageFormContent .radioGroup { float:left; display:block; overflow:hidden;}
 .pageFormContent label { float:left; width:120px; padding:0 5px; line-height:21px;}

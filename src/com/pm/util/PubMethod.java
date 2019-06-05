@@ -771,11 +771,11 @@ public class PubMethod {
 		}
 		StringBuffer sb = new StringBuffer("");
 		if(d1 != null) {
-			sb = sb.append(d1.toString());
+			sb = sb.append((new BigDecimal(d1.toString())).toString());
 		}
 		if(d2 != null){
 			sb = sb.append(BusinessUtil.SPLIT_DATE);
-			sb = sb.append(d2.toString());		
+			sb = sb.append((new BigDecimal(d2.toString())).toString());
 		}
 		return sb.toString();
 	}

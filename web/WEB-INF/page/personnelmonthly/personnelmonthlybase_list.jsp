@@ -70,7 +70,7 @@
 				<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="${webroot}/PersonnelMonthlyBaseAction.do?method=deletePersonnelMonthlyBase" class="delete"><span>删除</span></a></li> 
 		</c:if>
 			<c:if test="${operation_update != null && operation_update != '' }">
-				<li><a class="edit" href="${webroot}/PersonnelMonthlyBaseAction.do?method=toEditBase&id={sid}" mask="true" width="900"  height="400" rel="update_personnelmonthlybase" target="dialog" warn="请选择一条数据"><span>修改人事月报</span></a></li>
+				<li><a class="edit" href="${webroot}/PersonnelMonthlyBaseAction.do?method=toEditBase&id={sid}" mask="true" width="900"  height="400" rel="update_personnelmonthlybase" target="dialog" warn="请选择一条数据"><span>修改autoUpdateWorkinfLife月报</span></a></li>
 			</c:if>
 			<c:if test="${operation_read != null && operation_read != '' }">
 				<li><a class="edit" href="${webroot}/PersonnelMonthlyBaseAction.do?method=toViewBase&id={sid}" mask="true" width="900"  height="480" rel="view_personnelmonthlybase" target="dialog" warn="请选择一条数据"><span>查看明细</span></a></li>

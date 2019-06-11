@@ -93,6 +93,20 @@ function initUI(_box){
 			event.preventDefault();
 		});
 	});
+
+
+
+	//用于共享空间
+	$('a.sharefile', $p).each(function(){
+		var $this = $(this);
+		var id = $this.attr("id");
+		var top_id = $this.attr("top_id");
+		$this.bind("click", {id:id}, function(event){
+			var form = $("#pagerForm", $p).get(0);
+			navTab.reload($(form).attr("action"), {data: {parent_id:id , top_id : top_id}});
+			event.preventDefault();
+		});
+	});
 	
 
 	//auto bind tabs

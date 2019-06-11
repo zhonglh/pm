@@ -5,6 +5,11 @@
 
 </form>
 
+<div class="pageHeader">
+	<c:if test="${empty fileInfo1.top_id }">共享文件</c:if>
+	<c:if test="${not empty fileInfo1.top_id }"><a style="cursor:pointer;" class="sharefile" id="">共享文件</a><c:forEach var="item" items="${parents}">  /  <a  style="cursor:pointer;"  class="sharefile" id="${item.id }" top_id="${top_id}">${item.show_name }</a></c:forEach></c:if>
+</div>
+
 
 <div class="pageContent">
 	
@@ -25,12 +30,20 @@
 				<td>
 						
 				</td>
-				<td>				
-		    		<i class="icon-16 icon-16-${fileInfo.ext}"></i>
-					
+				<td>
+
 					<a href="${webroot}/FileInfoAction.do?method=download&id=${fileInfo.id}">
-					${fileInfo.show_name }
+		    		<i class="icon-16 icon-16-${fileInfo.ext}"></i>
 					</a>
+
+					<c:if test="${fileInfo.is_folder=='1' }">
+						<a href="javaScript:void();retur false;" class="sharefile" id="${fileInfo.id }" top_id="${top_id }">${fileInfo.show_name }</a>
+					</c:if>
+					<c:if test="${fileInfo.is_folder=='0' }">
+					<a href="${webroot}/FileInfoAction.do?method=download&id=${fileInfo.id}">
+							${fileInfo.show_name }
+					</a>
+					</c:if>
 					
 				</td>
 				<td><c:if test="${fileInfo.is_folder=='0' }">${fileInfo.ext}</c:if></td>

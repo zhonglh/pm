@@ -3,6 +3,7 @@ package com.pm.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,9 @@ import com.pm.service.IRoleService;
 import com.pm.util.PubMethod;
 import com.pm.util.constant.EnumPermit;
 import com.pm.vo.UserPermit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 分享给我的文件
@@ -49,10 +53,39 @@ public class FileShareMyAction extends BaseAction {
 		User sessionUser = PubMethod.getUser(request);
 		UserPermit userPermit = this.getUserPermit(request, roleService, EnumPermit.FILEINFOSHAREMY.getId());
 
+		String top_id = request.getParameter("top_id");
+		if(StringUtils.isEmpty(top_id)){
+			top_id = fileInfo.getParent_id();
+		}
+		if(StringUtils.isEmpty(top_id)){
+			top_id = "";
+		}
+
 		paramprocess(request,fileInfo);
 		
-		fileInfo.setBuild_userid(sessionUser.getUser_id());
-		Pager<FileInfo> pager = fileInfoService.queryFileShareMyInfo(fileInfo, userPermit, PubMethod.getPager(request, FileInfo.class));
+
+
+		Pager<FileInfo> pager = null;
+
+		if(StringUtils.isEmpty(top_id)) {
+			pager = fileInfoService.queryFileShareMyInfo(fileInfo, userPermit, PubMethod.getPager(request, FileInfo.class));
+		}else {
+
+
+			String parentId = fileInfo.getParent_id();
+			if(StringUtils.isNotEmpty(parentId)){
+				List<FileInfo> parents = new ArrayList<FileInfo>();
+				while(StringUtils.isNotEmpty(parentId) && !top_id.equals(parentId)){
+					FileInfo parentFile = fileInfoService.get(parentId);
+					parents.add(0,parentFile);
+					parentId = parentFile.getParent_id();
+				}
+				request.setAttribute("parents", parents);
+			}
+
+			pager = fileInfoService.queryFileInfo(fileInfo, userPermit, PubMethod.getPager(request, FileInfo.class));
+
+		}
 		
 		
 		for(FileInfo file : pager.getResultList()){

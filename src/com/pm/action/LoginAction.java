@@ -53,11 +53,17 @@ public class LoginAction extends BaseAction {
 	public String login(HttpServletResponse res,HttpServletRequest request){		    
 		
 		String loginName = request.getParameter(BusinessUtil.USER_LOGIN_NAME);
-		if(loginName != null) loginName = loginName.trim();
+		if(loginName != null) {
+			loginName = loginName.trim();
+		}
 		
 		User user = userService.getUserByLoginName(loginName);
-		if(user == null) request.setAttribute("message", this.getMsg("login.error1", request));
-		else if(PubMethod.isDelete(user.getDelete_flag())) request.setAttribute("message", this.getMsg("login.error2", request));
+		if(user == null) {
+			request.setAttribute("message", this.getMsg("login.error1", request));
+		}
+		else if(PubMethod.isDelete(user.getDelete_flag())) {
+			request.setAttribute("message", this.getMsg("login.error2", request));
+		}
 		else {
 			String password = request.getParameter(BusinessUtil.USER_LOGIN_PASSWD);
 			password = password.trim();

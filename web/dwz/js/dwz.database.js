@@ -225,6 +225,11 @@
 					$.bringBackSuggest(DWZ.jsonEval(jsonStr));
 				}				
 				function _close(){
+					try{
+						console.info($(op.suggest$).attr("id"));
+					}catch (e) {
+
+					}
 					$(op.suggest$).html('').hide();
 					selectedIndex = -1;
 					$(document).unbind("click", _close);

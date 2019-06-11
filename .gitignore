@@ -1,9 +1,26 @@
-# Created by .ignore support plugin (hsz.mobi)
+target/
+!.mvn/wrapper/maven-wrapper.jar
 
-/out
-gen
-**/target/
-**/out
-**/overlays
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+jdbc.properties
 
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/

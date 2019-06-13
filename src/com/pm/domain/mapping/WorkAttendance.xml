@@ -41,7 +41,7 @@
 					)
 				)			
 				and ps.project_id = #{project_id}
-			)aa group by staff_id,staff_name,project_id,attendance_month			
+			)aa group by staff_id,staff_name,staff_no,project_id,attendance_month
 			order by build_datetime, import_order
 		]]>		
 	</select>	

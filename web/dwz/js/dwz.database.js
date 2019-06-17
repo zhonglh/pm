@@ -232,7 +232,7 @@
 					}
 					$(op.suggest$).html('').hide();
 					selectedIndex = -1;
-					$(document).unbind("click", _close);
+					//$(document).unbind("click", _close);
 				}
 				
 				$input.focus(_show).click(false).keyup(function(event){

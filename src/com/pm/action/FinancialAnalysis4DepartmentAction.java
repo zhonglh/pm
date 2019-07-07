@@ -1,17 +1,21 @@
 package com.pm.action;
 
 import com.alibaba.fastjson.JSON;
-import com.common.actions.BaseAction;
 import com.common.utils.BeanKit;
 import com.common.utils.DateKit;
 import com.common.utils.DateUtils;
-import com.pm.service.*;
+import com.pm.service.IAnalysisDepartService;
+import com.pm.service.IDeptService;
+import com.pm.service.IRoleService;
 import com.pm.util.constant.EnumPermit;
-import com.pm.util.excel.exports.BusinessExExcel;
 import com.pm.util.excel.Column;
 import com.pm.util.excel.EnumCellFormat;
 import com.pm.util.excel.ThreadLocalModifyColumn;
-import com.pm.vo.*;
+import com.pm.util.excel.exports.BusinessExExcel;
+import com.pm.vo.AnalysisResult;
+import com.pm.vo.AnalysisResultTable;
+import com.pm.vo.AnalysisSearch;
+import com.pm.vo.UserPermit;
 import com.pm.vo.echarts.Option4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

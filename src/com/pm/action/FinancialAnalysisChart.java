@@ -1,14 +1,13 @@
 package com.pm.action;
 
-import com.common.actions.BaseAction;
-import com.common.utils.DateKit;
 import com.pm.vo.AnalysisResult;
 import com.pm.vo.AnalysisResultTable;
-import com.pm.vo.AnalysisSearch;
-import com.pm.vo.echarts.Option;
 import com.pm.vo.echarts.Option4;
 import com.pm.vo.echarts.base.*;
-import com.pm.vo.echarts.series.*;
+import com.pm.vo.echarts.series.Bar4;
+import com.pm.vo.echarts.series.Data;
+import com.pm.vo.echarts.series.Pie;
+import com.pm.vo.echarts.series.Series;
 import com.pm.vo.echarts.title.Title;
 import com.pm.vo.echarts.tooltip.Tooltip;
 

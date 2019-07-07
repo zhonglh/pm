@@ -1,14 +1,12 @@
 package com.pm.action;
 
 import com.alibaba.fastjson.JSON;
-import com.common.beans.Pager;
 import com.common.utils.DateKit;
 import com.common.utils.DateUtils;
-import com.common.utils.NumberKit;
-import com.pm.domain.business.Statistics;
-import com.pm.service.*;
-import com.pm.util.AnalysisUtil;
-import com.pm.util.PubMethod;
+import com.pm.service.IAnalysisCommonCostService;
+import com.pm.service.IDeptService;
+import com.pm.service.IDicDataService;
+import com.pm.service.IRoleService;
 import com.pm.util.constant.EnumPermit;
 import com.pm.util.excel.Column;
 import com.pm.util.excel.EnumCellFormat;
@@ -18,7 +16,6 @@ import com.pm.vo.AnalysisResult;
 import com.pm.vo.AnalysisResultTable;
 import com.pm.vo.AnalysisSearch;
 import com.pm.vo.UserPermit;
-import com.pm.vo.echarts.Option;
 import com.pm.vo.echarts.Option4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

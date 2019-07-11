@@ -91,7 +91,7 @@
 			<li><a class="icon" href="${webroot}/StaffCostAction.do?method=exportByAnalysis" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
 		</ul>
 	</div>
-	<table class="table" width="1300px" layoutH="162">
+	<table class="table" width="1400px" layoutH="162">
 		<thead>
 			<tr>
 				<th width="80">员工工号</th>

@@ -145,8 +145,6 @@
 					from tb_work_attendance  work_att ,	vb_project p
 					where work_att.verify_userid is not NULL
 					and work_att.project_id = p.project_id
-
-					where 1=1
 					<if test="StaffCost.month1 != 0">
 						<![CDATA[
 							AND attendance_month >= #{StaffCost.month1}

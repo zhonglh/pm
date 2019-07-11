@@ -6,6 +6,9 @@ import com.pm.util.log.EntityAnnotation;
 
 
 
+/**
+ * @author admin
+ */
 @SuppressWarnings("serial")
 public class StaffCostAnalysis implements java.io.Serializable {
 	

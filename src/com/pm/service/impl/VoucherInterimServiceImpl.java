@@ -25,11 +25,14 @@ public class VoucherInterimServiceImpl implements  IVoucherInterimService {
 
 	/**
 	 * 处理凭证信息
-	 * @param voucherInterim
+	 * @param voucherInterims
 	 * @return
 	 */
+	@Override
 	public void batchHandleVoucherInterim(VoucherInterim[] voucherInterims) {
-		if(voucherInterims == null || voucherInterims.length == 0) return ;
+		if(voucherInterims == null || voucherInterims.length == 0) {
+			return ;
+		}
 		VoucherInterim search = new VoucherInterim();
 		search.setData_type(voucherInterims[0].getData_type());
 		search.setData_id(voucherInterims[0].getData_id());
@@ -118,8 +121,11 @@ public class VoucherInterimServiceImpl implements  IVoucherInterimService {
 	}
 	
 
-	public void doExport(List<VoucherInterim> list,User user){
-		if(list == null || list.isEmpty()) return ;
+	@Override
+	public void doExport(List<VoucherInterim> list, User user){
+		if(list == null || list.isEmpty()) {
+			return ;
+		}
 		Date date = new Date(System.currentTimeMillis());
 		for(VoucherInterim voucherInterim : list){
 			voucherInterim.setExported("1");

@@ -11,7 +11,7 @@ public interface IVoucherInterimService {
 	
 	/**
 	 * 处理凭证信息
-	 * @param voucherInterim
+	 * @param voucherInterims
 	 * @return
 	 */
 	public void batchHandleVoucherInterim(VoucherInterim[] voucherInterims) ;

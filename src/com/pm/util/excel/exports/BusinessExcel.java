@@ -44,7 +44,15 @@ public class BusinessExcel {
 		response.addHeader("Content-Disposition","attachment;filename="+clz.getSimpleName()+".xlsx");		
 		export.exportXls(response);
 	}
-	
+
+	/**
+	 * 普通导出
+	 * @param response
+	 * @param heads
+	 * @param list
+	 * @param clz
+	 * @param <T>
+	 */
 	public static <T> void exportPopular(HttpServletResponse response,List<String> heads,List<T> list,Class<T> clz ){		
 		XlsSimpleExport export = new XlsSpecificExport();
 		export(export,heads,list,clz,false);

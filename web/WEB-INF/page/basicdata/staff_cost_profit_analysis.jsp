@@ -91,7 +91,7 @@
 			<li><a class="icon" href="${webroot}/StaffCostAction.do?method=exportByAnalysis" target="dwzExport" targetType="navTab" title="确定要导出这些记录吗?"><span>导出EXCEL</span></a></li>
 		</ul>
 	</div>
-	<table class="table" width="100%" layoutH="162">
+	<table class="table" width="2000px" layoutH="162">
 		<thead>
 			<tr>
 				<th width="80">员工工号</th>
@@ -109,6 +109,12 @@
 				<th width="100">总成本</th>
 				<th width="100">总利润</th>
 				<th width="100">平均月利润</th>
+
+
+				<th width="100">工作天数</th>
+				<th width="100">请假天数</th>
+				<th width="100">周末加班天数</th>
+				<th width="100">平时加班小时</th>
 				
 				
 			</tr>
@@ -151,6 +157,12 @@
 				</td>
 				<td align="right"><b><fmt:formatNumber value="${staffcost.technical_profit }" type="currency" pattern="###,###,##0.00"/></b></td>
 				<td align="right"><fmt:formatNumber value="${staffcost.profit }" type="currency" pattern="###,###,##0.00"/></td>
+
+
+				<td align="right"><b><fmt:formatNumber value="${staffcost.work_days }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td align="right"><fmt:formatNumber value="${staffcost.holidays }" type="currency" pattern="###,###,##0.00"/></td>
+				<td align="right"><b><fmt:formatNumber value="${staffcost.weekend_overtime_days }" type="currency" pattern="###,###,##0.00"/></b></td>
+				<td align="right"><fmt:formatNumber value="${staffcost.every_overtime }" type="currency" pattern="###,###,##0.00"/></td>
 				
 				
 			</tr>

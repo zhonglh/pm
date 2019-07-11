@@ -3,6 +3,7 @@ package com.pm.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.common.enums.EnumYesNo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +61,7 @@ public  class VoucherInterimAction extends BaseAction {
 		
 		
 		
-		voucherInterim.setExported("0");
+		voucherInterim.setExported(EnumYesNo.No.getCode());
 		Pager<VoucherInterim> pager = voucherInterimService.queryVoucherInterim(voucherInterim, null, PubMethod.getPagerByAll(request, VoucherInterim.class));
 		try{
 

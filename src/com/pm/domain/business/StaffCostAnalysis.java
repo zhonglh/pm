@@ -61,6 +61,26 @@ public class StaffCostAnalysis implements java.io.Serializable {
 
 	@EntityAnnotation(item_name="平均月利润", item_sort=13)
 	private double profit;
+
+
+
+
+
+
+	@EntityAnnotation(item_name="工作天数", item_sort=14)
+	private double work_days;
+
+
+	@EntityAnnotation(item_name="请假天数", item_sort=15)
+	private double holidays;
+
+
+	@EntityAnnotation(item_name="周末加班天数", item_sort=16)
+	private double weekend_overtime_days;
+
+
+	@EntityAnnotation(item_name="平常加班小时", item_sort=17)
+	private double every_overtime;
 	
 
 	private String delete_flag;
@@ -187,6 +207,38 @@ public class StaffCostAnalysis implements java.io.Serializable {
 
 	public void setOutsource_staff(String outsource_staff) {
 		this.outsource_staff = outsource_staff;
+	}
+
+	public double getWork_days() {
+		return work_days;
+	}
+
+	public void setWork_days(double work_days) {
+		this.work_days = work_days;
+	}
+
+	public double getHolidays() {
+		return holidays;
+	}
+
+	public void setHolidays(double holidays) {
+		this.holidays = holidays;
+	}
+
+	public double getWeekend_overtime_days() {
+		return weekend_overtime_days;
+	}
+
+	public void setWeekend_overtime_days(double weekend_overtime_days) {
+		this.weekend_overtime_days = weekend_overtime_days;
+	}
+
+	public double getEvery_overtime() {
+		return every_overtime;
+	}
+
+	public void setEvery_overtime(double every_overtime) {
+		this.every_overtime = every_overtime;
 	}
 
 	public String getDelete_flag() {

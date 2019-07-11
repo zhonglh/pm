@@ -25,7 +25,10 @@
 	<sql id="profitAnalysisPagerSql">
 		
 		select * from(				
-				select xx.*, (technical_income-technical_cost) technical_profit,
+				select xx.*,
+				work_att.work_days , work_att.holidays ,
+				work_att.weekend_overtime_days , work_att.every_overtime ,
+				(technical_income-technical_cost) technical_profit,
 				
 				(
 					case when months+months2 = 0  then (technical_income-technical_cost) else 
@@ -126,7 +129,44 @@
 					</if>
 
 					 
-				) xx 	
+				) xx 	join (
+					select staff_id , sum(ifnull(work_days,0)) as work_days,
+					sum(
+					ifnull(personal_leave_days,0)+
+					ifnull(swopped_holidays ,0)+
+					ifnull(sick_leave_days,0)+
+					ifnull(waiting_post_days ,0)+
+					ifnull(maternity_leave_days ,0)+
+					ifnull(medical_days,0)+
+					ifnull(neglect_work_days,0)
+					) as holidays,
+					sum(ifnull(weekend_overtime_days,0)) weekend_overtime_days ,
+					sum(ifnull(every_overtime,0)) as every_overtime
+					from tb_work_attendance  work_att ,	vb_project p
+					where work_att.verify_userid is not NULL
+					and work_att.project_id = p.project_id
+
+					where 1=1
+					<if test="StaffCost.month1 != 0">
+						<![CDATA[
+							AND attendance_month >= #{StaffCost.month1}
+						]]>
+					</if>
+					<if test="StaffCost.month2 != 0">
+						<![CDATA[
+							AND attendance_month <= #{StaffCost.month2}
+						]]>
+					</if>
+
+
+					<if test="StaffCost.project_name != null and StaffCost.project_name != ''">
+						AND project_name like concat('%',TRIM(#{StaffCost.project_name}),'%')
+					</if>
+
+
+					group by work_att.staff_id
+
+				) work_att on xx.staff_id = work_att.staff_id
 			
 			) analysis 
 				

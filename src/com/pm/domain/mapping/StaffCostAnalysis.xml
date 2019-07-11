@@ -132,15 +132,16 @@
 				) xx 	join (
 					select staff_id , sum(ifnull(work_days,0)) as work_days,
 					sum(
-					ifnull(personal_leave_days,0)+
+					ifnull(annual_leave_days ,0)+
 					ifnull(swopped_holidays ,0)+
+					ifnull(personal_leave_days,0)+
 					ifnull(sick_leave_days,0)+
-					ifnull(waiting_post_days ,0)+
 					ifnull(maternity_leave_days ,0)+
 					ifnull(medical_days,0)+
 					ifnull(neglect_work_days,0)
 					) as holidays,
 					sum(ifnull(weekend_overtime_days,0)) weekend_overtime_days ,
+					sum(ifnull(waiting_post_days,0)) waiting_post_days ,
 					sum(ifnull(every_overtime,0)) as every_overtime
 					from tb_work_attendance  work_att ,	vb_project p
 					where work_att.verify_userid is not NULL

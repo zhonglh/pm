@@ -78,11 +78,16 @@ public class StaffCostAnalysis implements java.io.Serializable {
 	private double holidays;
 
 
-	@EntityAnnotation(item_name="周末加班天数", item_sort=16)
+    @EntityAnnotation(item_name="待岗天数", item_sort=16)
+    private double waiting_post_days;
+
+
+
+	@EntityAnnotation(item_name="周末加班天数", item_sort=17)
 	private double weekend_overtime_days;
 
 
-	@EntityAnnotation(item_name="平常加班小时", item_sort=17)
+	@EntityAnnotation(item_name="平常加班小时", item_sort=18)
 	private double every_overtime;
 	
 
@@ -244,7 +249,15 @@ public class StaffCostAnalysis implements java.io.Serializable {
 		this.every_overtime = every_overtime;
 	}
 
-	public String getDelete_flag() {
+    public double getWaiting_post_days() {
+        return waiting_post_days;
+    }
+
+    public void setWaiting_post_days(double waiting_post_days) {
+        this.waiting_post_days = waiting_post_days;
+    }
+
+    public String getDelete_flag() {
 		return delete_flag;
 	}
 

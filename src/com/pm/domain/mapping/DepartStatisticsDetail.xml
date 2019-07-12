@@ -342,7 +342,6 @@
 			AND dept.dept_id = #{Statistics.deptId} 
 		</if>
 
-		11111555
 		<if test="Statistics.type_id != null">
 			AND (dc_dic.id = #{Statistics.type_id}    or  dc_dic.dic_type_id = #{Statistics.type_id}   )
 		</if>

@@ -1,6 +1,8 @@
 package com.common.mail;
 
-import java.util.Properties;    
+import com.sun.mail.util.MailSSLSocketFactory;
+
+import java.util.Properties;
 public class MailSenderInfo {    
     // 发送邮件的服务器的IP和端口    
     private String mailServerHost;    
@@ -28,15 +30,28 @@ public class MailSenderInfo {
     // 邮件附件的文件名    
     private String[] attachFileNames;  
     
-    /** *//**   
+    /**
       * 获得邮件会话属性   
       */    
-    public Properties getProperties(){    
-      Properties p = new Properties();    
-      p.put("mail.smtp.host", this.mailServerHost);    
-      p.put("mail.smtp.port", this.mailServerPort);    
-      p.put("mail.smtp.auth", validate ? "true" : "false");
-      p.put("mail.smtp.starttls.enable", "true");
+    public Properties getProperties(){
+
+        Properties p = new Properties();
+        p.put("mail.smtp.host", this.mailServerHost);
+        p.put("mail.smtp.port", this.mailServerPort);
+        p.put("mail.smtp.auth", validate ? "true" : "false");
+        p.put("mail.smtp.starttls.enable", "true");
+
+        /*try {
+            // SSL加密
+            MailSSLSocketFactory sf = new MailSSLSocketFactory();
+            // 设置信任所有的主机
+            sf.setTrustAllHosts(true);
+            p.put("mail.smtp.ssl.enable", "true");
+            p.put("mail.smtp.ssl.socketFactory", sf);
+        }catch (Exception e){
+
+        }*/
+
       return p;    
     }    
     public String getMailServerHost() {    

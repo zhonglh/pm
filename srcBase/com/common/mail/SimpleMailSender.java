@@ -16,6 +16,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.extra.mail.MailAccount;
+import cn.hutool.extra.mail.MailUtil;
 import org.apache.log4j.Logger;
 
 public class SimpleMailSender {
@@ -88,12 +91,34 @@ public class SimpleMailSender {
 		mailInfo.setContent("设置邮箱内容");
 
 		SimpleMailSender sms = new SimpleMailSender();
-
-		sms.sendHtmlMail(mailInfo);// 发送html格式
+		// 发送html格式
+		sms.sendHtmlMail(mailInfo);
 
 	}
 
-	/** */
+
+	public boolean sendHtmlMailByHuTool(MailSenderInfo mailInfo) {
+
+		try {
+
+			MailAccount account = new MailAccount();
+			account.setHost(mailInfo.getMailServerHost());
+			account.setPort(Integer.parseInt(mailInfo.getMailServerPort()));
+			account.setAuth(mailInfo.isValidate());
+			account.setFrom(mailInfo.getFromAddress());
+			account.setUser(mailInfo.getUserName());
+			account.setPass(mailInfo.getPassword());
+
+			MailUtil.send(account, mailInfo.getToAddress(), mailInfo.getSubject(), mailInfo.getContent(), true);
+			return true ;
+		}catch(Exception ex){
+			ex.printStackTrace();
+			throw new RuntimeException(ex);
+		}
+
+	}
+
+
 	/**
 	 * 以HTML格式发送邮件
 	 * 

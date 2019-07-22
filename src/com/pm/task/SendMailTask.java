@@ -183,7 +183,10 @@ public class SendMailTask implements Runnable{
 			
 
 			SimpleMailSender sms = new SimpleMailSender();  
-			sms.sendHtmlMail(sendMailInfo);
+			sms.sendHtmlMailByHuTool(sendMailInfo);
+
+
+
 
 			logger.info("mail info send completed:"+Thread.currentThread().getId()+"  "+salaryMail.getStaff_name());
 

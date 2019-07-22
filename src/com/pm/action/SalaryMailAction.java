@@ -129,10 +129,11 @@ public class SalaryMailAction extends BaseAction {
 		SalaryMail salaryMail = salaryMailService.getSalaryMail(id);
 		List<SalaryMailDetail> list = salaryMailService.querySalaryMailDetail(salaryMail);
 		
-		if(list != null)
-		for(SalaryMailDetail detail : list){
-			String status = "1".equals(detail.getSend_status()) ?"成功":"<font color=\"red\">失败</font>";
-			detail.setSend_status(status);
+		if(list != null) {
+			for (SalaryMailDetail detail : list) {
+				String status = "1".equals(detail.getSend_status()) ? "成功" : "<font color=\"red\">失败</font>";
+				detail.setSend_status(status);
+			}
 		}
 
 		request.setAttribute("list", list);

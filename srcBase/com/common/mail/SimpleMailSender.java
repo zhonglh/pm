@@ -159,13 +159,14 @@ public class SimpleMailSender {
 			ex.printStackTrace();
 			throw new RuntimeException(ex);
 		}finally{
-			if(transport != null)
+			if(transport != null) {
 				try {
 					transport.close();
 				} catch (MessagingException e) {
 
 					e.printStackTrace();
 				}
+			}
 		}
 
 	}

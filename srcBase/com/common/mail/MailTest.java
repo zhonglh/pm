@@ -13,7 +13,7 @@ public class MailTest {
         account.setAuth(true);
         account.setFrom("hr2@souvi.com");
         account.setUser("hr2@souvi.com");
-        account.setPass("souvi2018@");
+        account.setPass("Souvi@163");
 
         MailUtil.send(account, CollUtil.newArrayList("493843721@qq.com"),
                 "测试", "邮件来自Hutool测试", true);
